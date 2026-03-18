@@ -141,7 +141,7 @@
     <string name="onboarding_welcome_subtitle">A private messenger that requires:</string>
     <string name="onboarding_privacy_no_phone">No phone number</string>
     <string name="onboarding_privacy_no_email">No email address</string>
-    <string name="onboarding_privacy_no_signup">No sign up or accounts</string>
+    <string name="onboarding_privacy_no_signup">No sign-up or accounts</string>
     <string name="onboarding_identity_explanation">Your identity is generated and stored securely on your device. You control it completely.</string>
     <string name="onboarding_get_started">Get Started</string>
     <string name="onboarding_restore_from_backup">Restore from backup</string>
@@ -151,11 +151,11 @@
     <string name="onboarding_identity_anonymous_peer">Anonymous Peer</string>
     <string name="onboarding_identity_helper">You can change this anytime, or create multiple identities for different contexts.</string>
     <string name="onboarding_connectivity_title">How will you connect?</string>
-    <string name="onboarding_connectivity_subtitle">Select the networks you want to use:</string>
+    <string name="onboarding_connectivity_subtitle">Select the networks you\'d like to use:</string>
     <string name="onboarding_connectivity_permissions_denied">Permissions denied</string>
     <string name="onboarding_connectivity_permissions_granted">Permissions granted</string>
     <string name="onboarding_connectivity_helper">You can configure these later in Settings</string>
-    <string name="onboarding_complete_title">You are all set!</string>
+    <string name="onboarding_complete_title">You\'re all set!</string>
     <string name="onboarding_complete_summary">Summary</string>
     <string name="onboarding_complete_identity_label">Identity</string>
     <string name="onboarding_complete_networks_label">Networks</string>
