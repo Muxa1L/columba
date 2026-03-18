@@ -27,8 +27,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.repository.Announce
 import com.lxmf.messenger.ui.components.PeerCard
 import com.lxmf.messenger.ui.components.SearchableTopAppBar
@@ -56,13 +59,13 @@ fun SavedPeersScreen(
     Scaffold(
         topBar = {
             SearchableTopAppBar(
-                title = "Saved Peers",
-                subtitle = "$favoriteCount ${if (favoriteCount == 1) "peer" else "peers"} saved",
+                title = stringResource(R.string.saved_peers_title),
+                subtitle = pluralStringResource(R.plurals.saved_peers_count_saved, favoriteCount, favoriteCount),
                 isSearching = isSearching,
                 searchQuery = searchQuery,
                 onSearchQueryChange = { viewModel.searchQuery.value = it },
                 onSearchToggle = { isSearching = !isSearching },
-                searchPlaceholder = "Search by name or hash...",
+                searchPlaceholder = stringResource(R.string.saved_peers_search_placeholder),
             )
         },
     ) { paddingValues ->
@@ -184,13 +187,13 @@ fun EmptySavedPeersState(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "No saved peers yet",
+            text = stringResource(R.string.saved_peers_empty_title),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Tap the star icon on any peer in the Announce Stream to save them here for quick access.",
+            text = stringResource(R.string.saved_peers_empty_subtitle),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
         )

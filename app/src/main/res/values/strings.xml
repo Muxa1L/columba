@@ -123,4 +123,125 @@
         <item quantity="one">Sync complete: %d new message</item>
         <item quantity="other">Sync complete: %d new messages</item>
     </plurals>
+
+    <!-- Common labels -->
+    <string name="common_back">Back</string>
+    <string name="common_continue">Continue</string>
+    <string name="common_next">Next</string>
+    <string name="common_save">Save</string>
+    <string name="common_error">Error</string>
+    <string name="common_ok">OK</string>
+    <string name="common_skip">Skip</string>
+    <string name="common_enabled">Enabled</string>
+    <string name="common_disabled">Disabled</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_columba_content_description">Columba</string>
+    <string name="onboarding_welcome_title">Welcome to Columba</string>
+    <string name="onboarding_welcome_subtitle">A private messenger that requires:</string>
+    <string name="onboarding_privacy_no_phone">No phone number</string>
+    <string name="onboarding_privacy_no_email">No email address</string>
+    <string name="onboarding_privacy_no_signup">No sign up or accounts</string>
+    <string name="onboarding_identity_explanation">Your identity is generated and stored securely on your device. You control it completely.</string>
+    <string name="onboarding_get_started">Get Started</string>
+    <string name="onboarding_restore_from_backup">Restore from backup</string>
+    <string name="onboarding_identity_title">Your Identity</string>
+    <string name="onboarding_identity_subtitle">Choose a display name others will see:</string>
+    <string name="onboarding_identity_display_name_label">Display Name</string>
+    <string name="onboarding_identity_anonymous_peer">Anonymous Peer</string>
+    <string name="onboarding_identity_helper">You can change this anytime, or create multiple identities for different contexts.</string>
+    <string name="onboarding_connectivity_title">How will you connect?</string>
+    <string name="onboarding_connectivity_subtitle">Select the networks you want to use:</string>
+    <string name="onboarding_connectivity_permissions_denied">Permissions denied</string>
+    <string name="onboarding_connectivity_permissions_granted">Permissions granted</string>
+    <string name="onboarding_connectivity_helper">You can configure these later in Settings</string>
+    <string name="onboarding_complete_title">You are all set!</string>
+    <string name="onboarding_complete_summary">Summary</string>
+    <string name="onboarding_complete_identity_label">Identity</string>
+    <string name="onboarding_complete_networks_label">Networks</string>
+    <string name="onboarding_complete_none_selected">None selected</string>
+    <string name="onboarding_complete_notifications_label">Notifications</string>
+    <string name="onboarding_complete_battery_label">Battery</string>
+    <string name="onboarding_complete_battery_unrestricted">Unrestricted</string>
+    <string name="onboarding_complete_battery_restricted">Restricted</string>
+    <string name="onboarding_complete_show_qr_code">Show QR Code</string>
+    <string name="onboarding_complete_qr_hint">Share your identity QR code to let others add you as a contact.</string>
+    <string name="onboarding_complete_configure_lora">Configure LoRa Radio</string>
+    <string name="onboarding_complete_start_messaging">Start Messaging</string>
+    <string name="onboarding_complete_share_identity">Share identity</string>
+    <string name="onboarding_complete_share_text">Add me on Reticulum:\n\n%1$s\n%2$s</string>
+    <string name="welcome_screen_subtitle">Secure mesh messaging over Reticulum</string>
+    <string name="welcome_screen_choose_display_name">Choose Your Display Name</string>
+    <string name="welcome_screen_display_name_description">This name will be visible to other peers when you send messages and announces.</string>
+    <string name="welcome_screen_continue_as_anonymous">Continue as Anonymous Peer</string>
+    <string name="welcome_screen_footer">You can change this later in Settings</string>
+
+    <!-- Saved peers -->
+    <string name="saved_peers_title">Saved Peers</string>
+    <string name="saved_peers_search_placeholder">Search by name or hash...</string>
+    <string name="saved_peers_empty_title">No saved peers yet</string>
+    <string name="saved_peers_empty_subtitle">Tap the star icon on any peer in the Announce Stream to save them here for quick access.</string>
+
+    <plurals name="saved_peers_count_saved">
+        <item quantity="one">%d peer saved</item>
+        <item quantity="other">%d peers saved</item>
+    </plurals>
+
+    <!-- Call screens -->
+    <string name="call_status_connecting">Connecting...</string>
+    <string name="call_status_ringing">Ringing...</string>
+    <string name="call_status_transmitting">Transmitting</string>
+    <string name="call_status_listening">Listening</string>
+    <string name="call_status_line_busy">Line Busy</string>
+    <string name="call_status_rejected">Call Rejected</string>
+    <string name="call_status_ended">Call Ended</string>
+    <string name="call_status_calling">Calling...</string>
+    <string name="call_control_unmute">Unmute</string>
+    <string name="call_control_mute">Mute</string>
+    <string name="call_control_ptt_on">PTT On</string>
+    <string name="call_control_ptt">PTT</string>
+    <string name="call_control_earpiece">Earpiece</string>
+    <string name="call_control_speaker">Speaker</string>
+    <string name="call_end_content_description">End call</string>
+    <string name="call_end">End Call</string>
+    <string name="call_ptt_hold_to_talk">Hold to talk</string>
+    <string name="call_ptt_talking">TALKING</string>
+    <string name="call_ptt_hold_to_talk_multiline">HOLD\nTO TALK</string>
+
+    <!-- TCP wizard -->
+    <string name="tcp_wizard_choose_server">Choose Server</string>
+    <string name="tcp_wizard_review_settings">Review Settings</string>
+    <string name="tcp_wizard_default_connection_name">TCP Connection</string>
+
+    <!-- Interface stats -->
+    <string name="interface_stats_title">Interface Stats</string>
+    <string name="interface_stats_edit_configuration">Edit Configuration</string>
+    <string name="interface_stats_status">Status</string>
+    <string name="interface_stats_enabled">ENABLED</string>
+    <string name="interface_stats_disabled">DISABLED</string>
+    <string name="interface_stats_online">ONLINE</string>
+    <string name="interface_stats_connecting">CONNECTING</string>
+    <string name="interface_stats_offline">OFFLINE</string>
+    <string name="interface_stats_usb_permission_required">USB permission required</string>
+    <string name="interface_stats_usb_permission_message">Grant permission to connect to the USB device</string>
+    <string name="interface_stats_grant_usb_permission">Grant USB Permission</string>
+    <string name="interface_stats_connection">Connection</string>
+    <string name="interface_stats_type">Type</string>
+    <string name="interface_stats_host">Host</string>
+    <string name="interface_stats_usb_device">USB Device</string>
+    <string name="interface_stats_device">Device</string>
+    <string name="interface_stats_server">Server</string>
+    <string name="interface_stats_listen_port">Listen Port</string>
+    <string name="interface_stats_radio_settings">Radio Settings</string>
+    <string name="interface_stats_frequency">Frequency</string>
+    <string name="interface_stats_bandwidth">Bandwidth</string>
+    <string name="interface_stats_spreading_factor">Spreading Factor</string>
+    <string name="interface_stats_coding_rate">Coding Rate</string>
+    <string name="interface_stats_tx_power">TX Power</string>
+    <string name="interface_stats_mode">Mode</string>
+    <string name="interface_stats_traffic_statistics">Traffic Statistics</string>
+    <string name="interface_stats_received">Received</string>
+    <string name="interface_stats_transmitted">Transmitted</string>
+    <string name="interface_stats_rssi">RSSI</string>
+    <string name="interface_stats_snr">SNR</string>
 </resources>

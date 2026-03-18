@@ -129,4 +129,127 @@
         <item quantity="many">Синхронизация завершена: %d новых сообщений</item>
         <item quantity="other">Синхронизация завершена: %d новых сообщения</item>
     </plurals>
+
+    <!-- Common labels -->
+    <string name="common_back">Назад</string>
+    <string name="common_continue">Продолжить</string>
+    <string name="common_next">Далее</string>
+    <string name="common_save">Сохранить</string>
+    <string name="common_error">Ошибка</string>
+    <string name="common_ok">ОК</string>
+    <string name="common_skip">Пропустить</string>
+    <string name="common_enabled">Включено</string>
+    <string name="common_disabled">Выключено</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_columba_content_description">Columba</string>
+    <string name="onboarding_welcome_title">Добро пожаловать в Columba</string>
+    <string name="onboarding_welcome_subtitle">Приватный мессенджер, которому не нужны:</string>
+    <string name="onboarding_privacy_no_phone">Номер телефона</string>
+    <string name="onboarding_privacy_no_email">Электронная почта</string>
+    <string name="onboarding_privacy_no_signup">Регистрация и аккаунты</string>
+    <string name="onboarding_identity_explanation">Ваш идентификатор создается и безопасно хранится на вашем устройстве. Он полностью под вашим контролем.</string>
+    <string name="onboarding_get_started">Начать</string>
+    <string name="onboarding_restore_from_backup">Восстановить из резервной копии</string>
+    <string name="onboarding_identity_title">Ваш идентификатор</string>
+    <string name="onboarding_identity_subtitle">Выберите отображаемое имя, которое увидят другие:</string>
+    <string name="onboarding_identity_display_name_label">Отображаемое имя</string>
+    <string name="onboarding_identity_anonymous_peer">Анонимный узел</string>
+    <string name="onboarding_identity_helper">Вы можете изменить это в любой момент или создать несколько идентификаторов для разных задач.</string>
+    <string name="onboarding_connectivity_title">Как вы будете подключаться?</string>
+    <string name="onboarding_connectivity_subtitle">Выберите сети, которые хотите использовать:</string>
+    <string name="onboarding_connectivity_permissions_denied">Разрешения отклонены</string>
+    <string name="onboarding_connectivity_permissions_granted">Разрешения предоставлены</string>
+    <string name="onboarding_connectivity_helper">Позже это можно настроить в Настройках</string>
+    <string name="onboarding_complete_title">Все готово!</string>
+    <string name="onboarding_complete_summary">Сводка</string>
+    <string name="onboarding_complete_identity_label">Идентификатор</string>
+    <string name="onboarding_complete_networks_label">Сети</string>
+    <string name="onboarding_complete_none_selected">Ничего не выбрано</string>
+    <string name="onboarding_complete_notifications_label">Уведомления</string>
+    <string name="onboarding_complete_battery_label">Батарея</string>
+    <string name="onboarding_complete_battery_unrestricted">Без ограничений</string>
+    <string name="onboarding_complete_battery_restricted">Ограничено</string>
+    <string name="onboarding_complete_show_qr_code">Показать QR код</string>
+    <string name="onboarding_complete_qr_hint">Поделитесь QR кодом своего идентификатора, чтобы другие могли добавить вас в контакты.</string>
+    <string name="onboarding_complete_configure_lora">Настроить LoRa радио</string>
+    <string name="onboarding_complete_start_messaging">Начать переписку</string>
+    <string name="onboarding_complete_share_identity">Поделиться идентификатором</string>
+    <string name="onboarding_complete_share_text">Добавь меня в Reticulum:\n\n%1$s\n%2$s</string>
+    <string name="welcome_screen_subtitle">Безопасные mesh сообщения через Reticulum</string>
+    <string name="welcome_screen_choose_display_name">Выберите отображаемое имя</string>
+    <string name="welcome_screen_display_name_description">Это имя будет видно другим узлам, когда вы отправляете сообщения и объявления.</string>
+    <string name="welcome_screen_continue_as_anonymous">Продолжить как анонимный узел</string>
+    <string name="welcome_screen_footer">Позже это можно изменить в Настройках</string>
+
+    <!-- Saved peers -->
+    <string name="saved_peers_title">Сохраненные узлы</string>
+    <string name="saved_peers_search_placeholder">Поиск по имени или хешу...</string>
+    <string name="saved_peers_empty_title">Сохраненных узлов пока нет</string>
+    <string name="saved_peers_empty_subtitle">Нажмите на звездочку на любом узле в потоке объявлений, чтобы сохранить его здесь для быстрого доступа.</string>
+
+    <plurals name="saved_peers_count_saved">
+        <item quantity="one">Сохранен %d узел</item>
+        <item quantity="few">Сохранено %d узла</item>
+        <item quantity="many">Сохранено %d узлов</item>
+        <item quantity="other">Сохранено %d узла</item>
+    </plurals>
+
+    <!-- Call screens -->
+    <string name="call_status_connecting">Подключение...</string>
+    <string name="call_status_ringing">Вызов...</string>
+    <string name="call_status_transmitting">Передача</string>
+    <string name="call_status_listening">Прослушивание</string>
+    <string name="call_status_line_busy">Линия занята</string>
+    <string name="call_status_rejected">Вызов отклонен</string>
+    <string name="call_status_ended">Вызов завершен</string>
+    <string name="call_status_calling">Звоним...</string>
+    <string name="call_control_unmute">Включить микрофон</string>
+    <string name="call_control_mute">Отключить микрофон</string>
+    <string name="call_control_ptt_on">PTT вкл</string>
+    <string name="call_control_ptt">PTT</string>
+    <string name="call_control_earpiece">Динамик телефона</string>
+    <string name="call_control_speaker">Громкая связь</string>
+    <string name="call_end_content_description">Завершить вызов</string>
+    <string name="call_end">Завершить вызов</string>
+    <string name="call_ptt_hold_to_talk">Нажмите и удерживайте для разговора</string>
+    <string name="call_ptt_talking">ГОВОРЮ</string>
+    <string name="call_ptt_hold_to_talk_multiline">УДЕРЖИВАЙТЕ\nДЛЯ РАЗГОВОРА</string>
+
+    <!-- TCP wizard -->
+    <string name="tcp_wizard_choose_server">Выберите сервер</string>
+    <string name="tcp_wizard_review_settings">Проверьте настройки</string>
+    <string name="tcp_wizard_default_connection_name">TCP подключение</string>
+
+    <!-- Interface stats -->
+    <string name="interface_stats_title">Статистика интерфейса</string>
+    <string name="interface_stats_edit_configuration">Изменить конфигурацию</string>
+    <string name="interface_stats_status">Статус</string>
+    <string name="interface_stats_enabled">ВКЛЮЧЕН</string>
+    <string name="interface_stats_disabled">ВЫКЛЮЧЕН</string>
+    <string name="interface_stats_online">В СЕТИ</string>
+    <string name="interface_stats_connecting">ПОДКЛЮЧЕНИЕ</string>
+    <string name="interface_stats_offline">НЕ В СЕТИ</string>
+    <string name="interface_stats_usb_permission_required">Требуется разрешение USB</string>
+    <string name="interface_stats_usb_permission_message">Предоставьте разрешение для подключения к USB устройству</string>
+    <string name="interface_stats_grant_usb_permission">Предоставить разрешение USB</string>
+    <string name="interface_stats_connection">Подключение</string>
+    <string name="interface_stats_type">Тип</string>
+    <string name="interface_stats_host">Хост</string>
+    <string name="interface_stats_usb_device">USB устройство</string>
+    <string name="interface_stats_device">Устройство</string>
+    <string name="interface_stats_server">Сервер</string>
+    <string name="interface_stats_listen_port">Порт прослушивания</string>
+    <string name="interface_stats_radio_settings">Параметры радио</string>
+    <string name="interface_stats_frequency">Частота</string>
+    <string name="interface_stats_bandwidth">Полоса</string>
+    <string name="interface_stats_spreading_factor">Spreading Factor</string>
+    <string name="interface_stats_coding_rate">Coding Rate</string>
+    <string name="interface_stats_tx_power">TX мощность</string>
+    <string name="interface_stats_mode">Режим</string>
+    <string name="interface_stats_traffic_statistics">Статистика трафика</string>
+    <string name="interface_stats_received">Получено</string>
+    <string name="interface_stats_transmitted">Отправлено</string>
+    <string name="interface_stats_rssi">RSSI</string>
+    <string name="interface_stats_snr">SNR</string>
 </resources>

@@ -47,6 +47,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -54,6 +55,7 @@ import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lxmf.messenger.call.PttMediaSessionManager
+import com.lxmf.messenger.R
 import com.lxmf.messenger.viewmodel.CallViewModel
 import tech.torlando.lxst.core.CallState
 
@@ -228,18 +230,18 @@ fun VoiceCallScreen(
                 Text(
                     text =
                         when (callState) {
-                            is CallState.Connecting -> "Connecting..."
-                            is CallState.Ringing -> "Ringing..."
+                            is CallState.Connecting -> stringResource(R.string.call_status_connecting)
+                            is CallState.Ringing -> stringResource(R.string.call_status_ringing)
                             is CallState.Active ->
                                 if (isPttMode) {
-                                    if (isPttActive) "Transmitting" else "Listening"
+                                    if (isPttActive) stringResource(R.string.call_status_transmitting) else stringResource(R.string.call_status_listening)
                                 } else {
                                     viewModel.formatDuration(callDuration)
                                 }
-                            is CallState.Busy -> "Line Busy"
-                            is CallState.Rejected -> "Call Rejected"
-                            is CallState.Ended -> "Call Ended"
-                            else -> "Calling..."
+                            is CallState.Busy -> stringResource(R.string.call_status_line_busy)
+                            is CallState.Rejected -> stringResource(R.string.call_status_rejected)
+                            is CallState.Ended -> stringResource(R.string.call_status_ended)
+                            else -> stringResource(R.string.call_status_calling)
                         },
                     style = MaterialTheme.typography.bodyLarge,
                     color =
@@ -282,7 +284,7 @@ fun VoiceCallScreen(
                     // Mute button (disabled in PTT mode since PTT controls transmit)
                     CallControlButton(
                         icon = if (isMuted) Icons.Default.MicOff else Icons.Default.Mic,
-                        label = if (isMuted) "Unmute" else "Mute",
+                        label = if (isMuted) stringResource(R.string.call_control_unmute) else stringResource(R.string.call_control_mute),
                         isActive = isMuted,
                         onClick = { viewModel.toggleMute() },
                         enabled = callState is CallState.Active && !isPttMode,
@@ -292,7 +294,7 @@ fun VoiceCallScreen(
                     // PTT mode toggle
                     CallControlButton(
                         icon = Icons.Default.Mic,
-                        label = if (isPttMode) "PTT On" else "PTT",
+                        label = if (isPttMode) stringResource(R.string.call_control_ptt_on) else stringResource(R.string.call_control_ptt),
                         isActive = isPttMode,
                         onClick = { viewModel.togglePttMode() },
                         enabled = callState is CallState.Active,
@@ -302,7 +304,7 @@ fun VoiceCallScreen(
                     // Speaker button
                     CallControlButton(
                         icon = if (isSpeakerOn) Icons.Default.VolumeUp else Icons.Default.VolumeDown,
-                        label = if (isSpeakerOn) "Earpiece" else "Speaker",
+                        label = if (isSpeakerOn) stringResource(R.string.call_control_earpiece) else stringResource(R.string.call_control_speaker),
                         isActive = isSpeakerOn,
                         onClick = { viewModel.toggleSpeaker() },
                         enabled = callState is CallState.Active,
@@ -325,7 +327,7 @@ fun VoiceCallScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Default.CallEnd,
-                        contentDescription = "End call",
+                        contentDescription = stringResource(R.string.call_end_content_description),
                         modifier = Modifier.size(32.dp),
                         tint = MaterialTheme.colorScheme.onError,
                     )
@@ -334,7 +336,7 @@ fun VoiceCallScreen(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "End Call",
+                    text = stringResource(R.string.call_end),
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -406,13 +408,13 @@ private fun PttButton(
         ) {
             Icon(
                 imageVector = Icons.Default.Mic,
-                contentDescription = if (isActive) "Transmitting" else "Hold to talk",
+                contentDescription = if (isActive) stringResource(R.string.call_status_transmitting) else stringResource(R.string.call_ptt_hold_to_talk),
                 modifier = Modifier.size(48.dp),
                 tint = contentColor,
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = if (isActive) "TALKING" else "HOLD\nTO TALK",
+                text = if (isActive) stringResource(R.string.call_ptt_talking) else stringResource(R.string.call_ptt_hold_to_talk_multiline),
                 style = MaterialTheme.typography.labelSmall,
                 fontWeight = FontWeight.Bold,
                 color = contentColor,

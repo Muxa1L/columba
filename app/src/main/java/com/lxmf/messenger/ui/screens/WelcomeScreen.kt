@@ -35,11 +35,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.lxmf.messenger.R
 import com.lxmf.messenger.viewmodel.OnboardingViewModel
 
 /**
@@ -82,7 +84,7 @@ fun WelcomeScreen(
                 // App branding
                 Icon(
                     imageVector = Icons.Default.Sensors,
-                    contentDescription = "Columba",
+                    contentDescription = stringResource(R.string.onboarding_columba_content_description),
                     modifier = Modifier.size(80.dp),
                     tint = MaterialTheme.colorScheme.primary,
                 )
@@ -90,7 +92,7 @@ fun WelcomeScreen(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
-                    text = "Welcome to Columba",
+                    text = stringResource(R.string.onboarding_welcome_title),
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground,
@@ -99,7 +101,7 @@ fun WelcomeScreen(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "Secure mesh messaging over Reticulum",
+                    text = stringResource(R.string.welcome_screen_subtitle),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
@@ -124,14 +126,14 @@ fun WelcomeScreen(
                         verticalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
                         Text(
-                            text = "Choose Your Display Name",
+                            text = stringResource(R.string.welcome_screen_choose_display_name),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface,
                         )
 
                         Text(
-                            text = "This name will be visible to other peers when you send messages and announces.",
+                            text = stringResource(R.string.welcome_screen_display_name_description),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
@@ -139,8 +141,8 @@ fun WelcomeScreen(
                         OutlinedTextField(
                             value = state.displayName,
                             onValueChange = { viewModel.updateDisplayName(it) },
-                            label = { Text("Display Name") },
-                            placeholder = { Text("Anonymous Peer") },
+                            label = { Text(stringResource(R.string.onboarding_identity_display_name_label)) },
+                            placeholder = { Text(stringResource(R.string.onboarding_identity_anonymous_peer)) },
                             singleLine = true,
                             modifier = Modifier.fillMaxWidth(),
                             keyboardOptions =
@@ -188,9 +190,9 @@ fun WelcomeScreen(
                         Text(
                             text =
                                 if (state.displayName.isBlank()) {
-                                    "Continue as Anonymous Peer"
+                                    stringResource(R.string.welcome_screen_continue_as_anonymous)
                                 } else {
-                                    "Continue"
+                                    stringResource(R.string.common_continue)
                                 },
                             style = MaterialTheme.typography.titleMedium,
                         )
@@ -208,7 +210,7 @@ fun WelcomeScreen(
                     enabled = !state.isSaving,
                 ) {
                     Text(
-                        text = "Skip",
+                        text = stringResource(R.string.common_skip),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
@@ -221,7 +223,7 @@ fun WelcomeScreen(
                     enabled = !state.isSaving,
                 ) {
                     Text(
-                        text = "Restore from backup",
+                        text = stringResource(R.string.onboarding_restore_from_backup),
                         color = MaterialTheme.colorScheme.primary,
                     )
                 }
@@ -230,7 +232,7 @@ fun WelcomeScreen(
 
                 // Footer
                 Text(
-                    text = "You can change this later in Settings",
+                    text = stringResource(R.string.welcome_screen_footer),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                     textAlign = TextAlign.Center,
