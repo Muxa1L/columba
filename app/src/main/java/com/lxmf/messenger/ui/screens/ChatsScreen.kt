@@ -66,6 +66,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -147,13 +148,17 @@ fun ChatsScreen(
                 when (result) {
                     is SyncResult.Success ->
                         if (result.messagesReceived > 0) {
-                            "Sync complete: ${result.messagesReceived} new messages"
+                            context.resources.getQuantityString(
+                                R.plurals.chats_sync_complete_with_new_messages,
+                                result.messagesReceived,
+                                result.messagesReceived,
+                            )
                         } else {
-                            "Sync complete"
+                            context.getString(R.string.chats_sync_complete)
                         }
-                    is SyncResult.Error -> "Sync failed: ${result.message}"
-                    is SyncResult.NoRelay -> "No relay configured"
-                    is SyncResult.Timeout -> "Sync timed out"
+                    is SyncResult.Error -> context.getString(R.string.chats_sync_failed, result.message)
+                    is SyncResult.NoRelay -> context.getString(R.string.chats_sync_no_relay)
+                    is SyncResult.Timeout -> context.getString(R.string.chats_sync_timed_out)
                 }
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         }
@@ -162,19 +167,19 @@ fun ChatsScreen(
     Scaffold(
         topBar = {
             SearchableTopAppBar(
-                title = "Chats",
-                subtitle = "${chatsState.conversations.size} ${if (chatsState.conversations.size == 1) "conversation" else "conversations"}",
+                title = stringResource(R.string.chats_title),
+                subtitle = pluralStringResource(R.plurals.chats_conversations_count, chatsState.conversations.size, chatsState.conversations.size),
                 isSearching = isSearching,
                 searchQuery = searchQuery,
                 onSearchQueryChange = { viewModel.searchQuery.value = it },
                 onSearchToggle = { isSearching = !isSearching },
-                searchPlaceholder = "Search conversations...",
+                searchPlaceholder = stringResource(R.string.chats_search_placeholder),
                 additionalActions = {
                     // QR Code button
                     IconButton(onClick = { showQrBottomSheet = true }) {
                         Icon(
                             imageVector = Icons.Default.QrCode2,
-                            contentDescription = "QR Code",
+                            contentDescription = stringResource(R.string.chats_cd_qr_code),
                         )
                     }
                     // Sync button - shows spinner during sync, tapping opens status sheet
@@ -195,7 +200,7 @@ fun ChatsScreen(
                         } else {
                             Icon(
                                 imageVector = Icons.Default.Refresh,
-                                contentDescription = "Sync messages",
+                                contentDescription = stringResource(R.string.chats_cd_sync_messages),
                             )
                         }
                     }
@@ -275,11 +280,19 @@ fun ChatsScreen(
                                     if (isSaved) {
                                         viewModel.removeFromContacts(conversation.peerHash)
                                         showMenu = false
-                                        Toast.makeText(context, "Removed ${conversation.displayName} from Contacts", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(
+                                            context,
+                                            context.getString(R.string.chats_removed_from_contacts, conversation.displayName),
+                                            Toast.LENGTH_SHORT,
+                                        ).show()
                                     } else {
                                         viewModel.saveToContacts(conversation)
                                         showMenu = false
-                                        Toast.makeText(context, "Saved ${conversation.displayName} to Contacts", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(
+                                            context,
+                                            context.getString(R.string.chats_saved_to_contacts, conversation.displayName),
+                                            Toast.LENGTH_SHORT,
+                                        ).show()
                                     }
                                 },
                             )
@@ -292,17 +305,25 @@ fun ChatsScreen(
                                 onSaveToContacts = {
                                     viewModel.saveToContacts(conversation)
                                     showMenu = false
-                                    Toast.makeText(context, "Saved ${conversation.displayName} to Contacts", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        context,
+                                        context.getString(R.string.chats_saved_to_contacts, conversation.displayName),
+                                        Toast.LENGTH_SHORT,
+                                    ).show()
                                 },
                                 onRemoveFromContacts = {
                                     viewModel.removeFromContacts(conversation.peerHash)
                                     showMenu = false
-                                    Toast.makeText(context, "Removed ${conversation.displayName} from Contacts", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        context,
+                                        context.getString(R.string.chats_removed_from_contacts, conversation.displayName),
+                                        Toast.LENGTH_SHORT,
+                                    ).show()
                                 },
                                 onMarkAsUnread = {
                                     viewModel.markAsUnread(conversation.peerHash)
                                     showMenu = false
-                                    Toast.makeText(context, "Marked as unread", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(context, context.getString(R.string.chats_marked_as_unread), Toast.LENGTH_SHORT).show()
                                 },
                                 onDeleteConversation = {
                                     showMenu = false
@@ -345,7 +366,11 @@ fun ChatsScreen(
                     viewModel.deleteConversation(conversationToDelete.peerHash)
                     showDeleteDialog = false
                     selectedConversation = null
-                    Toast.makeText(context, "Deleted conversation with $deletedName", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.chats_deleted_conversation_with, deletedName),
+                        Toast.LENGTH_SHORT,
+                    ).show()
                 },
                 onDismiss = {
                     showDeleteDialog = false
@@ -373,7 +398,11 @@ fun ChatsScreen(
                     )
                     showBlockDialog = false
                     selectedConversation = null
-                    Toast.makeText(context, "Blocked ${conversationToBlock.displayName}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.chats_blocked_user, conversationToBlock.displayName),
+                        Toast.LENGTH_SHORT,
+                    ).show()
                 },
                 onDismiss = {
                     showBlockDialog = false
@@ -416,7 +445,7 @@ fun ChatsScreen(
                                 putExtra(android.content.Intent.EXTRA_TEXT, shareText)
                                 type = "text/plain"
                             }
-                        val shareIntent = android.content.Intent.createChooser(sendIntent, "Share Identity")
+                        val shareIntent = android.content.Intent.createChooser(sendIntent, context.getString(R.string.chats_share_identity))
                         context.startActivity(shareIntent)
                     }
                 },
@@ -497,7 +526,7 @@ fun ConversationCard(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Star,
-                                contentDescription = "Saved contact",
+                                contentDescription = stringResource(R.string.chats_cd_saved_contact),
                                 tint = MaterialTheme.colorScheme.onTertiaryContainer,
                                 modifier =
                                     Modifier
@@ -537,7 +566,7 @@ fun ConversationCard(
                                             fontStyle = FontStyle.Italic,
                                         ),
                                     ) {
-                                        append("Draft: ")
+                                        append(stringResource(R.string.chats_draft_prefix))
                                     }
                                     withStyle(
                                         SpanStyle(
@@ -622,7 +651,7 @@ fun ConversationContextMenu(
                 )
             },
             text = {
-                Text(if (isSaved) "Remove from Contacts" else "Save to Contacts")
+                Text(if (isSaved) stringResource(R.string.chats_remove_from_contacts) else stringResource(R.string.chats_save_to_contacts))
             },
             onClick = {
                 if (isSaved) {
@@ -644,7 +673,7 @@ fun ConversationContextMenu(
                 )
             },
             text = {
-                Text("Mark as Unread")
+                Text(stringResource(R.string.chats_mark_as_unread))
             },
             onClick = onMarkAsUnread,
         )
@@ -658,7 +687,7 @@ fun ConversationContextMenu(
                 )
             },
             text = {
-                Text("View Peer Details")
+                Text(stringResource(R.string.chats_view_peer_details))
             },
             onClick = onViewDetails,
         )
@@ -693,7 +722,7 @@ fun ConversationContextMenu(
             },
             text = {
                 Text(
-                    text = "Delete Conversation",
+                    text = stringResource(R.string.chats_delete_conversation),
                     color = MaterialTheme.colorScheme.error,
                 )
             },
@@ -711,7 +740,7 @@ fun ConversationContextMenu(
             },
             text = {
                 Text(
-                    text = "Block User",
+                    text = stringResource(R.string.chats_block_user),
                     color = MaterialTheme.colorScheme.error,
                 )
             },
@@ -736,10 +765,10 @@ fun DeleteConversationDialog(
             )
         },
         title = {
-            Text("Delete Conversation?")
+            Text(stringResource(R.string.chats_delete_conversation_title))
         },
         text = {
-            Text("Are you sure you want to delete your conversation with $peerName? This will permanently delete all messages.")
+            Text(stringResource(R.string.chats_delete_conversation_message, peerName))
         },
         confirmButton = {
             TextButton(
@@ -749,12 +778,12 @@ fun DeleteConversationDialog(
                         contentColor = MaterialTheme.colorScheme.error,
                     ),
             ) {
-                Text("Delete")
+                Text(stringResource(R.string.chats_delete))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.common_cancel))
             }
         },
     )
@@ -780,11 +809,11 @@ fun BlockUserDialog(
             )
         },
         title = {
-            Text("Block $peerName?")
+            Text(stringResource(R.string.chats_block_user_title, peerName))
         },
         text = {
             Column {
-                Text("They won't be able to send you messages. Their conversation will be hidden from the chat list.")
+                Text(stringResource(R.string.chats_block_user_message))
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -796,7 +825,7 @@ fun BlockUserDialog(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Also delete conversation and messages",
+                        text = stringResource(R.string.chats_block_delete_conversation_and_messages),
                         style = MaterialTheme.typography.bodyMedium,
                     )
                 }
@@ -810,13 +839,13 @@ fun BlockUserDialog(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Also blackhole (don't relay their announces)",
+                        text = stringResource(R.string.chats_block_blackhole_announces),
                         style = MaterialTheme.typography.bodyMedium,
                     )
                 }
                 if (blackholeEnabled && !isTransportEnabled) {
                     Text(
-                        text = "Transport is currently disabled. This identity will be blackholed whenever transport is later enabled.",
+                        text = stringResource(R.string.chats_block_transport_disabled_notice),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(start = 48.dp, top = 4.dp),
@@ -832,12 +861,12 @@ fun BlockUserDialog(
                         contentColor = MaterialTheme.colorScheme.error,
                     ),
             ) {
-                Text("Block")
+                Text(stringResource(R.string.common_block))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.common_cancel))
             }
         },
     )
@@ -855,7 +884,7 @@ fun LoadingConversationsState(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Loading conversations...",
+            text = stringResource(R.string.chats_loading_conversations),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -877,13 +906,13 @@ fun EmptyChatsState(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "No conversations yet",
+            text = stringResource(R.string.chats_empty_title),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Messages from peers will appear here",
+            text = stringResource(R.string.chats_empty_subtitle),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
         )
@@ -894,15 +923,16 @@ fun EmptyChatsState(modifier: Modifier = Modifier) {
 private fun String.hexStringToByteArray(): ByteArray = chunked(2).map { it.toInt(16).toByte() }.toByteArray()
 
 // Reuse timestamp formatting from MessagingScreen
+@Composable
 private fun formatTimestamp(timestamp: Long): String {
     val now = System.currentTimeMillis()
     val diff = now - timestamp
 
     return when {
-        diff < 60_000 -> "Now"
+        diff < 60_000 -> stringResource(R.string.chats_timestamp_now)
         diff < 3600_000 -> {
             val minutes = (diff / 60_000).toInt()
-            "${minutes}m"
+            stringResource(R.string.chats_timestamp_minutes_short, minutes)
         }
         diff < 86400_000 -> {
             SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date(timestamp))

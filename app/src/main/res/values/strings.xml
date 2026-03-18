@@ -19,4 +19,108 @@
     <string name="offline_banner_reconnecting">Reconnecting\u2026</string>
     <string name="offline_banner_reconnect">Reconnect</string>
     <string name="offline_banner_reconnecting_description">Reconnecting in progress</string>
+
+    <!-- Common -->
+    <string name="common_go_back">Go Back</string>
+    <string name="common_block">Block</string>
+    <string name="common_remove">Remove</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="cd_back">Back</string>
+
+    <!-- Announce detail screen -->
+    <string name="announce_detail_title">Node Details</string>
+    <string name="announce_detail_cd_remove_from_saved">Remove from saved</string>
+    <string name="announce_detail_cd_save_peer">Save peer</string>
+    <string name="announce_detail_node_not_found">Node not found</string>
+    <string name="announce_detail_start_chat">Start Chat</string>
+    <string name="announce_detail_current_relay">Current Relay</string>
+    <string name="announce_detail_set_as_my_relay">Set as My Relay</string>
+    <string name="announce_detail_view_messaging_destination">View messaging destination</string>
+    <string name="announce_detail_view_telephony_destination">View telephony destination</string>
+    <string name="announce_detail_browse_node">Browse Node</string>
+    <string name="announce_detail_destination_hash">Destination Hash</string>
+    <string name="announce_detail_network_distance">Network Distance</string>
+    <string name="announce_detail_signal_excellent">Excellent signal strength</string>
+    <string name="announce_detail_signal_good">Good signal strength</string>
+    <string name="announce_detail_signal_weak">Weak signal strength</string>
+    <string name="announce_detail_transfer_size_limit">Transfer Size Limit</string>
+    <string name="announce_detail_transfer_size_subtitle">Maximum message size accepted by this relay</string>
+    <string name="announce_detail_received_via">Received Via</string>
+    <string name="announce_detail_destination_aspect">Destination Aspect</string>
+    <string name="announce_detail_aspect_unknown">unknown</string>
+    <string name="announce_detail_aspect_lxmf_delivery">LXMF messaging peer</string>
+    <string name="announce_detail_aspect_lxst_telephony">LXST telephony destination</string>
+    <string name="announce_detail_aspect_lxmf_propagation">Message relay/propagation node</string>
+    <string name="announce_detail_aspect_nomadnetwork">NomadNet content node</string>
+    <string name="announce_detail_aspect_none">No aspect information available</string>
+    <string name="announce_detail_aspect_unknown_service_type">Unknown service type</string>
+    <string name="announce_detail_last_seen">Last Seen</string>
+    <string name="announce_detail_stamp_cost">Stamp Cost</string>
+    <string name="announce_detail_stamp_cost_subtitle">Required proof-of-work difficulty</string>
+    <string name="announce_detail_peering_cost">Peering Cost</string>
+    <string name="announce_detail_peering_cost_subtitle">Cost for node peering</string>
+    <string name="announce_detail_fallback_contact">this contact</string>
+    <string name="announce_detail_fallback_peer">this peer</string>
+    <string name="announce_detail_fallback_relay">this relay</string>
+    <string name="announce_detail_remove_contact_title">Remove Contact?</string>
+    <string name="announce_detail_remove_contact_message">Remove %1$s from your contacts? You can re-add them later from the Announce Stream.</string>
+    <string name="announce_detail_unset_relay_title">Unset as Your Relay?</string>
+    <string name="announce_detail_unset_relay_message">&quot;%1$s&quot; will be removed from contacts.</string>
+    <string name="announce_detail_unset_relay_auto_select">Remove &amp; Auto-Select New</string>
+    <string name="announce_detail_unset_relay_remove_only">Remove Only</string>
+    <string name="announce_detail_size_mb_integer">%1$d MB</string>
+    <string name="announce_detail_size_mb_decimal">%1$.1f MB</string>
+    <string name="announce_detail_size_kb">%1$d KB</string>
+
+    <plurals name="announce_detail_hops">
+        <item quantity="one">%d hop</item>
+        <item quantity="other">%d hops</item>
+    </plurals>
+
+    <!-- Chats screen -->
+    <string name="chats_title">Chats</string>
+    <string name="chats_search_placeholder">Search conversations...</string>
+    <string name="chats_cd_qr_code">QR Code</string>
+    <string name="chats_cd_sync_messages">Sync messages</string>
+    <string name="chats_cd_saved_contact">Saved contact</string>
+    <string name="chats_sync_complete">Sync complete</string>
+    <string name="chats_sync_failed">Sync failed: %1$s</string>
+    <string name="chats_sync_no_relay">No relay configured</string>
+    <string name="chats_sync_timed_out">Sync timed out</string>
+    <string name="chats_saved_to_contacts">Saved %1$s to Contacts</string>
+    <string name="chats_removed_from_contacts">Removed %1$s from Contacts</string>
+    <string name="chats_marked_as_unread">Marked as unread</string>
+    <string name="chats_deleted_conversation_with">Deleted conversation with %1$s</string>
+    <string name="chats_blocked_user">Blocked %1$s</string>
+    <string name="chats_share_identity">Share Identity</string>
+    <string name="chats_draft_prefix">Draft: </string>
+    <string name="chats_remove_from_contacts">Remove from Contacts</string>
+    <string name="chats_save_to_contacts">Save to Contacts</string>
+    <string name="chats_mark_as_unread">Mark as Unread</string>
+    <string name="chats_view_peer_details">View Peer Details</string>
+    <string name="chats_delete_conversation">Delete Conversation</string>
+    <string name="chats_block_user">Block User</string>
+    <string name="chats_delete_conversation_title">Delete Conversation?</string>
+    <string name="chats_delete_conversation_message">Are you sure you want to delete your conversation with %1$s? This will permanently delete all messages.</string>
+    <string name="chats_delete">Delete</string>
+    <string name="chats_block_user_title">Block %1$s?</string>
+    <string name="chats_block_user_message">They will no longer be able to send you messages. Their conversation will be hidden from the chat list.</string>
+    <string name="chats_block_delete_conversation_and_messages">Also delete conversation and messages</string>
+    <string name="chats_block_blackhole_announces">Also blackhole (do not relay their announces)</string>
+    <string name="chats_block_transport_disabled_notice">Transport is currently disabled. This identity will be blackholed whenever transport is later enabled.</string>
+    <string name="chats_loading_conversations">Loading conversations...</string>
+    <string name="chats_empty_title">No conversations yet</string>
+    <string name="chats_empty_subtitle">Messages from peers will appear here</string>
+    <string name="chats_timestamp_now">Now</string>
+    <string name="chats_timestamp_minutes_short">%1$dm</string>
+
+    <plurals name="chats_conversations_count">
+        <item quantity="one">%d conversation</item>
+        <item quantity="other">%d conversations</item>
+    </plurals>
+
+    <plurals name="chats_sync_complete_with_new_messages">
+        <item quantity="one">Sync complete: %d new message</item>
+        <item quantity="other">Sync complete: %d new messages</item>
+    </plurals>
 </resources>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Columba</string>
+
+    <!-- Incoming call screen -->
+    <string name="incoming_voice_call">Входящий голосовой вызов</string>
+    <string name="call_answer">Ответить</string>
+    <string name="call_decline">Отклонить</string>
+    <string name="call_answer_content_description">Ответить на вызов</string>
+    <string name="call_decline_content_description">Отклонить вызов</string>
+    <string name="error_no_file_manager">На устройстве не найден файловый менеджер</string>
+
+    <!-- Locate on Map -->
+    <string name="locate_on_map">Показать на карте</string>
+
+    <!-- Offline mode banner -->
+    <string name="offline_banner_shutdown">Columba не в сети</string>
+    <string name="offline_banner_error">Ошибка соединения</string>
+    <string name="offline_banner_reconnecting">Переподключение...</string>
+    <string name="offline_banner_reconnect">Подключиться снова</string>
+    <string name="offline_banner_reconnecting_description">Выполняется переподключение</string>
+
+    <!-- Common -->
+    <string name="common_go_back">Назад</string>
+    <string name="common_block">Заблокировать</string>
+    <string name="common_remove">Удалить</string>
+    <string name="common_cancel">Отмена</string>
+    <string name="cd_back">Назад</string>
+
+    <!-- Announce detail screen -->
+    <string name="announce_detail_title">Детали узла</string>
+    <string name="announce_detail_cd_remove_from_saved">Убрать из сохраненных</string>
+    <string name="announce_detail_cd_save_peer">Сохранить узел</string>
+    <string name="announce_detail_node_not_found">Узел не найден</string>
+    <string name="announce_detail_start_chat">Начать чат</string>
+    <string name="announce_detail_current_relay">Текущий ретранслятор</string>
+    <string name="announce_detail_set_as_my_relay">Сделать моим ретранслятором</string>
+    <string name="announce_detail_view_messaging_destination">Открыть узел для сообщений</string>
+    <string name="announce_detail_view_telephony_destination">Открыть узел для телефонии</string>
+    <string name="announce_detail_browse_node">Открыть узел</string>
+    <string name="announce_detail_destination_hash">Хеш назначения</string>
+    <string name="announce_detail_network_distance">Сетевое расстояние</string>
+    <string name="announce_detail_signal_excellent">Отличный уровень сигнала</string>
+    <string name="announce_detail_signal_good">Хороший уровень сигнала</string>
+    <string name="announce_detail_signal_weak">Слабый уровень сигнала</string>
+    <string name="announce_detail_transfer_size_limit">Ограничение размера передачи</string>
+    <string name="announce_detail_transfer_size_subtitle">Максимальный размер сообщения для этого ретранслятора</string>
+    <string name="announce_detail_received_via">Получено через</string>
+    <string name="announce_detail_destination_aspect">Аспект назначения</string>
+    <string name="announce_detail_aspect_unknown">неизвестно</string>
+    <string name="announce_detail_aspect_lxmf_delivery">Пир LXMF сообщений</string>
+    <string name="announce_detail_aspect_lxst_telephony">Назначение LXST телефонии</string>
+    <string name="announce_detail_aspect_lxmf_propagation">Узел ретрансляции и распространения сообщений</string>
+    <string name="announce_detail_aspect_nomadnetwork">Узел контента NomadNet</string>
+    <string name="announce_detail_aspect_none">Нет информации об аспекте</string>
+    <string name="announce_detail_aspect_unknown_service_type">Неизвестный тип службы</string>
+    <string name="announce_detail_last_seen">Последний раз в сети</string>
+    <string name="announce_detail_stamp_cost">Стоимость штампа</string>
+    <string name="announce_detail_stamp_cost_subtitle">Требуемая сложность proof of work</string>
+    <string name="announce_detail_peering_cost">Стоимость пиринга</string>
+    <string name="announce_detail_peering_cost_subtitle">Стоимость подключения узла</string>
+    <string name="announce_detail_fallback_contact">этот контакт</string>
+    <string name="announce_detail_fallback_peer">этот узел</string>
+    <string name="announce_detail_fallback_relay">этот ретранслятор</string>
+    <string name="announce_detail_remove_contact_title">Удалить контакт?</string>
+    <string name="announce_detail_remove_contact_message">Удалить %1$s из контактов? Вы сможете добавить его снова позже из потока объявлений.</string>
+    <string name="announce_detail_unset_relay_title">Убрать ваш ретранслятор?</string>
+    <string name="announce_detail_unset_relay_message">&quot;%1$s&quot; будет удален из контактов.</string>
+    <string name="announce_detail_unset_relay_auto_select">Удалить и выбрать новый автоматически</string>
+    <string name="announce_detail_unset_relay_remove_only">Только удалить</string>
+    <string name="announce_detail_size_mb_integer">%1$d МБ</string>
+    <string name="announce_detail_size_mb_decimal">%1$.1f МБ</string>
+    <string name="announce_detail_size_kb">%1$d КБ</string>
+
+    <plurals name="announce_detail_hops">
+        <item quantity="one">%d переход</item>
+        <item quantity="few">%d перехода</item>
+        <item quantity="many">%d переходов</item>
+        <item quantity="other">%d перехода</item>
+    </plurals>
+
+    <!-- Chats screen -->
+    <string name="chats_title">Чаты</string>
+    <string name="chats_search_placeholder">Поиск чатов...</string>
+    <string name="chats_cd_qr_code">QR код</string>
+    <string name="chats_cd_sync_messages">Синхронизировать сообщения</string>
+    <string name="chats_cd_saved_contact">Сохраненный контакт</string>
+    <string name="chats_sync_complete">Синхронизация завершена</string>
+    <string name="chats_sync_failed">Ошибка синхронизации: %1$s</string>
+    <string name="chats_sync_no_relay">Ретранслятор не настроен</string>
+    <string name="chats_sync_timed_out">Время синхронизации истекло</string>
+    <string name="chats_saved_to_contacts">%1$s сохранен в контакты</string>
+    <string name="chats_removed_from_contacts">%1$s удален из контактов</string>
+    <string name="chats_marked_as_unread">Помечено как непрочитанное</string>
+    <string name="chats_deleted_conversation_with">Диалог с %1$s удален</string>
+    <string name="chats_blocked_user">%1$s заблокирован</string>
+    <string name="chats_share_identity">Поделиться идентификатором</string>
+    <string name="chats_draft_prefix">Черновик: </string>
+    <string name="chats_remove_from_contacts">Удалить из контактов</string>
+    <string name="chats_save_to_contacts">Сохранить в контакты</string>
+    <string name="chats_mark_as_unread">Пометить как непрочитанное</string>
+    <string name="chats_view_peer_details">Показать детали узла</string>
+    <string name="chats_delete_conversation">Удалить диалог</string>
+    <string name="chats_block_user">Заблокировать пользователя</string>
+    <string name="chats_delete_conversation_title">Удалить диалог?</string>
+    <string name="chats_delete_conversation_message">Вы уверены, что хотите удалить диалог с %1$s? Все сообщения будут удалены навсегда.</string>
+    <string name="chats_delete">Удалить</string>
+    <string name="chats_block_user_title">Заблокировать %1$s?</string>
+    <string name="chats_block_user_message">Этот пользователь больше не сможет отправлять вам сообщения. Диалог будет скрыт из списка чатов.</string>
+    <string name="chats_block_delete_conversation_and_messages">Также удалить диалог и сообщения</string>
+    <string name="chats_block_blackhole_announces">Также добавить в blackhole (не ретранслировать его объявления)</string>
+    <string name="chats_block_transport_disabled_notice">Транспорт сейчас отключен. Этот идентификатор будет отправлен в blackhole, когда транспорт снова включится.</string>
+    <string name="chats_loading_conversations">Загрузка чатов...</string>
+    <string name="chats_empty_title">Чатов пока нет</string>
+    <string name="chats_empty_subtitle">Сообщения от узлов появятся здесь</string>
+    <string name="chats_timestamp_now">Сейчас</string>
+    <string name="chats_timestamp_minutes_short">%1$d мин</string>
+
+    <plurals name="chats_conversations_count">
+        <item quantity="one">%d диалог</item>
+        <item quantity="few">%d диалога</item>
+        <item quantity="many">%d диалогов</item>
+        <item quantity="other">%d диалога</item>
+    </plurals>
+
+    <plurals name="chats_sync_complete_with_new_messages">
+        <item quantity="one">Синхронизация завершена: %d новое сообщение</item>
+        <item quantity="few">Синхронизация завершена: %d новых сообщения</item>
+        <item quantity="many">Синхронизация завершена: %d новых сообщений</item>
+        <item quantity="other">Синхронизация завершена: %d новых сообщения</item>
+    </plurals>
+</resources>
