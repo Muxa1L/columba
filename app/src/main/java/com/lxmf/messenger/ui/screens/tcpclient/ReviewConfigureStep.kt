@@ -27,8 +27,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 import com.lxmf.messenger.viewmodel.TcpClientWizardViewModel
 
 /**
@@ -69,12 +71,12 @@ fun ReviewConfigureStep(viewModel: TcpClientWizardViewModel) {
                 Spacer(Modifier.width(12.dp))
                 Column {
                     Text(
-                        "Server",
+                        stringResource(R.string.tcp_client_server_label),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f),
                     )
                     Text(
-                        if (state.isCustomMode) "Custom Server" else state.selectedServer?.name.orEmpty(),
+                        if (state.isCustomMode) stringResource(R.string.tcp_client_custom_server) else state.selectedServer?.name.orEmpty(),
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
@@ -88,7 +90,7 @@ fun ReviewConfigureStep(viewModel: TcpClientWizardViewModel) {
         OutlinedTextField(
             value = state.interfaceName,
             onValueChange = { viewModel.updateInterfaceName(it) },
-            label = { Text("Interface Name") },
+            label = { Text(stringResource(R.string.tcp_client_interface_name_label)) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
         )
@@ -99,8 +101,8 @@ fun ReviewConfigureStep(viewModel: TcpClientWizardViewModel) {
         OutlinedTextField(
             value = state.targetHost,
             onValueChange = { viewModel.updateTargetHost(it) },
-            label = { Text("Target Host") },
-            placeholder = { Text("hostname or IP address") },
+            label = { Text(stringResource(R.string.tcp_client_target_host_label)) },
+            placeholder = { Text(stringResource(R.string.tcp_client_target_host_placeholder)) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
         )
@@ -111,8 +113,8 @@ fun ReviewConfigureStep(viewModel: TcpClientWizardViewModel) {
         OutlinedTextField(
             value = state.targetPort,
             onValueChange = { viewModel.updateTargetPort(it) },
-            label = { Text("Target Port") },
-            placeholder = { Text("4242") },
+            label = { Text(stringResource(R.string.tcp_client_target_port_label)) },
+            placeholder = { Text(stringResource(R.string.tcp_client_target_port_placeholder)) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -174,12 +176,11 @@ fun ReviewConfigureStep(viewModel: TcpClientWizardViewModel) {
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            "Connect via Tor (Orbot)",
+                            stringResource(R.string.tcp_client_tor_socks_title),
                             style = MaterialTheme.typography.titleSmall,
                         )
                         Text(
-                            "Route through SOCKS5 proxy. Required for .onion addresses. " +
-                                "Orbot must be installed and connected.",
+                            stringResource(R.string.tcp_client_tor_socks_description),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
@@ -199,8 +200,8 @@ fun ReviewConfigureStep(viewModel: TcpClientWizardViewModel) {
                         OutlinedTextField(
                             value = state.socksProxyHost,
                             onValueChange = { viewModel.updateSocksProxyHost(it) },
-                            label = { Text("SOCKS5 Proxy Host") },
-                            placeholder = { Text("127.0.0.1") },
+                            label = { Text(stringResource(R.string.tcp_client_socks_host_label)) },
+                            placeholder = { Text(stringResource(R.string.tcp_client_socks_host_placeholder)) },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
                         )
@@ -208,8 +209,8 @@ fun ReviewConfigureStep(viewModel: TcpClientWizardViewModel) {
                         OutlinedTextField(
                             value = state.socksProxyPort,
                             onValueChange = { viewModel.updateSocksProxyPort(it) },
-                            label = { Text("SOCKS5 Proxy Port") },
-                            placeholder = { Text("9050") },
+                            label = { Text(stringResource(R.string.tcp_client_socks_port_label)) },
+                            placeholder = { Text(stringResource(R.string.tcp_client_socks_port_placeholder)) },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),

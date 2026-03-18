@@ -24,8 +24,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.model.TcpCommunityServer
 import com.lxmf.messenger.ui.components.CustomSettingsCard
 import com.lxmf.messenger.viewmodel.TcpClientWizardViewModel
@@ -48,14 +50,14 @@ fun ServerSelectionStep(viewModel: TcpClientWizardViewModel) {
     ) {
         // Header
         Text(
-            text = "Choose Server",
+            text = stringResource(R.string.tcp_client_choose_server),
             style = MaterialTheme.typography.headlineSmall,
         )
 
         Spacer(Modifier.height(8.dp))
 
         Text(
-            text = "Select a community server or enter custom connection details.",
+            text = stringResource(R.string.tcp_client_select_server_hint),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -80,8 +82,8 @@ fun ServerSelectionStep(viewModel: TcpClientWizardViewModel) {
             // Custom option
             item {
                 CustomSettingsCard(
-                    title = "Custom",
-                    description = "Enter server details manually",
+                    title = stringResource(R.string.tcp_client_custom_server),
+                    description = stringResource(R.string.tcp_client_custom_server_hint),
                     isSelected = state.isCustomMode,
                     onClick = { viewModel.enableCustomMode() },
                 )
@@ -155,7 +157,7 @@ private fun ServerCard(
             if (isSelected) {
                 Icon(
                     imageVector = Icons.Default.Check,
-                    contentDescription = "Selected",
+                    contentDescription = stringResource(R.string.tcp_client_selected),
                     tint = MaterialTheme.colorScheme.primary,
                 )
             }

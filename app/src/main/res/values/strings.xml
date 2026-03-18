@@ -1,507 +1,481 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Columba</string>
-
-    <!-- Incoming call screen -->
-    <string name="incoming_voice_call">Incoming Voice Call</string>
-    <string name="call_answer">Answer</string>
-    <string name="call_decline">Decline</string>
-    <string name="call_answer_content_description">Answer call</string>
-    <string name="call_decline_content_description">Decline call</string>
-    <string name="error_no_file_manager">No file manager app found on this device</string>
-
-    <!-- Locate on Map -->
-    <string name="locate_on_map">Locate on Map</string>
-
-    <!-- Offline mode banner -->
-    <string name="offline_banner_shutdown">Columba is offline</string>
-    <string name="offline_banner_error">Connection error</string>
-    <string name="offline_banner_reconnecting">Reconnecting\u2026</string>
-    <string name="offline_banner_reconnect">Reconnect</string>
-    <string name="offline_banner_reconnecting_description">Reconnecting in progress</string>
-
-    <!-- Common -->
-    <string name="common_go_back">Go Back</string>
-    <string name="common_block">Block</string>
-    <string name="common_remove">Remove</string>
-    <string name="common_cancel">Cancel</string>
-    <string name="cd_back">Back</string>
-
-    <!-- Announce detail screen -->
-    <string name="announce_detail_title">Node Details</string>
-    <string name="announce_detail_cd_remove_from_saved">Remove from saved</string>
-    <string name="announce_detail_cd_save_peer">Save peer</string>
-    <string name="announce_detail_node_not_found">Node not found</string>
-    <string name="announce_detail_start_chat">Start Chat</string>
-    <string name="announce_detail_current_relay">Current Relay</string>
-    <string name="announce_detail_set_as_my_relay">Set as My Relay</string>
-    <string name="announce_detail_view_messaging_destination">View messaging destination</string>
-    <string name="announce_detail_view_telephony_destination">View telephony destination</string>
-    <string name="announce_detail_browse_node">Browse Node</string>
-    <string name="announce_detail_destination_hash">Destination Hash</string>
-    <string name="announce_detail_network_distance">Network Distance</string>
-    <string name="announce_detail_signal_excellent">Excellent signal strength</string>
-    <string name="announce_detail_signal_good">Good signal strength</string>
-    <string name="announce_detail_signal_weak">Weak signal strength</string>
-    <string name="announce_detail_transfer_size_limit">Transfer Size Limit</string>
-    <string name="announce_detail_transfer_size_subtitle">Maximum message size accepted by this relay</string>
-    <string name="announce_detail_received_via">Received Via</string>
-    <string name="announce_detail_destination_aspect">Destination Aspect</string>
-    <string name="announce_detail_aspect_unknown">unknown</string>
-    <string name="announce_detail_aspect_lxmf_delivery">LXMF messaging peer</string>
-    <string name="announce_detail_aspect_lxst_telephony">LXST telephony destination</string>
-    <string name="announce_detail_aspect_lxmf_propagation">Message relay/propagation node</string>
-    <string name="announce_detail_aspect_nomadnetwork">NomadNet content node</string>
-    <string name="announce_detail_aspect_none">No aspect information available</string>
-    <string name="announce_detail_aspect_unknown_service_type">Unknown service type</string>
-    <string name="announce_detail_last_seen">Last Seen</string>
-    <string name="announce_detail_stamp_cost">Stamp Cost</string>
-    <string name="announce_detail_stamp_cost_subtitle">Required proof-of-work difficulty</string>
-    <string name="announce_detail_peering_cost">Peering Cost</string>
-    <string name="announce_detail_peering_cost_subtitle">Cost for node peering</string>
-    <string name="announce_detail_fallback_contact">this contact</string>
-    <string name="announce_detail_fallback_peer">this peer</string>
-    <string name="announce_detail_fallback_relay">this relay</string>
-    <string name="announce_detail_remove_contact_title">Remove Contact?</string>
-    <string name="announce_detail_remove_contact_message">Remove %1$s from your contacts? You can re-add them later from the Announce Stream.</string>
-    <string name="announce_detail_unset_relay_title">Unset as Your Relay?</string>
-    <string name="announce_detail_unset_relay_message">&quot;%1$s&quot; will be removed from contacts.</string>
-    <string name="announce_detail_unset_relay_auto_select">Remove &amp; Auto-Select New</string>
-    <string name="announce_detail_unset_relay_remove_only">Remove Only</string>
-    <string name="announce_detail_size_mb_integer">%1$d MB</string>
-    <string name="announce_detail_size_mb_decimal">%1$.1f MB</string>
-    <string name="announce_detail_size_kb">%1$d KB</string>
-
-    <plurals name="announce_detail_hops">
-        <item quantity="one">%d hop</item>
-        <item quantity="other">%d hops</item>
-    </plurals>
-
-    <!-- Chats screen -->
-    <string name="chats_title">Chats</string>
-    <string name="chats_search_placeholder">Search conversations...</string>
-    <string name="chats_cd_qr_code">QR Code</string>
-    <string name="chats_cd_sync_messages">Sync messages</string>
-    <string name="chats_cd_saved_contact">Saved contact</string>
-    <string name="chats_sync_complete">Sync complete</string>
-    <string name="chats_sync_failed">Sync failed: %1$s</string>
-    <string name="chats_sync_no_relay">No relay configured</string>
-    <string name="chats_sync_timed_out">Sync timed out</string>
-    <string name="chats_saved_to_contacts">Saved %1$s to Contacts</string>
-    <string name="chats_removed_from_contacts">Removed %1$s from Contacts</string>
-    <string name="chats_marked_as_unread">Marked as unread</string>
-    <string name="chats_deleted_conversation_with">Deleted conversation with %1$s</string>
-    <string name="chats_blocked_user">Blocked %1$s</string>
-    <string name="chats_share_identity">Share Identity</string>
-    <string name="chats_draft_prefix">Draft: </string>
-    <string name="chats_remove_from_contacts">Remove from Contacts</string>
-    <string name="chats_save_to_contacts">Save to Contacts</string>
-    <string name="chats_mark_as_unread">Mark as Unread</string>
-    <string name="chats_view_peer_details">View Peer Details</string>
-    <string name="chats_delete_conversation">Delete Conversation</string>
-    <string name="chats_block_user">Block User</string>
-    <string name="chats_delete_conversation_title">Delete Conversation?</string>
-    <string name="chats_delete_conversation_message">Are you sure you want to delete your conversation with %1$s? This will permanently delete all messages.</string>
-    <string name="chats_delete">Delete</string>
-    <string name="chats_block_user_title">Block %1$s?</string>
-    <string name="chats_block_user_message">They will no longer be able to send you messages. Their conversation will be hidden from the chat list.</string>
-    <string name="chats_block_delete_conversation_and_messages">Also delete conversation and messages</string>
-    <string name="chats_block_blackhole_announces">Also blackhole (do not relay their announces)</string>
-    <string name="chats_block_transport_disabled_notice">Transport is currently disabled. This identity will be blackholed whenever transport is later enabled.</string>
-    <string name="chats_loading_conversations">Loading conversations...</string>
-    <string name="chats_empty_title">No conversations yet</string>
-    <string name="chats_empty_subtitle">Messages from peers will appear here</string>
-    <string name="chats_timestamp_now">Now</string>
-    <string name="chats_timestamp_minutes_short">%1$dm</string>
-
-    <plurals name="chats_conversations_count">
-        <item quantity="one">%d conversation</item>
-        <item quantity="other">%d conversations</item>
-    </plurals>
-
-    <plurals name="chats_sync_complete_with_new_messages">
-        <item quantity="one">Sync complete: %d new message</item>
-        <item quantity="other">Sync complete: %d new messages</item>
-    </plurals>
-
-    <!-- Common labels -->
-    <string name="common_back">Back</string>
-    <string name="common_continue">Continue</string>
-    <string name="common_next">Next</string>
-    <string name="common_save">Save</string>
-    <string name="common_error">Error</string>
-    <string name="common_ok">OK</string>
-    <string name="common_skip">Skip</string>
-    <string name="common_enabled">Enabled</string>
-    <string name="common_disabled">Disabled</string>
-    <string name="common_delete">Delete</string>
-    <string name="common_edit">Edit</string>
-    <string name="common_apply">Apply</string>
-    <string name="common_disable">Disable</string>
-    <string name="common_more_options">More options</string>
-    <string name="common_grant_permission">Grant Permission</string>
-    <string name="common_open_settings">Open Settings</string>
-    <string name="common_refresh">Refresh</string>
-    <string name="common_retry">Retry</string>
-    <string name="common_share">Share</string>
-    <string name="common_copy">Copy</string>
-    <string name="common_close">Close</string>
-    <string name="common_exit">Exit</string>
-    <string name="common_menu">Menu</string>
-    <string name="common_got_it">Got it</string>
-
-    <!-- Blocked users screen -->
-    <string name="blocked_users_title">Blocked Users</string>
-    <string name="blocked_users_empty">No blocked users</string>
-    <string name="blocked_users_unblock_title">Unblock %1$s?</string>
-    <string name="blocked_users_unblock_message">They will be able to send you messages again. Their conversation will reappear if it was not deleted.</string>
-    <string name="blocked_users_unblocked_toast">Unblocked %1$s</string>
-    <string name="blocked_users_blocked_on">Blocked %1$s</string>
-    <string name="blocked_users_blackhole_label">Blackhole (do not relay announces)</string>
-    <string name="blocked_users_unblock">Unblock</string>
-
-    <!-- Theme management screen -->
-    <string name="theme_management_title">Custom Themes</string>
-    <string name="theme_management_create_theme_cd">Create Theme</string>
-    <string name="theme_management_empty_title">No custom themes yet</string>
-    <string name="theme_management_empty_subtitle">Create your first theme</string>
-    <string name="theme_management_delete_title">Delete Theme?</string>
-    <string name="theme_management_delete_message">Are you sure you want to delete &quot;%1$s&quot;? This action cannot be undone.</string>
-    <string name="theme_management_apply_theme">Apply Theme</string>
-
-    <!-- Notification settings screen -->
-    <string name="notification_settings_title">Notification Settings</string>
-    <string name="notification_settings_notifications_cd">Notifications</string>
-    <string name="notification_settings_enable_title">Enable Notifications</string>
-    <string name="notification_settings_enabled_description">You will receive notifications based on your preferences below</string>
-    <string name="notification_settings_disabled_description">All notifications are disabled</string>
-    <string name="notification_settings_types_title">Notification Types</string>
-    <string name="notification_settings_types_subtitle">Select which events you want to be notified about</string>
-    <string name="notification_settings_received_message_title">Received Message</string>
-    <string name="notification_settings_received_message_description">Notify when you receive a new message</string>
-    <string name="notification_settings_saved_peer_title">Message from Saved Peer</string>
-    <string name="notification_settings_saved_peer_description">Notify when you receive a message from a saved peer</string>
-    <string name="notification_settings_heard_announce_title">Heard Announce</string>
-    <string name="notification_settings_heard_announce_description">Notify when you hear a new announce from a peer</string>
-    <string name="notification_settings_direct_only_title">Direct Only</string>
-    <string name="notification_settings_direct_only_description">Only notify for direct (1-hop) announces from nearby peers</string>
-    <string name="notification_settings_exclude_tcp_title">Exclude TCP</string>
-    <string name="notification_settings_exclude_tcp_description">Skip announces received via TCP interfaces</string>
-    <string name="notification_settings_ble_connected_title">BLE Peer Connected</string>
-    <string name="notification_settings_ble_connected_description">Notify when a Bluetooth LE peer connects</string>
-    <string name="notification_settings_ble_disconnected_title">BLE Peer Disconnected</string>
-    <string name="notification_settings_ble_disconnected_description">Notify when a Bluetooth LE peer disconnects</string>
-
-    <!-- USB device action screen -->
-    <string name="usb_device_action_title">USB Device Connected</string>
-    <string name="usb_device_action_prompt">What would you like to do?</string>
-    <string name="usb_device_action_disable_transport_title">Disable Transport Mode?</string>
-    <string name="usb_device_action_disable_transport_message">This will clear the saved radio configuration and reset the device. It will return to normal host-controlled mode.</string>
-    <string name="usb_device_action_disabling_title">Disabling Transport</string>
-    <string name="usb_device_action_disabling_message">Clearing configuration and resetting device...</string>
-    <string name="usb_device_action_disabled_title">Transport Disabled</string>
-    <string name="usb_device_action_disabled_message">Transport mode has been disabled. The device will restart in normal mode.</string>
-    <string name="usb_device_action_disable_failed_message">Failed to disable transport mode. Make sure the device is connected and try again.</string>
-    <string name="usb_device_action_flash_firmware_title">Flash Firmware</string>
-    <string name="usb_device_action_flash_firmware_description">Update or install RNode firmware on this device</string>
-    <string name="usb_device_action_configure_rnode_title">Configure RNode</string>
-    <string name="usb_device_action_configure_rnode_description">Set up this device as a Reticulum interface</string>
-    <string name="usb_device_action_configure_transport_title">Configure Transport</string>
-    <string name="usb_device_action_configure_transport_description">Set radio parameters for standalone transport mode</string>
-    <string name="usb_device_action_disable_transport_card_title">Disable Transport</string>
-    <string name="usb_device_action_disable_transport_card_description">Clear saved config and return to normal mode</string>
-
-    <!-- QR scanner screen -->
-    <string name="qr_scanner_title">Scan QR Code</string>
-    <string name="qr_scanner_turn_off_flash">Turn off flash</string>
-    <string name="qr_scanner_turn_on_flash">Turn on flash</string>
-    <string name="qr_scanner_invalid_format">Invalid QR code format</string>
-    <string name="qr_scanner_instruction">Point camera at QR code
+  <string name="app_name">Columba</string>
+  <!-- Incoming call screen -->
+  <string name="incoming_voice_call">Incoming Voice Call</string>
+  <string name="call_answer">Answer</string>
+  <string name="call_decline">Decline</string>
+  <string name="call_answer_content_description">Answer call</string>
+  <string name="call_decline_content_description">Decline call</string>
+  <string name="error_no_file_manager">No file manager app found on this device</string>
+  <!-- Locate on Map -->
+  <string name="locate_on_map">Locate on Map</string>
+  <!-- Offline mode banner -->
+  <string name="offline_banner_shutdown">Columba is offline</string>
+  <string name="offline_banner_error">Connection error</string>
+  <string name="offline_banner_reconnecting">Reconnecting\u2026</string>
+  <string name="offline_banner_reconnect">Reconnect</string>
+  <string name="offline_banner_reconnecting_description">Reconnecting in progress</string>
+  <!-- Common -->
+  <string name="common_go_back">Go Back</string>
+  <string name="common_block">Block</string>
+  <string name="common_remove">Remove</string>
+  <string name="common_cancel">Cancel</string>
+  <string name="cd_back">Back</string>
+  <!-- Announce detail screen -->
+  <string name="announce_detail_title">Node Details</string>
+  <string name="announce_detail_cd_remove_from_saved">Remove from saved</string>
+  <string name="announce_detail_cd_save_peer">Save peer</string>
+  <string name="announce_detail_node_not_found">Node not found</string>
+  <string name="announce_detail_start_chat">Start Chat</string>
+  <string name="announce_detail_current_relay">Current Relay</string>
+  <string name="announce_detail_set_as_my_relay">Set as My Relay</string>
+  <string name="announce_detail_view_messaging_destination">View messaging destination</string>
+  <string name="announce_detail_view_telephony_destination">View telephony destination</string>
+  <string name="announce_detail_browse_node">Browse Node</string>
+  <string name="announce_detail_destination_hash">Destination Hash</string>
+  <string name="announce_detail_network_distance">Network Distance</string>
+  <string name="announce_detail_signal_excellent">Excellent signal strength</string>
+  <string name="announce_detail_signal_good">Good signal strength</string>
+  <string name="announce_detail_signal_weak">Weak signal strength</string>
+  <string name="announce_detail_transfer_size_limit">Transfer Size Limit</string>
+  <string name="announce_detail_transfer_size_subtitle">Maximum message size accepted by this relay</string>
+  <string name="announce_detail_received_via">Received Via</string>
+  <string name="announce_detail_destination_aspect">Destination Aspect</string>
+  <string name="announce_detail_aspect_unknown">unknown</string>
+  <string name="announce_detail_aspect_lxmf_delivery">LXMF messaging peer</string>
+  <string name="announce_detail_aspect_lxst_telephony">LXST telephony destination</string>
+  <string name="announce_detail_aspect_lxmf_propagation">Message relay/propagation node</string>
+  <string name="announce_detail_aspect_nomadnetwork">NomadNet content node</string>
+  <string name="announce_detail_aspect_none">No aspect information available</string>
+  <string name="announce_detail_aspect_unknown_service_type">Unknown service type</string>
+  <string name="announce_detail_last_seen">Last Seen</string>
+  <string name="announce_detail_stamp_cost">Stamp Cost</string>
+  <string name="announce_detail_stamp_cost_subtitle">Required proof-of-work difficulty</string>
+  <string name="announce_detail_peering_cost">Peering Cost</string>
+  <string name="announce_detail_peering_cost_subtitle">Cost for node peering</string>
+  <string name="announce_detail_fallback_contact">this contact</string>
+  <string name="announce_detail_fallback_peer">this peer</string>
+  <string name="announce_detail_fallback_relay">this relay</string>
+  <string name="announce_detail_remove_contact_title">Remove Contact?</string>
+  <string name="announce_detail_remove_contact_message">Remove %1$s from your contacts? You can re-add them later from the Announce Stream.</string>
+  <string name="announce_detail_unset_relay_title">Unset as Your Relay?</string>
+  <string name="announce_detail_unset_relay_message">"%1$s" will be removed from contacts.</string>
+  <string name="announce_detail_unset_relay_auto_select">Remove &amp; Auto-Select New</string>
+  <string name="announce_detail_unset_relay_remove_only">Remove Only</string>
+  <string name="announce_detail_size_mb_integer">%1$d MB</string>
+  <string name="announce_detail_size_mb_decimal">%1$.1f MB</string>
+  <string name="announce_detail_size_kb">%1$d KB</string>
+  <plurals name="announce_detail_hops">
+    <item quantity="one">%d hop</item>
+    <item quantity="other">%d hops</item>
+  </plurals>
+  <!-- Chats screen -->
+  <string name="chats_title">Chats</string>
+  <string name="chats_search_placeholder">Search conversations...</string>
+  <string name="chats_cd_qr_code">QR Code</string>
+  <string name="chats_cd_sync_messages">Sync messages</string>
+  <string name="chats_cd_saved_contact">Saved contact</string>
+  <string name="chats_sync_complete">Sync complete</string>
+  <string name="chats_sync_failed">Sync failed: %1$s</string>
+  <string name="chats_sync_no_relay">No relay configured</string>
+  <string name="chats_sync_timed_out">Sync timed out</string>
+  <string name="chats_saved_to_contacts">Saved %1$s to Contacts</string>
+  <string name="chats_removed_from_contacts">Removed %1$s from Contacts</string>
+  <string name="chats_marked_as_unread">Marked as unread</string>
+  <string name="chats_deleted_conversation_with">Deleted conversation with %1$s</string>
+  <string name="chats_blocked_user">Blocked %1$s</string>
+  <string name="chats_share_identity">Share Identity</string>
+  <string name="chats_draft_prefix">Draft: </string>
+  <string name="chats_remove_from_contacts">Remove from Contacts</string>
+  <string name="chats_save_to_contacts">Save to Contacts</string>
+  <string name="chats_mark_as_unread">Mark as Unread</string>
+  <string name="chats_view_peer_details">View Peer Details</string>
+  <string name="chats_delete_conversation">Delete Conversation</string>
+  <string name="chats_block_user">Block User</string>
+  <string name="chats_delete_conversation_title">Delete Conversation?</string>
+  <string name="chats_delete_conversation_message">Are you sure you want to delete your conversation with %1$s? This will permanently delete all messages.</string>
+  <string name="chats_delete">Delete</string>
+  <string name="chats_block_user_title">Block %1$s?</string>
+  <string name="chats_block_user_message">They will no longer be able to send you messages. Their conversation will be hidden from the chat list.</string>
+  <string name="chats_block_delete_conversation_and_messages">Also delete conversation and messages</string>
+  <string name="chats_block_blackhole_announces">Also blackhole (do not relay their announces)</string>
+  <string name="chats_block_transport_disabled_notice">Transport is currently disabled. This identity will be blackholed whenever transport is later enabled.</string>
+  <string name="chats_loading_conversations">Loading conversations...</string>
+  <string name="chats_empty_title">No conversations yet</string>
+  <string name="chats_empty_subtitle">Messages from peers will appear here</string>
+  <string name="chats_timestamp_now">Now</string>
+  <string name="chats_timestamp_minutes_short">%1$dm</string>
+  <plurals name="chats_conversations_count">
+    <item quantity="one">%d conversation</item>
+    <item quantity="other">%d conversations</item>
+  </plurals>
+  <plurals name="chats_sync_complete_with_new_messages">
+    <item quantity="one">Sync complete: %d new message</item>
+    <item quantity="other">Sync complete: %d new messages</item>
+  </plurals>
+  <!-- Common labels -->
+  <string name="common_back">Back</string>
+  <string name="common_continue">Continue</string>
+  <string name="common_next">Next</string>
+  <string name="common_save">Save</string>
+  <string name="common_error">Error</string>
+  <string name="common_ok">OK</string>
+  <string name="common_skip">Skip</string>
+  <string name="common_enabled">Enabled</string>
+  <string name="common_disabled">Disabled</string>
+  <string name="common_delete">Delete</string>
+  <string name="common_edit">Edit</string>
+  <string name="common_apply">Apply</string>
+  <string name="common_disable">Disable</string>
+  <string name="common_more_options">More options</string>
+  <string name="common_grant_permission">Grant Permission</string>
+  <string name="common_open_settings">Open Settings</string>
+  <string name="common_refresh">Refresh</string>
+  <string name="common_retry">Retry</string>
+  <string name="common_share">Share</string>
+  <string name="common_copy">Copy</string>
+  <string name="common_close">Close</string>
+  <string name="common_exit">Exit</string>
+  <string name="common_menu">Menu</string>
+  <string name="common_got_it">Got it</string>
+  <!-- Blocked users screen -->
+  <string name="blocked_users_title">Blocked Users</string>
+  <string name="blocked_users_empty">No blocked users</string>
+  <string name="blocked_users_unblock_title">Unblock %1$s?</string>
+  <string name="blocked_users_unblock_message">They will be able to send you messages again. Their conversation will reappear if it was not deleted.</string>
+  <string name="blocked_users_unblocked_toast">Unblocked %1$s</string>
+  <string name="blocked_users_blocked_on">Blocked %1$s</string>
+  <string name="blocked_users_blackhole_label">Blackhole (do not relay announces)</string>
+  <string name="blocked_users_unblock">Unblock</string>
+  <!-- Theme management screen -->
+  <string name="theme_management_title">Custom Themes</string>
+  <string name="theme_management_create_theme_cd">Create Theme</string>
+  <string name="theme_management_empty_title">No custom themes yet</string>
+  <string name="theme_management_empty_subtitle">Create your first theme</string>
+  <string name="theme_management_delete_title">Delete Theme?</string>
+  <string name="theme_management_delete_message">Are you sure you want to delete "%1$s"? This action cannot be undone.</string>
+  <string name="theme_management_apply_theme">Apply Theme</string>
+  <!-- Notification settings screen -->
+  <string name="notification_settings_title">Notification Settings</string>
+  <string name="notification_settings_notifications_cd">Notifications</string>
+  <string name="notification_settings_enable_title">Enable Notifications</string>
+  <string name="notification_settings_enabled_description">You will receive notifications based on your preferences below</string>
+  <string name="notification_settings_disabled_description">All notifications are disabled</string>
+  <string name="notification_settings_types_title">Notification Types</string>
+  <string name="notification_settings_types_subtitle">Select which events you want to be notified about</string>
+  <string name="notification_settings_received_message_title">Received Message</string>
+  <string name="notification_settings_received_message_description">Notify when you receive a new message</string>
+  <string name="notification_settings_saved_peer_title">Message from Saved Peer</string>
+  <string name="notification_settings_saved_peer_description">Notify when you receive a message from a saved peer</string>
+  <string name="notification_settings_heard_announce_title">Heard Announce</string>
+  <string name="notification_settings_heard_announce_description">Notify when you hear a new announce from a peer</string>
+  <string name="notification_settings_direct_only_title">Direct Only</string>
+  <string name="notification_settings_direct_only_description">Only notify for direct (1-hop) announces from nearby peers</string>
+  <string name="notification_settings_exclude_tcp_title">Exclude TCP</string>
+  <string name="notification_settings_exclude_tcp_description">Skip announces received via TCP interfaces</string>
+  <string name="notification_settings_ble_connected_title">BLE Peer Connected</string>
+  <string name="notification_settings_ble_connected_description">Notify when a Bluetooth LE peer connects</string>
+  <string name="notification_settings_ble_disconnected_title">BLE Peer Disconnected</string>
+  <string name="notification_settings_ble_disconnected_description">Notify when a Bluetooth LE peer disconnects</string>
+  <!-- USB device action screen -->
+  <string name="usb_device_action_title">USB Device Connected</string>
+  <string name="usb_device_action_prompt">What would you like to do?</string>
+  <string name="usb_device_action_disable_transport_title">Disable Transport Mode?</string>
+  <string name="usb_device_action_disable_transport_message">This will clear the saved radio configuration and reset the device. It will return to normal host-controlled mode.</string>
+  <string name="usb_device_action_disabling_title">Disabling Transport</string>
+  <string name="usb_device_action_disabling_message">Clearing configuration and resetting device...</string>
+  <string name="usb_device_action_disabled_title">Transport Disabled</string>
+  <string name="usb_device_action_disabled_message">Transport mode has been disabled. The device will restart in normal mode.</string>
+  <string name="usb_device_action_disable_failed_message">Failed to disable transport mode. Make sure the device is connected and try again.</string>
+  <string name="usb_device_action_flash_firmware_title">Flash Firmware</string>
+  <string name="usb_device_action_flash_firmware_description">Update or install RNode firmware on this device</string>
+  <string name="usb_device_action_configure_rnode_title">Configure RNode</string>
+  <string name="usb_device_action_configure_rnode_description">Set up this device as a Reticulum interface</string>
+  <string name="usb_device_action_configure_transport_title">Configure Transport</string>
+  <string name="usb_device_action_configure_transport_description">Set radio parameters for standalone transport mode</string>
+  <string name="usb_device_action_disable_transport_card_title">Disable Transport</string>
+  <string name="usb_device_action_disable_transport_card_description">Clear saved config and return to normal mode</string>
+  <!-- QR scanner screen -->
+  <string name="qr_scanner_title">Scan QR Code</string>
+  <string name="qr_scanner_turn_off_flash">Turn off flash</string>
+  <string name="qr_scanner_turn_on_flash">Turn on flash</string>
+  <string name="qr_scanner_invalid_format">Invalid QR code format</string>
+  <string name="qr_scanner_instruction">Point camera at QR code
 It will scan automatically</string>
-    <string name="qr_scanner_contact_exists_cd">Contact Exists</string>
-    <string name="qr_scanner_contact_exists_title">Contact Already Added</string>
-    <string name="qr_scanner_contact_exists_message_named">This contact is already in your contacts list as &quot;%1$s&quot;.</string>
-    <string name="qr_scanner_contact_exists_message_unnamed">This contact is already in your contacts list.</string>
-    <string name="qr_scanner_camera_permission_denied">Camera Permission Denied</string>
-    <string name="qr_scanner_camera_permission_required">Camera Permission Required</string>
-
-    <!-- BLE connection status screen -->
-    <string name="ble_connections_title">BLE Connections</string>
-    <string name="ble_connections_loading">Loading connections...</string>
-    <string name="ble_connections_bluetooth_off_title">Bluetooth is turned off</string>
-    <string name="ble_connections_bluetooth_off_subtitle">Turn on Bluetooth to see BLE connections</string>
-    <string name="ble_connections_turn_on">Turn ON</string>
-    <string name="ble_connections_bluetooth_info">Enable Bluetooth to discover and connect to nearby BLE peers.</string>
-    <string name="ble_connections_bluetooth_on_title">Bluetooth is turned on</string>
-    <string name="ble_connections_no_active">No active connections</string>
-    <string name="ble_connections_peers_hint">BLE peers will appear here when connected</string>
-    <string name="ble_connections_bluetooth_settings">Bluetooth Settings</string>
-    <string name="ble_connections_error_loading">Error Loading Connections</string>
-    <string name="ble_connections_total">Total</string>
-    <string name="ble_connections_central">Central</string>
-    <string name="ble_connections_peripheral">Peripheral</string>
-    <string name="ble_connections_mac_address">MAC Address</string>
-    <string name="ble_connections_mtu">MTU</string>
-    <string name="ble_connections_mtu_value">%1$d bytes</string>
-    <string name="ble_connections_connected">Connected</string>
-    <string name="ble_connections_first_seen">First Seen</string>
-    <string name="ble_connections_last_seen">Last Seen</string>
-    <string name="ble_connections_performance">Performance</string>
-    <string name="ble_connections_data_sent">Data Sent</string>
-    <string name="ble_connections_data_received">Data Received</string>
-    <string name="ble_connections_success_rate">Success Rate</string>
-    <string name="ble_connections_disconnect">Disconnect</string>
-    <string name="ble_connections_type_both">Both</string>
-    <string name="ble_connections_type_central">Central</string>
-    <string name="ble_connections_type_peripheral">Peripheral</string>
-    <string name="ble_connections_not_available">N/A</string>
-    <string name="ble_connections_not_available_symbol">—</string>
-    <string name="ble_connections_signal_excellent">Excellent</string>
-    <string name="ble_connections_signal_good">Good</string>
-    <string name="ble_connections_signal_fair">Fair</string>
-    <string name="ble_connections_signal_poor">Poor</string>
-    <string name="ble_connections_signal_strength">Signal Strength</string>
-    <string name="ble_connections_rssi_dbm">%1$d dBm</string>
-    <string name="ble_connections_duration_days_hours">%1$dd %2$dh</string>
-    <string name="ble_connections_duration_hours_minutes">%1$dh %2$dm</string>
-    <string name="ble_connections_duration_minutes_seconds">%1$dm %2$ds</string>
-    <string name="ble_connections_duration_seconds">%1$ds</string>
-    <string name="ble_connections_size_mb">%1$.2f MB</string>
-    <string name="ble_connections_size_kb">%1$.2f KB</string>
-    <string name="ble_connections_size_bytes">%1$d B</string>
-
-    <!-- NomadNet browser screen -->
-    <string name="nomadnet_browser_title">NomadNet Browser</string>
-    <string name="nomadnet_browser_identify_title">Identify to Node</string>
-    <string name="nomadnet_browser_identify_message">This will reveal your identity to the node operator. The page will refresh after identifying.</string>
-    <string name="nomadnet_browser_identify_action">Identify</string>
-    <string name="nomadnet_browser_identified">Identified</string>
-    <string name="nomadnet_browser_identify_to_node">Identify to node</string>
-    <string name="nomadnet_browser_copy_url">Copy URL</string>
-    <string name="nomadnet_browser_share_chooser_title">Share NomadNet URL</string>
-    <string name="nomadnet_browser_render_monospace_scroll">Monospace (scroll)</string>
-    <string name="nomadnet_browser_render_monospace_zoom">Monospace (zoom)</string>
-    <string name="nomadnet_browser_render_proportional_wrap">Proportional (wrap)</string>
-    <string name="nomadnet_browser_failed_to_load_page">Failed to load page</string>
-
-    <!-- My identity screen -->
-    <string name="my_identity_title">My Identity</string>
-    <string name="my_identity_display_name_title">Display Name &amp; Identity</string>
-    <string name="my_identity_display_name_description">Your display name is shown to other peers when you send announces and messages.</string>
-    <string name="my_identity_current_display_name">Current: %1$s</string>
-    <string name="my_identity_default_display_name">Default: %1$s</string>
-    <string name="my_identity_custom_display_name_label">Custom Display Name</string>
-    <string name="my_identity_custom_display_name_placeholder">Leave empty to use default</string>
-    <string name="my_identity_view_qr">View QR</string>
-    <string name="my_identity_display_name_saved">Display name saved successfully</string>
-    <string name="my_identity_identity_hash">Identity Hash</string>
-    <string name="my_identity_profile_icon_title">Profile Icon</string>
-    <string name="my_identity_profile_icon_description">Customize your profile icon that others will see. This is compatible with Sideband and other Reticulum apps.</string>
-    <string name="my_identity_custom_icon">Custom Icon: %1$s</string>
-    <string name="my_identity_using_identicon">Using Identicon</string>
-    <string name="my_identity_change_custom_icon_hint">Tap to change your custom icon</string>
-    <string name="my_identity_identicon_hint">Auto-generated from your identity</string>
-    <string name="my_identity_change_icon">Change Icon</string>
-    <string name="my_identity_choose_custom_icon">Choose Custom Icon</string>
-    <string name="my_identity_share_chooser_title">Share identity</string>
-    <string name="my_identity_share_identity_title">Share Your Identity</string>
-    <string name="my_identity_scan_to_add_contact">Scan to add %1$s as a contact</string>
-    <string name="my_identity_generating_qr_code">Generating QR code...</string>
-    <string name="my_identity_full_screen">Full Screen</string>
-    <string name="my_identity_share_text">Add me on Reticulum:
+  <string name="qr_scanner_contact_exists_cd">Contact Exists</string>
+  <string name="qr_scanner_contact_exists_title">Contact Already Added</string>
+  <string name="qr_scanner_contact_exists_message_named">This contact is already in your contacts list as "%1$s".</string>
+  <string name="qr_scanner_contact_exists_message_unnamed">This contact is already in your contacts list.</string>
+  <string name="qr_scanner_camera_permission_denied">Camera Permission Denied</string>
+  <string name="qr_scanner_camera_permission_required">Camera Permission Required</string>
+  <!-- BLE connection status screen -->
+  <string name="ble_connections_title">BLE Connections</string>
+  <string name="ble_connections_loading">Loading connections...</string>
+  <string name="ble_connections_bluetooth_off_title">Bluetooth is turned off</string>
+  <string name="ble_connections_bluetooth_off_subtitle">Turn on Bluetooth to see BLE connections</string>
+  <string name="ble_connections_turn_on">Turn ON</string>
+  <string name="ble_connections_bluetooth_info">Enable Bluetooth to discover and connect to nearby BLE peers.</string>
+  <string name="ble_connections_bluetooth_on_title">Bluetooth is turned on</string>
+  <string name="ble_connections_no_active">No active connections</string>
+  <string name="ble_connections_peers_hint">BLE peers will appear here when connected</string>
+  <string name="ble_connections_bluetooth_settings">Bluetooth Settings</string>
+  <string name="ble_connections_error_loading">Error Loading Connections</string>
+  <string name="ble_connections_total">Total</string>
+  <string name="ble_connections_central">Central</string>
+  <string name="ble_connections_peripheral">Peripheral</string>
+  <string name="ble_connections_mac_address">MAC Address</string>
+  <string name="ble_connections_mtu">MTU</string>
+  <string name="ble_connections_mtu_value">%1$d bytes</string>
+  <string name="ble_connections_connected">Connected</string>
+  <string name="ble_connections_first_seen">First Seen</string>
+  <string name="ble_connections_last_seen">Last Seen</string>
+  <string name="ble_connections_performance">Performance</string>
+  <string name="ble_connections_data_sent">Data Sent</string>
+  <string name="ble_connections_data_received">Data Received</string>
+  <string name="ble_connections_success_rate">Success Rate</string>
+  <string name="ble_connections_disconnect">Disconnect</string>
+  <string name="ble_connections_type_both">Both</string>
+  <string name="ble_connections_type_central">Central</string>
+  <string name="ble_connections_type_peripheral">Peripheral</string>
+  <string name="ble_connections_not_available">N/A</string>
+  <string name="ble_connections_not_available_symbol">вЂ”</string>
+  <string name="ble_connections_signal_excellent">Excellent</string>
+  <string name="ble_connections_signal_good">Good</string>
+  <string name="ble_connections_signal_fair">Fair</string>
+  <string name="ble_connections_signal_poor">Poor</string>
+  <string name="ble_connections_signal_strength">Signal Strength</string>
+  <string name="ble_connections_rssi_dbm">%1$d dBm</string>
+  <string name="ble_connections_duration_days_hours">%1$dd %2$dh</string>
+  <string name="ble_connections_duration_hours_minutes">%1$dh %2$dm</string>
+  <string name="ble_connections_duration_minutes_seconds">%1$dm %2$ds</string>
+  <string name="ble_connections_duration_seconds">%1$ds</string>
+  <string name="ble_connections_size_mb">%1$.2f MB</string>
+  <string name="ble_connections_size_kb">%1$.2f KB</string>
+  <string name="ble_connections_size_bytes">%1$d B</string>
+  <!-- NomadNet browser screen -->
+  <string name="nomadnet_browser_title">NomadNet Browser</string>
+  <string name="nomadnet_browser_identify_title">Identify to Node</string>
+  <string name="nomadnet_browser_identify_message">This will reveal your identity to the node operator. The page will refresh after identifying.</string>
+  <string name="nomadnet_browser_identify_action">Identify</string>
+  <string name="nomadnet_browser_identified">Identified</string>
+  <string name="nomadnet_browser_identify_to_node">Identify to node</string>
+  <string name="nomadnet_browser_copy_url">Copy URL</string>
+  <string name="nomadnet_browser_share_chooser_title">Share NomadNet URL</string>
+  <string name="nomadnet_browser_render_monospace_scroll">Monospace (scroll)</string>
+  <string name="nomadnet_browser_render_monospace_zoom">Monospace (zoom)</string>
+  <string name="nomadnet_browser_render_proportional_wrap">Proportional (wrap)</string>
+  <string name="nomadnet_browser_failed_to_load_page">Failed to load page</string>
+  <!-- My identity screen -->
+  <string name="my_identity_title">My Identity</string>
+  <string name="my_identity_display_name_title">Display Name &amp; Identity</string>
+  <string name="my_identity_display_name_description">Your display name is shown to other peers when you send announces and messages.</string>
+  <string name="my_identity_current_display_name">Current: %1$s</string>
+  <string name="my_identity_default_display_name">Default: %1$s</string>
+  <string name="my_identity_custom_display_name_label">Custom Display Name</string>
+  <string name="my_identity_custom_display_name_placeholder">Leave empty to use default</string>
+  <string name="my_identity_view_qr">View QR</string>
+  <string name="my_identity_display_name_saved">Display name saved successfully</string>
+  <string name="my_identity_identity_hash">Identity Hash</string>
+  <string name="my_identity_profile_icon_title">Profile Icon</string>
+  <string name="my_identity_profile_icon_description">Customize your profile icon that others will see. This is compatible with Sideband and other Reticulum apps.</string>
+  <string name="my_identity_custom_icon">Custom Icon: %1$s</string>
+  <string name="my_identity_using_identicon">Using Identicon</string>
+  <string name="my_identity_change_custom_icon_hint">Tap to change your custom icon</string>
+  <string name="my_identity_identicon_hint">Auto-generated from your identity</string>
+  <string name="my_identity_change_icon">Change Icon</string>
+  <string name="my_identity_choose_custom_icon">Choose Custom Icon</string>
+  <string name="my_identity_share_chooser_title">Share identity</string>
+  <string name="my_identity_share_identity_title">Share Your Identity</string>
+  <string name="my_identity_scan_to_add_contact">Scan to add %1$s as a contact</string>
+  <string name="my_identity_generating_qr_code">Generating QR code...</string>
+  <string name="my_identity_full_screen">Full Screen</string>
+  <string name="my_identity_share_text">Add me on Reticulum:
 
 %1$s
 %2$s</string>
-    <string name="my_identity_show_advanced">Show Advanced</string>
-    <string name="my_identity_hide_advanced">Hide Advanced</string>
-    <string name="my_identity_destination_hash_lxmf">Destination Hash (LXMF)</string>
-    <string name="my_identity_public_key">Public Key</string>
-    <string name="my_identity_identity_hash_help_title">What is an Identity Hash?</string>
-    <string name="my_identity_identity_hash_help_message">Your identity hash is a unique cryptographic fingerprint derived from your public key.
+  <string name="my_identity_show_advanced">Show Advanced</string>
+  <string name="my_identity_hide_advanced">Hide Advanced</string>
+  <string name="my_identity_destination_hash_lxmf">Destination Hash (LXMF)</string>
+  <string name="my_identity_public_key">Public Key</string>
+  <string name="my_identity_identity_hash_help_title">What is an Identity Hash?</string>
+  <string name="my_identity_identity_hash_help_message">Your identity hash is a unique cryptographic fingerprint derived from your public key.
 
 Think of it like a username that:
 - Cannot be changed or duplicated
 - Proves messages came from you
 - Allows others to verify your identity</string>
-    <string name="my_identity_destination_hash_help_title">What is a Destination Hash?</string>
-    <string name="my_identity_destination_hash_help_message">Your LXMF destination hash is derived from your identity and is used for sending and receiving messages.
+  <string name="my_identity_destination_hash_help_title">What is a Destination Hash?</string>
+  <string name="my_identity_destination_hash_help_message">Your LXMF destination hash is derived from your identity and is used for sending and receiving messages.
 
 This is what peers use to:
 - Send you messages
 - Find you on the network
 - Add you as a contact</string>
-    <string name="my_identity_public_key_help_title">What is a Public Key?</string>
-    <string name="my_identity_public_key_help_message">Your public key is the cryptographic key that enables secure messaging.
+  <string name="my_identity_public_key_help_title">What is a Public Key?</string>
+  <string name="my_identity_public_key_help_message">Your public key is the cryptographic key that enables secure messaging.
 
 It is safe to share publicly and allows others to:
 - Encrypt messages only you can read
 - Verify your identity
 - Establish secure communication</string>
-    <string name="my_identity_info_about">Info about %1$s</string>
-    <string name="my_identity_copy_value">Copy %1$s</string>
-    <string name="my_identity_full_share_text_with_destination">Add me on Reticulum:
+  <string name="my_identity_info_about">Info about %1$s</string>
+  <string name="my_identity_copy_value">Copy %1$s</string>
+  <string name="my_identity_full_share_text_with_destination">Add me on Reticulum:
 
 Name: %1$s
 Destination: %2$s
 
 Scan QR code or use:
 %3$s</string>
-    <string name="my_identity_full_share_text_without_destination">Add me on Reticulum:
+  <string name="my_identity_full_share_text_without_destination">Add me on Reticulum:
 
 Name: %1$s
 
 Scan QR code or use:
 %2$s</string>
-    <string name="my_identity_scan_qr_to_add_me">Scan this QR code to add me as a contact</string>
-    <string name="my_identity_copy_identity_link">Copy Identity Link</string>
-    <string name="my_identity_destination_hash">Destination Hash</string>
-
-    <!-- APK sharing screen -->
-    <string name="apk_sharing_title">Share Columba</string>
-    <string name="apk_sharing_share_chooser_title">Share Columba APK</string>
-    <string name="apk_sharing_via_hotspot">Share via Hotspot</string>
-    <string name="apk_sharing_via_wifi">Share via WiFi</string>
-    <string name="apk_sharing_starting_hotspot">Starting WiFi hotspot...</string>
-    <string name="apk_sharing_hotspot_step_connect">Step 1: Scan to connect to hotspot</string>
-    <string name="apk_sharing_hotspot_step_download">Step 2: Scan to download Columba</string>
-    <string name="apk_sharing_scan_qr_instruction">Have the other person scan this QR code</string>
-    <string name="apk_sharing_apk_size_mb">APK size: %1$.1f MB</string>
-    <string name="apk_sharing_starting_server">Starting sharing server...</string>
-    <string name="apk_sharing_hotspot_fallback">No WiFi? Share by creating a temporary hotspot instead.</string>
-    <string name="apk_sharing_start_hotspot">Start Hotspot</string>
-    <string name="apk_sharing_permission_needed">Permission needed to create a WiFi hotspot for sharing.</string>
-    <string name="apk_sharing_network_with_password">Network: %1$s  /  Password: %2$s</string>
-    <string name="apk_sharing_network_without_password">Network: %1$s  (no password)</string>
-    <string name="apk_sharing_instructions_title">Instructions</string>
-    <string name="apk_sharing_hotspot_instruction_1">On the other phone, scan the first QR code to connect to the hotspot</string>
-    <string name="apk_sharing_hotspot_instruction_2">Once connected, scan the second QR code to open the download page</string>
-    <string name="apk_sharing_hotspot_instruction_3">Download and install the APK</string>
-    <string name="apk_sharing_wifi_instruction_1">Both phones must be on the same WiFi network</string>
-    <string name="apk_sharing_wifi_instruction_2">Open the camera app on the other phone and scan the QR code above</string>
-    <string name="apk_sharing_wifi_instruction_3">Tap the link to open it in a browser</string>
-    <string name="apk_sharing_wifi_instruction_4">Download and install the APK</string>
-    <string name="apk_sharing_alternative_title">Or share another way</string>
-    <string name="apk_sharing_alternative_subtitle">Use Bluetooth, Nearby Share, or any other installed sharing app.</string>
-    <string name="apk_sharing_share_apk_via">Share APK via...</string>
-
-    <!-- RNode flasher screen -->
-    <string name="rnode_flasher_title">RNode Flasher</string>
-    <string name="rnode_flasher_configure_transport">Configure Transport</string>
-    <string name="rnode_flasher_detecting_device">Detecting Device</string>
-    <string name="rnode_flasher_select_firmware">Select Firmware</string>
-    <string name="rnode_flasher_flashing">Flashing...</string>
-    <string name="rnode_flasher_complete">Complete</string>
-    <string name="rnode_flasher_exit_title">Exit Flasher?</string>
-    <string name="rnode_flasher_exit_message">Are you sure you want to exit? Any unsaved progress will be lost.</string>
-    <string name="rnode_flasher_start_flashing">Start Flashing</string>
-
-    <!-- Onboarding -->
-    <string name="onboarding_columba_content_description">Columba</string>
-    <string name="onboarding_welcome_title">Welcome to Columba</string>
-    <string name="onboarding_welcome_subtitle">A private messenger that requires:</string>
-    <string name="onboarding_privacy_no_phone">No phone number</string>
-    <string name="onboarding_privacy_no_email">No email address</string>
-    <string name="onboarding_privacy_no_signup">No sign-up or accounts</string>
-    <string name="onboarding_identity_explanation">Your identity is generated and stored securely on your device. You control it completely.</string>
-    <string name="onboarding_get_started">Get Started</string>
-    <string name="onboarding_restore_from_backup">Restore from backup</string>
-    <string name="onboarding_identity_title">Your Identity</string>
-    <string name="onboarding_identity_subtitle">Choose a display name others will see:</string>
-    <string name="onboarding_identity_display_name_label">Display Name</string>
-    <string name="onboarding_identity_anonymous_peer">Anonymous Peer</string>
-    <string name="onboarding_identity_helper">You can change this anytime, or create multiple identities for different contexts.</string>
-    <string name="onboarding_connectivity_title">How will you connect?</string>
-    <string name="onboarding_connectivity_subtitle">Select the networks you\'d like to use:</string>
-    <string name="onboarding_connectivity_permissions_denied">Permissions denied</string>
-    <string name="onboarding_connectivity_permissions_granted">Permissions granted</string>
-    <string name="onboarding_connectivity_helper">You can configure these later in Settings</string>
-    <string name="onboarding_complete_title">You\'re all set!</string>
-    <string name="onboarding_complete_summary">Summary</string>
-    <string name="onboarding_complete_identity_label">Identity</string>
-    <string name="onboarding_complete_networks_label">Networks</string>
-    <string name="onboarding_complete_none_selected">None selected</string>
-    <string name="onboarding_complete_notifications_label">Notifications</string>
-    <string name="onboarding_complete_battery_label">Battery</string>
-    <string name="onboarding_complete_battery_unrestricted">Unrestricted</string>
-    <string name="onboarding_complete_battery_restricted">Restricted</string>
-    <string name="onboarding_complete_show_qr_code">Show QR Code</string>
-    <string name="onboarding_complete_qr_hint">Share your identity QR code to let others add you as a contact.</string>
-    <string name="onboarding_complete_configure_lora">Configure LoRa Radio</string>
-    <string name="onboarding_complete_start_messaging">Start Messaging</string>
-    <string name="onboarding_complete_share_identity">Share identity</string>
-    <string name="onboarding_complete_share_text">Add me on Reticulum:\n\n%1$s\n%2$s</string>
-    <string name="welcome_screen_subtitle">Secure mesh messaging over Reticulum</string>
-    <string name="welcome_screen_choose_display_name">Choose Your Display Name</string>
-    <string name="welcome_screen_display_name_description">This name will be visible to other peers when you send messages and announces.</string>
-    <string name="welcome_screen_continue_as_anonymous">Continue as Anonymous Peer</string>
-    <string name="welcome_screen_footer">You can change this later in Settings</string>
-
-    <!-- Saved peers -->
-    <string name="saved_peers_title">Saved Peers</string>
-    <string name="saved_peers_search_placeholder">Search by name or hash...</string>
-    <string name="saved_peers_empty_title">No saved peers yet</string>
-    <string name="saved_peers_empty_subtitle">Tap the star icon on any peer in the Announce Stream to save them here for quick access.</string>
-
-    <plurals name="saved_peers_count_saved">
-        <item quantity="one">%d peer saved</item>
-        <item quantity="other">%d peers saved</item>
-    </plurals>
-
-    <!-- Call screens -->
-    <string name="call_status_connecting">Connecting...</string>
-    <string name="call_status_ringing">Ringing...</string>
-    <string name="call_status_transmitting">Transmitting</string>
-    <string name="call_status_listening">Listening</string>
-    <string name="call_status_line_busy">Line Busy</string>
-    <string name="call_status_rejected">Call Rejected</string>
-    <string name="call_status_ended">Call Ended</string>
-    <string name="call_status_calling">Calling...</string>
-    <string name="call_control_unmute">Unmute</string>
-    <string name="call_control_mute">Mute</string>
-    <string name="call_control_ptt_on">PTT On</string>
-    <string name="call_control_ptt">PTT</string>
-    <string name="call_control_earpiece">Earpiece</string>
-    <string name="call_control_speaker">Speaker</string>
-    <string name="call_end_content_description">End call</string>
-    <string name="call_end">End Call</string>
-    <string name="call_ptt_hold_to_talk">Hold to talk</string>
-    <string name="call_ptt_talking">TALKING</string>
-    <string name="call_ptt_hold_to_talk_multiline">HOLD\nTO TALK</string>
-
-    <!-- TCP wizard -->
-    <string name="tcp_wizard_choose_server">Choose Server</string>
-    <string name="tcp_wizard_review_settings">Review Settings</string>
-    <string name="tcp_wizard_default_connection_name">TCP Connection</string>
-
-    <!-- Interface stats -->
-    <string name="interface_stats_title">Interface Stats</string>
-    <string name="interface_stats_edit_configuration">Edit Configuration</string>
-    <string name="interface_stats_status">Status</string>
-    <string name="interface_stats_enabled">ENABLED</string>
-    <string name="interface_stats_disabled">DISABLED</string>
-    <string name="interface_stats_online">ONLINE</string>
-    <string name="interface_stats_connecting">CONNECTING</string>
-    <string name="interface_stats_offline">OFFLINE</string>
-    <string name="interface_stats_usb_permission_required">USB permission required</string>
-    <string name="interface_stats_usb_permission_message">Grant permission to connect to the USB device</string>
-    <string name="interface_stats_grant_usb_permission">Grant USB Permission</string>
-    <string name="interface_stats_connection">Connection</string>
-    <string name="interface_stats_type">Type</string>
-    <string name="interface_stats_host">Host</string>
-    <string name="interface_stats_usb_device">USB Device</string>
-    <string name="interface_stats_device">Device</string>
-    <string name="interface_stats_server">Server</string>
-    <string name="interface_stats_listen_port">Listen Port</string>
-    <string name="interface_stats_radio_settings">Radio Settings</string>
-    <string name="interface_stats_frequency">Frequency</string>
-    <string name="interface_stats_bandwidth">Bandwidth</string>
-    <string name="interface_stats_spreading_factor">Spreading Factor</string>
-    <string name="interface_stats_coding_rate">Coding Rate</string>
-    <string name="interface_stats_tx_power">TX Power</string>
-    <string name="interface_stats_mode">Mode</string>
-    <string name="interface_stats_traffic_statistics">Traffic Statistics</string>
-    <string name="interface_stats_received">Received</string>
-    <string name="interface_stats_transmitted">Transmitted</string>
-    <string name="interface_stats_rssi">RSSI</string>
-    <string name="interface_stats_snr">SNR</string>
+  <string name="my_identity_scan_qr_to_add_me">Scan this QR code to add me as a contact</string>
+  <string name="my_identity_copy_identity_link">Copy Identity Link</string>
+  <string name="my_identity_destination_hash">Destination Hash</string>
+  <!-- APK sharing screen -->
+  <string name="apk_sharing_title">Share Columba</string>
+  <string name="apk_sharing_share_chooser_title">Share Columba APK</string>
+  <string name="apk_sharing_via_hotspot">Share via Hotspot</string>
+  <string name="apk_sharing_via_wifi">Share via WiFi</string>
+  <string name="apk_sharing_starting_hotspot">Starting WiFi hotspot...</string>
+  <string name="apk_sharing_hotspot_step_connect">Step 1: Scan to connect to hotspot</string>
+  <string name="apk_sharing_hotspot_step_download">Step 2: Scan to download Columba</string>
+  <string name="apk_sharing_scan_qr_instruction">Have the other person scan this QR code</string>
+  <string name="apk_sharing_apk_size_mb">APK size: %1$.1f MB</string>
+  <string name="apk_sharing_starting_server">Starting sharing server...</string>
+  <string name="apk_sharing_hotspot_fallback">No WiFi? Share by creating a temporary hotspot instead.</string>
+  <string name="apk_sharing_start_hotspot">Start Hotspot</string>
+  <string name="apk_sharing_permission_needed">Permission needed to create a WiFi hotspot for sharing.</string>
+  <string name="apk_sharing_network_with_password">Network: %1$s  /  Password: %2$s</string>
+  <string name="apk_sharing_network_without_password">Network: %1$s  (no password)</string>
+  <string name="apk_sharing_instructions_title">Instructions</string>
+  <string name="apk_sharing_hotspot_instruction_1">On the other phone, scan the first QR code to connect to the hotspot</string>
+  <string name="apk_sharing_hotspot_instruction_2">Once connected, scan the second QR code to open the download page</string>
+  <string name="apk_sharing_hotspot_instruction_3">Download and install the APK</string>
+  <string name="apk_sharing_wifi_instruction_1">Both phones must be on the same WiFi network</string>
+  <string name="apk_sharing_wifi_instruction_2">Open the camera app on the other phone and scan the QR code above</string>
+  <string name="apk_sharing_wifi_instruction_3">Tap the link to open it in a browser</string>
+  <string name="apk_sharing_wifi_instruction_4">Download and install the APK</string>
+  <string name="apk_sharing_alternative_title">Or share another way</string>
+  <string name="apk_sharing_alternative_subtitle">Use Bluetooth, Nearby Share, or any other installed sharing app.</string>
+  <string name="apk_sharing_share_apk_via">Share APK via...</string>
+  <!-- RNode flasher screen -->
+  <string name="rnode_flasher_title">RNode Flasher</string>
+  <string name="rnode_flasher_configure_transport">Configure Transport</string>
+  <string name="rnode_flasher_detecting_device">Detecting Device</string>
+  <string name="rnode_flasher_select_firmware">Select Firmware</string>
+  <string name="rnode_flasher_flashing">Flashing...</string>
+  <string name="rnode_flasher_complete">Complete</string>
+  <string name="rnode_flasher_exit_title">Exit Flasher?</string>
+  <string name="rnode_flasher_exit_message">Are you sure you want to exit? Any unsaved progress will be lost.</string>
+  <string name="rnode_flasher_start_flashing">Start Flashing</string>
+  <!-- Onboarding -->
+  <string name="onboarding_columba_content_description">Columba</string>
+  <string name="onboarding_welcome_title">Welcome to Columba</string>
+  <string name="onboarding_welcome_subtitle">A private messenger that requires:</string>
+  <string name="onboarding_privacy_no_phone">No phone number</string>
+  <string name="onboarding_privacy_no_email">No email address</string>
+  <string name="onboarding_privacy_no_signup">No sign-up or accounts</string>
+  <string name="onboarding_identity_explanation">Your identity is generated and stored securely on your device. You control it completely.</string>
+  <string name="onboarding_get_started">Get Started</string>
+  <string name="onboarding_restore_from_backup">Restore from backup</string>
+  <string name="onboarding_identity_title">Your Identity</string>
+  <string name="onboarding_identity_subtitle">Choose a display name others will see:</string>
+  <string name="onboarding_identity_display_name_label">Display Name</string>
+  <string name="onboarding_identity_anonymous_peer">Anonymous Peer</string>
+  <string name="onboarding_identity_helper">You can change this anytime, or create multiple identities for different contexts.</string>
+  <string name="onboarding_connectivity_title">How will you connect?</string>
+  <string name="onboarding_connectivity_subtitle">Select the networks you\'d like to use:</string>
+  <string name="onboarding_connectivity_permissions_denied">Permissions denied</string>
+  <string name="onboarding_connectivity_permissions_granted">Permissions granted</string>
+  <string name="onboarding_connectivity_helper">You can configure these later in Settings</string>
+  <string name="onboarding_complete_title">You\'re all set!</string>
+  <string name="onboarding_complete_summary">Summary</string>
+  <string name="onboarding_complete_identity_label">Identity</string>
+  <string name="onboarding_complete_networks_label">Networks</string>
+  <string name="onboarding_complete_none_selected">None selected</string>
+  <string name="onboarding_complete_notifications_label">Notifications</string>
+  <string name="onboarding_complete_battery_label">Battery</string>
+  <string name="onboarding_complete_battery_unrestricted">Unrestricted</string>
+  <string name="onboarding_complete_battery_restricted">Restricted</string>
+  <string name="onboarding_complete_show_qr_code">Show QR Code</string>
+  <string name="onboarding_complete_qr_hint">Share your identity QR code to let others add you as a contact.</string>
+  <string name="onboarding_complete_configure_lora">Configure LoRa Radio</string>
+  <string name="onboarding_complete_start_messaging">Start Messaging</string>
+  <string name="onboarding_complete_share_identity">Share identity</string>
+  <string name="onboarding_complete_share_text">Add me on Reticulum:\n\n%1$s\n%2$s</string>
+  <string name="welcome_screen_subtitle">Secure mesh messaging over Reticulum</string>
+  <string name="welcome_screen_choose_display_name">Choose Your Display Name</string>
+  <string name="welcome_screen_display_name_description">This name will be visible to other peers when you send messages and announces.</string>
+  <string name="welcome_screen_continue_as_anonymous">Continue as Anonymous Peer</string>
+  <string name="welcome_screen_footer">You can change this later in Settings</string>
+  <!-- Saved peers -->
+  <string name="saved_peers_title">Saved Peers</string>
+  <string name="saved_peers_search_placeholder">Search by name or hash...</string>
+  <string name="saved_peers_empty_title">No saved peers yet</string>
+  <string name="saved_peers_empty_subtitle">Tap the star icon on any peer in the Announce Stream to save them here for quick access.</string>
+  <plurals name="saved_peers_count_saved">
+    <item quantity="one">%d peer saved</item>
+    <item quantity="other">%d peers saved</item>
+  </plurals>
+  <!-- Call screens -->
+  <string name="call_status_connecting">Connecting...</string>
+  <string name="call_status_ringing">Ringing...</string>
+  <string name="call_status_transmitting">Transmitting</string>
+  <string name="call_status_listening">Listening</string>
+  <string name="call_status_line_busy">Line Busy</string>
+  <string name="call_status_rejected">Call Rejected</string>
+  <string name="call_status_ended">Call Ended</string>
+  <string name="call_status_calling">Calling...</string>
+  <string name="call_control_unmute">Unmute</string>
+  <string name="call_control_mute">Mute</string>
+  <string name="call_control_ptt_on">PTT On</string>
+  <string name="call_control_ptt">PTT</string>
+  <string name="call_control_earpiece">Earpiece</string>
+  <string name="call_control_speaker">Speaker</string>
+  <string name="call_end_content_description">End call</string>
+  <string name="call_end">End Call</string>
+  <string name="call_ptt_hold_to_talk">Hold to talk</string>
+  <string name="call_ptt_talking">TALKING</string>
+  <string name="call_ptt_hold_to_talk_multiline">HOLD\nTO TALK</string>
+  <!-- TCP wizard -->
+  <string name="tcp_wizard_choose_server">Choose Server</string>
+  <string name="tcp_wizard_review_settings">Review Settings</string>
+  <string name="tcp_wizard_default_connection_name">TCP Connection</string>
+  <!-- Interface stats -->
+  <string name="interface_stats_title">Interface Stats</string>
+  <string name="interface_stats_edit_configuration">Edit Configuration</string>
+  <string name="interface_stats_status">Status</string>
+  <string name="interface_stats_enabled">ENABLED</string>
+  <string name="interface_stats_disabled">DISABLED</string>
+  <string name="interface_stats_online">ONLINE</string>
+  <string name="interface_stats_connecting">CONNECTING</string>
+  <string name="interface_stats_offline">OFFLINE</string>
+  <string name="interface_stats_usb_permission_required">USB permission required</string>
+  <string name="interface_stats_usb_permission_message">Grant permission to connect to the USB device</string>
+  <string name="interface_stats_grant_usb_permission">Grant USB Permission</string>
+  <string name="interface_stats_connection">Connection</string>
+  <string name="interface_stats_type">Type</string>
+  <string name="interface_stats_host">Host</string>
+  <string name="interface_stats_usb_device">USB Device</string>
+  <string name="interface_stats_device">Device</string>
+  <string name="interface_stats_server">Server</string>
+  <string name="interface_stats_listen_port">Listen Port</string>
+  <string name="interface_stats_radio_settings">Radio Settings</string>
+  <string name="interface_stats_frequency">Frequency</string>
+  <string name="interface_stats_bandwidth">Bandwidth</string>
+  <string name="interface_stats_spreading_factor">Spreading Factor</string>
+  <string name="interface_stats_coding_rate">Coding Rate</string>
+  <string name="interface_stats_tx_power">TX Power</string>
+  <string name="interface_stats_mode">Mode</string>
+  <string name="interface_stats_traffic_statistics">Traffic Statistics</string>
+  <string name="interface_stats_received">Received</string>
+  <string name="interface_stats_transmitted">Transmitted</string>
+  <string name="interface_stats_rssi">RSSI</string>
+  <string name="interface_stats_snr">SNR</string>
 </resources>
