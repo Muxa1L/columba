@@ -140,6 +140,88 @@
     <string name="common_skip">Пропустить</string>
     <string name="common_enabled">Включено</string>
     <string name="common_disabled">Выключено</string>
+    <string name="common_delete">Удалить</string>
+    <string name="common_edit">Изменить</string>
+    <string name="common_apply">Применить</string>
+    <string name="common_disable">Отключить</string>
+    <string name="common_more_options">Дополнительные параметры</string>
+    <string name="common_grant_permission">Предоставить разрешение</string>
+    <string name="common_open_settings">Открыть настройки</string>
+
+    <!-- Blocked users screen -->
+    <string name="blocked_users_title">Заблокированные пользователи</string>
+    <string name="blocked_users_empty">Заблокированных пользователей нет</string>
+    <string name="blocked_users_unblock_title">Разблокировать %1$s?</string>
+    <string name="blocked_users_unblock_message">Этот пользователь снова сможет отправлять вам сообщения. Диалог снова появится, если он не был удален.</string>
+    <string name="blocked_users_unblocked_toast">%1$s разблокирован</string>
+    <string name="blocked_users_blocked_on">Заблокирован %1$s</string>
+    <string name="blocked_users_blackhole_label">Blackhole (не ретранслировать объявления)</string>
+    <string name="blocked_users_unblock">Разблокировать</string>
+
+    <!-- Theme management screen -->
+    <string name="theme_management_title">Пользовательские темы</string>
+    <string name="theme_management_create_theme_cd">Создать тему</string>
+    <string name="theme_management_empty_title">Пользовательских тем пока нет</string>
+    <string name="theme_management_empty_subtitle">Создайте свою первую тему</string>
+    <string name="theme_management_delete_title">Удалить тему?</string>
+    <string name="theme_management_delete_message">Вы уверены, что хотите удалить &quot;%1$s&quot;? Это действие нельзя отменить.</string>
+    <string name="theme_management_apply_theme">Применить тему</string>
+
+    <!-- Notification settings screen -->
+    <string name="notification_settings_title">Настройки уведомлений</string>
+    <string name="notification_settings_notifications_cd">Уведомления</string>
+    <string name="notification_settings_enable_title">Включить уведомления</string>
+    <string name="notification_settings_enabled_description">Вы будете получать уведомления в соответствии с выбранными ниже параметрами</string>
+    <string name="notification_settings_disabled_description">Все уведомления отключены</string>
+    <string name="notification_settings_types_title">Типы уведомлений</string>
+    <string name="notification_settings_types_subtitle">Выберите события, о которых нужно сообщать</string>
+    <string name="notification_settings_received_message_title">Получено сообщение</string>
+    <string name="notification_settings_received_message_description">Уведомлять о получении нового сообщения</string>
+    <string name="notification_settings_saved_peer_title">Сообщение от сохраненного узла</string>
+    <string name="notification_settings_saved_peer_description">Уведомлять о сообщении от сохраненного узла</string>
+    <string name="notification_settings_heard_announce_title">Обнаружено объявление</string>
+    <string name="notification_settings_heard_announce_description">Уведомлять, когда вы слышите новое объявление от узла</string>
+    <string name="notification_settings_direct_only_title">Только прямые</string>
+    <string name="notification_settings_direct_only_description">Уведомлять только о прямых объявлениях в один переход от ближайших узлов</string>
+    <string name="notification_settings_exclude_tcp_title">Исключить TCP</string>
+    <string name="notification_settings_exclude_tcp_description">Пропускать объявления, полученные через TCP интерфейсы</string>
+    <string name="notification_settings_ble_connected_title">Подключен BLE узел</string>
+    <string name="notification_settings_ble_connected_description">Уведомлять, когда узел Bluetooth LE подключается</string>
+    <string name="notification_settings_ble_disconnected_title">Отключен BLE узел</string>
+    <string name="notification_settings_ble_disconnected_description">Уведомлять, когда узел Bluetooth LE отключается</string>
+
+    <!-- USB device action screen -->
+    <string name="usb_device_action_title">USB устройство подключено</string>
+    <string name="usb_device_action_prompt">Что вы хотите сделать?</string>
+    <string name="usb_device_action_disable_transport_title">Отключить режим транспорта?</string>
+    <string name="usb_device_action_disable_transport_message">Это очистит сохраненную радиоконфигурацию и перезагрузит устройство. После этого устройство вернется в обычный режим под управлением хоста.</string>
+    <string name="usb_device_action_disabling_title">Отключение транспорта</string>
+    <string name="usb_device_action_disabling_message">Очистка конфигурации и перезагрузка устройства...</string>
+    <string name="usb_device_action_disabled_title">Транспорт отключен</string>
+    <string name="usb_device_action_disabled_message">Режим транспорта отключен. Устройство перезапустится в обычном режиме.</string>
+    <string name="usb_device_action_disable_failed_message">Не удалось отключить режим транспорта. Убедитесь, что устройство подключено, и попробуйте снова.</string>
+    <string name="usb_device_action_flash_firmware_title">Прошить устройство</string>
+    <string name="usb_device_action_flash_firmware_description">Обновить или установить прошивку RNode на этом устройстве</string>
+    <string name="usb_device_action_configure_rnode_title">Настроить RNode</string>
+    <string name="usb_device_action_configure_rnode_description">Настроить это устройство как интерфейс Reticulum</string>
+    <string name="usb_device_action_configure_transport_title">Настроить транспорт</string>
+    <string name="usb_device_action_configure_transport_description">Настроить параметры радио для автономного транспортного режима</string>
+    <string name="usb_device_action_disable_transport_card_title">Отключить транспорт</string>
+    <string name="usb_device_action_disable_transport_card_description">Очистить сохраненную конфигурацию и вернуться в обычный режим</string>
+
+    <!-- QR scanner screen -->
+    <string name="qr_scanner_title">Сканировать QR код</string>
+    <string name="qr_scanner_turn_off_flash">Выключить вспышку</string>
+    <string name="qr_scanner_turn_on_flash">Включить вспышку</string>
+    <string name="qr_scanner_invalid_format">Неверный формат QR кода</string>
+    <string name="qr_scanner_instruction">Наведите камеру на QR код
+Сканирование начнется автоматически</string>
+    <string name="qr_scanner_contact_exists_cd">Контакт уже существует</string>
+    <string name="qr_scanner_contact_exists_title">Контакт уже добавлен</string>
+    <string name="qr_scanner_contact_exists_message_named">Этот контакт уже есть в вашем списке контактов как &quot;%1$s&quot;.</string>
+    <string name="qr_scanner_contact_exists_message_unnamed">Этот контакт уже есть в вашем списке контактов.</string>
+    <string name="qr_scanner_camera_permission_denied">Доступ к камере запрещен</string>
+    <string name="qr_scanner_camera_permission_required">Требуется доступ к камере</string>
 
     <!-- Onboarding -->
     <string name="onboarding_columba_content_description">Columba</string>

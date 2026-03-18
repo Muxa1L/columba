@@ -65,6 +65,7 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -76,6 +77,7 @@ import com.google.zxing.DecodeHintType
 import com.google.zxing.MultiFormatReader
 import com.google.zxing.PlanarYUVLuminanceSource
 import com.google.zxing.common.HybridBinarizer
+import com.lxmf.messenger.R
 import com.lxmf.messenger.ui.components.AddContactConfirmationDialog
 import com.lxmf.messenger.util.CameraPermissionManager
 import com.lxmf.messenger.viewmodel.ContactsViewModel
@@ -139,12 +141,12 @@ fun QrScannerScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Scan QR Code") },
+                title = { Text(stringResource(R.string.qr_scanner_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(R.string.common_back),
                         )
                     }
                 },
@@ -153,7 +155,12 @@ fun QrScannerScreen(
                         IconButton(onClick = { torchEnabled = !torchEnabled }) {
                             Icon(
                                 imageVector = if (torchEnabled) Icons.Default.FlashOn else Icons.Default.FlashOff,
-                                contentDescription = if (torchEnabled) "Turn off flash" else "Turn on flash",
+                                contentDescription =
+                                    if (torchEnabled) {
+                                        stringResource(R.string.qr_scanner_turn_off_flash)
+                                    } else {
+                                        stringResource(R.string.qr_scanner_turn_on_flash)
+                                    },
                             )
                         }
                     }
@@ -220,7 +227,7 @@ fun QrScannerScreen(
                                         }
                                     }
                                 } else {
-                                    errorMessage = "Invalid QR code format"
+                                    errorMessage = context.getString(R.string.qr_scanner_invalid_format)
                                 }
                             }
                         },
@@ -261,7 +268,7 @@ fun QrScannerScreen(
                                         ),
                                 ) {
                                     Text(
-                                        text = "Point camera at QR code\nIt will scan automatically",
+                                        text = stringResource(R.string.qr_scanner_instruction),
                                         style = MaterialTheme.typography.bodyMedium,
                                         modifier = Modifier.padding(16.dp),
                                         textAlign = TextAlign.Center,
@@ -311,13 +318,13 @@ fun QrScannerScreen(
                     icon = {
                         Icon(
                             imageVector = Icons.Default.CheckCircle,
-                            contentDescription = "Contact Exists",
+                            contentDescription = stringResource(R.string.qr_scanner_contact_exists_cd),
                             tint = MaterialTheme.colorScheme.primary,
                         )
                     },
                     title = {
                         Text(
-                            text = "Contact Already Added",
+                            text = stringResource(R.string.qr_scanner_contact_exists_title),
                             style = MaterialTheme.typography.headlineSmall,
                             textAlign = TextAlign.Center,
                         )
@@ -326,9 +333,9 @@ fun QrScannerScreen(
                         Text(
                             text =
                                 if (existingContactName != null) {
-                                    "This contact is already in your contacts list as \"$existingContactName\"."
+                                    stringResource(R.string.qr_scanner_contact_exists_message_named, existingContactName!!)
                                 } else {
-                                    "This contact is already in your contacts list."
+                                    stringResource(R.string.qr_scanner_contact_exists_message_unnamed)
                                 },
                             style = MaterialTheme.typography.bodyMedium,
                             textAlign = TextAlign.Center,
@@ -344,7 +351,7 @@ fun QrScannerScreen(
                                 onBackClick()
                             },
                         ) {
-                            Text("OK")
+                            Text(stringResource(R.string.common_ok))
                         }
                     },
                 )
@@ -368,7 +375,12 @@ private fun PermissionRequiredContent(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = if (showDenied) "Camera Permission Denied" else "Camera Permission Required",
+            text =
+                if (showDenied) {
+                    stringResource(R.string.qr_scanner_camera_permission_denied)
+                } else {
+                    stringResource(R.string.qr_scanner_camera_permission_required)
+                },
             style = MaterialTheme.typography.headlineSmall,
             textAlign = TextAlign.Center,
         )
@@ -388,14 +400,14 @@ private fun PermissionRequiredContent(
                 onClick = onOpenSettings,
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Text("Open Settings")
+                Text(stringResource(R.string.common_open_settings))
             }
         } else {
             Button(
                 onClick = onRequestPermission,
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Text("Grant Permission")
+                Text(stringResource(R.string.common_grant_permission))
             }
         }
     }

@@ -36,9 +36,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.db.entity.BlockedPeerEntity
 import com.lxmf.messenger.viewmodel.BlockedUsersViewModel
 import java.text.SimpleDateFormat
@@ -59,12 +61,12 @@ fun BlockedUsersScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Blocked Users") },
+                title = { Text(stringResource(R.string.blocked_users_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(R.string.common_back),
                         )
                     }
                 },
@@ -87,7 +89,7 @@ fun BlockedUsersScreen(
                         modifier = Modifier.padding(bottom = 8.dp),
                     )
                     Text(
-                        text = "No blocked users",
+                        text = stringResource(R.string.blocked_users_empty),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -116,11 +118,13 @@ fun BlockedUsersScreen(
 
         // Unblock confirmation dialog
         peerToUnblock?.let { peer ->
+            val peerName = peer.displayName ?: peer.peerHash.take(16)
+            val unblockToastMessage = stringResource(R.string.blocked_users_unblocked_toast, peerName)
             AlertDialog(
                 onDismissRequest = { peerToUnblock = null },
-                title = { Text("Unblock ${peer.displayName ?: peer.peerHash.take(16)}?") },
+                title = { Text(stringResource(R.string.blocked_users_unblock_title, peerName)) },
                 text = {
-                    Text("They will be able to send you messages again. Their conversation will reappear if it wasn't deleted.")
+                    Text(stringResource(R.string.blocked_users_unblock_message))
                 },
                 confirmButton = {
                     TextButton(
@@ -130,17 +134,17 @@ fun BlockedUsersScreen(
                             Toast
                                 .makeText(
                                     context,
-                                    "Unblocked ${peer.displayName ?: peer.peerHash.take(16)}",
+                                    unblockToastMessage,
                                     Toast.LENGTH_SHORT,
                                 ).show()
                         },
                     ) {
-                        Text("Unblock")
+                        Text(stringResource(R.string.blocked_users_unblock))
                     }
                 },
                 dismissButton = {
                     TextButton(onClick = { peerToUnblock = null }) {
-                        Text("Cancel")
+                        Text(stringResource(R.string.common_cancel))
                     }
                 },
             )
@@ -155,6 +159,8 @@ private fun BlockedPeerCard(
     onToggleBlackhole: () -> Unit,
 ) {
     val dateFormat = remember { SimpleDateFormat("MMM d, yyyy", Locale.getDefault()) }
+    val blockedOnText = stringResource(R.string.blocked_users_blocked_on, dateFormat.format(Date(peer.blockedTimestamp)))
+    val blackholeLabel = stringResource(R.string.blocked_users_blackhole_label)
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -180,7 +186,7 @@ private fun BlockedPeerCard(
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "Blocked ${dateFormat.format(Date(peer.blockedTimestamp))}",
+                    text = blockedOnText,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -191,7 +197,7 @@ private fun BlockedPeerCard(
                         modifier = Modifier.padding(end = 8.dp),
                     )
                     Text(
-                        text = "Blackhole (don't relay announces)",
+                        text = blackholeLabel,
                         style = MaterialTheme.typography.bodySmall,
                         color =
                             if (peer.isBlackholeEnabled) {
@@ -210,7 +216,7 @@ private fun BlockedPeerCard(
                         contentColor = MaterialTheme.colorScheme.primary,
                     ),
             ) {
-                Text("Unblock")
+                Text(stringResource(R.string.blocked_users_unblock))
             }
         }
     }

@@ -134,6 +134,88 @@
     <string name="common_skip">Skip</string>
     <string name="common_enabled">Enabled</string>
     <string name="common_disabled">Disabled</string>
+    <string name="common_delete">Delete</string>
+    <string name="common_edit">Edit</string>
+    <string name="common_apply">Apply</string>
+    <string name="common_disable">Disable</string>
+    <string name="common_more_options">More options</string>
+    <string name="common_grant_permission">Grant Permission</string>
+    <string name="common_open_settings">Open Settings</string>
+
+    <!-- Blocked users screen -->
+    <string name="blocked_users_title">Blocked Users</string>
+    <string name="blocked_users_empty">No blocked users</string>
+    <string name="blocked_users_unblock_title">Unblock %1$s?</string>
+    <string name="blocked_users_unblock_message">They will be able to send you messages again. Their conversation will reappear if it was not deleted.</string>
+    <string name="blocked_users_unblocked_toast">Unblocked %1$s</string>
+    <string name="blocked_users_blocked_on">Blocked %1$s</string>
+    <string name="blocked_users_blackhole_label">Blackhole (do not relay announces)</string>
+    <string name="blocked_users_unblock">Unblock</string>
+
+    <!-- Theme management screen -->
+    <string name="theme_management_title">Custom Themes</string>
+    <string name="theme_management_create_theme_cd">Create Theme</string>
+    <string name="theme_management_empty_title">No custom themes yet</string>
+    <string name="theme_management_empty_subtitle">Create your first theme</string>
+    <string name="theme_management_delete_title">Delete Theme?</string>
+    <string name="theme_management_delete_message">Are you sure you want to delete &quot;%1$s&quot;? This action cannot be undone.</string>
+    <string name="theme_management_apply_theme">Apply Theme</string>
+
+    <!-- Notification settings screen -->
+    <string name="notification_settings_title">Notification Settings</string>
+    <string name="notification_settings_notifications_cd">Notifications</string>
+    <string name="notification_settings_enable_title">Enable Notifications</string>
+    <string name="notification_settings_enabled_description">You will receive notifications based on your preferences below</string>
+    <string name="notification_settings_disabled_description">All notifications are disabled</string>
+    <string name="notification_settings_types_title">Notification Types</string>
+    <string name="notification_settings_types_subtitle">Select which events you want to be notified about</string>
+    <string name="notification_settings_received_message_title">Received Message</string>
+    <string name="notification_settings_received_message_description">Notify when you receive a new message</string>
+    <string name="notification_settings_saved_peer_title">Message from Saved Peer</string>
+    <string name="notification_settings_saved_peer_description">Notify when you receive a message from a saved peer</string>
+    <string name="notification_settings_heard_announce_title">Heard Announce</string>
+    <string name="notification_settings_heard_announce_description">Notify when you hear a new announce from a peer</string>
+    <string name="notification_settings_direct_only_title">Direct Only</string>
+    <string name="notification_settings_direct_only_description">Only notify for direct (1-hop) announces from nearby peers</string>
+    <string name="notification_settings_exclude_tcp_title">Exclude TCP</string>
+    <string name="notification_settings_exclude_tcp_description">Skip announces received via TCP interfaces</string>
+    <string name="notification_settings_ble_connected_title">BLE Peer Connected</string>
+    <string name="notification_settings_ble_connected_description">Notify when a Bluetooth LE peer connects</string>
+    <string name="notification_settings_ble_disconnected_title">BLE Peer Disconnected</string>
+    <string name="notification_settings_ble_disconnected_description">Notify when a Bluetooth LE peer disconnects</string>
+
+    <!-- USB device action screen -->
+    <string name="usb_device_action_title">USB Device Connected</string>
+    <string name="usb_device_action_prompt">What would you like to do?</string>
+    <string name="usb_device_action_disable_transport_title">Disable Transport Mode?</string>
+    <string name="usb_device_action_disable_transport_message">This will clear the saved radio configuration and reset the device. It will return to normal host-controlled mode.</string>
+    <string name="usb_device_action_disabling_title">Disabling Transport</string>
+    <string name="usb_device_action_disabling_message">Clearing configuration and resetting device...</string>
+    <string name="usb_device_action_disabled_title">Transport Disabled</string>
+    <string name="usb_device_action_disabled_message">Transport mode has been disabled. The device will restart in normal mode.</string>
+    <string name="usb_device_action_disable_failed_message">Failed to disable transport mode. Make sure the device is connected and try again.</string>
+    <string name="usb_device_action_flash_firmware_title">Flash Firmware</string>
+    <string name="usb_device_action_flash_firmware_description">Update or install RNode firmware on this device</string>
+    <string name="usb_device_action_configure_rnode_title">Configure RNode</string>
+    <string name="usb_device_action_configure_rnode_description">Set up this device as a Reticulum interface</string>
+    <string name="usb_device_action_configure_transport_title">Configure Transport</string>
+    <string name="usb_device_action_configure_transport_description">Set radio parameters for standalone transport mode</string>
+    <string name="usb_device_action_disable_transport_card_title">Disable Transport</string>
+    <string name="usb_device_action_disable_transport_card_description">Clear saved config and return to normal mode</string>
+
+    <!-- QR scanner screen -->
+    <string name="qr_scanner_title">Scan QR Code</string>
+    <string name="qr_scanner_turn_off_flash">Turn off flash</string>
+    <string name="qr_scanner_turn_on_flash">Turn on flash</string>
+    <string name="qr_scanner_invalid_format">Invalid QR code format</string>
+    <string name="qr_scanner_instruction">Point camera at QR code
+It will scan automatically</string>
+    <string name="qr_scanner_contact_exists_cd">Contact Exists</string>
+    <string name="qr_scanner_contact_exists_title">Contact Already Added</string>
+    <string name="qr_scanner_contact_exists_message_named">This contact is already in your contacts list as &quot;%1$s&quot;.</string>
+    <string name="qr_scanner_contact_exists_message_unnamed">This contact is already in your contacts list.</string>
+    <string name="qr_scanner_camera_permission_denied">Camera Permission Denied</string>
+    <string name="qr_scanner_camera_permission_required">Camera Permission Required</string>
 
     <!-- Onboarding -->
     <string name="onboarding_columba_content_description">Columba</string>
