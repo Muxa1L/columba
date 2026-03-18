@@ -33,8 +33,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.lxmf.messenger.R
 import com.lxmf.messenger.ui.screens.flasher.components.FlasherStepIndicator
 import com.lxmf.messenger.ui.screens.flasher.steps.DeviceDetectionStep
 import com.lxmf.messenger.ui.screens.flasher.steps.DeviceSelectionStep
@@ -141,12 +143,12 @@ fun RNodeFlasherScreen(
                     Text(
                         when (state.currentStep) {
                             FlasherStep.DEVICE_SELECTION ->
-                                if (tncConfigOnly) "Configure Transport" else "RNode Flasher"
-                            FlasherStep.DEVICE_DETECTION -> "Detecting Device"
-                            FlasherStep.FIRMWARE_SELECTION -> "Select Firmware"
-                            FlasherStep.FLASH_PROGRESS -> "Flashing..."
-                            FlasherStep.TNC_CONFIGURATION -> "Configure Transport"
-                            FlasherStep.COMPLETE -> "Complete"
+                                if (tncConfigOnly) stringResource(R.string.rnode_flasher_configure_transport) else stringResource(R.string.rnode_flasher_title)
+                            FlasherStep.DEVICE_DETECTION -> stringResource(R.string.rnode_flasher_detecting_device)
+                            FlasherStep.FIRMWARE_SELECTION -> stringResource(R.string.rnode_flasher_select_firmware)
+                            FlasherStep.FLASH_PROGRESS -> stringResource(R.string.rnode_flasher_flashing)
+                            FlasherStep.TNC_CONFIGURATION -> stringResource(R.string.rnode_flasher_configure_transport)
+                            FlasherStep.COMPLETE -> stringResource(R.string.rnode_flasher_complete)
                         },
                     )
                 },
@@ -159,7 +161,7 @@ fun RNodeFlasherScreen(
                             IconButton(onClick = onNavigateBack) {
                                 Icon(
                                     Icons.Default.Close,
-                                    contentDescription = "Close",
+                                    contentDescription = stringResource(R.string.common_close),
                                 )
                             }
                         }
@@ -177,7 +179,7 @@ fun RNodeFlasherScreen(
                             ) {
                                 Icon(
                                     Icons.AutoMirrored.Filled.ArrowBack,
-                                    contentDescription = "Back",
+                                    contentDescription = stringResource(R.string.common_back),
                                 )
                             }
                         }
@@ -352,11 +354,11 @@ fun RNodeFlasherScreen(
     state.error?.let { error ->
         AlertDialog(
             onDismissRequest = { viewModel.clearError() },
-            title = { Text("Error") },
+            title = { Text(stringResource(R.string.common_error)) },
             text = { Text(error) },
             confirmButton = {
                 TextButton(onClick = { viewModel.clearError() }) {
-                    Text("OK")
+                    Text(stringResource(R.string.common_ok))
                 }
             },
         )
@@ -366,8 +368,8 @@ fun RNodeFlasherScreen(
     if (showExitConfirmation) {
         AlertDialog(
             onDismissRequest = { showExitConfirmation = false },
-            title = { Text("Exit Flasher?") },
-            text = { Text("Are you sure you want to exit? Any unsaved progress will be lost.") },
+            title = { Text(stringResource(R.string.rnode_flasher_exit_title)) },
+            text = { Text(stringResource(R.string.rnode_flasher_exit_message)) },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -375,12 +377,12 @@ fun RNodeFlasherScreen(
                         onNavigateBack()
                     },
                 ) {
-                    Text("Exit")
+                    Text(stringResource(R.string.common_exit))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showExitConfirmation = false }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.common_cancel))
                 }
             },
         )
@@ -413,10 +415,10 @@ private fun FlasherBottomBar(
         ) {
             Text(
                 when (currentStep) {
-                    FlasherStep.DEVICE_SELECTION -> "Continue"
-                    FlasherStep.DEVICE_DETECTION -> "Continue"
-                    FlasherStep.FIRMWARE_SELECTION -> "Start Flashing"
-                    else -> "Next"
+                    FlasherStep.DEVICE_SELECTION -> stringResource(R.string.common_continue)
+                    FlasherStep.DEVICE_DETECTION -> stringResource(R.string.common_continue)
+                    FlasherStep.FIRMWARE_SELECTION -> stringResource(R.string.rnode_flasher_start_flashing)
+                    else -> stringResource(R.string.common_next)
                 },
             )
         }

@@ -147,6 +147,14 @@
     <string name="common_more_options">Дополнительные параметры</string>
     <string name="common_grant_permission">Предоставить разрешение</string>
     <string name="common_open_settings">Открыть настройки</string>
+    <string name="common_refresh">Обновить</string>
+    <string name="common_retry">Повторить</string>
+    <string name="common_share">Поделиться</string>
+    <string name="common_copy">Копировать</string>
+    <string name="common_close">Закрыть</string>
+    <string name="common_exit">Выйти</string>
+    <string name="common_menu">Меню</string>
+    <string name="common_got_it">Понятно</string>
 
     <!-- Blocked users screen -->
     <string name="blocked_users_title">Заблокированные пользователи</string>
@@ -222,6 +230,176 @@
     <string name="qr_scanner_contact_exists_message_unnamed">Этот контакт уже есть в вашем списке контактов.</string>
     <string name="qr_scanner_camera_permission_denied">Доступ к камере запрещен</string>
     <string name="qr_scanner_camera_permission_required">Требуется доступ к камере</string>
+
+    <!-- BLE connection status screen -->
+    <string name="ble_connections_title">BLE подключения</string>
+    <string name="ble_connections_loading">Загрузка подключений...</string>
+    <string name="ble_connections_bluetooth_off_title">Bluetooth выключен</string>
+    <string name="ble_connections_bluetooth_off_subtitle">Включите Bluetooth, чтобы увидеть BLE подключения</string>
+    <string name="ble_connections_turn_on">Включить</string>
+    <string name="ble_connections_bluetooth_info">Включите Bluetooth, чтобы находить и подключать ближайшие BLE узлы.</string>
+    <string name="ble_connections_bluetooth_on_title">Bluetooth включен</string>
+    <string name="ble_connections_no_active">Нет активных подключений</string>
+    <string name="ble_connections_peers_hint">BLE узлы появятся здесь после подключения</string>
+    <string name="ble_connections_bluetooth_settings">Настройки Bluetooth</string>
+    <string name="ble_connections_error_loading">Ошибка загрузки подключений</string>
+    <string name="ble_connections_total">Всего</string>
+    <string name="ble_connections_central">Центральный</string>
+    <string name="ble_connections_peripheral">Периферийный</string>
+    <string name="ble_connections_mac_address">MAC адрес</string>
+    <string name="ble_connections_mtu">MTU</string>
+    <string name="ble_connections_mtu_value">%1$d байт</string>
+    <string name="ble_connections_connected">Подключено</string>
+    <string name="ble_connections_first_seen">Первое появление</string>
+    <string name="ble_connections_last_seen">Последнее появление</string>
+    <string name="ble_connections_performance">Производительность</string>
+    <string name="ble_connections_data_sent">Отправлено данных</string>
+    <string name="ble_connections_data_received">Получено данных</string>
+    <string name="ble_connections_success_rate">Успешность</string>
+    <string name="ble_connections_disconnect">Отключить</string>
+    <string name="ble_connections_type_both">Оба</string>
+    <string name="ble_connections_type_central">Центральный</string>
+    <string name="ble_connections_type_peripheral">Периферийный</string>
+    <string name="ble_connections_not_available">Н/Д</string>
+    <string name="ble_connections_not_available_symbol">—</string>
+    <string name="ble_connections_signal_excellent">Отличный</string>
+    <string name="ble_connections_signal_good">Хороший</string>
+    <string name="ble_connections_signal_fair">Средний</string>
+    <string name="ble_connections_signal_poor">Слабый</string>
+    <string name="ble_connections_signal_strength">Уровень сигнала</string>
+    <string name="ble_connections_rssi_dbm">%1$d dBm</string>
+    <string name="ble_connections_duration_days_hours">%1$dд %2$dч</string>
+    <string name="ble_connections_duration_hours_minutes">%1$dч %2$dм</string>
+    <string name="ble_connections_duration_minutes_seconds">%1$dм %2$dс</string>
+    <string name="ble_connections_duration_seconds">%1$dс</string>
+    <string name="ble_connections_size_mb">%1$.2f МБ</string>
+    <string name="ble_connections_size_kb">%1$.2f КБ</string>
+    <string name="ble_connections_size_bytes">%1$d Б</string>
+
+    <!-- NomadNet browser screen -->
+    <string name="nomadnet_browser_title">Браузер NomadNet</string>
+    <string name="nomadnet_browser_identify_title">Представиться узлу</string>
+    <string name="nomadnet_browser_identify_message">Это раскроет вашу личность оператору узла. После представления страница обновится.</string>
+    <string name="nomadnet_browser_identify_action">Представиться</string>
+    <string name="nomadnet_browser_identified">Личность раскрыта</string>
+    <string name="nomadnet_browser_identify_to_node">Представиться узлу</string>
+    <string name="nomadnet_browser_copy_url">Копировать URL</string>
+    <string name="nomadnet_browser_share_chooser_title">Поделиться URL NomadNet</string>
+    <string name="nomadnet_browser_render_monospace_scroll">Моноширинный (прокрутка)</string>
+    <string name="nomadnet_browser_render_monospace_zoom">Моноширинный (масштаб)</string>
+    <string name="nomadnet_browser_render_proportional_wrap">Пропорциональный (перенос)</string>
+    <string name="nomadnet_browser_failed_to_load_page">Не удалось загрузить страницу</string>
+
+    <!-- My identity screen -->
+    <string name="my_identity_title">Моя личность</string>
+    <string name="my_identity_display_name_title">Отображаемое имя и личность</string>
+    <string name="my_identity_display_name_description">Ваше отображаемое имя показывается другим узлам, когда вы отправляете объявления и сообщения.</string>
+    <string name="my_identity_current_display_name">Текущее: %1$s</string>
+    <string name="my_identity_default_display_name">По умолчанию: %1$s</string>
+    <string name="my_identity_custom_display_name_label">Пользовательское отображаемое имя</string>
+    <string name="my_identity_custom_display_name_placeholder">Оставьте пустым, чтобы использовать значение по умолчанию</string>
+    <string name="my_identity_view_qr">Показать QR</string>
+    <string name="my_identity_display_name_saved">Отображаемое имя успешно сохранено</string>
+    <string name="my_identity_identity_hash">Хеш личности</string>
+    <string name="my_identity_profile_icon_title">Иконка профиля</string>
+    <string name="my_identity_profile_icon_description">Настройте иконку профиля, которую будут видеть другие. Это совместимо с Sideband и другими приложениями Reticulum.</string>
+    <string name="my_identity_custom_icon">Пользовательская иконка: %1$s</string>
+    <string name="my_identity_using_identicon">Используется идентикон</string>
+    <string name="my_identity_change_custom_icon_hint">Нажмите, чтобы изменить пользовательскую иконку</string>
+    <string name="my_identity_identicon_hint">Создано автоматически на основе вашей личности</string>
+    <string name="my_identity_change_icon">Изменить иконку</string>
+    <string name="my_identity_choose_custom_icon">Выбрать пользовательскую иконку</string>
+    <string name="my_identity_share_chooser_title">Поделиться личностью</string>
+    <string name="my_identity_share_identity_title">Поделиться своей личностью</string>
+    <string name="my_identity_scan_to_add_contact">Отсканируйте, чтобы добавить %1$s в контакты</string>
+    <string name="my_identity_generating_qr_code">Создание QR кода...</string>
+    <string name="my_identity_full_screen">Во весь экран</string>
+    <string name="my_identity_share_text">Добавь меня в Reticulum:
+
+%1$s
+%2$s</string>
+    <string name="my_identity_show_advanced">Показать подробности</string>
+    <string name="my_identity_hide_advanced">Скрыть подробности</string>
+    <string name="my_identity_destination_hash_lxmf">Хеш назначения (LXMF)</string>
+    <string name="my_identity_public_key">Публичный ключ</string>
+    <string name="my_identity_identity_hash_help_title">Что такое хеш личности?</string>
+    <string name="my_identity_identity_hash_help_message">Хеш личности - это уникальный криптографический отпечаток, полученный из вашего публичного ключа.
+
+Его можно представить как имя пользователя, которое:
+- нельзя изменить или дублировать
+- подтверждает, что сообщения пришли от вас
+- позволяет другим проверить вашу личность</string>
+    <string name="my_identity_destination_hash_help_title">Что такое хеш назначения?</string>
+    <string name="my_identity_destination_hash_help_message">Ваш хеш назначения LXMF выводится из вашей личности и используется для отправки и получения сообщений.
+
+Другие узлы используют его, чтобы:
+- отправлять вам сообщения
+- находить вас в сети
+- добавлять вас в контакты</string>
+    <string name="my_identity_public_key_help_title">Что такое публичный ключ?</string>
+    <string name="my_identity_public_key_help_message">Ваш публичный ключ - это криптографический ключ, который обеспечивает безопасный обмен сообщениями.
+
+Его безопасно распространять публично, и он позволяет другим:
+- шифровать сообщения, которые сможете прочитать только вы
+- проверять вашу личность
+- устанавливать защищенную связь</string>
+    <string name="my_identity_info_about">Информация о %1$s</string>
+    <string name="my_identity_copy_value">Копировать %1$s</string>
+    <string name="my_identity_full_share_text_with_destination">Добавь меня в Reticulum:
+
+Имя: %1$s
+Назначение: %2$s
+
+Отсканируйте QR код или используйте:
+%3$s</string>
+    <string name="my_identity_full_share_text_without_destination">Добавь меня в Reticulum:
+
+Имя: %1$s
+
+Отсканируйте QR код или используйте:
+%2$s</string>
+    <string name="my_identity_scan_qr_to_add_me">Отсканируйте этот QR код, чтобы добавить меня в контакты</string>
+    <string name="my_identity_copy_identity_link">Копировать ссылку личности</string>
+    <string name="my_identity_destination_hash">Хеш назначения</string>
+
+    <!-- APK sharing screen -->
+    <string name="apk_sharing_title">Поделиться Columba</string>
+    <string name="apk_sharing_share_chooser_title">Поделиться APK Columba</string>
+    <string name="apk_sharing_via_hotspot">Поделиться через хотспот</string>
+    <string name="apk_sharing_via_wifi">Поделиться через WiFi</string>
+    <string name="apk_sharing_starting_hotspot">Запуск WiFi хотспота...</string>
+    <string name="apk_sharing_hotspot_step_connect">Шаг 1: Отсканируйте для подключения к хотспоту</string>
+    <string name="apk_sharing_hotspot_step_download">Шаг 2: Отсканируйте для загрузки Columba</string>
+    <string name="apk_sharing_scan_qr_instruction">Попросите другого человека отсканировать этот QR код</string>
+    <string name="apk_sharing_apk_size_mb">Размер APK: %1$.1f МБ</string>
+    <string name="apk_sharing_starting_server">Запуск сервера раздачи...</string>
+    <string name="apk_sharing_hotspot_fallback">Нет WiFi? Вместо этого можно поделиться через временный хотспот.</string>
+    <string name="apk_sharing_start_hotspot">Запустить хотспот</string>
+    <string name="apk_sharing_permission_needed">Для создания WiFi хотспота для раздачи требуется разрешение.</string>
+    <string name="apk_sharing_network_with_password">Сеть: %1$s  /  Пароль: %2$s</string>
+    <string name="apk_sharing_network_without_password">Сеть: %1$s  (без пароля)</string>
+    <string name="apk_sharing_instructions_title">Инструкции</string>
+    <string name="apk_sharing_hotspot_instruction_1">На другом телефоне отсканируйте первый QR код, чтобы подключиться к хотспоту</string>
+    <string name="apk_sharing_hotspot_instruction_2">После подключения отсканируйте второй QR код, чтобы открыть страницу загрузки</string>
+    <string name="apk_sharing_hotspot_instruction_3">Скачайте и установите APK</string>
+    <string name="apk_sharing_wifi_instruction_1">Оба телефона должны быть в одной сети WiFi</string>
+    <string name="apk_sharing_wifi_instruction_2">Откройте камеру на другом телефоне и отсканируйте QR код выше</string>
+    <string name="apk_sharing_wifi_instruction_3">Нажмите ссылку, чтобы открыть ее в браузере</string>
+    <string name="apk_sharing_wifi_instruction_4">Скачайте и установите APK</string>
+    <string name="apk_sharing_alternative_title">Или поделитесь другим способом</string>
+    <string name="apk_sharing_alternative_subtitle">Используйте Bluetooth, Nearby Share или любое другое установленное приложение для обмена.</string>
+    <string name="apk_sharing_share_apk_via">Поделиться APK через...</string>
+
+    <!-- RNode flasher screen -->
+    <string name="rnode_flasher_title">Прошивка RNode</string>
+    <string name="rnode_flasher_configure_transport">Настроить транспорт</string>
+    <string name="rnode_flasher_detecting_device">Определение устройства</string>
+    <string name="rnode_flasher_select_firmware">Выбор прошивки</string>
+    <string name="rnode_flasher_flashing">Прошивка...</string>
+    <string name="rnode_flasher_complete">Готово</string>
+    <string name="rnode_flasher_exit_title">Выйти из прошивки?</string>
+    <string name="rnode_flasher_exit_message">Вы уверены, что хотите выйти? Весь несохраненный прогресс будет потерян.</string>
+    <string name="rnode_flasher_start_flashing">Начать прошивку</string>
 
     <!-- Onboarding -->
     <string name="onboarding_columba_content_description">Columba</string>

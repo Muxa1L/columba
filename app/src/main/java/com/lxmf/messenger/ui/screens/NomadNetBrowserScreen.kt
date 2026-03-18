@@ -71,6 +71,7 @@ import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
@@ -80,6 +81,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.lxmf.messenger.R
 import com.lxmf.messenger.ui.components.MicronPageContent
 import com.lxmf.messenger.viewmodel.NomadNetBrowserViewModel
 import com.lxmf.messenger.viewmodel.NomadNetBrowserViewModel.BrowserState
@@ -116,6 +118,7 @@ fun NomadNetBrowserScreen(
     val context = LocalContext.current
     val clipboardManager = LocalClipboardManager.current
     val focusManager = LocalFocusManager.current
+    val shareChooserTitle = stringResource(R.string.nomadnet_browser_share_chooser_title)
 
     // URL bar state
     var isEditingUrl by remember { mutableStateOf(false) }
@@ -166,24 +169,21 @@ fun NomadNetBrowserScreen(
                     tint = MaterialTheme.colorScheme.primary,
                 )
             },
-            title = { Text("Identify to Node") },
+            title = { Text(stringResource(R.string.nomadnet_browser_identify_title)) },
             text = {
-                Text(
-                    "This will reveal your identity to the node operator. " +
-                        "The page will refresh after identifying.",
-                )
+                Text(stringResource(R.string.nomadnet_browser_identify_message))
             },
             confirmButton = {
                 TextButton(onClick = {
                     showIdentifyConfirm = false
                     viewModel.identifyToNode()
                 }) {
-                    Text("Identify")
+                    Text(stringResource(R.string.nomadnet_browser_identify_action))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showIdentifyConfirm = false }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.common_cancel))
                 }
             },
         )
@@ -256,7 +256,7 @@ fun NomadNetBrowserScreen(
                         )
                     } else {
                         Text(
-                            text = "NomadNet Browser",
+                            text = stringResource(R.string.nomadnet_browser_title),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                         )
@@ -271,7 +271,7 @@ fun NomadNetBrowserScreen(
                             onBackClick()
                         }
                     }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.common_back))
                     }
                 },
                 actions = {
@@ -282,7 +282,7 @@ fun NomadNetBrowserScreen(
                         ) {
                             Icon(
                                 Icons.Default.Fingerprint,
-                                contentDescription = if (isIdentified) "Identified" else "Identify to node",
+                                contentDescription = if (isIdentified) stringResource(R.string.nomadnet_browser_identified) else stringResource(R.string.nomadnet_browser_identify_to_node),
                                 tint =
                                     if (isIdentified) {
                                         MaterialTheme.colorScheme.primary
@@ -292,12 +292,12 @@ fun NomadNetBrowserScreen(
                             )
                         }
                         IconButton(onClick = { viewModel.refresh() }) {
-                            Icon(Icons.Default.Refresh, contentDescription = "Refresh")
+                            Icon(Icons.Default.Refresh, contentDescription = stringResource(R.string.common_refresh))
                         }
                     }
                     Box {
                         IconButton(onClick = { showMenu = true }) {
-                            Icon(Icons.Default.MoreVert, contentDescription = "Menu")
+                            Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.common_menu))
                         }
                         DropdownMenu(
                             expanded = showMenu,
@@ -310,21 +310,21 @@ fun NomadNetBrowserScreen(
                                 }
                             if (shareableUrl != null) {
                                 DropdownMenuItem(
-                                    text = { Text("Copy URL") },
+                                    text = { Text(stringResource(R.string.nomadnet_browser_copy_url)) },
                                     onClick = {
                                         clipboardManager.setText(AnnotatedString(shareableUrl))
                                         showMenu = false
                                     },
                                 )
                                 DropdownMenuItem(
-                                    text = { Text("Share") },
+                                    text = { Text(stringResource(R.string.common_share)) },
                                     onClick = {
                                         val intent =
                                             Intent(Intent.ACTION_SEND).apply {
                                                 type = "text/plain"
                                                 putExtra(Intent.EXTRA_TEXT, shareableUrl)
                                             }
-                                        context.startActivity(Intent.createChooser(intent, "Share NomadNet URL"))
+                                        context.startActivity(Intent.createChooser(intent, shareChooserTitle))
                                         showMenu = false
                                     },
                                 )
@@ -336,9 +336,9 @@ fun NomadNetBrowserScreen(
                                     text = {
                                         val label =
                                             when (mode) {
-                                                RenderingMode.MONOSPACE_SCROLL -> "Monospace (scroll)"
-                                                RenderingMode.MONOSPACE_ZOOM -> "Monospace (zoom)"
-                                                RenderingMode.PROPORTIONAL_WRAP -> "Proportional (wrap)"
+                                                RenderingMode.MONOSPACE_SCROLL -> stringResource(R.string.nomadnet_browser_render_monospace_scroll)
+                                                RenderingMode.MONOSPACE_ZOOM -> stringResource(R.string.nomadnet_browser_render_monospace_zoom)
+                                                RenderingMode.PROPORTIONAL_WRAP -> stringResource(R.string.nomadnet_browser_render_proportional_wrap)
                                             }
                                         Text(label)
                                     },
@@ -358,7 +358,7 @@ fun NomadNetBrowserScreen(
                             HorizontalDivider()
                             DropdownMenuItem(
                                 text = {
-                                    Text(if (isIdentified) "Identified" else "Identify to node")
+                                    Text(if (isIdentified) stringResource(R.string.nomadnet_browser_identified) else stringResource(R.string.nomadnet_browser_identify_to_node))
                                 },
                                 leadingIcon = {
                                     Icon(
@@ -417,7 +417,7 @@ fun NomadNetBrowserScreen(
                     LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
                     Spacer(modifier = Modifier.height(16.dp))
                     TextButton(onClick = { viewModel.cancelLoading() }) {
-                        Text("Cancel")
+                        Text(stringResource(R.string.common_cancel))
                     }
                 }
             }
@@ -545,7 +545,7 @@ fun NomadNetBrowserScreen(
                     verticalArrangement = Arrangement.Center,
                 ) {
                     Text(
-                        text = "Failed to load page",
+                        text = stringResource(R.string.nomadnet_browser_failed_to_load_page),
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.error,
                     )
@@ -559,7 +559,7 @@ fun NomadNetBrowserScreen(
                     Button(onClick = { viewModel.retry() }) {
                         Icon(Icons.Default.Refresh, contentDescription = null)
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Retry")
+                        Text(stringResource(R.string.common_retry))
                     }
                 }
             }
