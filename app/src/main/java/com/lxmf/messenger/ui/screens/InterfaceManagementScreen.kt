@@ -72,10 +72,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.database.entity.InterfaceEntity
 import com.lxmf.messenger.reticulum.ble.util.BlePermissionManager
 import com.lxmf.messenger.ui.components.BlePermissionBottomSheet
@@ -138,10 +140,10 @@ fun InterfaceManagementScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Network Interfaces") },
+                title = { Text(stringResource(R.string.interface_management_title)) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.common_back))
                     }
                 },
                 actions = {
@@ -162,7 +164,7 @@ fun InterfaceManagementScreen(
                                 modifier = Modifier.size(18.dp),
                             )
                             Spacer(Modifier.width(4.dp))
-                            Text("Apply Changes")
+                            Text(stringResource(R.string.interface_management_apply_changes))
                         }
                     }
                 },
@@ -178,7 +180,7 @@ fun InterfaceManagementScreen(
                 onClick = { showTypeSelector = true },
                 containerColor = MaterialTheme.colorScheme.primary,
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Add Interface")
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.interface_config_add_title))
             }
         },
     ) { paddingValues ->
@@ -222,7 +224,7 @@ fun InterfaceManagementScreen(
                                     color = MaterialTheme.colorScheme.primary,
                                 )
                                 Text(
-                                    "Enabled",
+                                    stringResource(R.string.common_enabled),
                                     style = MaterialTheme.typography.bodyMedium,
                                 )
                             }
@@ -233,7 +235,7 @@ fun InterfaceManagementScreen(
                                     fontWeight = FontWeight.Bold,
                                 )
                                 Text(
-                                    "Total",
+                                    stringResource(R.string.discovered_interfaces_total),
                                     style = MaterialTheme.typography.bodyMedium,
                                 )
                             }
@@ -246,7 +248,7 @@ fun InterfaceManagementScreen(
                                         fontWeight = FontWeight.Bold,
                                     )
                                     Text(
-                                        "Discovered",
+                                        stringResource(R.string.interface_management_discovered),
                                         style = MaterialTheme.typography.bodyMedium,
                                     )
                                 }
@@ -441,7 +443,11 @@ fun InterfaceManagementScreen(
                     "TCPServer" -> {
                         viewModel.showAddDialog()
                         viewModel.updateConfigState {
-                            it.copy(type = type, name = "TCP Server", mode = "full")
+                            it.copy(
+                                type = type,
+                                name = context.getString(R.string.interface_management_tcp_server_name),
+                                mode = "full",
+                            )
                         }
                     }
                     else -> {
@@ -468,6 +474,9 @@ fun InterfaceCard(
     onErrorClick: (() -> Unit)? = null,
     onReconnect: (() -> Unit)? = null,
 ) {
+    val context = LocalContext.current
+    val clipboardManager = LocalClipboardManager.current
+
     // Determine if toggle should be enabled and if there's an error
     val toggleEnabled = interfaceEntity.shouldToggleBeEnabled(bluetoothState, blePermissionsGranted)
     val errorMessage = interfaceEntity.getErrorMessage(bluetoothState, blePermissionsGranted, isOnline)
@@ -506,8 +515,6 @@ fun InterfaceCard(
 
                     // For TCPServer, make the description tappable to copy address
                     if (interfaceEntity.type == "TCPServer") {
-                        val clipboardManager = LocalClipboardManager.current
-                        val context = LocalContext.current
                         val (localIp, isYggdrasil) = getLocalIpAddress()
                         val copyAddress =
                             try {
@@ -526,7 +533,11 @@ fun InterfaceCard(
                                 Modifier.clickable(enabled = copyAddress != null) {
                                     copyAddress?.let {
                                         clipboardManager.setText(AnnotatedString(it))
-                                        Toast.makeText(context, "Copied $it", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(
+                                            context,
+                                            context.getString(R.string.interface_management_copied_address, it),
+                                            Toast.LENGTH_SHORT,
+                                        ).show()
                                     }
                                 },
                         )
@@ -562,7 +573,12 @@ fun InterfaceCard(
                     shape = RoundedCornerShape(4.dp),
                 ) {
                     Text(
-                        text = if (interfaceEntity.enabled) "ENABLED" else "DISABLED",
+                        text =
+                            if (interfaceEntity.enabled) {
+                                stringResource(R.string.interface_management_enabled_badge)
+                            } else {
+                                stringResource(R.string.interface_management_disabled_badge)
+                            },
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                         style = MaterialTheme.typography.labelSmall,
                         color =
@@ -590,7 +606,7 @@ fun InterfaceCard(
                             ) {
                                 Icon(
                                     Icons.Default.Warning,
-                                    contentDescription = "Tap for details",
+                                    contentDescription = stringResource(R.string.interface_management_tap_for_details),
                                     modifier = Modifier.size(12.dp),
                                     tint = MaterialTheme.colorScheme.onErrorContainer,
                                 )
@@ -642,7 +658,7 @@ fun InterfaceCard(
                                 contentColor = MaterialTheme.colorScheme.primary,
                             ),
                     ) {
-                        Text("Reconnect", style = MaterialTheme.typography.labelMedium)
+                        Text(stringResource(R.string.interface_management_reconnect), style = MaterialTheme.typography.labelMedium)
                     }
                 }
             }
@@ -658,7 +674,7 @@ fun InterfaceCard(
                 ) {
                     Icon(Icons.Default.Edit, contentDescription = null, modifier = Modifier.size(18.dp))
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("Edit")
+                    Text(stringResource(R.string.common_edit))
                 }
 
                 OutlinedButton(
@@ -671,7 +687,7 @@ fun InterfaceCard(
                 ) {
                     Icon(Icons.Default.Delete, contentDescription = null, modifier = Modifier.size(18.dp))
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("Delete")
+                    Text(stringResource(R.string.common_delete))
                 }
             }
         }
@@ -695,12 +711,12 @@ fun EmptyInterfacesView() {
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Text(
-                "No interfaces configured",
+                stringResource(R.string.interface_management_empty_title),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Text(
-                "Tap + to add your first network interface",
+                stringResource(R.string.interface_management_empty_subtitle),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -723,9 +739,9 @@ fun DeleteConfirmationDialog(
                 tint = MaterialTheme.colorScheme.error,
             )
         },
-        title = { Text("Delete Interface?") },
+        title = { Text(stringResource(R.string.interface_management_delete_title)) },
         text = {
-            Text("Are you sure you want to delete \"$interfaceName\"? This action cannot be undone.")
+            Text(stringResource(R.string.interface_management_delete_message, interfaceName))
         },
         confirmButton = {
             Button(
@@ -735,12 +751,12 @@ fun DeleteConfirmationDialog(
                         containerColor = MaterialTheme.colorScheme.error,
                     ),
             ) {
-                Text("Delete")
+                Text(stringResource(R.string.common_delete))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.common_cancel))
             }
         },
     )
@@ -863,19 +879,19 @@ fun ApplyChangesDialog() {
                 modifier = Modifier.size(48.dp),
             )
         },
-        title = { Text("Applying Changes") },
+        title = { Text(stringResource(R.string.interface_management_applying_title)) },
         text = {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Text(
-                    "Restarting Reticulum network...",
+                    stringResource(R.string.interface_management_applying_message),
                     style = MaterialTheme.typography.bodyLarge,
                 )
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    "This may take a few seconds",
+                    stringResource(R.string.interface_management_applying_hint),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -902,10 +918,10 @@ fun ApplyErrorDialog(
                 tint = MaterialTheme.colorScheme.error,
             )
         },
-        title = { Text("Failed to Apply Changes") },
+        title = { Text(stringResource(R.string.interface_management_apply_failed_title)) },
         text = {
             Column {
-                Text("An error occurred while applying configuration changes:")
+                Text(stringResource(R.string.interface_management_apply_failed_message))
                 Spacer(Modifier.height(8.dp))
                 Text(
                     errorMessage,
@@ -914,7 +930,7 @@ fun ApplyErrorDialog(
                 )
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    "Your changes have been saved to the database. Try applying them again, or restart the app.",
+                    stringResource(R.string.interface_management_apply_failed_hint),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -922,7 +938,7 @@ fun ApplyErrorDialog(
         },
         confirmButton = {
             Button(onClick = onDismiss) {
-                Text("OK")
+                Text(stringResource(R.string.common_ok))
             }
         },
     )
@@ -1044,29 +1060,29 @@ fun InterfaceTypeSelector(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Select Interface Type") },
+        title = { Text(stringResource(R.string.interface_management_select_type_title)) },
         text = {
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 InterfaceTypeOption(
-                    title = "Auto Discovery",
-                    description = "Automatically discover peers on local network",
+                    title = stringResource(R.string.interface_config_type_auto_discovery),
+                    description = stringResource(R.string.interface_management_type_auto_discovery_description),
                     onClick = { onTypeSelected("AutoInterface") },
                 )
                 InterfaceTypeOption(
-                    title = "TCP Client",
-                    description = "Connect to a remote Reticulum transport node",
+                    title = stringResource(R.string.interface_config_type_tcp_client),
+                    description = stringResource(R.string.interface_management_type_tcp_client_description),
                     onClick = { onTypeSelected("TCPClient") },
                 )
                 InterfaceTypeOption(
-                    title = "Bluetooth LE",
-                    description = "Direct connection to Columba users and Linux ble-reticulum devices",
+                    title = stringResource(R.string.interface_config_type_bluetooth_le),
+                    description = stringResource(R.string.interface_management_type_ble_description),
                     onClick = { onTypeSelected("AndroidBLE") },
                 )
                 InterfaceTypeOption(
-                    title = "RNode LoRa",
-                    description = "Connects to separate RNode hardware via BLE or Bluetooth Classic",
+                    title = stringResource(R.string.interface_management_type_rnode_title),
+                    description = stringResource(R.string.interface_management_type_rnode_description),
                     onClick = { onTypeSelected("RNode") },
                 )
 
@@ -1090,14 +1106,19 @@ fun InterfaceTypeSelector(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
-                            text = "Advanced",
+                            text = stringResource(R.string.interface_management_advanced),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colorScheme.onSurface,
                         )
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                            contentDescription = if (advancedExpanded) "Collapse" else "Expand",
+                            contentDescription =
+                                if (advancedExpanded) {
+                                    stringResource(R.string.common_collapse)
+                                } else {
+                                    stringResource(R.string.common_expand)
+                                },
                             modifier = Modifier.rotate(rotationAngle),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
@@ -1113,8 +1134,8 @@ fun InterfaceTypeSelector(
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         InterfaceTypeOption(
-                            title = "TCP Server",
-                            description = "Accept incoming connections from other Reticulum nodes",
+                            title = stringResource(R.string.interface_config_type_tcp_server),
+                            description = stringResource(R.string.interface_management_type_tcp_server_description),
                             onClick = { onTypeSelected("TCPServer") },
                         )
                     }
@@ -1124,7 +1145,7 @@ fun InterfaceTypeSelector(
         confirmButton = {},
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.common_cancel))
             }
         },
     )
@@ -1196,7 +1217,7 @@ fun InterfaceErrorDialog(
                 tint = MaterialTheme.colorScheme.error,
             )
         },
-        title = { Text("Interface Issue") },
+        title = { Text(stringResource(R.string.interface_management_issue_title)) },
         text = {
             Column {
                 Text(
@@ -1214,7 +1235,7 @@ fun InterfaceErrorDialog(
         },
         confirmButton = {
             Button(onClick = onDismiss) {
-                Text("OK")
+                Text(stringResource(R.string.common_ok))
             }
         },
     )
@@ -1272,7 +1293,7 @@ fun DiscoveredInterfacesSummaryCard(
                             },
                     )
                     Text(
-                        text = "Interface Discovery",
+                        text = stringResource(R.string.discovered_interfaces_discovery_title),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color =
@@ -1287,7 +1308,7 @@ fun DiscoveredInterfacesSummaryCard(
                 if (isDiscoveryEnabled) {
                     if (totalCount > 0) {
                         Text(
-                            text = "$totalCount interfaces found via RNS Discovery",
+                            text = stringResource(R.string.interface_management_discovery_found, totalCount),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.8f),
                         )
@@ -1299,35 +1320,35 @@ fun DiscoveredInterfacesSummaryCard(
                             if (availableCount > 0) {
                                 StatusBadge(
                                     count = availableCount,
-                                    label = "available",
+                                    label = stringResource(R.string.interface_management_available_badge),
                                     dotColor = MaterialTheme.colorScheme.primary,
                                 )
                             }
                             if (unknownCount > 0) {
                                 StatusBadge(
                                     count = unknownCount,
-                                    label = "unknown",
+                                    label = stringResource(R.string.interface_management_unknown_badge),
                                     dotColor = MaterialTheme.colorScheme.tertiary,
                                 )
                             }
                             if (staleCount > 0) {
                                 StatusBadge(
                                     count = staleCount,
-                                    label = "stale",
+                                    label = stringResource(R.string.interface_management_stale_badge),
                                     dotColor = MaterialTheme.colorScheme.outline,
                                 )
                             }
                         }
                     } else {
                         Text(
-                            text = "Discovery enabled - no interfaces found yet",
+                            text = stringResource(R.string.interface_management_discovery_empty_enabled),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.8f),
                         )
                     }
                 } else {
                     Text(
-                        text = "Tap to configure RNS 1.1.x interface discovery",
+                        text = stringResource(R.string.interface_management_discovery_disabled_help),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
                     )
@@ -1335,7 +1356,7 @@ fun DiscoveredInterfacesSummaryCard(
             }
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                contentDescription = "View details",
+                contentDescription = stringResource(R.string.interface_management_view_details),
                 tint =
                     if (isDiscoveryEnabled) {
                         MaterialTheme.colorScheme.onSecondaryContainer

@@ -58,6 +58,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
@@ -150,15 +151,15 @@ fun DiscoveredInterfacesScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Discovered Interfaces") },
+                title = { Text(stringResource(R.string.discovered_interfaces_title)) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_back))
                     }
                 },
                 actions = {
                     IconButton(onClick = { viewModel.loadDiscoveredInterfaces() }) {
-                        Icon(Icons.Default.Refresh, contentDescription = "Refresh")
+                        Icon(Icons.Default.Refresh, contentDescription = stringResource(R.string.common_refresh))
                     }
                 },
                 colors =
@@ -250,7 +251,7 @@ fun DiscoveredInterfacesScreen(
                                             Toast
                                                 .makeText(
                                                     context,
-                                                    "Only TCP interfaces can be added currently",
+                                                    context.getString(R.string.discovered_interfaces_only_tcp_add_supported),
                                                     Toast.LENGTH_SHORT,
                                                 ).show()
                                         }
@@ -285,7 +286,7 @@ fun DiscoveredInterfacesScreen(
                                         Toast
                                             .makeText(
                                                 context,
-                                                "LoRa parameters copied",
+                                                context.getString(R.string.discovered_interfaces_lora_params_copied),
                                                 Toast.LENGTH_SHORT,
                                             ).show()
                                     },
@@ -320,6 +321,19 @@ internal fun DiscoverySettingsCard(
     onToggleDiscovery: () -> Unit = {},
     onAutoconnectCountChange: (Int) -> Unit = {},
 ) {
+    val interfaceDiscoveryLabel = stringResource(R.string.discovered_interfaces_discovery_title)
+    val restartingLabel = stringResource(R.string.discovered_interfaces_restarting)
+    val activeDiscoveryLabel = stringResource(R.string.discovered_interfaces_active)
+    val disabledLabel = stringResource(R.string.common_disabled)
+    val restartingServiceLabel = stringResource(R.string.discovered_interfaces_restarting_service)
+    val autoConnectEnabledLabel = stringResource(R.string.discovered_interfaces_autoconnect_enabled, autoconnectCount)
+    val autoConnectDisabledLabel = stringResource(R.string.discovered_interfaces_autoconnect_disabled)
+    val discoveryDisabledHelp = stringResource(R.string.discovered_interfaces_discovery_disabled_help)
+    val autoConnectLimitLabel = stringResource(R.string.discovered_interfaces_autoconnect_limit)
+    val offLabel = stringResource(R.string.discovered_interfaces_off)
+    val bootstrapInterfacesLabel = stringResource(R.string.discovered_interfaces_bootstrap_interfaces)
+    val bootstrapDetachNote = stringResource(R.string.discovered_interfaces_bootstrap_detach_note)
+
     val isEnabled = isRuntimeEnabled || isSettingEnabled
 
     Card(
@@ -365,7 +379,7 @@ internal fun DiscoverySettingsCard(
                     ) {}
                     Column {
                         Text(
-                            text = "Interface Discovery",
+                            text = interfaceDiscoveryLabel,
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color =
@@ -378,11 +392,11 @@ internal fun DiscoverySettingsCard(
                         Text(
                             text =
                                 if (isRestarting) {
-                                    "Restarting..."
+                                    restartingLabel
                                 } else if (isRuntimeEnabled) {
-                                    "Active - discovering interfaces"
+                                    activeDiscoveryLabel
                                 } else {
-                                    "Disabled"
+                                    disabledLabel
                                 },
                             style = MaterialTheme.typography.bodySmall,
                             color =
@@ -420,7 +434,7 @@ internal fun DiscoverySettingsCard(
                             color = MaterialTheme.colorScheme.onTertiaryContainer,
                         )
                         Text(
-                            text = "Restarting Reticulum service...",
+                            text = restartingServiceLabel,
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onTertiaryContainer,
                         )
@@ -450,12 +464,12 @@ internal fun DiscoverySettingsCard(
                     text =
                         if (isSettingEnabled) {
                             if (autoconnectCount > 0) {
-                                "RNS will discover and auto-connect up to $autoconnectCount interfaces from the network."
+                                autoConnectEnabledLabel
                             } else {
-                                "Discovery is active but auto-connect is disabled. Useful for debugging."
+                                autoConnectDisabledLabel
                             }
                         } else {
-                            "Enable to automatically discover and connect to interfaces announced by other RNS nodes."
+                            discoveryDisabledHelp
                         },
                     style = MaterialTheme.typography.bodySmall,
                     color =
@@ -477,13 +491,13 @@ internal fun DiscoverySettingsCard(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
-                            text = "Auto-connect limit",
+                            text = autoConnectLimitLabel,
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
                         )
                         Text(
-                            text = if (autoconnectCount == 0) "Off" else "$autoconnectCount",
+                            text = if (autoconnectCount == 0) offLabel else "$autoconnectCount",
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -516,7 +530,7 @@ internal fun DiscoverySettingsCard(
             if (bootstrapInterfaceNames.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = "Bootstrap Interfaces",
+                    text = bootstrapInterfacesLabel,
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.SemiBold,
                     color =
@@ -556,7 +570,7 @@ internal fun DiscoverySettingsCard(
                     }
                 }
                 Text(
-                    text = "These interfaces will auto-detach once discovered interfaces connect.",
+                    text = bootstrapDetachNote,
                     style = MaterialTheme.typography.bodySmall,
                     color =
                         if (isEnabled) {
@@ -576,6 +590,9 @@ internal fun DiscoverySettingsCard(
  */
 @Composable
 internal fun EmptyDiscoveredCard() {
+    val emptyTitle = stringResource(R.string.discovered_interfaces_empty_title)
+    val emptySubtitle = stringResource(R.string.discovered_interfaces_empty_subtitle)
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors =
@@ -598,13 +615,13 @@ internal fun EmptyDiscoveredCard() {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "No Discovered Interfaces",
+                text = emptyTitle,
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Interfaces announced by other nodes will appear here once discovery is active.",
+                text = emptySubtitle,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
             )
@@ -622,6 +639,11 @@ internal fun DiscoveryStatusSummary(
     unknownCount: Int,
     staleCount: Int,
 ) {
+    val totalLabel = stringResource(R.string.discovered_interfaces_total)
+    val availableLabel = stringResource(R.string.discovered_interfaces_available)
+    val unknownLabel = stringResource(R.string.discovered_interfaces_unknown)
+    val staleLabel = stringResource(R.string.discovered_interfaces_stale)
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors =
@@ -643,7 +665,7 @@ internal fun DiscoveryStatusSummary(
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
-                    text = "Total",
+                    text = totalLabel,
                     style = MaterialTheme.typography.bodySmall,
                 )
             }
@@ -655,7 +677,7 @@ internal fun DiscoveryStatusSummary(
                     color = MaterialTheme.colorScheme.primary,
                 )
                 Text(
-                    text = "Available",
+                    text = availableLabel,
                     style = MaterialTheme.typography.bodySmall,
                 )
             }
@@ -667,7 +689,7 @@ internal fun DiscoveryStatusSummary(
                     color = MaterialTheme.colorScheme.tertiary,
                 )
                 Text(
-                    text = "Unknown",
+                    text = unknownLabel,
                     style = MaterialTheme.typography.bodySmall,
                 )
             }
@@ -679,7 +701,7 @@ internal fun DiscoveryStatusSummary(
                     color = MaterialTheme.colorScheme.outline,
                 )
                 Text(
-                    text = "Stale",
+                    text = staleLabel,
                     style = MaterialTheme.typography.bodySmall,
                 )
             }
@@ -700,6 +722,17 @@ internal fun DiscoveredInterfaceCard(
     onCopyLoraParams: () -> Unit,
     onUseForNewRNode: () -> Unit,
 ) {
+    val yggdrasilTitle = stringResource(R.string.discovered_interfaces_yggdrasil_title)
+    val yggdrasilMessage = stringResource(R.string.discovered_interfaces_yggdrasil_message)
+    val i2pTitle = stringResource(R.string.discovered_interfaces_i2p_title)
+    val i2pMessage = stringResource(R.string.discovered_interfaces_i2p_message)
+    val networkInfoLabel = stringResource(R.string.discovered_interfaces_network_info)
+    val connectedLabel = stringResource(R.string.discovered_interfaces_connected)
+    val transportPrefix = stringResource(R.string.discovered_interfaces_transport_prefix)
+    val addToConfigLabel = stringResource(R.string.discovered_interfaces_add_to_config)
+    val copyParamsLabel = stringResource(R.string.discovered_interfaces_copy_params)
+    val useForRNodeLabel = stringResource(R.string.discovered_interfaces_use_for_rnode)
+
     val statusColor =
         when (iface.status) {
             "available" -> MaterialTheme.colorScheme.primary
@@ -718,17 +751,13 @@ internal fun DiscoveredInterfaceCard(
             isYggdrasil -> {
                 AlertDialog(
                     onDismissRequest = { showNetworkInfoDialog = false },
-                    title = { Text("Yggdrasil Network") },
+                    title = { Text(yggdrasilTitle) },
                     text = {
-                        Text(
-                            "Yggdrasil is an encrypted IPv6 mesh network. To connect to this " +
-                                "interface, you need the Yggdrasil app installed and running on your device. " +
-                                "It's available on F-Droid and Google Play.",
-                        )
+                        Text(yggdrasilMessage)
                     },
                     confirmButton = {
                         TextButton(onClick = { showNetworkInfoDialog = false }) {
-                            Text("OK")
+                            Text(stringResource(R.string.common_ok))
                         }
                     },
                 )
@@ -736,17 +765,13 @@ internal fun DiscoveredInterfaceCard(
             isI2p -> {
                 AlertDialog(
                     onDismissRequest = { showNetworkInfoDialog = false },
-                    title = { Text("I2P Network") },
+                    title = { Text(i2pTitle) },
                     text = {
-                        Text(
-                            "I2P (Invisible Internet Project) is an anonymous overlay network. To connect " +
-                                "to this interface, you need an I2P daemon running on your device. Install the " +
-                                "I2P or i2pd app from F-Droid and start it before connecting.",
-                        )
+                        Text(i2pMessage)
                     },
                     confirmButton = {
                         TextButton(onClick = { showNetworkInfoDialog = false }) {
-                            Text("OK")
+                            Text(stringResource(R.string.common_ok))
                         }
                     },
                 )
@@ -803,7 +828,7 @@ internal fun DiscoveredInterfaceCard(
                             if (isYggdrasil || isI2p) {
                                 Icon(
                                     imageVector = Icons.Default.Info,
-                                    contentDescription = "Network info",
+                                    contentDescription = networkInfoLabel,
                                     modifier =
                                         Modifier
                                             .size(14.dp)
@@ -837,7 +862,7 @@ internal fun DiscoveredInterfaceCard(
                                     color = connectedColor,
                                 ) {}
                                 Text(
-                                    text = "Connected",
+                                    text = connectedLabel,
                                     style = MaterialTheme.typography.labelSmall,
                                     color = connectedColor,
                                 )
@@ -872,7 +897,7 @@ internal fun DiscoveredInterfaceCard(
             // Transport ID (truncated)
             iface.transportId?.let { transportId ->
                 Text(
-                    text = "transport: ${transportId.take(12)}...",
+                    text = "$transportPrefix ${transportId.take(12)}...",
                     style = MaterialTheme.typography.bodySmall,
                     fontFamily = FontFamily.Monospace,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -947,7 +972,7 @@ internal fun DiscoveredInterfaceCard(
                         modifier = Modifier.size(18.dp),
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Add to Config")
+                    Text(addToConfigLabel)
                 }
             }
 
@@ -969,7 +994,7 @@ internal fun DiscoveredInterfaceCard(
                             modifier = Modifier.size(18.dp),
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Copy Params")
+                        Text(copyParamsLabel)
                     }
                     // Use for New RNode button
                     Button(
@@ -986,7 +1011,7 @@ internal fun DiscoveredInterfaceCard(
                             modifier = Modifier.size(18.dp),
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Use for RNode")
+                        Text(useForRNodeLabel)
                     }
                 }
             }
@@ -1076,6 +1101,8 @@ internal fun LocationDetails(
     distanceKm: Double?,
     onClick: () -> Unit,
 ) {
+    val openInMapsLabel = stringResource(R.string.discovered_interfaces_open_in_maps)
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -1083,7 +1110,7 @@ internal fun LocationDetails(
     ) {
         Icon(
             imageVector = Icons.Default.LocationOn,
-            contentDescription = "Open in maps",
+            contentDescription = openInMapsLabel,
             modifier = Modifier.size(16.dp),
             tint = MaterialTheme.colorScheme.primary,
         )
@@ -1146,20 +1173,26 @@ internal fun InterfaceTypeIcon(
     size: Dp = 20.dp,
     tint: Color = MaterialTheme.colorScheme.onSurface,
 ) {
+    val yggdrasilNetworkLabel = stringResource(R.string.discovered_interfaces_yggdrasil_network)
+    val tcpNetworkLabel = stringResource(R.string.discovered_interfaces_tcp_network)
+    val i2pNetworkLabel = stringResource(R.string.discovered_interfaces_i2p_network)
+    val radioInterfaceLabel = stringResource(R.string.discovered_interfaces_radio_interface)
+    val unknownInterfaceLabel = stringResource(R.string.discovered_interfaces_unknown_interface)
+
     when (type) {
         "TCPServerInterface", "TCPClientInterface", "BackboneInterface" -> {
             if (isYggdrasilAddress(host)) {
                 // Use TreePine for Yggdrasil network addresses
                 Icon(
                     imageVector = ImageVector.vectorResource(com.composables.icons.lucide.R.drawable.lucide_ic_tree_pine),
-                    contentDescription = "Yggdrasil network",
+                    contentDescription = yggdrasilNetworkLabel,
                     modifier = modifier.size(size),
                     tint = tint,
                 )
             } else {
                 Icon(
                     imageVector = Icons.Default.Public,
-                    contentDescription = "TCP network",
+                    contentDescription = tcpNetworkLabel,
                     modifier = modifier.size(size),
                     tint = tint,
                 )
@@ -1174,12 +1207,12 @@ internal fun InterfaceTypeIcon(
                     fontFamily = MdiFont,
                     fontSize = (size.value * 1.2f).sp, // MDI icons render slightly smaller
                     color = tint,
-                    modifier = modifier.semantics { contentDescription = "I2P network" },
+                    modifier = modifier.semantics { contentDescription = i2pNetworkLabel },
                 )
             } else {
                 Icon(
                     imageVector = Icons.Default.Settings,
-                    contentDescription = "I2P network",
+                    contentDescription = i2pNetworkLabel,
                     modifier = modifier.size(size),
                     tint = tint,
                 )
@@ -1189,7 +1222,7 @@ internal fun InterfaceTypeIcon(
             // Use Lucide Antenna for radio interfaces (matches PeerCard)
             Icon(
                 imageVector = ImageVector.vectorResource(com.composables.icons.lucide.R.drawable.lucide_ic_antenna),
-                contentDescription = "Radio interface",
+                contentDescription = radioInterfaceLabel,
                 modifier = modifier.size(size),
                 tint = tint,
             )
@@ -1197,7 +1230,7 @@ internal fun InterfaceTypeIcon(
         else -> {
             Icon(
                 imageVector = Icons.Default.Settings,
-                contentDescription = "Unknown interface",
+                contentDescription = unknownInterfaceLabel,
                 modifier = modifier.size(size),
                 tint = tint,
             )
