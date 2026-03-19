@@ -911,6 +911,102 @@
     <string name="ble_connections_size_kb">%1$.2f КБ</string>
     <string name="ble_connections_size_bytes">%1$d Б</string>
 
+    <!-- Migration screen -->
+    <string name="migration_screen_title">Перенос данных</string>
+    <string name="migration_screen_navigate_back">Назад</string>
+    <string name="migration_screen_export_title">Экспорт данных</string>
+    <string name="migration_screen_export_description">Экспортируйте все свои данные (идентификаторы, сообщения, контакты, настройки) в файл, который можно импортировать в новую установку.</string>
+    <string name="migration_screen_export_data_to_export">Данные для экспорта:</string>
+    <string name="migration_screen_export_complete">Экспорт завершен. Открыт диалог сохранения.</string>
+    <string name="migration_screen_include_attachments">Включить файловые вложения</string>
+    <string name="migration_screen_include_attachments_hint">Изображения и файлы не будут включены в экспорт</string>
+    <string name="migration_screen_export_all_data">Экспортировать все данные</string>
+    <string name="migration_screen_import_title">Импорт данных</string>
+    <string name="migration_screen_import_description">Импортируйте данные из предыдущего экспорта. Это добавит идентификаторы, сообщения и контакты из файла резервной копии.</string>
+    <string name="migration_screen_importing_progress">Импорт... %1$d%%</string>
+    <string name="migration_screen_select_migration_file">Выбрать файл переноса</string>
+    <string name="migration_screen_enable_notifications_title">Включить уведомления?</string>
+    <string name="migration_screen_enable_notifications_message">Данные из резервной копии восстановлены, включая ваши настройки уведомлений.</string>
+    <string name="migration_screen_enable_notifications_permission">Чтобы получать уведомления о новых сообщениях, нужно предоставить разрешение на уведомления.</string>
+    <string name="migration_screen_enable">Включить</string>
+    <string name="migration_screen_not_now">Не сейчас</string>
+    <string name="migration_screen_encrypt_export_title">Зашифровать экспорт</string>
+    <string name="migration_screen_encrypt_export_description">Выберите пароль для защиты файла экспорта. Этот пароль понадобится, чтобы импортировать данные на другое устройство.</string>
+    <string name="migration_screen_encrypted_backup_title">Зашифрованная резервная копия</string>
+    <string name="migration_screen_encrypted_backup_description">Этот файл резервной копии зашифрован. Введите пароль, который использовался при экспорте.</string>
+    <string name="migration_screen_import_confirm_title">Импортировать данные?</string>
+    <string name="migration_screen_import_confirm_created_on">Эта резервная копия создана:</string>
+    <string name="migration_screen_import_confirm_data_to_import">Данные для импорта:</string>
+    <string name="migration_screen_import_confirm_skip_existing">Существующие идентификаторы с таким же ID будут пропущены.</string>
+    <string name="migration_screen_import">Импортировать</string>
+    <string name="migration_screen_cancel">Отмена</string>
+    <string name="migration_screen_restarting_service_title">Перезапуск службы</string>
+    <string name="migration_screen_restarting_service_message">Перезапуск сетевой службы...</string>
+    <string name="migration_screen_restarting_service_hint">Это может занять несколько секунд</string>
+    <string name="migration_screen_incorrect_password">Неверный пароль</string>
+    <string name="migration_screen_password_too_short">Пароль должен содержать не менее %1$d символов</string>
+    <string name="migration_screen_passwords_do_not_match">Пароли не совпадают</string>
+    <string name="migration_screen_password_label">Пароль</string>
+    <string name="migration_screen_confirm_password_label">Подтвердите пароль</string>
+    <string name="migration_screen_hide">Скрыть</string>
+    <string name="migration_screen_show">Показать</string>
+    <string name="migration_screen_export">Экспортировать</string>
+    <string name="migration_screen_unlock">Разблокировать</string>
+    <string name="migration_screen_export_saved_successfully">Экспорт успешно сохранен</string>
+    <string name="migration_screen_import_complete_snackbar">Импорт завершен! Импортировано: %1$s.</string>
+    <string name="migration_screen_import_complete_title">Импорт завершен!</string>
+    <string name="migration_screen_preview_load_failed">Не удалось загрузить предварительный просмотр: %1$s</string>
+    <string name="migration_screen_progress_percent">%1$d%%</string>
+    <string name="migration_screen_import_confirm_date_pattern">d MMM yyyy \'в\' H:mm</string>
+    <plurals name="migration_screen_identities_count">
+        <item quantity="one">%d идентификатор</item>
+        <item quantity="few">%d идентификатора</item>
+        <item quantity="many">%d идентификаторов</item>
+        <item quantity="other">%d идентификатора</item>
+    </plurals>
+    <plurals name="migration_screen_messages_count">
+        <item quantity="one">%d сообщение</item>
+        <item quantity="few">%d сообщения</item>
+        <item quantity="many">%d сообщений</item>
+        <item quantity="other">%d сообщения</item>
+    </plurals>
+    <plurals name="migration_screen_contacts_count">
+        <item quantity="one">%d контакт</item>
+        <item quantity="few">%d контакта</item>
+        <item quantity="many">%d контактов</item>
+        <item quantity="other">%d контакта</item>
+    </plurals>
+    <plurals name="migration_screen_announces_count">
+        <item quantity="one">%d объявление</item>
+        <item quantity="few">%d объявления</item>
+        <item quantity="many">%d объявлений</item>
+        <item quantity="other">%d объявления</item>
+    </plurals>
+    <plurals name="migration_screen_interfaces_count">
+        <item quantity="one">%d интерфейс</item>
+        <item quantity="few">%d интерфейса</item>
+        <item quantity="many">%d интерфейсов</item>
+        <item quantity="other">%d интерфейса</item>
+    </plurals>
+    <plurals name="migration_screen_themes_count">
+        <item quantity="one">%d тема</item>
+        <item quantity="few">%d темы</item>
+        <item quantity="many">%d тем</item>
+        <item quantity="other">%d темы</item>
+    </plurals>
+    <plurals name="migration_screen_custom_themes_count">
+        <item quantity="one">%d пользовательская тема</item>
+        <item quantity="few">%d пользовательские темы</item>
+        <item quantity="many">%d пользовательских тем</item>
+        <item quantity="other">%d пользовательские темы</item>
+    </plurals>
+    <plurals name="migration_screen_conversations_count">
+        <item quantity="one">%d диалог</item>
+        <item quantity="few">%d диалога</item>
+        <item quantity="many">%d диалогов</item>
+        <item quantity="other">%d диалога</item>
+    </plurals>
+
     <!-- Color picker -->
     <string name="color_picker_default_title">Выберите цвет</string>
     <string name="color_picker_hex_label">HEX цвет</string>

@@ -858,6 +858,85 @@ It will scan automatically</string>
   <string name="ble_connections_total">Total</string>
   <string name="ble_connections_central">Central</string>
   <string name="ble_connections_peripheral">Peripheral</string>
+  <!-- Migration screen -->
+  <string name="migration_screen_title">Data Migration</string>
+  <string name="migration_screen_navigate_back">Navigate back</string>
+  <string name="migration_screen_export_title">Export Data</string>
+  <string name="migration_screen_export_description">Export all your data (identities, messages, contacts, settings) to a file that can be imported into a new installation.</string>
+  <string name="migration_screen_export_data_to_export">Data to export:</string>
+  <string name="migration_screen_export_complete">Export complete! Save dialog opened.</string>
+  <string name="migration_screen_include_attachments">Include file attachments</string>
+  <string name="migration_screen_include_attachments_hint">Images and files won\'t be included in export</string>
+  <string name="migration_screen_export_all_data">Export All Data</string>
+  <string name="migration_screen_import_title">Import Data</string>
+  <string name="migration_screen_import_description">Import data from a previous export. This will add identities, messages, and contacts from the backup file.</string>
+  <string name="migration_screen_importing_progress">Importing... %1$d%%</string>
+  <string name="migration_screen_select_migration_file">Select Migration File</string>
+  <string name="migration_screen_enable_notifications_title">Enable Notifications?</string>
+  <string name="migration_screen_enable_notifications_message">Your backup data has been restored, including your notification preferences.</string>
+  <string name="migration_screen_enable_notifications_permission">To receive notifications for new messages, you\'ll need to grant notification permission.</string>
+  <string name="migration_screen_enable">Enable</string>
+  <string name="migration_screen_not_now">Not Now</string>
+  <string name="migration_screen_encrypt_export_title">Encrypt Export</string>
+  <string name="migration_screen_encrypt_export_description">Choose a password to protect your export file. You will need this password to import the data on another device.</string>
+  <string name="migration_screen_encrypted_backup_title">Encrypted Backup</string>
+  <string name="migration_screen_encrypted_backup_description">This backup file is encrypted. Enter the password that was used during export.</string>
+  <string name="migration_screen_import_confirm_title">Import Data?</string>
+  <string name="migration_screen_import_confirm_created_on">This backup was created on:</string>
+  <string name="migration_screen_import_confirm_data_to_import">Data to import:</string>
+  <string name="migration_screen_import_confirm_skip_existing">Existing identities with the same ID will be skipped.</string>
+  <string name="migration_screen_import">Import</string>
+  <string name="migration_screen_cancel">Cancel</string>
+  <string name="migration_screen_restarting_service_title">Restarting Service</string>
+  <string name="migration_screen_restarting_service_message">Restarting network service...</string>
+  <string name="migration_screen_restarting_service_hint">This may take a few seconds</string>
+  <string name="migration_screen_incorrect_password">Incorrect password</string>
+  <string name="migration_screen_password_too_short">Password must be at least %1$d characters</string>
+  <string name="migration_screen_passwords_do_not_match">Passwords do not match</string>
+  <string name="migration_screen_password_label">Password</string>
+  <string name="migration_screen_confirm_password_label">Confirm password</string>
+  <string name="migration_screen_hide">Hide</string>
+  <string name="migration_screen_show">Show</string>
+  <string name="migration_screen_export">Export</string>
+  <string name="migration_screen_unlock">Unlock</string>
+  <string name="migration_screen_export_saved_successfully">Export saved successfully</string>
+  <string name="migration_screen_import_complete_snackbar">Import complete! %1$s imported.</string>
+  <string name="migration_screen_import_complete_title">Import complete!</string>
+  <string name="migration_screen_preview_load_failed">Could not load preview: %1$s</string>
+  <string name="migration_screen_progress_percent">%1$d%%</string>
+  <string name="migration_screen_import_confirm_date_pattern">MMM d, yyyy \'at\' h:mm a</string>
+  <plurals name="migration_screen_identities_count">
+    <item quantity="one">%d identity</item>
+    <item quantity="other">%d identities</item>
+  </plurals>
+  <plurals name="migration_screen_messages_count">
+    <item quantity="one">%d message</item>
+    <item quantity="other">%d messages</item>
+  </plurals>
+  <plurals name="migration_screen_contacts_count">
+    <item quantity="one">%d contact</item>
+    <item quantity="other">%d contacts</item>
+  </plurals>
+  <plurals name="migration_screen_announces_count">
+    <item quantity="one">%d announce</item>
+    <item quantity="other">%d announces</item>
+  </plurals>
+  <plurals name="migration_screen_interfaces_count">
+    <item quantity="one">%d interface</item>
+    <item quantity="other">%d interfaces</item>
+  </plurals>
+  <plurals name="migration_screen_themes_count">
+    <item quantity="one">%d theme</item>
+    <item quantity="other">%d themes</item>
+  </plurals>
+  <plurals name="migration_screen_custom_themes_count">
+    <item quantity="one">%d custom theme</item>
+    <item quantity="other">%d custom themes</item>
+  </plurals>
+  <plurals name="migration_screen_conversations_count">
+    <item quantity="one">%d conversation</item>
+    <item quantity="other">%d conversations</item>
+  </plurals>
   <string name="ble_connections_mac_address">MAC Address</string>
   <string name="ble_connections_mtu">MTU</string>
   <string name="ble_connections_mtu_value">%1$d bytes</string>
