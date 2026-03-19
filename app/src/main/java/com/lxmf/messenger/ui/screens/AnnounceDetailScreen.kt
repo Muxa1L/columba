@@ -59,6 +59,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -84,6 +85,7 @@ fun AnnounceDetailScreen(
     viewModel: AnnounceStreamViewModel = hiltViewModel(),
 ) {
     val clipboardManager = LocalClipboardManager.current
+    val context = LocalContext.current
 
     // Observe specific announce reactively (not search in list)
     val announce by viewModel.getAnnounceFlow(destinationHash).collectAsState(initial = null)
@@ -466,7 +468,7 @@ fun AnnounceDetailScreen(
                 // (e.g., "TCPInterface[Sideband Server/192.168.1.100:4965]")
                 // getInterfaceInfo() extracts the friendly name from this string
                 announceNonNull.receivingInterface?.let { interfaceName ->
-                    val interfaceInfo = getInterfaceInfo(interfaceName)
+                    val interfaceInfo = getInterfaceInfo(context, interfaceName)
                     InfoCard(
                         icon = interfaceInfo.icon,
                         title = stringResource(R.string.announce_detail_received_via),

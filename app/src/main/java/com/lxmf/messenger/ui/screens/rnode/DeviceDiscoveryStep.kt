@@ -1351,7 +1351,7 @@ private fun UsbBluetoothPairingCard(
                     value = state.manualPinInput,
                     onValueChange = { viewModel.updateManualPinInput(it) },
                     label = { Text(stringResource(R.string.rnode_device_discovery_pin_code)) },
-                    placeholder = { Text("000000") },
+                    placeholder = { Text(stringResource(R.string.rnode_device_discovery_pin_code_placeholder)) },
                     singleLine = true,
                     keyboardOptions =
                         androidx.compose.foundation.text.KeyboardOptions(

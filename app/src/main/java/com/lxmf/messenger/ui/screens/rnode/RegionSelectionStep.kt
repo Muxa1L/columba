@@ -250,16 +250,16 @@ private fun FrequencyRegionCard(
                 Spacer(Modifier.height(8.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     SettingChip(
-                        label = "${region.frequency / 1_000_000.0} MHz",
+                        label = stringResource(R.string.region_selection_frequency_chip_mhz, region.frequency / 1_000_000.0),
                         isSelected = isSelected,
                     )
                     SettingChip(
-                        label = "${region.maxTxPower} dBm",
+                        label = stringResource(R.string.region_selection_tx_power_chip_dbm, region.maxTxPower),
                         isSelected = isSelected,
                     )
                     if (region.hasDutyCycleLimit) {
                         SettingChip(
-                            label = "${region.dutyCycle}% duty",
+                            label = stringResource(R.string.region_selection_duty_cycle_chip, region.dutyCycle),
                             isSelected = isSelected,
                         )
                     }
@@ -411,19 +411,19 @@ private fun PopularPresetCard(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 SettingChip(
-                    label = "${preset.frequency / 1_000_000.0} MHz",
+                    label = stringResource(R.string.region_selection_frequency_chip_mhz, preset.frequency / 1_000_000.0),
                     isSelected = isSelected,
                 )
                 SettingChip(
-                    label = "SF${preset.spreadingFactor}",
+                    label = stringResource(R.string.rnode_modem_preset_sf_chip, preset.spreadingFactor),
                     isSelected = isSelected,
                 )
                 SettingChip(
-                    label = "${preset.bandwidth / 1000} kHz",
+                    label = stringResource(R.string.rnode_modem_preset_khz_chip, preset.bandwidth / 1000),
                     isSelected = isSelected,
                 )
                 SettingChip(
-                    label = "${preset.txPower} dBm",
+                    label = stringResource(R.string.region_selection_tx_power_chip_dbm, preset.txPower),
                     isSelected = isSelected,
                 )
             }

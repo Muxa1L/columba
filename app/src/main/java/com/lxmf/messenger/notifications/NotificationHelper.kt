@@ -79,30 +79,30 @@ class NotificationHelper
                 val messagesChannel =
                     NotificationChannel(
                         CHANNEL_ID_MESSAGES,
-                        "Messages",
+                        context.getString(R.string.notification_messages_channel_name),
                         NotificationManager.IMPORTANCE_HIGH,
                     ).apply {
-                        description = "Notifications for received messages"
+                        description = context.getString(R.string.notification_messages_channel_description)
                         enableVibration(true)
                     }
 
                 val announcesChannel =
                     NotificationChannel(
                         CHANNEL_ID_ANNOUNCES,
-                        "Announces",
+                        context.getString(R.string.notification_announces_channel_name),
                         NotificationManager.IMPORTANCE_DEFAULT,
                     ).apply {
-                        description = "Notifications for heard announces"
+                        description = context.getString(R.string.notification_announces_channel_description)
                         enableVibration(false)
                     }
 
                 val bleEventsChannel =
                     NotificationChannel(
                         CHANNEL_ID_BLE_EVENTS,
-                        "Bluetooth Events",
+                        context.getString(R.string.notification_ble_events_channel_name),
                         NotificationManager.IMPORTANCE_LOW,
                     ).apply {
-                        description = "Notifications for Bluetooth connection events"
+                        description = context.getString(R.string.notification_ble_events_channel_description)
                         enableVibration(false)
                     }
 
@@ -285,15 +285,30 @@ class NotificationHelper
 
             // Build notification text with interface info
             val interfaceLabel = extractInterfaceLabel(receivingInterface, interfaceType)
-            val hopsText = if (hops == 1) "1 hop" else "$hops hops"
-            val contentText = "via $interfaceLabel \u00b7 $hopsText"
+            val hopsText =
+                context.resources.getQuantityString(
+                    R.plurals.notification_announce_hops,
+                    hops,
+                    hops,
+                )
+            val contentText =
+                context.getString(
+                    R.string.notification_announce_message,
+                    interfaceLabel,
+                    hopsText,
+                )
 
             // Create notification
             val notification =
                 NotificationCompat
                     .Builder(context, CHANNEL_ID_ANNOUNCES)
                     .setSmallIcon(R.mipmap.ic_launcher)
-                    .setContentTitle("Announce from $peerName")
+                    .setContentTitle(
+                        context.getString(
+                            R.string.notification_announce_title,
+                            peerName,
+                        ),
+                    )
                     .setContentText(contentText)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setCategory(NotificationCompat.CATEGORY_STATUS)

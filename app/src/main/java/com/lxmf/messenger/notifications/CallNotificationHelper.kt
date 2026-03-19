@@ -130,10 +130,10 @@ class CallNotificationHelper
                 val incomingChannel =
                     NotificationChannel(
                         CHANNEL_ID_INCOMING_CALL,
-                        "Incoming Calls",
+                        context.getString(R.string.call_notification_incoming_channel_name),
                         NotificationManager.IMPORTANCE_HIGH,
                     ).apply {
-                        description = "Notifications for incoming voice calls"
+                        description = context.getString(R.string.call_notification_incoming_channel_description)
                         enableVibration(true)
                         vibrationPattern = longArrayOf(0, 500, 200, 500)
                         setSound(null, null) // We'll handle ringtone separately
@@ -145,10 +145,10 @@ class CallNotificationHelper
                 val ongoingChannel =
                     NotificationChannel(
                         CHANNEL_ID_ONGOING_CALL,
-                        "Ongoing Calls",
+                        context.getString(R.string.call_notification_ongoing_channel_name),
                         NotificationManager.IMPORTANCE_LOW,
                     ).apply {
-                        description = "Notifications for active voice calls"
+                        description = context.getString(R.string.call_notification_ongoing_channel_description)
                         enableVibration(false)
                         setSound(null, null)
                     }
@@ -233,7 +233,7 @@ class CallNotificationHelper
                 NotificationCompat
                     .Builder(context, CHANNEL_ID_INCOMING_CALL)
                     .setSmallIcon(R.mipmap.ic_launcher)
-                    .setContentTitle("Incoming Voice Call")
+                    .setContentTitle(context.getString(R.string.incoming_voice_call))
                     .setContentText(displayName)
                     .setPriority(NotificationCompat.PRIORITY_MAX)
                     .setCategory(NotificationCompat.CATEGORY_CALL)
@@ -244,11 +244,11 @@ class CallNotificationHelper
                     .setFullScreenIntent(fullScreenPendingIntent, true)
                     .addAction(
                         android.R.drawable.ic_menu_close_clear_cancel,
-                        "Decline",
+                        context.getString(R.string.call_decline),
                         declinePendingIntent,
                     ).addAction(
                         android.R.drawable.ic_menu_call,
-                        "Answer",
+                        context.getString(R.string.call_answer),
                         answerPendingIntent,
                     ).build()
 
@@ -309,8 +309,14 @@ class CallNotificationHelper
                 NotificationCompat
                     .Builder(context, CHANNEL_ID_ONGOING_CALL)
                     .setSmallIcon(R.mipmap.ic_launcher)
-                    .setContentTitle("Voice Call")
-                    .setContentText("$displayName - $durationText")
+                    .setContentTitle(context.getString(R.string.call_notification_ongoing_title))
+                    .setContentText(
+                        context.getString(
+                            R.string.call_notification_ongoing_content,
+                            displayName,
+                            durationText,
+                        ),
+                    )
                     .setPriority(NotificationCompat.PRIORITY_LOW)
                     .setCategory(NotificationCompat.CATEGORY_CALL)
                     .setOngoing(true)
@@ -318,7 +324,7 @@ class CallNotificationHelper
                     .setContentIntent(openPendingIntent)
                     .addAction(
                         android.R.drawable.ic_menu_close_clear_cancel,
-                        "End Call",
+                        context.getString(R.string.call_notification_end_call),
                         endPendingIntent,
                     ).build()
 

@@ -1,5 +1,6 @@
 package com.lxmf.messenger.ui.util
 
+import android.content.Context
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bluetooth
 import androidx.compose.material.icons.filled.CellTower
@@ -7,6 +8,7 @@ import androidx.compose.material.icons.filled.Cloud
 import androidx.compose.material.icons.filled.SettingsInputAntenna
 import androidx.compose.material.icons.filled.Wifi
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.lxmf.messenger.R
 
 data class InterfaceInfo(
     val icon: ImageVector,
@@ -92,6 +94,37 @@ fun getInterfaceInfo(interfaceName: String): InterfaceInfo {
         when (category) {
             InterfaceCategory.UNKNOWN -> friendlyName ?: interfaceName.take(30)
             else -> friendlyName ?: category.defaultText
+        }
+
+    return InterfaceInfo(
+        icon = category.icon,
+        text = displayText,
+        subtitle = interfaceType,
+    )
+}
+
+fun getInterfaceInfo(
+    context: Context,
+    interfaceName: String,
+): InterfaceInfo {
+    val friendlyName = extractFriendlyName(interfaceName)
+    val interfaceType = extractInterfaceType(interfaceName)
+    val category = categorizeInterface(interfaceName)
+
+    val localizedDefaultText =
+        when (category) {
+            InterfaceCategory.AUTO -> context.getString(R.string.interface_info_auto)
+            InterfaceCategory.TCP -> context.getString(R.string.interface_info_tcp)
+            InterfaceCategory.BLUETOOTH -> context.getString(R.string.interface_info_bluetooth)
+            InterfaceCategory.LORA -> context.getString(R.string.interface_info_lora)
+            InterfaceCategory.SERIAL -> context.getString(R.string.interface_info_serial)
+            InterfaceCategory.UNKNOWN -> ""
+        }
+
+    val displayText =
+        when (category) {
+            InterfaceCategory.UNKNOWN -> friendlyName ?: interfaceName.take(30)
+            else -> friendlyName ?: localizedDefaultText
         }
 
     return InterfaceInfo(

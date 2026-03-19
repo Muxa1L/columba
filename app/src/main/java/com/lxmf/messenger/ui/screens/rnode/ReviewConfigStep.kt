@@ -404,24 +404,24 @@ fun ReviewConfigStep(viewModel: RNodeWizardViewModel) {
                     OutlinedTextField(
                         value = state.spreadingFactor,
                         onValueChange = { viewModel.updateSpreadingFactor(it) },
-                        label = { Text("SF") },
+                        label = { Text(stringResource(R.string.rnode_review_spreading_factor)) },
                         modifier = Modifier.weight(1f),
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         isError = state.spreadingFactorError != null,
                         supportingText = state.spreadingFactorError?.let { { Text(it) } },
-                        placeholder = { Text("7-12") },
+                        placeholder = { Text(stringResource(R.string.rnode_review_spreading_factor_placeholder)) },
                     )
                     OutlinedTextField(
                         value = state.codingRate,
                         onValueChange = { viewModel.updateCodingRate(it) },
-                        label = { Text("CR") },
+                        label = { Text(stringResource(R.string.rnode_review_coding_rate)) },
                         modifier = Modifier.weight(1f),
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         isError = state.codingRateError != null,
                         supportingText = state.codingRateError?.let { { Text(it) } },
-                        placeholder = { Text("5-8") },
+                        placeholder = { Text(stringResource(R.string.rnode_review_coding_rate_placeholder)) },
                     )
                     OutlinedTextField(
                         value = state.txPower,
@@ -443,7 +443,7 @@ fun ReviewConfigStep(viewModel: RNodeWizardViewModel) {
                                     },
                             )
                         },
-                        placeholder = { Text("0-$maxTxPower") },
+                        placeholder = { Text(stringResource(R.string.rnode_review_tx_placeholder, maxTxPower)) },
                     )
                 }
 

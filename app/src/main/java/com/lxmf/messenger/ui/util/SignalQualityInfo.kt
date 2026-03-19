@@ -1,11 +1,13 @@
 package com.lxmf.messenger.ui.util
 
+import android.content.Context
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.SignalCellular4Bar
 import androidx.compose.material.icons.filled.SignalCellularAlt
 import androidx.compose.material.icons.filled.SignalCellularConnectedNoInternet0Bar
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.lxmf.messenger.R
 import java.util.Locale
 
 // Color constants for signal quality indicators
@@ -78,6 +80,48 @@ fun getRssiInfo(rssi: Int): SignalQualityInfo =
             )
     }
 
+fun getRssiInfo(
+    context: Context,
+    rssi: Int,
+): SignalQualityInfo =
+    when {
+        rssi > -50 ->
+            SignalQualityInfo(
+                icon = Icons.Default.SignalCellular4Bar,
+                color = ColorExcellent,
+                text = context.getString(R.string.signal_quality_rssi_excellent_text, rssi),
+                subtitle = context.getString(R.string.signal_quality_rssi_excellent_subtitle),
+            )
+        rssi > -70 ->
+            SignalQualityInfo(
+                icon = Icons.Default.SignalCellular4Bar,
+                color = ColorGood,
+                text = context.getString(R.string.signal_quality_rssi_good_text, rssi),
+                subtitle = context.getString(R.string.signal_quality_rssi_good_subtitle),
+            )
+        rssi > -85 ->
+            SignalQualityInfo(
+                icon = Icons.Default.SignalCellularAlt,
+                color = ColorFair,
+                text = context.getString(R.string.signal_quality_rssi_fair_text, rssi),
+                subtitle = context.getString(R.string.signal_quality_rssi_fair_subtitle),
+            )
+        rssi > -100 ->
+            SignalQualityInfo(
+                icon = Icons.Default.SignalCellularAlt,
+                color = ColorPoor,
+                text = context.getString(R.string.signal_quality_rssi_weak_text, rssi),
+                subtitle = context.getString(R.string.signal_quality_rssi_weak_subtitle),
+            )
+        else ->
+            SignalQualityInfo(
+                icon = Icons.Default.SignalCellularConnectedNoInternet0Bar,
+                color = ColorVeryPoor,
+                text = context.getString(R.string.signal_quality_rssi_very_weak_text, rssi),
+                subtitle = context.getString(R.string.signal_quality_rssi_very_weak_subtitle),
+            )
+    }
+
 /**
  * Get signal quality (SNR) display information.
  *
@@ -128,6 +172,50 @@ fun getSnrInfo(snr: Float): SignalQualityInfo {
                 color = ColorVeryPoor,
                 text = "Very Poor ($snrStr dB)",
                 subtitle = "Very noisy, at decodability limit",
+            )
+    }
+}
+
+fun getSnrInfo(
+    context: Context,
+    snr: Float,
+): SignalQualityInfo {
+    val snrStr = String.format(Locale.US, "%.1f", snr)
+    return when {
+        snr > 10f ->
+            SignalQualityInfo(
+                icon = Icons.Default.SignalCellular4Bar,
+                color = ColorExcellent,
+                text = context.getString(R.string.signal_quality_snr_excellent_text, snrStr),
+                subtitle = context.getString(R.string.signal_quality_snr_excellent_subtitle),
+            )
+        snr > 5f ->
+            SignalQualityInfo(
+                icon = Icons.Default.SignalCellular4Bar,
+                color = ColorGood,
+                text = context.getString(R.string.signal_quality_snr_good_text, snrStr),
+                subtitle = context.getString(R.string.signal_quality_snr_good_subtitle),
+            )
+        snr > 0f ->
+            SignalQualityInfo(
+                icon = Icons.Default.SignalCellularAlt,
+                color = ColorFair,
+                text = context.getString(R.string.signal_quality_snr_fair_text, snrStr),
+                subtitle = context.getString(R.string.signal_quality_snr_fair_subtitle),
+            )
+        snr > -5f ->
+            SignalQualityInfo(
+                icon = Icons.Default.SignalCellularAlt,
+                color = ColorPoor,
+                text = context.getString(R.string.signal_quality_snr_poor_text, snrStr),
+                subtitle = context.getString(R.string.signal_quality_snr_poor_subtitle),
+            )
+        else ->
+            SignalQualityInfo(
+                icon = Icons.Default.SignalCellularConnectedNoInternet0Bar,
+                color = ColorVeryPoor,
+                text = context.getString(R.string.signal_quality_snr_very_poor_text, snrStr),
+                subtitle = context.getString(R.string.signal_quality_snr_very_poor_subtitle),
             )
     }
 }

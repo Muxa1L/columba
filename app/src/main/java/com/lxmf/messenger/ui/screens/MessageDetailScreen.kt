@@ -41,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -62,6 +63,7 @@ fun MessageDetailScreen(
     viewModel: MessageDetailViewModel = hiltViewModel(),
 ) {
     val message by viewModel.message.collectAsState()
+    val context = LocalContext.current
     val title = stringResource(R.string.message_detail_title)
     val backLabel = stringResource(R.string.common_back)
     val loadingLabel = stringResource(R.string.message_detail_loading)
@@ -189,7 +191,7 @@ fun MessageDetailScreen(
 
                     // Sent interface card (only if available)
                     msg.sentInterface?.let { interfaceName ->
-                        val interfaceInfo = getInterfaceInfo(interfaceName)
+                        val interfaceInfo = getInterfaceInfo(context, interfaceName)
                         MessageInfoCard(
                             icon = interfaceInfo.icon,
                             title = sentViaLabel,
@@ -224,7 +226,7 @@ fun MessageDetailScreen(
 
                     // Receiving interface card (only if available)
                     msg.receivedInterface?.let { interfaceName ->
-                        val interfaceInfo = getInterfaceInfo(interfaceName)
+                        val interfaceInfo = getInterfaceInfo(context, interfaceName)
                         MessageInfoCard(
                             icon = interfaceInfo.icon,
                             title = receivedViaLabel,
@@ -235,7 +237,7 @@ fun MessageDetailScreen(
 
                     // Signal strength (RSSI) card (only if available)
                     msg.receivedRssi?.let { rssi ->
-                        val rssiInfo = getRssiInfo(rssi)
+                        val rssiInfo = getRssiInfo(context, rssi)
                         MessageInfoCard(
                             icon = rssiInfo.icon,
                             iconTint = rssiInfo.color,
@@ -247,7 +249,7 @@ fun MessageDetailScreen(
 
                     // Signal quality (SNR) card (only if available)
                     msg.receivedSnr?.let { snr ->
-                        val snrInfo = getSnrInfo(snr)
+                        val snrInfo = getSnrInfo(context, snr)
                         MessageInfoCard(
                             icon = snrInfo.icon,
                             iconTint = snrInfo.color,
