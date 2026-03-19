@@ -214,6 +214,40 @@
     <string name="messaging_preview_message_text">Предпросмотр текста сообщения</string>
     <string name="messaging_empty_title">Сообщений пока нет</string>
     <string name="messaging_empty_subtitle">Отправьте сообщение, чтобы начать разговор</string>
+    <!-- Map screen -->
+    <string name="map_screen_offline_maps">Офлайн-карты</string>
+    <string name="map_screen_my_location">Мое местоположение</string>
+    <string name="map_screen_send_now">Отправить сейчас</string>
+    <string name="map_screen_request_now">Запросить сейчас</string>
+    <string name="map_screen_lora_parameters_label">Параметры LoRa</string>
+    <string name="map_screen_copy_params">Копировать параметры</string>
+    <string name="map_screen_use_for_rnode">Использовать для RNode</string>
+    <string name="map_screen_location_permission_required">Требуется разрешение на геолокацию</string>
+    <string name="map_screen_enable_location_access">Включите доступ к местоположению, чтобы видеть свою позицию на карте.</string>
+    <string name="map_screen_dismiss">Закрыть</string>
+    <string name="map_screen_no_map_source_enabled">Источник карт не включен</string>
+    <string name="map_screen_enable_http_map_source">Включить HTTP-источник карт</string>
+    <string name="map_screen_or">или</string>
+    <string name="map_screen_download_offline_maps_first">Сначала загрузите офлайн-карты</string>
+    <string name="map_screen_title">Карта</string>
+    <string name="map_screen_stop_sharing">Остановить передачу</string>
+    <string name="map_screen_share_location">Поделиться местоположением</string>
+    <string name="map_screen_loading_map">Загрузка карты...</string>
+    <string name="map_screen_lora_parameters_copied">Параметры LoRa скопированы</string>
+    <string name="map_screen_location">Местоположение</string>
+    <string name="map_screen_altitude">Высота</string>
+    <string name="map_screen_radio_parameters">Параметры радио</string>
+    <string name="map_screen_frequency">Частота</string>
+    <string name="map_screen_bandwidth">Полоса</string>
+    <string name="map_screen_spreading_factor">Коэффициент расширения</string>
+    <string name="map_screen_coding_rate">Скорость кодирования</string>
+    <string name="map_screen_modulation">Модуляция</string>
+    <string name="map_screen_network">Сеть</string>
+    <string name="map_screen_host">Хост</string>
+    <string name="map_screen_port">Порт</string>
+    <string name="map_screen_status">Статус</string>
+    <string name="map_screen_last_heard">Последний прием</string>
+    <string name="map_screen_hops">Прыжки</string>
 
     <!-- Common labels -->
     <string name="common_back">Назад</string>

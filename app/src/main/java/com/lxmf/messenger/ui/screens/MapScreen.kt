@@ -71,6 +71,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -80,6 +81,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import com.lxmf.messenger.R
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -1092,7 +1094,7 @@ fun MapScreen(
             // Create a marker bitmap for the focus location
             val imageId = "focus-marker-image"
             if (style.getImage(imageId) == null) {
-                val label = focusLabel ?: "Location"
+                val label = focusLabel ?: context.getString(R.string.map_screen_location)
                 val initial = label.firstOrNull() ?: 'L'
                 val bitmap =
                     MarkerBitmapFactory.createInitialMarker(
@@ -1110,7 +1112,7 @@ fun MapScreen(
                     .fromGeometry(
                         Point.fromLngLat(focusLongitude, focusLatitude),
                     ).apply {
-                        addStringProperty("name", focusLabel ?: "Location")
+                        addStringProperty("name", focusLabel ?: context.getString(R.string.map_screen_location))
                         addStringProperty("imageId", imageId)
                     }
             val featureCollection = FeatureCollection.fromFeatures(listOf(feature))
@@ -1156,7 +1158,7 @@ fun MapScreen(
         TopAppBar(
             title = {
                 Text(
-                    text = "Map",
+                    text = stringResource(R.string.map_screen_title),
                     color = Color.White,
                 )
             },
@@ -1213,7 +1215,10 @@ fun MapScreen(
                 containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                 contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
             ) {
-                Icon(Icons.Default.Download, contentDescription = "Offline Maps")
+                Icon(
+                    Icons.Default.Download,
+                    contentDescription = stringResource(R.string.map_screen_offline_maps),
+                )
             }
 
             // My Location button
@@ -1241,7 +1246,10 @@ fun MapScreen(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                 contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
             ) {
-                Icon(Icons.Default.MyLocation, contentDescription = "My location")
+                Icon(
+                    Icons.Default.MyLocation,
+                    contentDescription = stringResource(R.string.map_screen_my_location),
+                )
             }
 
             // Bottom row: optional Send/Request Now + Share/Stop Location
@@ -1273,7 +1281,10 @@ fun MapScreen(
                                 color = MaterialTheme.colorScheme.onSecondaryContainer,
                             )
                         } else {
-                            Icon(Icons.Default.Send, contentDescription = "Send Now")
+                            Icon(
+                                Icons.Default.Send,
+                                contentDescription = stringResource(R.string.map_screen_send_now),
+                            )
                         }
                     }
                 }
@@ -1292,7 +1303,10 @@ fun MapScreen(
                                 color = MaterialTheme.colorScheme.onTertiaryContainer,
                             )
                         } else {
-                            Icon(Icons.Default.CloudDownload, contentDescription = "Request Now")
+                            Icon(
+                                Icons.Default.CloudDownload,
+                                contentDescription = stringResource(R.string.map_screen_request_now),
+                            )
                         }
                     }
                 }
@@ -1312,7 +1326,15 @@ fun MapScreen(
                             contentDescription = null,
                         )
                     },
-                    text = { Text(if (isAnySharingActive) "Stop Sharing" else "Share Location") },
+                    text = {
+                        Text(
+                            if (isAnySharingActive) {
+                                stringResource(R.string.map_screen_stop_sharing)
+                            } else {
+                                stringResource(R.string.map_screen_share_location)
+                            },
+                        )
+                    },
                     containerColor =
                         if (isAnySharingActive) {
                             MaterialTheme.colorScheme.errorContainer
@@ -1374,7 +1396,7 @@ fun MapScreen(
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
-                    text = "Loading map...",
+                    text = stringResource(R.string.map_screen_loading_map),
                     style = MaterialTheme.typography.bodyLarge,
                 )
             }
@@ -1440,9 +1462,17 @@ fun MapScreen(
                 val clipboard =
                     context.getSystemService(Context.CLIPBOARD_SERVICE)
                         as android.content.ClipboardManager
-                val clip = android.content.ClipData.newPlainText("LoRa Parameters", params)
+                val clip =
+                    android.content.ClipData.newPlainText(
+                        context.getString(R.string.map_screen_lora_parameters_label),
+                        params,
+                    )
                 clipboard.setPrimaryClip(clip)
-                Toast.makeText(context, "LoRa parameters copied", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.map_screen_lora_parameters_copied),
+                    Toast.LENGTH_SHORT,
+                ).show()
             },
             onUseForNewRNode = {
                 showFocusInterfaceSheet = false
@@ -1548,12 +1578,12 @@ internal fun FocusInterfaceContent(
 
         // Location info
         InterfaceDetailRow(
-            label = "Location",
+            label = stringResource(R.string.map_screen_location),
             value = "%.4f, %.4f".format(details.latitude, details.longitude),
         )
         details.height?.let { height ->
             InterfaceDetailRow(
-                label = "Altitude",
+                label = stringResource(R.string.map_screen_altitude),
                 value = "${height.toInt()} m",
             )
         }
@@ -1562,35 +1592,35 @@ internal fun FocusInterfaceContent(
         if (details.frequency != null) {
             HorizontalDivider()
             Text(
-                text = "Radio Parameters",
+                text = stringResource(R.string.map_screen_radio_parameters),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
             )
             InterfaceDetailRow(
-                label = "Frequency",
+                label = stringResource(R.string.map_screen_frequency),
                 value = "%.3f MHz".format(details.frequency / 1_000_000.0),
             )
             details.bandwidth?.let { bw ->
                 InterfaceDetailRow(
-                    label = "Bandwidth",
+                    label = stringResource(R.string.map_screen_bandwidth),
                     value = "$bw kHz",
                 )
             }
             details.spreadingFactor?.let { sf ->
                 InterfaceDetailRow(
-                    label = "Spreading Factor",
+                    label = stringResource(R.string.map_screen_spreading_factor),
                     value = "SF$sf",
                 )
             }
             details.codingRate?.let { cr ->
                 InterfaceDetailRow(
-                    label = "Coding Rate",
+                    label = stringResource(R.string.map_screen_coding_rate),
                     value = "4/$cr",
                 )
             }
             details.modulation?.let { mod ->
                 InterfaceDetailRow(
-                    label = "Modulation",
+                    label = stringResource(R.string.map_screen_modulation),
                     value = mod,
                 )
             }
@@ -1600,17 +1630,17 @@ internal fun FocusInterfaceContent(
         if (details.reachableOn != null) {
             HorizontalDivider()
             Text(
-                text = "Network",
+                text = stringResource(R.string.map_screen_network),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
             )
             InterfaceDetailRow(
-                label = "Host",
+                label = stringResource(R.string.map_screen_host),
                 value = details.reachableOn,
             )
             details.port?.let { port ->
                 InterfaceDetailRow(
-                    label = "Port",
+                    label = stringResource(R.string.map_screen_port),
                     value = port.toString(),
                 )
             }
@@ -1620,20 +1650,20 @@ internal fun FocusInterfaceContent(
         if (details.lastHeard != null || details.hops != null) {
             HorizontalDivider()
             Text(
-                text = "Status",
+                text = stringResource(R.string.map_screen_status),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
             )
             details.lastHeard?.let { timestamp ->
                 val timeAgo = formatTimeAgo(timestamp)
                 InterfaceDetailRow(
-                    label = "Last Heard",
+                    label = stringResource(R.string.map_screen_last_heard),
                     value = timeAgo,
                 )
             }
             details.hops?.let { hops ->
                 InterfaceDetailRow(
-                    label = "Hops",
+                    label = stringResource(R.string.map_screen_hops),
                     value = hops.toString(),
                 )
             }
@@ -1658,7 +1688,7 @@ internal fun FocusInterfaceContent(
                         modifier = Modifier.size(18.dp),
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Copy Params")
+                    Text(stringResource(R.string.map_screen_copy_params))
                 }
                 // Use for New RNode button
                 Button(
@@ -1675,7 +1705,7 @@ internal fun FocusInterfaceContent(
                         modifier = Modifier.size(18.dp),
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Use for RNode")
+                    Text(stringResource(R.string.map_screen_use_for_rnode))
                 }
             }
         }
@@ -1774,13 +1804,13 @@ internal fun EmptyMapStateCard(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Location permission required",
+                    text = stringResource(R.string.map_screen_location_permission_required),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Medium,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "Enable location access to see your position on the map.",
+                    text = stringResource(R.string.map_screen_enable_location_access),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
@@ -1792,7 +1822,7 @@ internal fun EmptyMapStateCard(
             ) {
                 Icon(
                     imageVector = Icons.Default.Close,
-                    contentDescription = "Dismiss",
+                    contentDescription = stringResource(R.string.map_screen_dismiss),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
@@ -1837,7 +1867,7 @@ internal fun NoMapSourceOverlay(
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = "No Map Source Enabled",
+                    text = stringResource(R.string.map_screen_no_map_source_enabled),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Center,
@@ -1854,11 +1884,11 @@ internal fun NoMapSourceOverlay(
                     onClick = onEnableHttp,
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    Text("Enable HTTP Map Source")
+                    Text(stringResource(R.string.map_screen_enable_http_map_source))
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "or",
+                    text = stringResource(R.string.map_screen_or),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -1866,7 +1896,7 @@ internal fun NoMapSourceOverlay(
                 androidx.compose.material3.TextButton(
                     onClick = onNavigateToOfflineMaps,
                 ) {
-                    Text("Download Offline Maps First")
+                    Text(stringResource(R.string.map_screen_download_offline_maps_first))
                 }
             }
             // Close button in top-right corner
@@ -1876,7 +1906,7 @@ internal fun NoMapSourceOverlay(
             ) {
                 Icon(
                     imageVector = Icons.Default.Close,
-                    contentDescription = "Dismiss",
+                    contentDescription = stringResource(R.string.map_screen_dismiss),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
