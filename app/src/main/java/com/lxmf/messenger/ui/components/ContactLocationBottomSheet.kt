@@ -90,25 +90,31 @@ fun ContactLocationBottomSheet(
             userLocation = userLocation,
             markerLat = marker.latitude,
             markerLng = marker.longitude,
-            locationUnknown = locationUnknownLabel,
-            metersFormatter = { distance -> context.getString(R.string.contact_location_distance_meters, distance) },
-            kilometersFormatter = { distance -> context.getString(R.string.contact_location_distance_kilometers, distance) },
-            directionFormatter = { bearing ->
-                bearingToDirection(
-                    bearing = bearing,
-                    north = northLabel,
-                    northeast = northeastLabel,
-                    east = eastLabel,
-                    southeast = southeastLabel,
-                    south = southLabel,
-                    southwest = southwestLabel,
-                    west = westLabel,
-                    northwest = northwestLabel,
-                )
-            },
-            distanceWithDirectionFormatter = { distance, direction ->
-                context.getString(R.string.contact_location_distance_with_direction, distance, direction)
-            },
+            formatters =
+                DistanceDirectionFormatters(
+                    locationUnknown = locationUnknownLabel,
+                    metersFormatter = { distance -> context.getString(R.string.contact_location_distance_meters, distance) },
+                    kilometersFormatter = { distance -> context.getString(R.string.contact_location_distance_kilometers, distance) },
+                    directionFormatter = { bearing ->
+                        bearingToDirection(
+                            bearing = bearing,
+                            directions =
+                                listOf(
+                                    northLabel,
+                                    northeastLabel,
+                                    eastLabel,
+                                    southeastLabel,
+                                    southLabel,
+                                    southwestLabel,
+                                    westLabel,
+                                    northwestLabel,
+                                ),
+                        )
+                    },
+                    distanceWithDirectionFormatter = { distance, direction ->
+                        context.getString(R.string.contact_location_distance_with_direction, distance, direction)
+                    },
+                ),
         )
     val updatedText =
         formatUpdatedTime(
@@ -258,13 +264,9 @@ internal fun formatDistanceAndDirection(
     userLocation: Location?,
     markerLat: Double,
     markerLng: Double,
-    locationUnknown: String = "Location unknown",
-    metersFormatter: (Int) -> String = { distance -> "${distance}m" },
-    kilometersFormatter: (Double) -> String = { distance -> "%.1fkm".format(distance) },
-    directionFormatter: (Float) -> String = { bearing -> bearingToDirection(bearing) },
-    distanceWithDirectionFormatter: (String, String) -> String = { distance, direction -> "$distance $direction" },
+    formatters: DistanceDirectionFormatters = DistanceDirectionFormatters(),
 ): String {
-    if (userLocation == null) return locationUnknown
+    if (userLocation == null) return formatters.locationUnknown
 
     val results = FloatArray(2)
     Location.distanceBetween(
@@ -279,13 +281,21 @@ internal fun formatDistanceAndDirection(
 
     val distanceText =
         when {
-            distance < 1000 -> metersFormatter(distance.toInt())
-            else -> kilometersFormatter(distance / 1000.0)
+            distance < 1000 -> formatters.metersFormatter(distance.toInt())
+            else -> formatters.kilometersFormatter(distance / 1000.0)
         }
 
-    val direction = directionFormatter(bearing)
-    return distanceWithDirectionFormatter(distanceText, direction)
+    val direction = formatters.directionFormatter(bearing)
+    return formatters.distanceWithDirectionFormatter(distanceText, direction)
 }
+
+internal data class DistanceDirectionFormatters(
+    val locationUnknown: String = "Location unknown",
+    val metersFormatter: (Int) -> String = { distance -> "${distance}m" },
+    val kilometersFormatter: (Double) -> String = { distance -> "%.1fkm".format(distance) },
+    val directionFormatter: (Float) -> String = { bearing -> bearingToDirection(bearing) },
+    val distanceWithDirectionFormatter: (String, String) -> String = { distance, direction -> "$distance $direction" },
+)
 
 /**
  * Convert a bearing angle to a cardinal/intercardinal direction.
@@ -295,27 +305,32 @@ internal fun formatDistanceAndDirection(
  */
 internal fun bearingToDirection(
     bearing: Float,
-    north: String = "north",
-    northeast: String = "northeast",
-    east: String = "east",
-    southeast: String = "southeast",
-    south: String = "south",
-    southwest: String = "southwest",
-    west: String = "west",
-    northwest: String = "northwest",
+    directions: List<String> = DEFAULT_DIRECTIONS,
 ): String {
     val normalized = (bearing + 360) % 360
     return when {
-        normalized < 22.5 || normalized >= 337.5 -> north
-        normalized < 67.5 -> northeast
-        normalized < 112.5 -> east
-        normalized < 157.5 -> southeast
-        normalized < 202.5 -> south
-        normalized < 247.5 -> southwest
-        normalized < 292.5 -> west
-        else -> northwest
+        normalized < 22.5 || normalized >= 337.5 -> directions[0]
+        normalized < 67.5 -> directions[1]
+        normalized < 112.5 -> directions[2]
+        normalized < 157.5 -> directions[3]
+        normalized < 202.5 -> directions[4]
+        normalized < 247.5 -> directions[5]
+        normalized < 292.5 -> directions[6]
+        else -> directions[7]
     }
 }
+
+private val DEFAULT_DIRECTIONS =
+    listOf(
+        "north",
+        "northeast",
+        "east",
+        "southeast",
+        "south",
+        "southwest",
+        "west",
+        "northwest",
+    )
 
 /**
  * Format the timestamp as a relative time string.

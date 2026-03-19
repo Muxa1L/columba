@@ -41,14 +41,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.lxmf.messenger.R
 import com.lxmf.messenger.ui.util.getInterfaceInfo
 import com.lxmf.messenger.ui.util.getRssiInfo
 import com.lxmf.messenger.ui.util.getSnrInfo
 import com.lxmf.messenger.viewmodel.MessageDetailViewModel
-import java.text.SimpleDateFormat
+import java.text.DateFormat
 import java.util.Date
 import java.util.Locale
 
@@ -60,6 +62,21 @@ fun MessageDetailScreen(
     viewModel: MessageDetailViewModel = hiltViewModel(),
 ) {
     val message by viewModel.message.collectAsState()
+    val title = stringResource(R.string.message_detail_title)
+    val backLabel = stringResource(R.string.common_back)
+    val loadingLabel = stringResource(R.string.message_detail_loading)
+    val sentLabel = stringResource(R.string.message_detail_sent)
+    val receivedLabel = stringResource(R.string.message_detail_received)
+    val sentBySenderLabel = stringResource(R.string.message_detail_sent_by_sender)
+    val senderLocalTimeLabel = stringResource(R.string.message_detail_sender_local_time)
+    val statusLabel = stringResource(R.string.message_detail_status)
+    val deliveryMethodLabel = stringResource(R.string.message_detail_delivery_method)
+    val sentViaLabel = stringResource(R.string.message_detail_sent_via)
+    val errorDetailsLabel = stringResource(R.string.message_detail_error_details)
+    val hopCountLabel = stringResource(R.string.message_detail_hop_count)
+    val receivedViaLabel = stringResource(R.string.message_detail_received_via)
+    val signalStrengthLabel = stringResource(R.string.message_detail_signal_strength)
+    val signalQualityLabel = stringResource(R.string.message_detail_signal_quality)
 
     LaunchedEffect(messageId) {
         viewModel.loadMessage(messageId)
@@ -70,7 +87,7 @@ fun MessageDetailScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Message Details",
+                        text = title,
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                     )
@@ -79,7 +96,7 @@ fun MessageDetailScreen(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = backLabel,
                         )
                     }
                 },
@@ -103,7 +120,7 @@ fun MessageDetailScreen(
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
-                    text = "Loading...",
+                    text = loadingLabel,
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -123,24 +140,24 @@ fun MessageDetailScreen(
                     // Sent messages: show sent time
                     MessageInfoCard(
                         icon = Icons.Default.AccessTime,
-                        title = "Sent",
+                        title = sentLabel,
                         content = formatFullTimestamp(msg.timestamp),
                     )
                 } else {
                     // Received messages: show received time prominently, sent time as secondary
                     MessageInfoCard(
                         icon = Icons.Default.AccessTime,
-                        title = "Received",
+                        title = receivedLabel,
                         content = formatFullTimestamp(msg.receivedAt ?: msg.timestamp),
                     )
                     // Show sender's claimed time (may differ if their clock is wrong)
                     MessageInfoCard(
                         icon = Icons.AutoMirrored.Filled.Send,
-                        title = "Sent by Sender",
+                        title = sentBySenderLabel,
                         content = formatFullTimestamp(msg.timestamp),
                         subtitle =
                             if (msg.receivedAt != null && msg.receivedAt != msg.timestamp) {
-                                "Sender's local time (may differ from yours)"
+                                senderLocalTimeLabel
                             } else {
                                 null
                             },
@@ -154,7 +171,7 @@ fun MessageDetailScreen(
                     MessageInfoCard(
                         icon = statusInfo.icon,
                         iconTint = statusInfo.color,
-                        title = "Status",
+                        title = statusLabel,
                         content = statusInfo.text,
                         subtitle = statusInfo.subtitle,
                     )
@@ -164,7 +181,7 @@ fun MessageDetailScreen(
                         val methodInfo = getDeliveryMethodInfo(method)
                         MessageInfoCard(
                             icon = methodInfo.icon,
-                            title = "Delivery Method",
+                            title = deliveryMethodLabel,
                             content = methodInfo.text,
                             subtitle = methodInfo.subtitle,
                         )
@@ -175,7 +192,7 @@ fun MessageDetailScreen(
                         val interfaceInfo = getInterfaceInfo(interfaceName)
                         MessageInfoCard(
                             icon = interfaceInfo.icon,
-                            title = "Sent Via",
+                            title = sentViaLabel,
                             content = interfaceInfo.text,
                             subtitle = interfaceInfo.subtitle,
                         )
@@ -186,7 +203,7 @@ fun MessageDetailScreen(
                         MessageInfoCard(
                             icon = Icons.Default.Error,
                             iconTint = MaterialTheme.colorScheme.error,
-                            title = "Error Details",
+                            title = errorDetailsLabel,
                             content = msg.errorMessage,
                             contentColor = MaterialTheme.colorScheme.error,
                         )
@@ -199,7 +216,7 @@ fun MessageDetailScreen(
                         val hopInfo = getHopCountInfo(hops)
                         MessageInfoCard(
                             icon = Icons.Default.Hub,
-                            title = "Hop Count",
+                            title = hopCountLabel,
                             content = hopInfo.text,
                             subtitle = hopInfo.subtitle,
                         )
@@ -210,7 +227,7 @@ fun MessageDetailScreen(
                         val interfaceInfo = getInterfaceInfo(interfaceName)
                         MessageInfoCard(
                             icon = interfaceInfo.icon,
-                            title = "Received Via",
+                            title = receivedViaLabel,
                             content = interfaceInfo.text,
                             subtitle = interfaceInfo.subtitle,
                         )
@@ -222,7 +239,7 @@ fun MessageDetailScreen(
                         MessageInfoCard(
                             icon = rssiInfo.icon,
                             iconTint = rssiInfo.color,
-                            title = "Signal Strength",
+                            title = signalStrengthLabel,
                             content = rssiInfo.text,
                             subtitle = rssiInfo.subtitle,
                         )
@@ -234,7 +251,7 @@ fun MessageDetailScreen(
                         MessageInfoCard(
                             icon = snrInfo.icon,
                             iconTint = snrInfo.color,
-                            title = "Signal Quality",
+                            title = signalQualityLabel,
                             content = snrInfo.text,
                             subtitle = snrInfo.subtitle,
                         )
@@ -333,29 +350,29 @@ private fun getStatusInfo(status: String): StatusInfo =
                 icon = Icons.Default.CheckCircle,
                 // Green
                 color = Color(0xFF4CAF50),
-                text = "Delivered",
-                subtitle = "Message was successfully delivered to recipient",
+                text = stringResource(R.string.message_detail_status_delivered),
+                subtitle = stringResource(R.string.message_detail_status_delivered_subtitle),
             )
         "failed" ->
             StatusInfo(
                 icon = Icons.Default.Error,
                 color = MaterialTheme.colorScheme.error,
-                text = "Failed",
-                subtitle = "Message delivery failed",
+                text = stringResource(R.string.message_detail_status_failed),
+                subtitle = stringResource(R.string.message_detail_status_failed_subtitle),
             )
         "pending" ->
             StatusInfo(
                 icon = Icons.Default.HourglassEmpty,
                 color = MaterialTheme.colorScheme.tertiary,
-                text = "Pending",
-                subtitle = "Waiting for delivery confirmation",
+                text = stringResource(R.string.message_detail_status_pending),
+                subtitle = stringResource(R.string.message_detail_status_pending_subtitle),
             )
         else ->
             StatusInfo(
                 icon = Icons.AutoMirrored.Filled.Send,
                 color = MaterialTheme.colorScheme.primary,
-                text = "Sent",
-                subtitle = "Message has been sent",
+                text = stringResource(R.string.message_detail_status_sent),
+                subtitle = stringResource(R.string.message_detail_status_sent_subtitle),
             )
     }
 
@@ -365,37 +382,38 @@ private data class DeliveryMethodInfo(
     val subtitle: String,
 )
 
+@Composable
 private fun getDeliveryMethodInfo(method: String): DeliveryMethodInfo =
     when (method) {
         "opportunistic" ->
             DeliveryMethodInfo(
                 icon = Icons.AutoMirrored.Filled.Send,
-                text = "Opportunistic",
-                subtitle = "Single packet delivery for small messages, no link required",
+                text = stringResource(R.string.message_detail_delivery_opportunistic),
+                subtitle = stringResource(R.string.message_detail_delivery_opportunistic_subtitle),
             )
         "direct" ->
             DeliveryMethodInfo(
                 icon = Icons.Default.Link,
-                text = "Direct",
-                subtitle = "Link-based delivery with retries, supports large messages",
+                text = stringResource(R.string.message_detail_delivery_direct),
+                subtitle = stringResource(R.string.message_detail_delivery_direct_subtitle),
             )
         "propagated" ->
             DeliveryMethodInfo(
                 icon = Icons.Default.Hub,
-                text = "Propagated",
-                subtitle = "Delivered via relay node for offline recipients",
+                text = stringResource(R.string.message_detail_delivery_propagated),
+                subtitle = stringResource(R.string.message_detail_delivery_propagated_subtitle),
             )
         else ->
             DeliveryMethodInfo(
                 icon = Icons.AutoMirrored.Filled.Send,
                 text = method.replaceFirstChar { it.uppercase() },
-                subtitle = "Unknown delivery method",
+                subtitle = stringResource(R.string.message_detail_delivery_unknown_subtitle),
             )
     }
 
 private fun formatFullTimestamp(timestamp: Long): String {
     val date = Date(timestamp)
-    val format = SimpleDateFormat("MMM dd, yyyy 'at' HH:mm:ss", Locale.getDefault())
+    val format = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.getDefault())
     return format.format(date)
 }
 
@@ -404,26 +422,27 @@ private data class HopCountInfo(
     val subtitle: String,
 )
 
+@Composable
 private fun getHopCountInfo(hops: Int): HopCountInfo =
     when {
         hops < 0 ->
             HopCountInfo(
-                text = "Unknown",
-                subtitle = "Hop count unavailable",
+                text = stringResource(R.string.message_detail_unknown),
+                subtitle = stringResource(R.string.message_detail_hop_count_unavailable),
             )
         hops == 0 ->
             HopCountInfo(
-                text = "Direct",
-                subtitle = "Message received directly from sender",
+                text = stringResource(R.string.message_detail_direct),
+                subtitle = stringResource(R.string.message_detail_hop_count_direct_subtitle),
             )
         hops == 1 ->
             HopCountInfo(
-                text = "1 hop",
-                subtitle = "Message traveled through 1 relay",
+                text = stringResource(R.string.message_detail_one_hop),
+                subtitle = stringResource(R.string.message_detail_one_hop_subtitle),
             )
         else ->
             HopCountInfo(
-                text = "$hops hops",
-                subtitle = "Message traveled through $hops relays",
+                text = stringResource(R.string.message_detail_multiple_hops, hops),
+                subtitle = stringResource(R.string.message_detail_multiple_hops_subtitle, hops),
             )
     }

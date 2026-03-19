@@ -32,9 +32,11 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 import com.lxmf.messenger.reticulum.flasher.FrequencyBand
 import com.lxmf.messenger.reticulum.flasher.RNodeDeviceInfo
 import com.lxmf.messenger.viewmodel.FlashResult
@@ -55,6 +57,8 @@ fun FlashCompleteStep(
     onDone: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val unknownStateLabel = stringResource(R.string.flash_complete_unknown_state)
+
     Column(
         modifier =
             modifier
@@ -84,8 +88,7 @@ fun FlashCompleteStep(
                     onDone = onDone,
                 )
             null -> {
-                // Should not happen
-                Text("Unknown state")
+                Text(unknownStateLabel)
             }
         }
     }
@@ -99,6 +102,16 @@ private fun SuccessContent(
     onDone: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val flashSuccessfulLabel = stringResource(R.string.flash_complete_success_title)
+    val flashSuccessfulMessage = stringResource(R.string.flash_complete_success_message)
+    val deviceInformationLabel = stringResource(R.string.flash_complete_device_information)
+    val boardLabel = stringResource(R.string.flash_complete_board)
+    val firmwareLabel = stringResource(R.string.flash_complete_firmware)
+    val bandLabel = stringResource(R.string.flash_complete_band)
+    val configureRNodeLabel = stringResource(R.string.flash_complete_configure_rnode)
+    val flashAnotherDeviceLabel = stringResource(R.string.flash_complete_flash_another)
+    val doneLabel = stringResource(R.string.flash_complete_done)
+
     Column(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -113,14 +126,14 @@ private fun SuccessContent(
         )
 
         Text(
-            text = "Flash Successful!",
+            text = flashSuccessfulLabel,
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary,
         )
 
         Text(
-            text = "Your RNode has been updated successfully",
+            text = flashSuccessfulMessage,
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
@@ -143,7 +156,7 @@ private fun SuccessContent(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "Device Information",
+                            text = deviceInformationLabel,
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Medium,
                         )
@@ -151,13 +164,13 @@ private fun SuccessContent(
 
                     HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
 
-                    DeviceInfoRow("Board", deviceInfo.board.displayName)
+                    DeviceInfoRow(boardLabel, deviceInfo.board.displayName)
                     deviceInfo.firmwareVersion?.let { version ->
-                        DeviceInfoRow("Firmware", "v$version")
+                        DeviceInfoRow(firmwareLabel, "v$version")
                     }
                     val band = FrequencyBand.fromModelCode(deviceInfo.model)
                     if (band != FrequencyBand.UNKNOWN) {
-                        DeviceInfoRow("Band", band.displayName)
+                        DeviceInfoRow(bandLabel, band.displayName)
                     }
                 }
             }
@@ -176,7 +189,7 @@ private fun SuccessContent(
                 modifier = Modifier.size(18.dp),
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text("Configure RNode")
+            Text(configureRNodeLabel)
         }
 
         OutlinedButton(
@@ -189,13 +202,13 @@ private fun SuccessContent(
                 modifier = Modifier.size(18.dp),
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text("Flash Another Device")
+            Text(flashAnotherDeviceLabel)
         }
 
         TextButton(
             onClick = onDone,
         ) {
-            Text("Done")
+            Text(doneLabel)
         }
     }
 }
@@ -207,6 +220,13 @@ private fun FailureContent(
     onDone: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val flashFailedLabel = stringResource(R.string.flash_complete_failure_title)
+    val errorDetailsLabel = stringResource(R.string.flash_complete_error_details)
+    val recoveryTipsLabel = stringResource(R.string.flash_complete_recovery_tips)
+    val recoveryTipsMessage = stringResource(R.string.flash_complete_recovery_tips_message)
+    val tryAgainLabel = stringResource(R.string.flash_complete_try_again)
+    val doneLabel = stringResource(R.string.flash_complete_done)
+
     val scrollState = rememberScrollState()
     Column(
         modifier =
@@ -227,7 +247,7 @@ private fun FailureContent(
         )
 
         Text(
-            text = "Flash Failed",
+            text = flashFailedLabel,
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.error,
@@ -243,7 +263,7 @@ private fun FailureContent(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    text = "Error Details",
+                    text = errorDetailsLabel,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onErrorContainer,
@@ -263,17 +283,13 @@ private fun FailureContent(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    text = "Recovery Tips",
+                    text = recoveryTipsLabel,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Medium,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text =
-                        "1. Try disconnecting and reconnecting the device\n" +
-                            "2. Ensure the USB cable supports data transfer\n" +
-                            "3. Put the device into bootloader mode manually\n" +
-                            "4. Try using a different USB port",
+                    text = recoveryTipsMessage,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -293,13 +309,13 @@ private fun FailureContent(
                 modifier = Modifier.size(18.dp),
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text("Try Again")
+            Text(tryAgainLabel)
         }
 
         TextButton(
             onClick = onDone,
         ) {
-            Text("Done")
+            Text(doneLabel)
         }
     }
 }
@@ -310,6 +326,12 @@ private fun CancelledContent(
     onDone: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val flashCancelledLabel = stringResource(R.string.flash_complete_cancelled_title)
+    val flashCancelledMessage = stringResource(R.string.flash_complete_cancelled_message)
+    val flashCancelledWarning = stringResource(R.string.flash_complete_cancelled_warning)
+    val tryAgainLabel = stringResource(R.string.flash_complete_try_again)
+    val doneLabel = stringResource(R.string.flash_complete_done)
+
     Column(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -324,13 +346,13 @@ private fun CancelledContent(
         )
 
         Text(
-            text = "Flash Cancelled",
+            text = flashCancelledLabel,
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
         )
 
         Text(
-            text = "The flash operation was cancelled before completion",
+            text = flashCancelledMessage,
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
@@ -345,9 +367,7 @@ private fun CancelledContent(
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text(
-                text =
-                    "Your device may be in an inconsistent state. " +
-                        "Consider reflashing to ensure proper operation.",
+                text = flashCancelledWarning,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onTertiaryContainer,
                 modifier = Modifier.padding(16.dp),
@@ -367,13 +387,13 @@ private fun CancelledContent(
                 modifier = Modifier.size(18.dp),
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text("Try Again")
+            Text(tryAgainLabel)
         }
 
         TextButton(
             onClick = onDone,
         ) {
-            Text("Done")
+            Text(doneLabel)
         }
     }
 }

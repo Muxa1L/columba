@@ -339,6 +339,64 @@
     <string name="firmware_selection_pick_zip_file">Выбрать файл .zip</string>
     <string name="firmware_selection_file_selected">Выбран файл: %1$s</string>
     <string name="firmware_selection_custom_firmware_fallback">пользовательская прошивка</string>
+    <string name="flash_complete_unknown_state">Неизвестное состояние</string>
+    <string name="flash_complete_success_title">Прошивка выполнена успешно!</string>
+    <string name="flash_complete_success_message">Ваш RNode был успешно обновлен</string>
+    <string name="flash_complete_device_information">Информация об устройстве</string>
+    <string name="flash_complete_board">Плата</string>
+    <string name="flash_complete_firmware">Прошивка</string>
+    <string name="flash_complete_band">Диапазон</string>
+    <string name="flash_complete_configure_rnode">Настроить RNode</string>
+    <string name="flash_complete_flash_another">Прошить другое устройство</string>
+    <string name="flash_complete_done">Готово</string>
+    <string name="flash_complete_failure_title">Не удалось выполнить прошивку</string>
+    <string name="flash_complete_error_details">Сведения об ошибке</string>
+    <string name="flash_complete_recovery_tips">Советы по восстановлению</string>
+    <string name="flash_complete_recovery_tips_message">1. Попробуйте отключить и снова подключить устройство
+2. Убедитесь, что USB кабель поддерживает передачу данных
+3. Переведите устройство в режим загрузчика вручную
+4. Попробуйте другой USB порт</string>
+    <string name="flash_complete_try_again">Попробовать снова</string>
+    <string name="flash_complete_cancelled_title">Прошивка отменена</string>
+    <string name="flash_complete_cancelled_message">Операция прошивки была отменена до завершения</string>
+    <string name="flash_complete_cancelled_warning">Устройство может быть в несогласованном состоянии. Рекомендуется повторить прошивку, чтобы обеспечить корректную работу.</string>
+    <string name="message_detail_title">Сведения о сообщении</string>
+    <string name="message_detail_loading">Загрузка...</string>
+    <string name="message_detail_sent">Отправлено</string>
+    <string name="message_detail_received">Получено</string>
+    <string name="message_detail_sent_by_sender">Отправлено отправителем</string>
+    <string name="message_detail_sender_local_time">Локальное время отправителя, может отличаться от вашего</string>
+    <string name="message_detail_status">Статус</string>
+    <string name="message_detail_delivery_method">Способ доставки</string>
+    <string name="message_detail_sent_via">Отправлено через</string>
+    <string name="message_detail_error_details">Сведения об ошибке</string>
+    <string name="message_detail_hop_count">Количество переходов</string>
+    <string name="message_detail_received_via">Получено через</string>
+    <string name="message_detail_signal_strength">Уровень сигнала</string>
+    <string name="message_detail_signal_quality">Качество сигнала</string>
+    <string name="message_detail_status_delivered">Доставлено</string>
+    <string name="message_detail_status_delivered_subtitle">Сообщение было успешно доставлено получателю</string>
+    <string name="message_detail_status_failed">Ошибка</string>
+    <string name="message_detail_status_failed_subtitle">Не удалось доставить сообщение</string>
+    <string name="message_detail_status_pending">Ожидание</string>
+    <string name="message_detail_status_pending_subtitle">Ожидание подтверждения доставки</string>
+    <string name="message_detail_status_sent">Отправлено</string>
+    <string name="message_detail_status_sent_subtitle">Сообщение было отправлено</string>
+    <string name="message_detail_delivery_opportunistic">Оппортунистическая</string>
+    <string name="message_detail_delivery_opportunistic_subtitle">Доставка одним пакетом для небольших сообщений, без установленного канала</string>
+    <string name="message_detail_delivery_direct">Прямая</string>
+    <string name="message_detail_delivery_direct_subtitle">Доставка по каналу с повторными попытками, поддерживает большие сообщения</string>
+    <string name="message_detail_delivery_propagated">Ретранслированная</string>
+    <string name="message_detail_delivery_propagated_subtitle">Доставка через ретранслятор для получателей не в сети</string>
+    <string name="message_detail_delivery_unknown_subtitle">Неизвестный способ доставки</string>
+    <string name="message_detail_unknown">Неизвестно</string>
+    <string name="message_detail_direct">Прямо</string>
+    <string name="message_detail_hop_count_unavailable">Количество переходов недоступно</string>
+    <string name="message_detail_hop_count_direct_subtitle">Сообщение получено напрямую от отправителя</string>
+    <string name="message_detail_one_hop">1 переход</string>
+    <string name="message_detail_one_hop_subtitle">Сообщение прошло через 1 ретранслятор</string>
+    <string name="message_detail_multiple_hops">%1$d переходов</string>
+    <string name="message_detail_multiple_hops_subtitle">Сообщение прошло через %1$d ретрансляторов</string>
 
     <!-- Blocked users screen -->
     <string name="blocked_users_title">Заблокированные пользователи</string>
