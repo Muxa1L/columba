@@ -26,8 +26,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 import com.lxmf.messenger.ui.components.CollapsibleSettingsCard
 import com.lxmf.messenger.ui.theme.AppTheme
 import com.lxmf.messenger.ui.theme.PresetTheme
@@ -43,7 +45,7 @@ fun ThemeSelectionCard(
     onNavigateToCustomThemes: () -> Unit = {},
 ) {
     CollapsibleSettingsCard(
-        title = "Theme",
+        title = stringResource(R.string.settings_theme_title),
         icon = Icons.Default.Palette,
         isExpanded = isExpanded,
         onExpandedChange = onExpandedChange,
@@ -55,20 +57,20 @@ fun ThemeSelectionCard(
                     modifier = Modifier.size(18.dp),
                 )
                 Spacer(modifier = Modifier.width(4.dp))
-                Text("Custom Themes")
+                Text(stringResource(R.string.theme_management_title))
             }
         },
     ) {
         // Description
         Text(
-            text = "Choose your preferred color theme. Dark and light modes adapt automatically based on your system settings.",
+            text = stringResource(R.string.settings_theme_description),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
         // Built-in themes section
         Text(
-            text = "Built-in Themes",
+            text = stringResource(R.string.settings_theme_built_in),
             style = MaterialTheme.typography.labelLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(top = 4.dp),
@@ -89,7 +91,7 @@ fun ThemeSelectionCard(
                             {
                                 Icon(
                                     imageVector = Icons.Default.Check,
-                                    contentDescription = "Selected",
+                                    contentDescription = stringResource(R.string.common_selected),
                                     modifier = Modifier.size(18.dp),
                                 )
                             }
@@ -103,7 +105,7 @@ fun ThemeSelectionCard(
         // Custom themes section (only show if there are custom themes)
         if (customThemes.isNotEmpty()) {
             Text(
-                text = "Custom Themes",
+                text = stringResource(R.string.theme_management_title),
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(top = 8.dp),
@@ -124,7 +126,7 @@ fun ThemeSelectionCard(
                                 {
                                     Icon(
                                         imageVector = Icons.Default.Check,
-                                        contentDescription = "Selected",
+                                        contentDescription = stringResource(R.string.common_selected),
                                         modifier = Modifier.size(18.dp),
                                     )
                                 }
@@ -163,7 +165,7 @@ fun ThemeColorPreview(theme: AppTheme) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = "Preview:",
+            text = stringResource(R.string.settings_theme_preview),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -192,7 +194,7 @@ fun ThemeColorPreview(theme: AppTheme) {
         Spacer(modifier = Modifier.weight(1f))
 
         Text(
-            text = if (isDarkTheme) "Dark mode" else "Light mode",
+            text = if (isDarkTheme) stringResource(R.string.settings_theme_dark_mode) else stringResource(R.string.settings_theme_light_mode),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
