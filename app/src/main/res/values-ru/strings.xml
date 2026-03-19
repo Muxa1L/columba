@@ -339,6 +339,8 @@
     <string name="firmware_selection_pick_zip_file">Выбрать файл .zip</string>
     <string name="firmware_selection_file_selected">Выбран файл: %1$s</string>
     <string name="firmware_selection_custom_firmware_fallback">пользовательская прошивка</string>
+    <string name="firmware_selection_band_868_915">868/915 МГц</string>
+    <string name="firmware_selection_band_433">433 МГц</string>
     <string name="flash_complete_unknown_state">Неизвестное состояние</string>
     <string name="flash_complete_success_title">Прошивка выполнена успешно!</string>
     <string name="flash_complete_success_message">Ваш RNode был успешно обновлен</string>
@@ -397,6 +399,20 @@
     <string name="message_detail_one_hop_subtitle">Сообщение прошло через 1 ретранслятор</string>
     <string name="message_detail_multiple_hops">%1$d переходов</string>
     <string name="message_detail_multiple_hops_subtitle">Сообщение прошло через %1$d ретрансляторов</string>
+    <string name="sync_status_title">Синхронизация с узлом ретрансляции</string>
+    <string name="sync_status_ready_title">Готово</string>
+    <string name="sync_status_ready_subtitle">Синхронизация сейчас не выполняется</string>
+    <string name="sync_status_starting_title">Запуск синхронизации...</string>
+    <string name="sync_status_starting_subtitle">Инициализация соединения с ретранслятором</string>
+    <string name="sync_status_complete_title">Загрузка завершена</string>
+    <string name="sync_status_complete_subtitle">Сообщения получены</string>
+    <string name="sync_status_path_requested">Поиск сетевого пути к ретранслятору...</string>
+    <string name="sync_status_link_establishing">Установка защищенного соединения...</string>
+    <string name="sync_status_link_established">Соединение установлено, подготовка запроса...</string>
+    <string name="sync_status_request_sent">Запрошен список сообщений у ретранслятора...</string>
+    <string name="sync_status_downloading">Загрузка сообщений...</string>
+    <string name="sync_status_complete_message">Синхронизация завершена!</string>
+    <string name="sync_status_processing">Обработка...</string>
 
     <!-- Blocked users screen -->
     <string name="blocked_users_title">Заблокированные пользователи</string>

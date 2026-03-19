@@ -323,6 +323,8 @@ After flashing, you will be prompted to configure the radio parameters for trans
   <string name="firmware_selection_pick_zip_file">Pick .zip file</string>
   <string name="firmware_selection_file_selected">File selected: %1$s</string>
   <string name="firmware_selection_custom_firmware_fallback">custom firmware</string>
+  <string name="firmware_selection_band_868_915">868/915 MHz</string>
+  <string name="firmware_selection_band_433">433 MHz</string>
   <string name="flash_complete_unknown_state">Unknown state</string>
   <string name="flash_complete_success_title">Flash Successful!</string>
   <string name="flash_complete_success_message">Your RNode has been updated successfully</string>
@@ -381,6 +383,20 @@ After flashing, you will be prompted to configure the radio parameters for trans
   <string name="message_detail_one_hop_subtitle">Message traveled through 1 relay</string>
   <string name="message_detail_multiple_hops">%1$d hops</string>
   <string name="message_detail_multiple_hops_subtitle">Message traveled through %1$d relays</string>
+  <string name="sync_status_title">Propagation Node Sync</string>
+  <string name="sync_status_ready_title">Ready</string>
+  <string name="sync_status_ready_subtitle">Not currently syncing</string>
+  <string name="sync_status_starting_title">Starting sync...</string>
+  <string name="sync_status_starting_subtitle">Initiating connection to relay</string>
+  <string name="sync_status_complete_title">Download complete</string>
+  <string name="sync_status_complete_subtitle">Messages received</string>
+  <string name="sync_status_path_requested">Discovering network path to relay...</string>
+  <string name="sync_status_link_establishing">Establishing secure connection...</string>
+  <string name="sync_status_link_established">Connected, preparing request...</string>
+  <string name="sync_status_request_sent">Requested message list from relay...</string>
+  <string name="sync_status_downloading">Downloading messages...</string>
+  <string name="sync_status_complete_message">Sync complete!</string>
+  <string name="sync_status_processing">Processing...</string>
   <!-- Blocked users screen -->
   <string name="blocked_users_title">Blocked Users</string>
   <string name="blocked_users_empty">No blocked users</string>

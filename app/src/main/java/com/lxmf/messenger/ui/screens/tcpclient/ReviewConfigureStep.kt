@@ -139,11 +139,11 @@ fun ReviewConfigureStep(viewModel: TcpClientWizardViewModel) {
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        "Bootstrap Interface",
+                        stringResource(R.string.tcp_client_bootstrap_interface_title),
                         style = MaterialTheme.typography.titleSmall,
                     )
                     Text(
-                        "Auto-disconnect once better connections are discovered",
+                        stringResource(R.string.tcp_client_bootstrap_interface_description),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )

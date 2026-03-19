@@ -24,8 +24,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 import com.lxmf.messenger.service.SyncProgress
 
 /**
@@ -48,6 +50,8 @@ fun SyncStatusBottomSheet(
     onDismiss: () -> Unit,
     sheetState: SheetState,
 ) {
+    val sheetTitle = stringResource(R.string.sync_status_title)
+
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
@@ -73,7 +77,7 @@ fun SyncStatusBottomSheet(
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
-                    text = "Propagation Node Sync",
+                    text = sheetTitle,
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
                 )
@@ -86,8 +90,8 @@ fun SyncStatusBottomSheet(
                 is SyncProgress.Idle -> {
                     SyncStateRow(
                         icon = { Icon(Icons.Default.Check, null, tint = MaterialTheme.colorScheme.primary) },
-                        title = "Ready",
-                        subtitle = "Not currently syncing",
+                        title = stringResource(R.string.sync_status_ready_title),
+                        subtitle = stringResource(R.string.sync_status_ready_subtitle),
                     )
                 }
                 is SyncProgress.Starting -> {
@@ -98,8 +102,8 @@ fun SyncStatusBottomSheet(
                                 strokeWidth = 2.dp,
                             )
                         },
-                        title = "Starting sync...",
-                        subtitle = "Initiating connection to relay",
+                        title = stringResource(R.string.sync_status_starting_title),
+                        subtitle = stringResource(R.string.sync_status_starting_subtitle),
                     )
                 }
                 is SyncProgress.InProgress -> {
@@ -135,8 +139,8 @@ fun SyncStatusBottomSheet(
                 is SyncProgress.Complete -> {
                     SyncStateRow(
                         icon = { Icon(Icons.Default.Check, null, tint = MaterialTheme.colorScheme.primary) },
-                        title = "Download complete",
-                        subtitle = "Messages received",
+                        title = stringResource(R.string.sync_status_complete_title),
+                        subtitle = stringResource(R.string.sync_status_complete_subtitle),
                     )
                 }
             }
@@ -171,13 +175,14 @@ private fun SyncStateRow(
     }
 }
 
+@Composable
 private fun getStateDescription(stateName: String): String =
     when (stateName.lowercase()) {
-        "path_requested" -> "Discovering network path to relay..."
-        "link_establishing" -> "Establishing secure connection..."
-        "link_established" -> "Connected, preparing request..."
-        "request_sent" -> "Requested message list from relay..."
-        "receiving", "downloading" -> "Downloading messages..."
-        "complete" -> "Sync complete!"
-        else -> "Processing..."
+        "path_requested" -> stringResource(R.string.sync_status_path_requested)
+        "link_establishing" -> stringResource(R.string.sync_status_link_establishing)
+        "link_established" -> stringResource(R.string.sync_status_link_established)
+        "request_sent" -> stringResource(R.string.sync_status_request_sent)
+        "receiving", "downloading" -> stringResource(R.string.sync_status_downloading)
+        "complete" -> stringResource(R.string.sync_status_complete_message)
+        else -> stringResource(R.string.sync_status_processing)
     }

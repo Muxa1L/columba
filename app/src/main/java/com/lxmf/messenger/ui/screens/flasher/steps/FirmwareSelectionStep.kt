@@ -393,7 +393,7 @@ private fun FrequencyBandCard(
                 FilterChip(
                     selected = bandExplicitlySelected && selectedBand == FrequencyBand.BAND_868_915,
                     onClick = { onBandSelected(FrequencyBand.BAND_868_915) },
-                    label = { Text("868/915 MHz") },
+                    label = { Text(stringResource(R.string.firmware_selection_band_868_915)) },
                     colors =
                         FilterChipDefaults.filterChipColors(
                             selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -402,7 +402,7 @@ private fun FrequencyBandCard(
                 FilterChip(
                     selected = bandExplicitlySelected && selectedBand == FrequencyBand.BAND_433,
                     onClick = { onBandSelected(FrequencyBand.BAND_433) },
-                    label = { Text("433 MHz") },
+                    label = { Text(stringResource(R.string.firmware_selection_band_433)) },
                     colors =
                         FilterChipDefaults.filterChipColors(
                             selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
