@@ -554,7 +554,7 @@ fun OfflineMapRegionCard(
             onDismissRequest = { showDeleteDialog = false },
             title = { Text(stringResource(R.string.offline_maps_delete_title)) },
             text = {
-                Text(stringResource(R.string.offline_maps_delete_message, region.name, region.getSizeString()))
+                Text("Are you sure you want to delete \"${region.name}\"? This will free up ${region.getSizeString()} of storage.")
             },
             confirmButton = {
                 TextButton(
