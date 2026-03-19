@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package com.lxmf.messenger.ui.screens
 
 import android.content.Intent
@@ -332,7 +334,11 @@ private fun LinkifiedMessageText(
                         context.startActivity(Intent(Intent.ACTION_VIEW, toBrowsableUri(url)))
                     } catch (e: Exception) {
                         Log.w("MessagingScreen", "Unable to open link: $url", e)
-                        Toast.makeText(context, "Unable to open link", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.messaging_unable_to_open_link),
+                            Toast.LENGTH_SHORT,
+                        ).show()
                     }
                 }
             },
@@ -340,6 +346,7 @@ private fun LinkifiedMessageText(
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@Suppress("UnusedParameter")
 @Composable
 fun MessagingScreen(
     destinationHash: String,
@@ -866,7 +873,6 @@ fun MessagingScreen(
                             ) {
                                 // Status dot - color and animation based on state
                                 if (isEstablishing) {
-                                    // Pulsing dot when establishing
                                     val infiniteTransition = rememberInfiniteTransition(label = "establishing")
                                     val alpha by infiniteTransition.animateFloat(
                                         initialValue = 0.3f,
@@ -1490,12 +1496,20 @@ fun MessagingScreen(
                             context.startActivity(Intent.createChooser(intent, null))
                         } catch (e: Exception) {
                             withContext(Dispatchers.Main) {
-                                Toast.makeText(context, "No app found to open this file", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    context,
+                                    context.getString(R.string.messaging_no_app_open_file),
+                                    Toast.LENGTH_SHORT,
+                                ).show()
                             }
                         }
                     } else {
                         withContext(Dispatchers.Main) {
-                            Toast.makeText(context, "Failed to load file", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.messaging_failed_to_load_file),
+                                Toast.LENGTH_SHORT,
+                            ).show()
                         }
                     }
                 }
@@ -1538,15 +1552,28 @@ fun MessagingScreen(
                             }
                         @Suppress("SwallowedException") // User is notified via Toast
                         try {
-                            context.startActivity(Intent.createChooser(intent, "Share image"))
+                            context.startActivity(
+                                Intent.createChooser(
+                                    intent,
+                                    context.getString(R.string.messaging_share_image),
+                                ),
+                            )
                         } catch (e: Exception) {
                             withContext(Dispatchers.Main) {
-                                Toast.makeText(context, "No app found to share", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    context,
+                                    context.getString(R.string.messaging_no_app_found_to_share),
+                                    Toast.LENGTH_SHORT,
+                                ).show()
                             }
                         }
                     } else {
                         withContext(Dispatchers.Main) {
-                            Toast.makeText(context, "Failed to load image", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.messaging_failed_to_load_image),
+                                Toast.LENGTH_SHORT,
+                            ).show()
                         }
                     }
                 }
@@ -2533,12 +2560,12 @@ fun EmptyMessagesState() {
                 tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
             )
             Text(
-                text = "No messages yet",
+                text = stringResource(R.string.messaging_empty_title),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Text(
-                text = "Send a message to start the conversation",
+                text = stringResource(R.string.messaging_empty_subtitle),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
             )
@@ -2605,7 +2632,7 @@ private fun FullscreenImageDialog(
         ) {
             Image(
                 bitmap = bitmap,
-                contentDescription = "Fullscreen image",
+                contentDescription = stringResource(R.string.messaging_fullscreen_image),
                 modifier =
                     Modifier
                         .fillMaxSize()
@@ -2633,7 +2660,7 @@ private fun FullscreenImageDialog(
             ) {
                 Icon(
                     imageVector = Icons.Default.MoreVert,
-                    contentDescription = "More options",
+                    contentDescription = stringResource(R.string.common_more_options),
                 )
             }
         }
@@ -2685,7 +2712,7 @@ private fun FullscreenAnimatedImageDialog(
                         .crossfade(true)
                         .build(),
                 imageLoader = AnimatedImageLoader.getInstance(context),
-                contentDescription = "Fullscreen animated image",
+                contentDescription = stringResource(R.string.messaging_fullscreen_animated_image),
                 modifier =
                     Modifier
                         .fillMaxSize()
@@ -2713,7 +2740,7 @@ private fun FullscreenAnimatedImageDialog(
             ) {
                 Icon(
                     imageVector = Icons.Default.MoreVert,
-                    contentDescription = "More options",
+                    contentDescription = stringResource(R.string.common_more_options),
                 )
             }
         }
@@ -2892,12 +2919,12 @@ private fun TextSizeDialog(
                 contentDescription = null,
             )
         },
-        title = { Text("Text size") },
+        title = { Text(stringResource(R.string.messaging_text_size)) },
         text = {
             Column {
                 // Preview text
                 Text(
-                    text = "Preview message text",
+                    text = stringResource(R.string.messaging_preview_message_text),
                     style =
                         MaterialTheme.typography.bodyLarge.copy(
                             fontSize = MaterialTheme.typography.bodyLarge.fontSize * sliderValue,
@@ -2943,12 +2970,12 @@ private fun TextSizeDialog(
                 onScaleChange(sliderValue)
                 onDismiss()
             }) {
-                Text("OK")
+                Text(stringResource(R.string.common_ok))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.common_cancel))
             }
         },
     )

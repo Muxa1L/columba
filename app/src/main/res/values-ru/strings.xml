@@ -203,6 +203,17 @@
     <string name="messaging_characters_remaining">Осталось символов: %1$d</string>
     <string name="messaging_type_a_message">Введите сообщение...</string>
     <string name="messaging_send_message">Отправить сообщение</string>
+    <string name="messaging_unable_to_open_link">Не удалось открыть ссылку</string>
+    <string name="messaging_no_app_open_file">Не найдено приложение для открытия файла</string>
+    <string name="messaging_failed_to_load_file">Не удалось загрузить файл</string>
+    <string name="messaging_share_image">Поделиться изображением</string>
+    <string name="messaging_no_app_found_to_share">Не найдено приложение для отправки</string>
+    <string name="messaging_failed_to_load_image">Не удалось загрузить изображение</string>
+    <string name="messaging_fullscreen_image">Изображение на весь экран</string>
+    <string name="messaging_fullscreen_animated_image">Анимированное изображение на весь экран</string>
+    <string name="messaging_preview_message_text">Предпросмотр текста сообщения</string>
+    <string name="messaging_empty_title">Сообщений пока нет</string>
+    <string name="messaging_empty_subtitle">Отправьте сообщение, чтобы начать разговор</string>
 
     <!-- Common labels -->
     <string name="common_back">Назад</string>

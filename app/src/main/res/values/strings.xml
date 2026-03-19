@@ -187,6 +187,17 @@
   <string name="messaging_characters_remaining">%1$d characters remaining</string>
   <string name="messaging_type_a_message">Type a message...</string>
   <string name="messaging_send_message">Send message</string>
+  <string name="messaging_unable_to_open_link">Unable to open link</string>
+  <string name="messaging_no_app_open_file">No app found to open this file</string>
+  <string name="messaging_failed_to_load_file">Failed to load file</string>
+  <string name="messaging_share_image">Share image</string>
+  <string name="messaging_no_app_found_to_share">No app found to share</string>
+  <string name="messaging_failed_to_load_image">Failed to load image</string>
+  <string name="messaging_fullscreen_image">Fullscreen image</string>
+  <string name="messaging_fullscreen_animated_image">Fullscreen animated image</string>
+  <string name="messaging_preview_message_text">Preview message text</string>
+  <string name="messaging_empty_title">No messages yet</string>
+  <string name="messaging_empty_subtitle">Send a message to start the conversation</string>
   <!-- Common labels -->
   <string name="common_back">Back</string>
   <string name="common_continue">Continue</string>
