@@ -1341,9 +1341,9 @@ Your location is encrypted and only readable by the group host you configure.</s
   <string name="offline_maps_remove_default">Remove as default</string>
   <string name="offline_maps_set_default">Set as default</string>
   <string name="offline_maps_delete_title">Delete Offline Map</string>
-  <string name="offline_maps_delete_message">Are you sure you want to delete &quot;%1$s&quot;? This will free up %2$s of storage.</string>
+  <string name="offline_maps_delete_message">Are you sure you want to delete "%1$s"? This will free up %2$s of storage.</string>
   <string name="offline_maps_update_title">Update Offline Map</string>
-  <string name="offline_maps_update_message">Download the latest map data for &quot;%1$s&quot;? This will replace the current data and may take a few minutes.</string>
+  <string name="offline_maps_update_message">Download the latest map data for "%1$s"? This will replace the current data and may take a few minutes.</string>
   <string name="offline_maps_update">Update</string>
   <string name="offline_maps_status_pending">Pending</string>
   <string name="offline_maps_status_downloading">Downloading</string>

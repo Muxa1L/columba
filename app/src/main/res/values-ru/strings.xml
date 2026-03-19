@@ -1403,9 +1403,9 @@
     <string name="offline_maps_remove_default">Убрать значение по умолчанию</string>
     <string name="offline_maps_set_default">Сделать картой по умолчанию</string>
     <string name="offline_maps_delete_title">Удалить офлайн-карту</string>
-    <string name="offline_maps_delete_message">Вы уверены, что хотите удалить &quot;%1$s&quot;? Это освободит %2$s памяти.</string>
+    <string name="offline_maps_delete_message">Вы уверены, что хотите удалить "%1$s"? Это освободит %2$s памяти.</string>
     <string name="offline_maps_update_title">Обновить офлайн-карту</string>
-    <string name="offline_maps_update_message">Загрузить свежие данные карты для &quot;%1$s&quot;? Текущие данные будут заменены, и это может занять несколько минут.</string>
+    <string name="offline_maps_update_message">Загрузить свежие данные карты для "%1$s"? Текущие данные будут заменены, и это может занять несколько минут.</string>
     <string name="offline_maps_update">Обновить</string>
     <string name="offline_maps_status_pending">Ожидание</string>
     <string name="offline_maps_status_downloading">Загрузка</string>
