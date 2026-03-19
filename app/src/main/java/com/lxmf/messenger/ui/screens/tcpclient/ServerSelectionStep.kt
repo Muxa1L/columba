@@ -82,7 +82,7 @@ fun ServerSelectionStep(viewModel: TcpClientWizardViewModel) {
             // Custom option
             item {
                 CustomSettingsCard(
-                    title = stringResource(R.string.tcp_client_custom_server),
+                    title = stringResource(R.string.tcp_client_custom_option),
                     description = stringResource(R.string.tcp_client_custom_server_hint),
                     isSelected = state.isCustomMode,
                     onClick = { viewModel.enableCustomMode() },
