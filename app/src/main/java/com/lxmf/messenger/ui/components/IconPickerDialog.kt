@@ -572,28 +572,28 @@ private fun CategoryHeader(
         shape = RoundedCornerShape(8.dp),
     ) {
         Row(
-                    text = iconCountLabel,
+            modifier =
                 Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp, vertical = 8.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-                contentDescription = expandCollapseLabel,
+            Column {
                 Text(
                     text = category,
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 Text(
-                    text = "$iconCount icons",
+                    text = iconCountLabel,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                 )
             }
             Icon(
                 imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                contentDescription = if (isExpanded) "Collapse" else "Expand",
+                contentDescription = expandCollapseLabel,
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }

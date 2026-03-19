@@ -274,6 +274,71 @@
     <string name="interface_config_listen_ip_help">IP адрес для привязки. Используйте 0.0.0.0, чтобы слушать на всех интерфейсах.</string>
     <string name="interface_config_listen_port_label">Порт прослушивания</string>
     <string name="interface_config_listen_port_help">TCP порт для входящих подключений.</string>
+    <string name="main_screen_title">Columba LXMF Messenger</string>
+    <string name="main_screen_network_status_cd">Состояние сети</string>
+    <string name="main_screen_heading">Привет, Reticulum!</string>
+    <string name="main_screen_intro">Это демонстрация того, как слой интерфейса Kotlin взаимодействует со слоем абстракции Reticulum.</string>
+    <string name="main_screen_network_status_title">Состояние сети</string>
+    <string name="main_screen_initialize_reticulum">Инициализировать Reticulum</string>
+    <string name="main_screen_create_identity">Создать идентификатор</string>
+    <string name="main_screen_test_send_packet">Тестовая отправка пакета</string>
+    <string name="main_screen_ready">Готово</string>
+    <string name="main_screen_status_label">Состояние</string>
+    <string name="main_screen_success">Успех</string>
+    <string name="main_screen_initial_hint">Нажмите кнопки выше, чтобы протестировать слой абстракции Reticulum.</string>
+    <string name="main_screen_footer">Работает на базе Reticulum Network Stack</string>
+    <string name="device_detection_title">Обнаружение устройства</string>
+    <string name="device_detection_subtitle">Определение вашего устройства RNode</string>
+    <string name="device_detection_select_board_type">Выберите тип платы</string>
+    <string name="device_detection_select_board_message">Так как тип платы не удалось определить автоматически, выберите его вручную на следующем шаге.</string>
+    <string name="device_detection_continue_manual">Продолжить с ручным выбором</string>
+    <string name="device_detection_failed">Не удалось определить устройство</string>
+    <string name="device_detection_manual_selection">Ручной выбор</string>
+    <string name="device_detection_manual_selection_message">Если устройство не было определено автоматически, вы можете вручную выбрать тип платы на следующем шаге.</string>
+    <string name="device_selection_title">Выберите USB устройство</string>
+    <string name="device_selection_subtitle">Подключите устройство RNode через USB</string>
+    <string name="device_selection_refresh_devices">Обновить устройства</string>
+    <string name="device_selection_waiting_permission">Ожидание разрешения на USB...</string>
+    <string name="device_selection_unknown_device">Неизвестное устройство</string>
+    <string name="device_selection_no_devices">USB устройства не найдены</string>
+    <string name="device_selection_no_devices_hint">Подключите устройство RNode через USB и нажмите обновить</string>
+    <string name="firmware_selection_title">Выбор прошивки</string>
+    <string name="firmware_selection_subtitle">Выберите прошивку для записи</string>
+    <string name="firmware_selection_about_microreticulum_title">О microReticulum</string>
+    <string name="firmware_selection_about_microreticulum_message">microReticulum запускает встроенный транспортный стек Reticulum прямо на устройстве. Он работает как самостоятельный транспортный узел и не будет сопрягаться с Columba как радио интерфейс.
+
+После прошивки вам будет предложено настроить параметры радио для транспортного режима.</string>
+    <string name="firmware_selection_already_flashed">Уже прошито?</string>
+    <string name="firmware_selection_already_flashed_message">Если прошивка уже была записана внешним способом, можно сразу перейти к подготовке EEPROM.</string>
+    <string name="firmware_selection_provision_only">Только подготовка, без прошивки</string>
+    <string name="firmware_selection_board_type">Тип платы</string>
+    <string name="firmware_selection_select_board">Выберите плату</string>
+    <string name="firmware_selection_frequency_band">Частотный диапазон</string>
+    <string name="firmware_selection_required">(обязательно)</string>
+    <string name="firmware_selection_frequency_required_help">Нажмите на частотный диапазон, чтобы подтвердить выбор</string>
+    <string name="firmware_selection_frequency_help">Выберите частотный диапазон, соответствующий региональным нормам</string>
+    <string name="firmware_selection_downloading_firmware">Загрузка прошивки...</string>
+    <string name="firmware_selection_version">Версия прошивки</string>
+    <string name="firmware_selection_select_board_first">Сначала выберите тип платы</string>
+    <string name="firmware_selection_no_firmware_available">Прошивки недоступны. Подключитесь к интернету для загрузки.</string>
+    <string name="firmware_selection_cached_firmware">Кэшированные прошивки:</string>
+    <string name="firmware_selection_available_download">Доступно для загрузки:</string>
+    <string name="firmware_selection_select_version">Выберите версию</string>
+    <string name="firmware_selection_selected_summary">Выбрано: %1$s v%2$s</string>
+    <string name="firmware_selection_selected_band_platform">Диапазон: %1$s | Платформа: %2$s</string>
+    <string name="firmware_selection_will_download">Будет загружено: v%1$s</string>
+    <string name="firmware_selection_will_download_help">Прошивка будет загружена при продолжении</string>
+    <string name="firmware_selection_select_version_continue">Чтобы продолжить, выберите версию прошивки выше</string>
+    <string name="firmware_selection_source">Источник прошивки</string>
+    <string name="firmware_selection_custom">Пользовательская прошивка</string>
+    <string name="firmware_selection_download_from_url">Загрузка по URL:</string>
+    <string name="firmware_selection_url_label">URL файла прошивки .zip</string>
+    <string name="firmware_selection_url_placeholder">https://example.com/firmware.zip</string>
+    <string name="firmware_selection_download_on_start">Загрузка начнется при старте прошивки</string>
+    <string name="firmware_selection_pick_local_file">Или выберите локальный файл:</string>
+    <string name="firmware_selection_pick_zip_file">Выбрать файл .zip</string>
+    <string name="firmware_selection_file_selected">Выбран файл: %1$s</string>
+    <string name="firmware_selection_custom_firmware_fallback">пользовательская прошивка</string>
 
     <!-- Blocked users screen -->
     <string name="blocked_users_title">Заблокированные пользователи</string>
@@ -526,23 +591,6 @@
         <item quantity="many">Передача для %d человек</item>
         <item quantity="other">Передача для %d человек</item>
     </plurals>
-
-    <!-- Icon picker -->
-    <string name="icon_picker_title">Выберите иконку профиля</string>
-    <string name="icon_picker_search_label">Поиск иконок</string>
-    <string name="icon_picker_search_placeholder">например, star, heart, wifi</string>
-    <string name="icon_picker_preview">Предпросмотр</string>
-    <string name="icon_picker_background">Фон</string>
-    <string name="icon_picker_icon">Иконка</string>
-    <string name="icon_picker_customize_hint">Коснитесь цвета, чтобы настроить его</string>
-    <string name="icon_picker_background_color_title">Цвет фона</string>
-    <string name="icon_picker_icon_color_title">Цвет иконки</string>
-    <string name="icon_picker_search_results">Результаты поиска</string>
-    <string name="icon_picker_search_results_count">%1$d иконок</string>
-    <string name="icon_picker_search_results_count_limited">%1$d иконок (показаны первые 100)</string>
-    <string name="icon_picker_no_results">Для "%1$s" иконки не найдены</string>
-    <string name="icon_picker_search_hint">Воспользуйтесь поиском среди %1$d иконок</string>
-    <string name="icon_picker_icon_count">%1$d иконок</string>
 
     <!-- NomadNet browser screen -->
     <string name="nomadnet_browser_title">Браузер NomadNet</string>

@@ -29,8 +29,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 import com.lxmf.messenger.reticulum.usb.UsbDeviceInfo
 
 /**
@@ -50,6 +52,11 @@ fun DeviceSelectionStep(
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val title = stringResource(R.string.device_selection_title)
+    val subtitle = stringResource(R.string.device_selection_subtitle)
+    val refreshDevicesDescription = stringResource(R.string.device_selection_refresh_devices)
+    val waitingPermissionLabel = stringResource(R.string.device_selection_waiting_permission)
+
     Column(
         modifier =
             modifier
@@ -64,12 +71,12 @@ fun DeviceSelectionStep(
         ) {
             Column {
                 Text(
-                    text = "Select USB Device",
+                    text = title,
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
-                    text = "Connect your RNode device via USB",
+                    text = subtitle,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -87,7 +94,7 @@ fun DeviceSelectionStep(
                 } else {
                     Icon(
                         imageVector = Icons.Default.Refresh,
-                        contentDescription = "Refresh devices",
+                        contentDescription = refreshDevicesDescription,
                     )
                 }
             }
@@ -141,7 +148,7 @@ fun DeviceSelectionStep(
                     )
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
-                        text = "Waiting for USB permission...",
+                        text = waitingPermissionLabel,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
@@ -175,6 +182,8 @@ private fun DeviceCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val unknownDeviceLabel = stringResource(R.string.device_selection_unknown_device)
+
     Card(
         modifier =
             modifier
@@ -212,7 +221,7 @@ private fun DeviceCard(
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = device.productName ?: "Unknown Device",
+                    text = device.productName ?: unknownDeviceLabel,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Medium,
                     color =
@@ -249,7 +258,7 @@ private fun DeviceCard(
             if (isSelected) {
                 Icon(
                     imageVector = Icons.Default.Check,
-                    contentDescription = "Selected",
+                    contentDescription = stringResource(R.string.common_selected),
                     tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
             }
@@ -259,6 +268,9 @@ private fun DeviceCard(
 
 @Composable
 private fun EmptyDeviceState(modifier: Modifier = Modifier) {
+    val noDevicesLabel = stringResource(R.string.device_selection_no_devices)
+    val noDevicesHint = stringResource(R.string.device_selection_no_devices_hint)
+
     Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
@@ -274,12 +286,12 @@ private fun EmptyDeviceState(modifier: Modifier = Modifier) {
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Text(
-                text = "No USB devices found",
+                text = noDevicesLabel,
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Text(
-                text = "Connect an RNode device via USB and tap refresh",
+                text = noDevicesHint,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

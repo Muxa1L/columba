@@ -27,8 +27,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 import com.lxmf.messenger.reticulum.flasher.FrequencyBand
 import com.lxmf.messenger.reticulum.flasher.RNodeBoard
 import com.lxmf.messenger.reticulum.flasher.RNodeDeviceInfo
@@ -48,6 +50,9 @@ fun DeviceDetectionStep(
     onManualSelection: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val title = stringResource(R.string.device_detection_title)
+    val subtitle = stringResource(R.string.device_detection_subtitle)
+
     Column(
         modifier =
             modifier
@@ -55,12 +60,12 @@ fun DeviceDetectionStep(
                 .padding(16.dp),
     ) {
         Text(
-            text = "Device Detection",
+            text = title,
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
         )
         Text(
-            text = "Identifying your RNode device",
+            text = subtitle,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -240,6 +245,10 @@ private fun UnknownBoardState(
     onManualSelection: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val selectBoardTypeLabel = stringResource(R.string.device_detection_select_board_type)
+    val selectBoardTypeMessage = stringResource(R.string.device_detection_select_board_message)
+    val continueManualLabel = stringResource(R.string.device_detection_continue_manual)
+
     Column(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -338,13 +347,13 @@ private fun UnknownBoardState(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Select Board Type",
+                        text = selectBoardTypeLabel,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Medium,
                     )
                 }
                 Text(
-                    text = "Since the board type couldn't be determined automatically, please select it manually in the next step.",
+                    text = selectBoardTypeMessage,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -352,7 +361,7 @@ private fun UnknownBoardState(
                     onClick = onManualSelection,
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    Text("Continue with Manual Selection")
+                    Text(continueManualLabel)
                 }
             }
         }
@@ -365,6 +374,11 @@ private fun ErrorState(
     onManualSelection: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val detectionFailedLabel = stringResource(R.string.device_detection_failed)
+    val manualSelectionLabel = stringResource(R.string.device_detection_manual_selection)
+    val manualSelectionMessage = stringResource(R.string.device_detection_manual_selection_message)
+    val continueManualLabel = stringResource(R.string.device_detection_continue_manual)
+
     Column(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -393,7 +407,7 @@ private fun ErrorState(
                 Spacer(modifier = Modifier.width(16.dp))
                 Column {
                     Text(
-                        text = "Detection Failed",
+                        text = detectionFailedLabel,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onErrorContainer,
@@ -425,13 +439,13 @@ private fun ErrorState(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Manual Selection",
+                        text = manualSelectionLabel,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Medium,
                     )
                 }
                 Text(
-                    text = "If your device wasn't detected automatically, you can manually select the board type in the next step.",
+                    text = manualSelectionMessage,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -439,7 +453,7 @@ private fun ErrorState(
                     onClick = onManualSelection,
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    Text("Continue with Manual Selection")
+                    Text(continueManualLabel)
                 }
             }
         }
