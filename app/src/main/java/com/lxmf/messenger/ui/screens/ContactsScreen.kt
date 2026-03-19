@@ -1469,7 +1469,7 @@ fun AddContactBottomSheet(
             // Scan QR Code option
             ListItem(
                 headlineContent = { Text(stringResource(R.string.qr_scanner_title)) },
-                supportingContent = { Text("Scan a contact's QR code to add them") },
+                supportingContent = { Text(stringResource(R.string.contacts_scan_qr_supporting)) },
                 leadingContent = {
                     Icon(
                         Icons.Default.QrCodeScanner,
