@@ -274,7 +274,7 @@ fun StatusCard(
                         },
                 )
                 Text(
-                    text = "Reticulum Status",
+                    text = stringResource(R.string.identity_screen_reticulum_status_title),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                 )
@@ -283,17 +283,20 @@ fun StatusCard(
             Divider()
 
             InfoRow(
-                label = "Initialized",
+                label = stringResource(R.string.identity_screen_initialized),
                 value =
                     if (isLoading) {
-                        "Loading..."
+                        stringResource(R.string.identity_screen_loading)
                     } else if (initialized) {
-                        "Yes"
+                        stringResource(R.string.identity_screen_yes)
                     } else {
-                        "No"
+                        stringResource(R.string.identity_screen_no)
                     },
             )
-            InfoRow(label = "Network Status", value = if (isLoading) "Loading..." else networkStatus)
+            InfoRow(
+                label = stringResource(R.string.main_screen_network_status_title),
+                value = if (isLoading) stringResource(R.string.identity_screen_loading) else networkStatus,
+            )
 
             if (isLoading || isConnecting) {
                 Row(
@@ -305,7 +308,12 @@ fun StatusCard(
                         strokeWidth = 2.dp,
                     )
                     Text(
-                        text = if (isLoading) "Fetching service status..." else "Reconnecting to service...",
+                        text =
+                            if (isLoading) {
+                                stringResource(R.string.identity_screen_fetching_service_status)
+                            } else {
+                                stringResource(R.string.identity_screen_reconnecting_service)
+                            },
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onTertiaryContainer,
                     )
@@ -314,7 +322,7 @@ fun StatusCard(
 
             if (error != null) {
                 Text(
-                    text = "Error: $error",
+                    text = stringResource(R.string.identity_screen_error_prefix, error),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.error,
                     modifier =
@@ -358,62 +366,107 @@ fun ReticulumInfoCard(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Text(
-                text = "Reticulum Information",
+                text = stringResource(R.string.identity_screen_reticulum_information),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
             )
 
             Divider()
 
-            InfoRow(label = "RNS Available", value = if (debugInfo.reticulumAvailable) "Yes" else "No")
-            InfoRow(label = "Storage Path", value = debugInfo.storagePath, monospace = true)
-            InfoRow(label = "Transport Enabled", value = if (debugInfo.transportEnabled) "Yes" else "No")
-            InfoRow(label = "Multicast Lock", value = if (debugInfo.multicastLockHeld) "✓ Held" else "✗ Not held")
-            InfoRow(label = "Wake Lock", value = if (debugInfo.wakeLockHeld) "✓ Held" else "✗ Not held")
+            InfoRow(
+                label = stringResource(R.string.identity_screen_rns_available),
+                value = if (debugInfo.reticulumAvailable) stringResource(R.string.identity_screen_yes) else stringResource(R.string.identity_screen_no),
+            )
+            InfoRow(
+                label = stringResource(R.string.identity_screen_storage_path),
+                value = debugInfo.storagePath,
+                monospace = true,
+            )
+            InfoRow(
+                label = stringResource(R.string.identity_screen_transport_enabled),
+                value = if (debugInfo.transportEnabled) stringResource(R.string.identity_screen_yes) else stringResource(R.string.identity_screen_no),
+            )
+            InfoRow(
+                label = stringResource(R.string.identity_screen_multicast_lock),
+                value =
+                    if (debugInfo.multicastLockHeld) {
+                        stringResource(R.string.identity_screen_lock_held)
+                    } else {
+                        stringResource(R.string.identity_screen_lock_not_held)
+                    },
+            )
+            InfoRow(
+                label = stringResource(R.string.identity_screen_wake_lock),
+                value =
+                    if (debugInfo.wakeLockHeld) {
+                        stringResource(R.string.identity_screen_lock_held)
+                    } else {
+                        stringResource(R.string.identity_screen_lock_not_held)
+                    },
+            )
 
             Divider(modifier = Modifier.padding(vertical = 4.dp))
 
             Text(
-                text = "Process Persistence",
+                text = stringResource(R.string.identity_screen_process_persistence),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.primary,
             )
 
             InfoRow(
-                label = "Heartbeat",
+                label = stringResource(R.string.identity_screen_heartbeat),
                 value =
                     if (debugInfo.heartbeatAgeSeconds >= 0) {
-                        "${debugInfo.heartbeatAgeSeconds}s ago"
+                        stringResource(R.string.identity_screen_seconds_ago, debugInfo.heartbeatAgeSeconds)
                     } else {
-                        "Not started"
+                        stringResource(R.string.identity_screen_not_started)
                     },
             )
             InfoRow(
-                label = "Health Check",
-                value = if (debugInfo.healthCheckRunning) "✓ Running" else "✗ Stopped",
+                label = stringResource(R.string.identity_screen_health_check),
+                value =
+                    if (debugInfo.healthCheckRunning) {
+                        stringResource(R.string.identity_screen_running)
+                    } else {
+                        stringResource(R.string.identity_screen_stopped)
+                    },
             )
             InfoRow(
-                label = "Network Monitor",
-                value = if (debugInfo.networkMonitorRunning) "✓ Running" else "✗ Stopped",
+                label = stringResource(R.string.identity_screen_network_monitor),
+                value =
+                    if (debugInfo.networkMonitorRunning) {
+                        stringResource(R.string.identity_screen_running)
+                    } else {
+                        stringResource(R.string.identity_screen_stopped)
+                    },
             )
             InfoRow(
-                label = "Lock Maintenance",
-                value = if (debugInfo.maintenanceRunning) "✓ Running" else "✗ Stopped",
+                label = stringResource(R.string.identity_screen_lock_maintenance),
+                value =
+                    if (debugInfo.maintenanceRunning) {
+                        stringResource(R.string.identity_screen_running)
+                    } else {
+                        stringResource(R.string.identity_screen_stopped)
+                    },
             )
             InfoRow(
-                label = "Last Lock Refresh",
+                label = stringResource(R.string.identity_screen_last_lock_refresh),
                 value =
                     if (debugInfo.lastLockRefreshAgeSeconds >= 0) {
-                        "${debugInfo.lastLockRefreshAgeSeconds}s ago"
+                        stringResource(R.string.identity_screen_seconds_ago, debugInfo.lastLockRefreshAgeSeconds)
                     } else {
-                        "Not yet"
+                        stringResource(R.string.identity_screen_not_yet)
                     },
             )
             if (debugInfo.failedInterfaceCount > 0) {
                 InfoRow(
-                    label = "Failed Interfaces",
-                    value = "${debugInfo.failedInterfaceCount} (auto-retrying)",
+                    label = stringResource(R.string.identity_screen_failed_interfaces),
+                    value =
+                        stringResource(
+                            R.string.identity_screen_failed_interfaces_value,
+                            debugInfo.failedInterfaceCount,
+                        ),
                 )
             }
         }

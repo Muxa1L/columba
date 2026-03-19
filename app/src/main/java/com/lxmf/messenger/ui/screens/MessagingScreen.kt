@@ -896,9 +896,9 @@ fun MessagingScreen(
                                 // Status text
                                 val statusText =
                                     when {
-                                        isEstablishing -> "Connecting..."
-                                        hasActiveLink -> "Online"
-                                        hasRecentActivity -> "Online"
+                                        isEstablishing -> stringResource(R.string.messaging_connecting)
+                                        hasActiveLink -> stringResource(R.string.messaging_online)
+                                        hasRecentActivity -> stringResource(R.string.messaging_online)
                                         lastActivity > 0 -> formatRelativeTime(lastActivity)
                                         else -> ""
                                     }
@@ -912,7 +912,7 @@ fun MessagingScreen(
                                 if (hasActiveLink) {
                                     Icon(
                                         imageVector = Icons.Default.Link,
-                                        contentDescription = "Active link",
+                                        contentDescription = stringResource(R.string.messaging_active_link),
                                         tint = MeshConnected,
                                         modifier = Modifier.size(12.dp),
                                     )
@@ -925,7 +925,7 @@ fun MessagingScreen(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(R.string.common_back),
                         )
                     }
                 },
@@ -950,7 +950,7 @@ fun MessagingScreen(
                         } else {
                             Icon(
                                 imageVector = Icons.Default.Call,
-                                contentDescription = "Voice call",
+                                contentDescription = stringResource(R.string.messaging_voice_call),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
@@ -981,7 +981,7 @@ fun MessagingScreen(
                                 } else {
                                     Icons.Outlined.LocationOn
                                 },
-                            contentDescription = "Share location",
+                            contentDescription = stringResource(R.string.messaging_share_location),
                             tint =
                                 if (locationSharingState != LocationSharingState.NONE) {
                                     MaterialTheme.colorScheme.primary
@@ -1016,7 +1016,7 @@ fun MessagingScreen(
                         IconButton(onClick = { showOverflowMenu = true }) {
                             Icon(
                                 imageVector = Icons.Default.MoreVert,
-                                contentDescription = "More options",
+                                contentDescription = stringResource(R.string.common_more_options),
                                 tint =
                                     if (isSyncing) {
                                         MaterialTheme.colorScheme.primary
@@ -1045,7 +1045,13 @@ fun MessagingScreen(
                                     }
                                 },
                                 text = {
-                                    Text(if (isSyncing) "Syncing\u2026" else "Sync messages")
+                                    Text(
+                                        if (isSyncing) {
+                                            stringResource(R.string.messaging_syncing)
+                                        } else {
+                                            stringResource(R.string.messaging_sync_messages)
+                                        },
+                                    )
                                 },
                                 onClick = {
                                     showOverflowMenu = false
@@ -1063,7 +1069,7 @@ fun MessagingScreen(
                                         contentDescription = null,
                                     )
                                 },
-                                text = { Text("Text size") },
+                                text = { Text(stringResource(R.string.messaging_text_size)) },
                                 onClick = {
                                     showOverflowMenu = false
                                     showTextSizeDialog = true
@@ -1080,7 +1086,7 @@ fun MessagingScreen(
                                 },
                                 text = {
                                     Text(
-                                        "Block User",
+                                        stringResource(R.string.messaging_block_user),
                                         color = MaterialTheme.colorScheme.error,
                                     )
                                 },
@@ -1371,8 +1377,8 @@ fun MessagingScreen(
                             showDeleteConfirmation = false
                             viewModel.exitReactionMode()
                         },
-                        title = { Text("Delete message") },
-                        text = { Text("This message will be permanently deleted from this device.") },
+                        title = { Text(stringResource(R.string.messaging_delete_message_title)) },
+                        text = { Text(stringResource(R.string.messaging_delete_message_body)) },
                         confirmButton = {
                             androidx.compose.material3.TextButton(
                                 onClick = {
@@ -1381,7 +1387,10 @@ fun MessagingScreen(
                                     viewModel.exitReactionMode()
                                 },
                             ) {
-                                Text("Delete", color = MaterialTheme.colorScheme.error)
+                                Text(
+                                    stringResource(R.string.common_delete),
+                                    color = MaterialTheme.colorScheme.error,
+                                )
                             }
                         },
                         dismissButton = {
@@ -1391,7 +1400,7 @@ fun MessagingScreen(
                                     viewModel.exitReactionMode()
                                 },
                             ) {
-                                Text("Cancel")
+                                Text(stringResource(R.string.common_cancel))
                             }
                         },
                     )
@@ -1560,7 +1569,7 @@ fun MessagingScreen(
                 )
             },
             sheetState = locationPermissionSheetState,
-            primaryActionLabel = "Allow Location",
+            primaryActionLabel = stringResource(R.string.messaging_allow_location),
         )
     }
 
@@ -1588,8 +1597,15 @@ fun MessagingScreen(
                     tint = MaterialTheme.colorScheme.error,
                 )
             },
-            title = { Text("Stop Sharing Location?") },
-            text = { Text("Stop sharing your location with $peerName?") },
+            title = { Text(stringResource(R.string.messaging_stop_sharing_location_title)) },
+            text = {
+                Text(
+                    stringResource(
+                        R.string.messaging_stop_sharing_location_body,
+                        peerName,
+                    ),
+                )
+            },
             confirmButton = {
                 Button(
                     onClick = {
@@ -1601,12 +1617,12 @@ fun MessagingScreen(
                             containerColor = MaterialTheme.colorScheme.error,
                         ),
                 ) {
-                    Text("Stop Sharing")
+                    Text(stringResource(R.string.messaging_stop_sharing))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showStopSharingDialog = false }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.common_cancel))
                 }
             },
         )
@@ -1833,7 +1849,7 @@ fun MessageBubble(
                             .crossfade(true)
                             .build(),
                     imageLoader = AnimatedImageLoader.getInstance(context),
-                    contentDescription = "Animated GIF",
+                    contentDescription = stringResource(R.string.messaging_animated_gif),
                     modifier =
                         Modifier
                             .fillMaxWidth()
@@ -1972,7 +1988,7 @@ fun MessageBubble(
                                         .crossfade(true)
                                         .build(),
                                 imageLoader = AnimatedImageLoader.getInstance(context),
-                                contentDescription = "Animated image attachment",
+                                contentDescription = stringResource(R.string.messaging_animated_image_attachment),
                                 modifier =
                                     Modifier
                                         .widthIn(max = 268.dp)
@@ -1985,7 +2001,7 @@ fun MessageBubble(
                             // Static image - use pre-decoded bitmap for efficiency
                             Image(
                                 bitmap = imageBitmap,
-                                contentDescription = "Image attachment",
+                                contentDescription = stringResource(R.string.messaging_image_attachment),
                                 modifier =
                                     Modifier
                                         .widthIn(max = 268.dp)
@@ -2024,13 +2040,13 @@ fun MessageBubble(
                                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                     Icon(
                                         imageVector = Icons.Default.BrokenImage,
-                                        contentDescription = "Image unavailable",
+                                        contentDescription = stringResource(R.string.messaging_image_unavailable),
                                         modifier = Modifier.size(32.dp),
                                         tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                                     )
                                     Spacer(modifier = Modifier.height(4.dp))
                                     Text(
-                                        "Not available",
+                                        stringResource(R.string.messaging_not_available),
                                         style = MaterialTheme.typography.labelSmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                                     )
@@ -2049,16 +2065,13 @@ fun MessageBubble(
                                         contentDescription = null,
                                     )
                                 },
-                                title = { Text("Image Not Available") },
+                                title = { Text(stringResource(R.string.messaging_image_not_available_title)) },
                                 text = {
-                                    Text(
-                                        "The original image could not be found. This can happen when " +
-                                            "importing data without attachments included.",
-                                    )
+                                    Text(stringResource(R.string.messaging_image_not_available_body))
                                 },
                                 confirmButton = {
                                     TextButton(onClick = { showMissingImageInfo = false }) {
-                                        Text("OK")
+                                        Text(stringResource(R.string.common_ok))
                                     }
                                 },
                             )
@@ -2179,7 +2192,7 @@ fun MessageContextMenu(
                         contentDescription = null,
                     )
                 },
-                text = { Text("Retry") },
+                text = { Text(stringResource(R.string.common_retry)) },
                 onClick = onRetry,
             )
         }
@@ -2193,7 +2206,7 @@ fun MessageContextMenu(
                         contentDescription = null,
                     )
                 },
-                text = { Text("Reply") },
+                text = { Text(stringResource(R.string.messaging_reply)) },
                 onClick = onReply,
             )
         }
@@ -2205,7 +2218,7 @@ fun MessageContextMenu(
                     contentDescription = null,
                 )
             },
-            text = { Text("Copy") },
+            text = { Text(stringResource(R.string.common_copy)) },
             onClick = onCopy,
         )
 
@@ -2218,7 +2231,7 @@ fun MessageContextMenu(
                         contentDescription = null,
                     )
                 },
-                text = { Text("View Details") },
+                text = { Text(stringResource(R.string.messaging_view_details)) },
                 onClick = onViewDetails,
             )
         }
@@ -2298,7 +2311,7 @@ fun MessageInputBar(
                                     .crossfade(true)
                                     .build(),
                             imageLoader = AnimatedImageLoader.getInstance(context),
-                            contentDescription = "Selected animated image",
+                            contentDescription = stringResource(R.string.messaging_selected_animated_image),
                             modifier =
                                 Modifier
                                     .size(80.dp)
@@ -2316,7 +2329,7 @@ fun MessageInputBar(
                         bitmap?.let { imageBitmap ->
                             Image(
                                 bitmap = imageBitmap,
-                                contentDescription = "Selected image",
+                                contentDescription = stringResource(R.string.messaging_selected_image),
                                 modifier =
                                     Modifier
                                         .size(80.dp)
@@ -2329,9 +2342,15 @@ fun MessageInputBar(
                     Text(
                         text =
                             if (selectedImageIsAnimated) {
-                                "GIF attached (${selectedImageData.size / 1024} KB)"
+                                stringResource(
+                                    R.string.messaging_gif_attached,
+                                    selectedImageData.size / 1024,
+                                )
                             } else {
-                                "Image attached (${selectedImageData.size / 1024} KB)"
+                                stringResource(
+                                    R.string.messaging_image_attached,
+                                    selectedImageData.size / 1024,
+                                )
                             },
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.weight(1f),
@@ -2340,7 +2359,7 @@ fun MessageInputBar(
                     IconButton(onClick = onClearImage) {
                         Icon(
                             imageVector = androidx.compose.material.icons.Icons.Default.Close,
-                            contentDescription = "Remove image",
+                            contentDescription = stringResource(R.string.messaging_remove_image),
                         )
                     }
                 }
@@ -2350,7 +2369,7 @@ fun MessageInputBar(
             val remaining = ValidationConstants.MAX_MESSAGE_LENGTH - messageText.length
             if (remaining < 100) {
                 Text(
-                    text = "$remaining characters remaining",
+                    text = stringResource(R.string.messaging_characters_remaining, remaining),
                     style = MaterialTheme.typography.bodySmall,
                     color =
                         if (remaining < 20) {
@@ -2440,7 +2459,7 @@ fun MessageInputBar(
                             Box {
                                 if (textFieldState.text.isEmpty()) {
                                     Text(
-                                        text = "Type a message...",
+                                        text = stringResource(R.string.messaging_type_a_message),
                                         style = MaterialTheme.typography.bodyLarge,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     )
@@ -2488,7 +2507,7 @@ fun MessageInputBar(
                     } else {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.Send,
-                            contentDescription = "Send message",
+                            contentDescription = stringResource(R.string.messaging_send_message),
                         )
                     }
                 }
