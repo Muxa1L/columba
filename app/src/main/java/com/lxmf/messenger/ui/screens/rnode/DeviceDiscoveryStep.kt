@@ -502,7 +502,7 @@ private fun BluetoothDeviceDiscovery(
                         modifier = Modifier.weight(1f),
                     )
                     TextButton(onClick = { viewModel.clearAssociationError() }) {
-                        Text("Dismiss")
+                        Text(stringResource(R.string.rnode_device_discovery_dismiss))
                     }
                 }
             }
@@ -512,7 +512,7 @@ private fun BluetoothDeviceDiscovery(
         // Current device (in edit mode)
         if (state.isEditMode && state.selectedDevice != null && !state.showManualEntry) {
             Text(
-                "Current Device",
+                stringResource(R.string.rnode_device_discovery_current_device),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -527,7 +527,7 @@ private fun BluetoothDeviceDiscovery(
             )
             Spacer(Modifier.height(16.dp))
             Text(
-                "Or select a different device:",
+                stringResource(R.string.rnode_device_discovery_select_different_device),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -582,11 +582,11 @@ private fun BluetoothDeviceDiscovery(
                         Spacer(Modifier.width(16.dp))
                         Column {
                             Text(
-                                "Enter device manually",
+                                stringResource(R.string.rnode_device_discovery_manual_entry_title),
                                 style = MaterialTheme.typography.titleMedium,
                             )
                             Text(
-                                "If your device isn't listed",
+                                stringResource(R.string.rnode_device_discovery_manual_entry_subtitle),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
@@ -600,7 +600,7 @@ private fun BluetoothDeviceDiscovery(
                 item {
                     Spacer(Modifier.height(16.dp))
                     Text(
-                        "Having trouble pairing?",
+                        stringResource(R.string.rnode_device_discovery_pairing_help_title),
                         style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -625,11 +625,11 @@ private fun BluetoothDeviceDiscovery(
                             Spacer(Modifier.width(16.dp))
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
-                                    "Pair via USB",
+                                    stringResource(R.string.rnode_device_discovery_pair_via_usb),
                                     style = MaterialTheme.typography.titleMedium,
                                 )
                                 Text(
-                                    "Connect RNode via USB to securely configure Bluetooth pairing",
+                                    stringResource(R.string.rnode_device_discovery_pair_via_usb_subtitle),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 )
@@ -655,7 +655,7 @@ private fun BluetoothDeviceDiscovery(
                     ) {
                         Icon(Icons.Default.Refresh, contentDescription = null)
                         Spacer(Modifier.width(8.dp))
-                        Text("Scan Again")
+                        Text(stringResource(R.string.rnode_device_discovery_scan_again))
                     }
                 }
             }
@@ -674,8 +674,8 @@ private fun BluetoothDeviceDiscovery(
                 OutlinedTextField(
                     value = state.manualDeviceName,
                     onValueChange = { viewModel.updateManualDeviceName(it) },
-                    label = { Text("Bluetooth Device Name") },
-                    placeholder = { Text("e.g., RNode 1234") },
+                    label = { Text(stringResource(R.string.rnode_device_discovery_bluetooth_device_name)) },
+                    placeholder = { Text(stringResource(R.string.rnode_device_discovery_bluetooth_device_name_placeholder)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     isError = state.manualDeviceNameError != null,
@@ -703,7 +703,7 @@ private fun BluetoothDeviceDiscovery(
                 Spacer(Modifier.height(12.dp))
 
                 Text(
-                    "Connection Type",
+                    stringResource(R.string.rnode_device_discovery_connection_type),
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -716,7 +716,7 @@ private fun BluetoothDeviceDiscovery(
                     FilterChip(
                         selected = state.manualBluetoothType == BluetoothType.CLASSIC,
                         onClick = { viewModel.updateManualBluetoothType(BluetoothType.CLASSIC) },
-                        label = { Text("Bluetooth Classic") },
+                        label = { Text(stringResource(R.string.rnode_device_discovery_type_bluetooth_classic)) },
                         leadingIcon =
                             if (state.manualBluetoothType == BluetoothType.CLASSIC) {
                                 { Icon(Icons.Default.Check, contentDescription = null, Modifier.size(18.dp)) }
@@ -727,7 +727,7 @@ private fun BluetoothDeviceDiscovery(
                     FilterChip(
                         selected = state.manualBluetoothType == BluetoothType.BLE,
                         onClick = { viewModel.updateManualBluetoothType(BluetoothType.BLE) },
-                        label = { Text("Bluetooth LE") },
+                        label = { Text(stringResource(R.string.rnode_device_discovery_type_bluetooth_le)) },
                         leadingIcon =
                             if (state.manualBluetoothType == BluetoothType.BLE) {
                                 { Icon(Icons.Default.Check, contentDescription = null, Modifier.size(18.dp)) }
@@ -740,7 +740,7 @@ private fun BluetoothDeviceDiscovery(
                 Spacer(Modifier.height(8.dp))
 
                 Text(
-                    "ESP32-S3 and nRF52840 devices support BLE. ESP32 (original) devices support Bluetooth Classic.",
+                    stringResource(R.string.rnode_device_discovery_connection_type_help),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -748,7 +748,7 @@ private fun BluetoothDeviceDiscovery(
                 Spacer(Modifier.height(8.dp))
 
                 TextButton(onClick = { viewModel.hideManualEntry() }) {
-                    Text("Cancel manual entry")
+                    Text(stringResource(R.string.rnode_device_discovery_cancel_manual_entry))
                 }
             }
         }
@@ -946,7 +946,7 @@ private fun BluetoothDeviceCard(
                             )
                         } else {
                             TextButton(onClick = onPair) {
-                                Text("Pair")
+                                Text(stringResource(R.string.rnode_device_discovery_pair))
                             }
                         }
                     }
@@ -963,7 +963,7 @@ private fun BluetoothDeviceCard(
                             .padding(bottom = 16.dp),
                 ) {
                     Text(
-                        "Select connection type:",
+                        stringResource(R.string.rnode_device_discovery_select_connection_type),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -977,7 +977,7 @@ private fun BluetoothDeviceCard(
                                 onSetType(BluetoothType.CLASSIC)
                                 showTypeSelector = false
                             },
-                            label = { Text("Bluetooth Classic") },
+                            label = { Text(stringResource(R.string.rnode_device_discovery_type_bluetooth_classic)) },
                         )
                         FilterChip(
                             selected = false,
@@ -985,12 +985,12 @@ private fun BluetoothDeviceCard(
                                 onSetType(BluetoothType.BLE)
                                 showTypeSelector = false
                             },
-                            label = { Text("Bluetooth LE") },
+                            label = { Text(stringResource(R.string.rnode_device_discovery_type_bluetooth_le)) },
                         )
                     }
                     Spacer(Modifier.height(4.dp))
                     Text(
-                        "Power on device and rescan to auto-detect type.",
+                        stringResource(R.string.rnode_device_discovery_auto_detect_hint),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -1007,7 +1007,7 @@ private fun UsbDeviceDiscovery(
 ) {
     Column {
         Text(
-            "Connect RNode via USB cable. Supports FTDI, CP210x, CH340, and CDC-ACM devices.",
+            stringResource(R.string.rnode_device_discovery_usb_help),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -1024,7 +1024,7 @@ private fun UsbDeviceDiscovery(
                 )
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    "Scanning for USB devices...",
+                    stringResource(R.string.rnode_device_discovery_scanning_usb_devices),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -1052,7 +1052,7 @@ private fun UsbDeviceDiscovery(
                         modifier = Modifier.weight(1f),
                     )
                     TextButton(onClick = { viewModel.clearUsbError() }) {
-                        Text("Dismiss")
+                        Text(stringResource(R.string.rnode_device_discovery_dismiss))
                     }
                 }
             }
@@ -1102,11 +1102,11 @@ private fun UsbDeviceDiscovery(
                             Spacer(Modifier.width(16.dp))
                             Column {
                                 Text(
-                                    "Enter Bluetooth Pairing Mode",
+                                    stringResource(R.string.rnode_device_discovery_enter_pairing_mode),
                                     style = MaterialTheme.typography.titleMedium,
                                 )
                                 Text(
-                                    "Pair RNode with your phone via Bluetooth",
+                                    stringResource(R.string.rnode_device_discovery_enter_pairing_mode_subtitle),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 )
@@ -1126,7 +1126,7 @@ private fun UsbDeviceDiscovery(
                     ) {
                         Icon(Icons.Default.Refresh, contentDescription = null)
                         Spacer(Modifier.width(8.dp))
-                        Text("Rescan USB Devices")
+                        Text(stringResource(R.string.rnode_device_discovery_rescan_usb_devices))
                     }
                 }
             }
@@ -1232,7 +1232,7 @@ private fun UsbDeviceCard(
                                 )
                                 Spacer(Modifier.width(2.dp))
                                 Text(
-                                    "Permitted",
+                                    stringResource(R.string.rnode_device_discovery_permitted),
                                     style = MaterialTheme.typography.labelSmall,
                                     color =
                                         if (isSelected) {
@@ -1252,7 +1252,7 @@ private fun UsbDeviceCard(
                 isSelected -> {
                     Icon(
                         Icons.Default.Check,
-                        contentDescription = "Selected",
+                        contentDescription = stringResource(R.string.common_selected),
                         tint = MaterialTheme.colorScheme.primary,
                     )
                 }
@@ -1264,7 +1264,7 @@ private fun UsbDeviceCard(
                 }
                 !device.hasPermission -> {
                     TextButton(onClick = onSelect) {
-                        Text("Grant")
+                        Text(stringResource(R.string.rnode_device_discovery_grant))
                     }
                 }
             }
@@ -1293,7 +1293,7 @@ private fun UsbBluetoothPairingCard(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                "Bluetooth Pairing Mode",
+                stringResource(R.string.rnode_device_discovery_bluetooth_pairing_mode),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
             )
@@ -1301,7 +1301,7 @@ private fun UsbBluetoothPairingCard(
 
             if (state.usbBluetoothPin != null) {
                 Text(
-                    "PIN Code:",
+                    stringResource(R.string.rnode_device_discovery_pin_code_label),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f),
                 )
@@ -1332,7 +1332,7 @@ private fun UsbBluetoothPairingCard(
                     }
                 } else {
                     Text(
-                        "Scanning for RNodes to pair...",
+                        stringResource(R.string.rnode_device_discovery_scanning_rnodes_to_pair),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f),
                         textAlign = androidx.compose.ui.text.style.TextAlign.Center,
@@ -1341,7 +1341,7 @@ private fun UsbBluetoothPairingCard(
             } else if (state.showManualPinEntry) {
                 // Manual PIN entry for devices that don't send PIN over serial
                 Text(
-                    "Enter the 6-digit PIN shown on your RNode's display:",
+                    stringResource(R.string.rnode_device_discovery_enter_manual_pin),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     textAlign = androidx.compose.ui.text.style.TextAlign.Center,
@@ -1350,7 +1350,7 @@ private fun UsbBluetoothPairingCard(
                 OutlinedTextField(
                     value = state.manualPinInput,
                     onValueChange = { viewModel.updateManualPinInput(it) },
-                    label = { Text("PIN Code") },
+                    label = { Text(stringResource(R.string.rnode_device_discovery_pin_code)) },
                     placeholder = { Text("000000") },
                     singleLine = true,
                     keyboardOptions =
@@ -1369,13 +1369,13 @@ private fun UsbBluetoothPairingCard(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     OutlinedButton(onClick = { viewModel.cancelManualPinEntry() }) {
-                        Text("Cancel")
+                        Text(stringResource(R.string.common_cancel))
                     }
                     Button(
                         onClick = { viewModel.submitManualPin() },
                         enabled = state.manualPinInput.length == 6,
                     ) {
-                        Text("Submit")
+                        Text(stringResource(R.string.rnode_device_discovery_submit))
                     }
                 }
             } else {
@@ -1388,7 +1388,7 @@ private fun UsbBluetoothPairingCard(
                     )
                     Spacer(Modifier.width(12.dp))
                     Text(
-                        state.usbPairingStatus ?: "Waiting for PIN from RNode...",
+                        state.usbPairingStatus ?: stringResource(R.string.rnode_device_discovery_waiting_for_pin),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
@@ -1397,7 +1397,7 @@ private fun UsbBluetoothPairingCard(
 
             Spacer(Modifier.height(16.dp))
             Button(onClick = { viewModel.exitUsbBluetoothPairingMode() }) {
-                Text("Exit Pairing Mode")
+                Text(stringResource(R.string.rnode_device_discovery_exit_pairing_mode))
             }
         }
     }
