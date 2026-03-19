@@ -121,6 +121,17 @@ private fun DetectedState(
     deviceInfo: RNodeDeviceInfo,
     modifier: Modifier = Modifier,
 ) {
+    val deviceDetectedLabel = stringResource(R.string.device_detection_device_detected)
+    val deviceInformationLabel = stringResource(R.string.device_detection_device_information)
+    val boardLabel = stringResource(R.string.flash_complete_board)
+    val platformLabel = stringResource(R.string.device_detection_platform)
+    val mcuLabel = stringResource(R.string.device_detection_mcu)
+    val firmwareLabel = stringResource(R.string.flash_complete_firmware)
+    val bandLabel = stringResource(R.string.device_detection_frequency_band)
+    val serialLabel = stringResource(R.string.device_detection_serial)
+    val statusLabel = stringResource(R.string.interface_stats_status)
+    val provisionedLabel = stringResource(R.string.device_detection_provisioned)
+    val notProvisionedLabel = stringResource(R.string.device_detection_not_provisioned)
     Column(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -149,7 +160,7 @@ private fun DetectedState(
                 Spacer(modifier = Modifier.width(16.dp))
                 Column {
                     Text(
-                        text = "Device Detected",
+                        text = deviceDetectedLabel,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -182,7 +193,7 @@ private fun DetectedState(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Device Information",
+                        text = deviceInformationLabel,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Medium,
                     )
@@ -190,26 +201,26 @@ private fun DetectedState(
 
                 HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
 
-                DeviceInfoRow("Board", deviceInfo.board.displayName)
-                DeviceInfoRow("Platform", deviceInfo.platform.name)
-                DeviceInfoRow("MCU", deviceInfo.mcu.name)
+                DeviceInfoRow(boardLabel, deviceInfo.board.displayName)
+                DeviceInfoRow(platformLabel, deviceInfo.platform.name)
+                DeviceInfoRow(mcuLabel, deviceInfo.mcu.name)
 
                 deviceInfo.firmwareVersion?.let { version ->
-                    DeviceInfoRow("Firmware", "v$version")
+                    DeviceInfoRow(firmwareLabel, stringResource(R.string.firmware_selection_version_value, version))
                 }
 
                 val band = FrequencyBand.fromModelCode(deviceInfo.model)
                 if (band != FrequencyBand.UNKNOWN) {
-                    DeviceInfoRow("Frequency Band", band.displayName)
+                    DeviceInfoRow(bandLabel, band.displayName)
                 }
 
                 deviceInfo.serialNumber?.let { serial ->
-                    DeviceInfoRow("Serial", "#$serial")
+                    DeviceInfoRow(serialLabel, "#$serial")
                 }
 
                 DeviceInfoRow(
-                    "Status",
-                    if (deviceInfo.isProvisioned) "Provisioned" else "Not Provisioned",
+                    statusLabel,
+                    if (deviceInfo.isProvisioned) provisionedLabel else notProvisionedLabel,
                 )
             }
         }
@@ -248,6 +259,14 @@ private fun UnknownBoardState(
     val selectBoardTypeLabel = stringResource(R.string.device_detection_select_board_type)
     val selectBoardTypeMessage = stringResource(R.string.device_detection_select_board_message)
     val continueManualLabel = stringResource(R.string.device_detection_continue_manual)
+    val deviceDetectedLabel = stringResource(R.string.device_detection_device_detected)
+    val unknownBoardLabel = stringResource(R.string.device_detection_unknown_board_message)
+    val deviceInformationLabel = stringResource(R.string.device_detection_device_information)
+    val platformLabel = stringResource(R.string.device_detection_platform)
+    val mcuLabel = stringResource(R.string.device_detection_mcu)
+    val firmwareLabel = stringResource(R.string.flash_complete_firmware)
+    val statusLabel = stringResource(R.string.interface_stats_status)
+    val notProvisionedLabel = stringResource(R.string.device_detection_not_provisioned)
 
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -277,13 +296,13 @@ private fun UnknownBoardState(
                 Spacer(modifier = Modifier.width(16.dp))
                 Column {
                     Text(
-                        text = "Device Detected",
+                        text = deviceDetectedLabel,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onTertiaryContainer,
                     )
                     Text(
-                        text = "Board type unknown (EEPROM may be wiped)",
+                        text = unknownBoardLabel,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onTertiaryContainer,
                     )
@@ -310,7 +329,7 @@ private fun UnknownBoardState(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Device Information",
+                        text = deviceInformationLabel,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Medium,
                     )
@@ -318,14 +337,14 @@ private fun UnknownBoardState(
 
                 HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
 
-                DeviceInfoRow("Platform", deviceInfo.platform.name)
-                DeviceInfoRow("MCU", deviceInfo.mcu.name)
+                DeviceInfoRow(platformLabel, deviceInfo.platform.name)
+                DeviceInfoRow(mcuLabel, deviceInfo.mcu.name)
 
                 deviceInfo.firmwareVersion?.let { version ->
-                    DeviceInfoRow("Firmware", "v$version")
+                    DeviceInfoRow(firmwareLabel, stringResource(R.string.firmware_selection_version_value, version))
                 }
 
-                DeviceInfoRow("Status", "Not Provisioned")
+                DeviceInfoRow(statusLabel, notProvisionedLabel)
             }
         }
 

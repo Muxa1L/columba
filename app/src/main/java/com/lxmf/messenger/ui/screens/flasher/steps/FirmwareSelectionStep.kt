@@ -541,7 +541,7 @@ private fun FirmwareVersionCard(
                             selected = selectedFirmware == firmware,
                             onClick = { onFirmwareSelected(firmware) },
                             label = {
-                                Text("v${firmware.version}")
+                                Text(stringResource(R.string.firmware_selection_version_value, firmware.version))
                             },
                             colors =
                                 FilterChipDefaults.filterChipColors(
@@ -588,7 +588,7 @@ private fun FirmwareVersionCard(
                         ) {
                             availableVersions.forEach { version ->
                                 DropdownMenuItem(
-                                    text = { Text("v$version") },
+                                    text = { Text(stringResource(R.string.firmware_selection_version_value, version)) },
                                     onClick = {
                                         onDownloadFirmware(version)
                                         expanded = false

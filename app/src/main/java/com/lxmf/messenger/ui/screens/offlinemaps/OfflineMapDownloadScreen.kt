@@ -63,6 +63,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
@@ -71,6 +72,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
+import com.lxmf.messenger.R
 import com.lxmf.messenger.map.TileDownloadManager
 import com.lxmf.messenger.util.LocationCompat
 import com.lxmf.messenger.viewmodel.AddressSearchResult
@@ -94,6 +96,8 @@ fun OfflineMapDownloadScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     var showCancelDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    val httpReenableNote = stringResource(R.string.offline_map_download_http_reenable_note)
+    val httpDisabledReady = stringResource(R.string.offline_map_download_http_disabled_ready)
 
     // Pre-fill wizard when updating an existing region
     LaunchedEffect(updateRegionId) {
@@ -109,10 +113,9 @@ fun OfflineMapDownloadScreen(
             val message =
                 when {
                     state.styleCacheWarning != null && state.httpAutoDisabled ->
-                        state.styleCacheWarning +
-                            " Note: HTTP was auto-disabled and must be re-enabled before retrying."
+                        state.styleCacheWarning + httpReenableNote
                     state.styleCacheWarning != null -> state.styleCacheWarning
-                    state.httpAutoDisabled -> "HTTP disabled. Your offline maps are ready."
+                    state.httpAutoDisabled -> httpDisabledReady
                     else -> null
                 }
             message?.let {
@@ -138,10 +141,10 @@ fun OfflineMapDownloadScreen(
                 title = {
                     Text(
                         when (state.step) {
-                            DownloadWizardStep.LOCATION -> "Select Location"
-                            DownloadWizardStep.RADIUS -> "Choose Area"
-                            DownloadWizardStep.CONFIRM -> "Confirm Download"
-                            DownloadWizardStep.DOWNLOADING -> "Downloading"
+                            DownloadWizardStep.LOCATION -> stringResource(R.string.offline_map_download_step_location)
+                            DownloadWizardStep.RADIUS -> stringResource(R.string.offline_map_download_step_area)
+                            DownloadWizardStep.CONFIRM -> stringResource(R.string.offline_map_download_step_confirm)
+                            DownloadWizardStep.DOWNLOADING -> stringResource(R.string.offline_map_download_step_downloading)
                         },
                     )
                 },
@@ -166,9 +169,9 @@ fun OfflineMapDownloadScreen(
                                 },
                             contentDescription =
                                 if (state.step == DownloadWizardStep.DOWNLOADING) {
-                                    "Cancel"
+                                    stringResource(R.string.common_cancel)
                                 } else {
-                                    "Back"
+                                    stringResource(R.string.common_back)
                                 },
                         )
                     }
@@ -254,9 +257,9 @@ fun OfflineMapDownloadScreen(
     if (showCancelDialog) {
         AlertDialog(
             onDismissRequest = { showCancelDialog = false },
-            title = { Text("Cancel Download?") },
+            title = { Text(stringResource(R.string.offline_map_download_cancel_title)) },
             text = {
-                Text("Are you sure you want to cancel the download? Progress will be lost.")
+                Text(stringResource(R.string.offline_map_download_cancel_message))
             },
             confirmButton = {
                 TextButton(
@@ -266,12 +269,12 @@ fun OfflineMapDownloadScreen(
                         onNavigateBack()
                     },
                 ) {
-                    Text("Cancel Download", color = MaterialTheme.colorScheme.error)
+                    Text(stringResource(R.string.offline_map_download_cancel_action), color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showCancelDialog = false }) {
-                    Text("Continue")
+                    Text(stringResource(R.string.common_continue))
                 }
             },
         )
@@ -298,6 +301,10 @@ fun LocationSelectionStep(
     onNext: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val invalidNumberLabel = stringResource(R.string.offline_map_download_invalid_number)
+    val latitudeRangeLabel = stringResource(R.string.offline_map_download_latitude_range)
+    val longitudeRangeLabel = stringResource(R.string.offline_map_download_longitude_range)
+    val invalidGeohashLabel = stringResource(R.string.offline_map_download_invalid_geohash)
     val context = LocalContext.current
     var isGettingLocation by remember { mutableStateOf(false) }
     var hasPermission by remember { mutableStateOf(false) }
@@ -368,7 +375,7 @@ fun LocationSelectionStep(
             }
 
             Text(
-                text = "Choose the center point for your offline map region.",
+                text = stringResource(R.string.offline_map_download_location_prompt),
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
             )
@@ -399,7 +406,7 @@ fun LocationSelectionStep(
                         contentDescription = null,
                         modifier = Modifier.padding(end = 8.dp),
                     )
-                    Text("Use Current Location")
+                    Text(stringResource(R.string.offline_map_download_use_current_location))
                 }
             }
 
@@ -437,13 +444,13 @@ fun LocationSelectionStep(
                     latError =
                         when {
                             it.isEmpty() || it == "-" -> null
-                            lat == null -> "Invalid number"
-                            lat !in -90.0..90.0 -> "Must be between -90 and 90"
+                            lat == null -> invalidNumberLabel
+                            lat !in -90.0..90.0 -> latitudeRangeLabel
                             else -> null
                         }
                     validateAndSetLocation(lat, lonText.toDoubleOrNull())
                 },
-                label = { Text("Latitude") },
+                label = { Text(stringResource(R.string.offline_map_download_latitude)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 isError = latError != null,
@@ -463,13 +470,13 @@ fun LocationSelectionStep(
                     lonError =
                         when {
                             it.isEmpty() || it == "-" -> null
-                            lon == null -> "Invalid number"
-                            lon !in -180.0..180.0 -> "Must be between -180 and 180"
+                            lon == null -> invalidNumberLabel
+                            lon !in -180.0..180.0 -> longitudeRangeLabel
                             else -> null
                         }
                     validateAndSetLocation(latText.toDoubleOrNull(), lon)
                 },
-                label = { Text("Longitude") },
+                label = { Text(stringResource(R.string.offline_map_download_longitude)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 isError = lonError != null,
@@ -494,7 +501,7 @@ fun LocationSelectionStep(
                 OutlinedTextField(
                     value = addressQuery,
                     onValueChange = onAddressQueryChange,
-                    label = { Text("Search City or Address") },
+                    label = { Text(stringResource(R.string.offline_map_download_search_address)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
@@ -509,7 +516,7 @@ fun LocationSelectionStep(
                             IconButton(onClick = onSearchAddress) {
                                 Icon(
                                     imageVector = Icons.Default.Search,
-                                    contentDescription = "Search",
+                                    contentDescription = stringResource(R.string.common_search),
                                 )
                             }
                         }
@@ -575,19 +582,19 @@ fun LocationSelectionStep(
                             lonText = String.format(Locale.US, "%.6f", coords.second)
                             onLocationSet(coords.first, coords.second)
                         } else {
-                            geohashError = "Invalid geohash"
+                            geohashError = invalidGeohashLabel
                         }
                     } else {
                         geohashError = null
                     }
                 },
-                label = { Text("Geohash") },
-                placeholder = { Text("e.g., dqcjq") },
+                label = { Text(stringResource(R.string.offline_map_download_geohash)) },
+                placeholder = { Text(stringResource(R.string.offline_map_download_geohash_placeholder)) },
                 supportingText = {
                     if (geohashError != null) {
                         Text(geohashError!!, color = MaterialTheme.colorScheme.error)
                     } else {
-                        Text("Enter a geohash to set the location")
+                        Text(stringResource(R.string.offline_map_download_geohash_hint))
                     }
                 },
                 isError = geohashError != null,
@@ -635,7 +642,7 @@ fun LocationSelectionStep(
             enabled = hasLocation,
             modifier = Modifier.fillMaxWidth(),
         ) {
-            Text("Next")
+            Text(stringResource(R.string.common_next))
         }
     }
 }
@@ -661,7 +668,7 @@ fun RadiusSelectionStep(
                 .verticalScroll(rememberScrollState()),
     ) {
         Text(
-            text = "Select Area Size",
+            text = stringResource(R.string.offline_map_download_area_size),
             style = MaterialTheme.typography.titleMedium,
         )
 
@@ -698,7 +705,7 @@ fun RadiusSelectionStep(
 
         // Zoom range
         Text(
-            text = "Zoom Range",
+            text = stringResource(R.string.offline_map_download_zoom_range),
             style = MaterialTheme.typography.titleMedium,
         )
 
@@ -746,7 +753,7 @@ fun RadiusSelectionStep(
                         .padding(16.dp),
             ) {
                 Text(
-                    text = "Estimated Download",
+                    text = stringResource(R.string.offline_map_download_estimated_download),
                     style = MaterialTheme.typography.titleSmall,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -777,13 +784,13 @@ fun RadiusSelectionStep(
                 onClick = onBack,
                 modifier = Modifier.weight(1f),
             ) {
-                Text("Back")
+                Text(stringResource(R.string.common_back))
             }
             Button(
                 onClick = onNext,
                 modifier = Modifier.weight(1f),
             ) {
-                Text("Next")
+                Text(stringResource(R.string.common_next))
             }
         }
     }
@@ -823,7 +830,7 @@ fun ConfirmDownloadStep(
         }
 
         Text(
-            text = "Name Your Map",
+            text = stringResource(R.string.offline_map_download_name_map),
             style = MaterialTheme.typography.titleMedium,
         )
 
@@ -832,8 +839,8 @@ fun ConfirmDownloadStep(
         OutlinedTextField(
             value = name,
             onValueChange = onNameChange,
-            label = { Text("Region Name") },
-            placeholder = { Text("e.g., Home, Downtown, Trail") },
+            label = { Text(stringResource(R.string.offline_map_download_region_name)) },
+            placeholder = { Text(stringResource(R.string.offline_map_download_region_name_placeholder)) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
         )
@@ -841,7 +848,7 @@ fun ConfirmDownloadStep(
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = "Summary",
+            text = stringResource(R.string.offline_map_download_summary),
             style = MaterialTheme.typography.titleMedium,
         )
 
@@ -861,23 +868,21 @@ fun ConfirmDownloadStep(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 SummaryRow(
-                    "Location",
+                    stringResource(R.string.map_screen_location),
                     "${String.format(Locale.US, "%.4f", latitude)}, " +
                         String.format(Locale.US, "%.4f", longitude),
                 )
-                SummaryRow("Radius", "$radiusKm km")
-                SummaryRow("Zoom Range", "$minZoom - $maxZoom")
-                SummaryRow("Tiles", "$estimatedTileCount")
-                SummaryRow("Estimated Size", "~$estimatedSize")
+                SummaryRow(stringResource(R.string.offline_map_download_radius), "$radiusKm km")
+                SummaryRow(stringResource(R.string.offline_map_download_zoom_range), "$minZoom - $maxZoom")
+                SummaryRow(stringResource(R.string.offline_map_download_tiles), "$estimatedTileCount")
+                SummaryRow(stringResource(R.string.offline_map_download_estimated_size), "~$estimatedSize")
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text =
-                "This will download map tiles from OpenFreeMap for offline use. " +
-                    "Make sure you're connected to Wi-Fi for large downloads.",
+            text = stringResource(R.string.offline_map_download_summary_message),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -892,14 +897,14 @@ fun ConfirmDownloadStep(
                 onClick = onBack,
                 modifier = Modifier.weight(1f),
             ) {
-                Text("Back")
+                Text(stringResource(R.string.common_back))
             }
             Button(
                 onClick = onStartDownload,
                 enabled = name.isNotBlank() && httpEnabled,
                 modifier = Modifier.weight(1f),
             ) {
-                Text("Download")
+                Text(stringResource(R.string.offline_map_download_download))
             }
         }
     }
@@ -940,12 +945,12 @@ fun HttpDisabledWarningBanner(
                         .padding(horizontal = 12.dp),
             ) {
                 Text(
-                    text = "Internet Access Required",
+                    text = stringResource(R.string.offline_map_download_internet_required),
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onErrorContainer,
                 )
                 Text(
-                    text = "HTTP map source is disabled. Enable it to download tiles.",
+                    text = stringResource(R.string.offline_map_download_http_required_message),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onErrorContainer,
                 )
@@ -953,7 +958,7 @@ fun HttpDisabledWarningBanner(
             FilledTonalButton(
                 onClick = onEnableHttp,
             ) {
-                Text("Enable")
+                Text(stringResource(R.string.permissions_page_enable))
             }
         }
     }
@@ -998,15 +1003,15 @@ fun DownloadingStep(
         if (progress == null) {
             CircularProgressIndicator()
             Spacer(modifier = Modifier.height(16.dp))
-            Text("Preparing download...")
+            Text(stringResource(R.string.offline_map_download_preparing_download))
         } else {
             val statusText =
                 when {
-                    progress.isComplete -> "Complete!"
-                    progress.errorMessage != null -> "Error"
+                    progress.isComplete -> stringResource(R.string.offline_map_download_complete)
+                    progress.errorMessage != null -> stringResource(R.string.offline_map_download_error_status)
                     progress.statusMessage != null -> progress.statusMessage
-                    progress.progress > 0 -> "Downloading..."
-                    else -> "Preparing..."
+                    progress.progress > 0 -> stringResource(R.string.offline_map_download_downloading)
+                    else -> stringResource(R.string.offline_map_download_preparing)
                 }
 
             Text(
@@ -1049,7 +1054,7 @@ fun DownloadingStep(
                 Spacer(modifier = Modifier.height(32.dp))
 
                 OutlinedButton(onClick = onCancel) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.common_cancel))
                 }
             }
         }

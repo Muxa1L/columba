@@ -46,8 +46,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.model.FrequencySlotCalculator
 import com.lxmf.messenger.viewmodel.RNodeWizardViewModel
 
@@ -91,9 +93,9 @@ fun ReviewConfigStep(viewModel: RNodeWizardViewModel) {
                 Column {
                     Text(
                         when {
-                            isTcpMode -> "Connection"
-                            isUsbMode -> "USB Device"
-                            else -> "Device"
+                            isTcpMode -> stringResource(R.string.rnode_review_connection)
+                            isUsbMode -> stringResource(R.string.rnode_review_usb_device)
+                            else -> stringResource(R.string.rnode_review_device)
                         },
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f),
@@ -149,7 +151,7 @@ fun ReviewConfigStep(viewModel: RNodeWizardViewModel) {
                         Spacer(Modifier.width(12.dp))
                         Column {
                             Text(
-                                "Frequency Region",
+                                stringResource(R.string.rnode_review_frequency_region),
                                 style = MaterialTheme.typography.labelMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
@@ -188,17 +190,15 @@ fun ReviewConfigStep(viewModel: RNodeWizardViewModel) {
                             Spacer(Modifier.width(12.dp))
                             Column {
                                 Text(
-                                    "Duty Cycle Limit: ${region.dutyCycle}%",
+                                    stringResource(R.string.rnode_review_duty_cycle_limit, region.dutyCycle),
                                     style = MaterialTheme.typography.titleSmall,
                                     color = MaterialTheme.colorScheme.onErrorContainer,
                                 )
                                 Text(
                                     if (region.dutyCycle <= 1) {
-                                        "This region has very strict limits. Airtime limits " +
-                                            "(${region.dutyCycle}%) applied automatically in Advanced Settings."
+                                        stringResource(R.string.rnode_review_duty_cycle_strict, region.dutyCycle)
                                     } else {
-                                        "This region requires limiting transmission time. Airtime limits " +
-                                            "(${region.dutyCycle}%) applied automatically in Advanced Settings."
+                                        stringResource(R.string.rnode_review_duty_cycle_limited, region.dutyCycle)
                                     },
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onErrorContainer,
@@ -231,7 +231,7 @@ fun ReviewConfigStep(viewModel: RNodeWizardViewModel) {
                         Spacer(Modifier.width(12.dp))
                         Column {
                             Text(
-                                "Modem Preset",
+                                stringResource(R.string.rnode_review_modem_preset),
                                 style = MaterialTheme.typography.labelMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
@@ -268,12 +268,12 @@ fun ReviewConfigStep(viewModel: RNodeWizardViewModel) {
                         Spacer(Modifier.width(12.dp))
                         Column {
                             Text(
-                                "Frequency Slot",
+                                stringResource(R.string.rnode_review_frequency_slot),
                                 style = MaterialTheme.typography.labelMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                             Text(
-                                "Slot ${state.selectedSlot}",
+                                stringResource(R.string.rnode_frequency_slot_slot_number, state.selectedSlot),
                                 style = MaterialTheme.typography.titleMedium,
                             )
                             Text(
@@ -305,12 +305,12 @@ fun ReviewConfigStep(viewModel: RNodeWizardViewModel) {
                     Spacer(Modifier.width(12.dp))
                     Column {
                         Text(
-                            "Popular Preset",
+                            stringResource(R.string.rnode_review_popular_preset),
                             style = MaterialTheme.typography.labelMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                         Text(
-                            "${preset.countryName} - ${preset.cityOrRegion ?: "Default"}",
+                            "${preset.countryName} - ${preset.cityOrRegion ?: stringResource(R.string.common_default)}",
                             style = MaterialTheme.typography.titleMedium,
                         )
                     }
@@ -331,7 +331,7 @@ fun ReviewConfigStep(viewModel: RNodeWizardViewModel) {
                 contentDescription = null,
             )
             Spacer(Modifier.width(8.dp))
-            Text("Advanced Settings")
+            Text(stringResource(R.string.flasher_tnc_advanced_settings))
         }
 
         // Region limits for validation hints

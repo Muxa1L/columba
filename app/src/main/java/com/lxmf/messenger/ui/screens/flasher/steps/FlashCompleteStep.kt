@@ -166,7 +166,7 @@ private fun SuccessContent(
 
                     DeviceInfoRow(boardLabel, deviceInfo.board.displayName)
                     deviceInfo.firmwareVersion?.let { version ->
-                        DeviceInfoRow(firmwareLabel, "v$version")
+                        DeviceInfoRow(firmwareLabel, stringResource(R.string.firmware_selection_version_value, version))
                     }
                     val band = FrequencyBand.fromModelCode(deviceInfo.model)
                     if (band != FrequencyBand.UNKNOWN) {

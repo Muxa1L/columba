@@ -55,8 +55,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.model.BluetoothType
 import com.lxmf.messenger.data.model.DiscoveredRNode
 import com.lxmf.messenger.data.model.DiscoveredUsbDevice
@@ -133,7 +135,7 @@ fun DeviceDiscoveryStep(viewModel: RNodeWizardViewModel) {
     ) {
         // Connection type selector
         Text(
-            "Connection Method",
+            stringResource(R.string.rnode_device_discovery_connection_method),
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -145,7 +147,7 @@ fun DeviceDiscoveryStep(viewModel: RNodeWizardViewModel) {
             FilterChip(
                 selected = state.connectionType == RNodeConnectionType.BLUETOOTH,
                 onClick = { viewModel.setConnectionType(RNodeConnectionType.BLUETOOTH) },
-                label = { Text("Bluetooth") },
+                label = { Text(stringResource(R.string.rnode_device_discovery_bluetooth)) },
                 leadingIcon = {
                     Icon(Icons.Default.Bluetooth, contentDescription = null, Modifier.size(18.dp))
                 },
@@ -153,7 +155,7 @@ fun DeviceDiscoveryStep(viewModel: RNodeWizardViewModel) {
             FilterChip(
                 selected = state.connectionType == RNodeConnectionType.TCP_WIFI,
                 onClick = { viewModel.setConnectionType(RNodeConnectionType.TCP_WIFI) },
-                label = { Text("WiFi / TCP") },
+                label = { Text(stringResource(R.string.rnode_device_discovery_wifi_tcp)) },
                 leadingIcon = {
                     Icon(Icons.Default.Wifi, contentDescription = null, Modifier.size(18.dp))
                 },
@@ -161,7 +163,7 @@ fun DeviceDiscoveryStep(viewModel: RNodeWizardViewModel) {
             FilterChip(
                 selected = state.connectionType == RNodeConnectionType.USB_SERIAL,
                 onClick = { viewModel.setConnectionType(RNodeConnectionType.USB_SERIAL) },
-                label = { Text("USB") },
+                label = { Text(stringResource(R.string.rnode_device_discovery_usb)) },
                 leadingIcon = {
                     Icon(Icons.Default.Usb, contentDescription = null, Modifier.size(18.dp))
                 },
@@ -208,7 +210,7 @@ private fun TcpConnectionForm(
 ) {
     Column {
         Text(
-            "Connect to an RNode device over WiFi/TCP (port 7633).",
+            stringResource(R.string.rnode_device_discovery_tcp_description),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -217,8 +219,8 @@ private fun TcpConnectionForm(
         OutlinedTextField(
             value = tcpHost,
             onValueChange = onHostChange,
-            label = { Text("IP Address or Hostname") },
-            placeholder = { Text("e.g., 10.0.0.1 or rnode.local") },
+            label = { Text(stringResource(R.string.rnode_device_discovery_host_label)) },
+            placeholder = { Text(stringResource(R.string.rnode_device_discovery_host_placeholder)) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             leadingIcon = {
@@ -244,7 +246,7 @@ private fun TcpConnectionForm(
                     )
                     Spacer(Modifier.width(8.dp))
                 }
-                Text("Test Connection")
+                Text(stringResource(R.string.rnode_device_discovery_test_connection))
             }
 
             // Validation result
@@ -259,7 +261,7 @@ private fun TcpConnectionForm(
                         )
                         Spacer(Modifier.width(4.dp))
                         Text(
-                            "Connected",
+                            stringResource(R.string.rnode_device_discovery_connected),
                             color = MaterialTheme.colorScheme.primary,
                             style = MaterialTheme.typography.bodyMedium,
                         )
@@ -269,13 +271,13 @@ private fun TcpConnectionForm(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             Icons.Default.Error,
-                            contentDescription = "Failed",
+                            contentDescription = stringResource(R.string.rnode_device_discovery_failed),
                             tint = MaterialTheme.colorScheme.error,
                             modifier = Modifier.size(20.dp),
                         )
                         Spacer(Modifier.width(4.dp))
                         Text(
-                            "Failed",
+                            stringResource(R.string.rnode_device_discovery_failed),
                             color = MaterialTheme.colorScheme.error,
                             style = MaterialTheme.typography.bodyMedium,
                         )
@@ -297,8 +299,7 @@ private fun TcpConnectionForm(
         Spacer(Modifier.height(16.dp))
 
         Text(
-            "The RNode must be connected to the same network and have WiFi/TCP enabled. " +
-                "Default port is 7633.",
+            stringResource(R.string.rnode_device_discovery_tcp_help),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -326,7 +327,7 @@ private fun BluetoothDeviceDiscovery(
                 )
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    "Scanning for RNode devices...",
+                    stringResource(R.string.rnode_device_discovery_scanning),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -374,11 +375,11 @@ private fun BluetoothDeviceDiscovery(
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         TextButton(onClick = { viewModel.clearPairingError() }) {
-                            Text("Dismiss")
+                            Text(stringResource(R.string.rnode_device_discovery_dismiss))
                         }
                         Spacer(Modifier.width(8.dp))
                         Button(onClick = { viewModel.retryPairing() }) {
-                            Text("Retry")
+                            Text(stringResource(R.string.common_retry))
                         }
                     }
                 }
@@ -407,14 +408,14 @@ private fun BluetoothDeviceDiscovery(
                         )
                         Spacer(Modifier.width(12.dp))
                         Text(
-                            text = "Pairing...",
+                            text = stringResource(R.string.rnode_device_discovery_pairing),
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
                             style = MaterialTheme.typography.bodyMedium,
                         )
                     }
                     Spacer(Modifier.height(8.dp))
                     Text(
-                        text = "Enter the PIN code shown on your RNode display",
+                        text = stringResource(R.string.rnode_device_discovery_pairing_hint),
                         color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f),
                         style = MaterialTheme.typography.bodySmall,
                     )
@@ -454,7 +455,7 @@ private fun BluetoothDeviceDiscovery(
                         )
                         Spacer(Modifier.width(12.dp))
                         Text(
-                            text = "Waiting for RNode to reconnect...",
+                            text = stringResource(R.string.rnode_device_discovery_waiting_reconnect),
                             color = MaterialTheme.colorScheme.onSecondaryContainer,
                             style = MaterialTheme.typography.bodyMedium,
                         )
@@ -462,7 +463,7 @@ private fun BluetoothDeviceDiscovery(
                     state.reconnectDeviceName?.let { name ->
                         Spacer(Modifier.height(4.dp))
                         Text(
-                            text = "Looking for: $name",
+                            text = stringResource(R.string.rnode_device_discovery_looking_for, name),
                             color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.7f),
                             style = MaterialTheme.typography.bodySmall,
                         )
@@ -473,7 +474,7 @@ private fun BluetoothDeviceDiscovery(
                         horizontalArrangement = Arrangement.End,
                     ) {
                         TextButton(onClick = { viewModel.cancelReconnectScan() }) {
-                            Text("Cancel")
+                            Text(stringResource(R.string.common_cancel))
                         }
                     }
                 }

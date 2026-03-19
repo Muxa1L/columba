@@ -172,9 +172,9 @@ private fun ModemPresetCard(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
-                    SettingsChip(label = "SF${preset.spreadingFactor}")
-                    SettingsChip(label = "${preset.bandwidth / 1000} kHz")
-                    SettingsChip(label = "4/${preset.codingRate}")
+                    SettingsChip(label = stringResource(R.string.rnode_modem_preset_sf_chip, preset.spreadingFactor))
+                    SettingsChip(label = stringResource(R.string.rnode_modem_preset_khz_chip, preset.bandwidth / 1000))
+                    SettingsChip(label = stringResource(R.string.rnode_modem_preset_cr_chip, preset.codingRate))
                 }
             }
 
