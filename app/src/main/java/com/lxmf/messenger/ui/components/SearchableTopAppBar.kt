@@ -20,8 +20,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 
 /**
  * A reusable TopAppBar with integrated search functionality.
@@ -44,9 +46,14 @@ fun SearchableTopAppBar(
     searchQuery: String,
     onSearchQueryChange: (String) -> Unit,
     onSearchToggle: () -> Unit,
-    searchPlaceholder: String = "Search...",
+    searchPlaceholder: String? = null,
     additionalActions: @Composable (RowScope.() -> Unit)? = null,
 ) {
+    val resolvedSearchPlaceholder = searchPlaceholder ?: stringResource(R.string.common_search)
+    val closeSearchLabel = stringResource(R.string.common_close_search)
+    val searchLabel = stringResource(R.string.common_search)
+    val clearSearchLabel = stringResource(R.string.common_clear_search)
+
     Column {
         TopAppBar(
             title = {
@@ -69,7 +76,7 @@ fun SearchableTopAppBar(
                 IconButton(onClick = onSearchToggle) {
                     Icon(
                         imageVector = if (isSearching) Icons.Default.Close else Icons.Default.Search,
-                        contentDescription = if (isSearching) "Close search" else "Search",
+                        contentDescription = if (isSearching) closeSearchLabel else searchLabel,
                     )
                 }
                 additionalActions?.invoke(this)
@@ -90,14 +97,14 @@ fun SearchableTopAppBar(
                     Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 8.dp),
-                placeholder = { Text(searchPlaceholder) },
+                placeholder = { Text(resolvedSearchPlaceholder) },
                 leadingIcon = {
                     Icon(Icons.Default.Search, contentDescription = null)
                 },
                 trailingIcon = {
                     if (searchQuery.isNotEmpty()) {
                         IconButton(onClick = { onSearchQueryChange("") }) {
-                            Icon(Icons.Default.Clear, contentDescription = "Clear search")
+                            Icon(Icons.Default.Clear, contentDescription = clearSearchLabel)
                         }
                     }
                 },

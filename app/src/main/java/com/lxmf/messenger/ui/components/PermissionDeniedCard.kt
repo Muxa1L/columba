@@ -23,8 +23,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 
 /**
  * Card displaying a message when Bluetooth permissions are permanently denied,
@@ -37,10 +39,13 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun PermissionDeniedCard(
     modifier: Modifier = Modifier,
-    message: String = getDefaultPermissionDeniedMessage(),
+    message: String? = null,
     showSettingsButton: Boolean = true,
 ) {
     val context = LocalContext.current
+    val resolvedMessage = message ?: stringResource(R.string.permission_denied_message)
+    val title = stringResource(R.string.permission_denied_title)
+    val openSettingsLabel = stringResource(R.string.common_open_settings)
 
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -67,7 +72,7 @@ fun PermissionDeniedCard(
                     modifier = Modifier.padding(end = 12.dp),
                 )
                 Text(
-                    text = "Permissions Required",
+                    text = title,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onErrorContainer,
@@ -78,7 +83,7 @@ fun PermissionDeniedCard(
 
             // Message text
             Text(
-                text = message,
+                text = resolvedMessage,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onErrorContainer,
             )
@@ -94,23 +99,12 @@ fun PermissionDeniedCard(
                     Button(
                         onClick = { openAppSettings(context) },
                     ) {
-                        Text("Open Settings")
+                        Text(openSettingsLabel)
                     }
                 }
             }
         }
     }
-}
-
-/**
- * Default message for permanently denied permissions.
- */
-private fun getDefaultPermissionDeniedMessage(): String {
-    return """
-        Bluetooth permissions have been denied. To use BLE features in Columba, please grant Bluetooth permissions in your device settings.
-
-        Without these permissions, Columba cannot discover or connect to nearby devices via Bluetooth.
-        """.trimIndent()
 }
 
 /**

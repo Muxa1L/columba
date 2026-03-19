@@ -19,10 +19,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 import com.lxmf.messenger.ui.theme.ColumbaTheme
 import com.lxmf.messenger.util.FileAttachment
 import com.lxmf.messenger.util.FileUtils
@@ -96,6 +98,8 @@ private fun FileAttachmentChip(
     onRemove: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val removeLabel = stringResource(R.string.file_attachment_preview_remove, attachment.filename)
+
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(12.dp),
@@ -142,7 +146,7 @@ private fun FileAttachmentChip(
             ) {
                 Icon(
                     imageVector = Icons.Default.Close,
-                    contentDescription = "Remove ${attachment.filename}",
+                    contentDescription = removeLabel,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.size(18.dp),
                 )
@@ -160,13 +164,15 @@ private fun TotalSizeIndicator(
     totalSizeBytes: Int,
     modifier: Modifier = Modifier,
 ) {
+    val totalLabel = stringResource(R.string.file_attachment_preview_total, FileUtils.formatFileSize(totalSizeBytes))
+
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(12.dp),
         color = MaterialTheme.colorScheme.surfaceContainerHigh,
     ) {
         Text(
-            text = "Total: ${FileUtils.formatFileSize(totalSizeBytes)}",
+            text = totalLabel,
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onSurfaceVariant,

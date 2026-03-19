@@ -15,9 +15,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 import com.lxmf.messenger.ui.model.FileAttachmentUi
 import com.lxmf.messenger.ui.theme.ColumbaTheme
 import com.lxmf.messenger.util.FileUtils
@@ -47,6 +49,8 @@ fun FileAttachmentCard(
     onTap: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val fileTypeDescription = stringResource(R.string.file_attachment_card_type, attachment.mimeType)
+
     Surface(
         modifier =
             modifier
@@ -66,7 +70,7 @@ fun FileAttachmentCard(
             // File type icon
             Icon(
                 imageVector = FileUtils.getFileIconForMimeType(attachment.mimeType),
-                contentDescription = "File type: ${attachment.mimeType}",
+                contentDescription = fileTypeDescription,
                 modifier = Modifier.size(24.dp),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )

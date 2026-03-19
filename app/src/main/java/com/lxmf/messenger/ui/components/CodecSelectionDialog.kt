@@ -1,6 +1,8 @@
 package com.lxmf.messenger.ui.components
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import com.lxmf.messenger.R
 import com.lxmf.messenger.service.ConversationLinkManager
 import com.lxmf.messenger.ui.model.CodecProfile
 
@@ -24,6 +26,10 @@ fun CodecSelectionDialog(
     onDismiss: () -> Unit,
     onProfileSelected: (CodecProfile) -> Unit,
 ) {
+    val title = stringResource(R.string.codec_selection_title)
+    val subtitle = stringResource(R.string.codec_selection_subtitle)
+    val confirmButtonText = stringResource(R.string.codec_selection_confirm)
+
     val options =
         CodecProfile.entries.map { profile ->
             QualityOption(
@@ -35,13 +41,13 @@ fun CodecSelectionDialog(
         }
 
     QualitySelectionDialog(
-        title = "Select Call Quality",
-        subtitle = "Choose a codec profile based on your connection speed",
+        title = title,
+        subtitle = subtitle,
         options = options,
         initialSelection = recommendedProfile,
         recommendedOption = recommendedProfile,
         linkState = linkState,
-        confirmButtonText = "Call",
+        confirmButtonText = confirmButtonText,
         onConfirm = onProfileSelected,
         onDismiss = onDismiss,
     )

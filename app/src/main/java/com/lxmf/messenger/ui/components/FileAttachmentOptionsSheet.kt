@@ -19,9 +19,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 
 /**
  * Bottom sheet that shows options for a received file attachment.
@@ -45,6 +47,10 @@ fun FileAttachmentOptionsSheet(
     onDismiss: () -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val openWithLabel = stringResource(R.string.common_open_with)
+    val openWithSupporting = stringResource(R.string.common_open_in_another_app)
+    val saveToDeviceLabel = stringResource(R.string.common_save_to_device)
+    val saveToDeviceSupporting = stringResource(R.string.common_save_to_device_supporting)
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
@@ -69,8 +75,8 @@ fun FileAttachmentOptionsSheet(
 
             // Open with option
             ListItem(
-                headlineContent = { Text("Open with...") },
-                supportingContent = { Text("Open in another app") },
+                headlineContent = { Text(openWithLabel) },
+                supportingContent = { Text(openWithSupporting) },
                 leadingContent = {
                     Icon(
                         Icons.Default.OpenInNew,
@@ -83,8 +89,8 @@ fun FileAttachmentOptionsSheet(
 
             // Save to device option
             ListItem(
-                headlineContent = { Text("Save to device") },
-                supportingContent = { Text("Save to a folder on your device") },
+                headlineContent = { Text(saveToDeviceLabel) },
+                supportingContent = { Text(saveToDeviceSupporting) },
                 leadingContent = {
                     Icon(
                         Icons.Default.Save,

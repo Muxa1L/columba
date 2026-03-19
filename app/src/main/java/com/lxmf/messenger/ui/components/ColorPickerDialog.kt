@@ -34,10 +34,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.ColorUtils
+import com.lxmf.messenger.R
 import com.lxmf.messenger.util.ThemeColorGenerator
 
 /**
@@ -77,10 +79,18 @@ private val roygbivPresets =
 @Composable
 fun ColorPickerDialog(
     initialColor: Color,
-    title: String = "Pick a Color",
+    title: String? = null,
     onConfirm: (Color) -> Unit,
     onDismiss: () -> Unit,
 ) {
+    val resolvedTitle = title ?: stringResource(R.string.color_picker_default_title)
+    val hexLabel = stringResource(R.string.color_picker_hex_label)
+    val hueLabel = stringResource(R.string.color_picker_hue)
+    val saturationLabel = stringResource(R.string.color_picker_saturation)
+    val lightnessLabel = stringResource(R.string.color_picker_lightness)
+    val confirmLabel = stringResource(R.string.common_confirm)
+    val cancelLabel = stringResource(R.string.common_cancel)
+
     // Convert initial color to HSV
     val hsvArray = FloatArray(3)
     ColorUtils.colorToHSL(initialColor.toArgb(), hsvArray)
@@ -109,7 +119,7 @@ fun ColorPickerDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(title) },
+        title = { Text(resolvedTitle) },
         text = {
             Column(
                 modifier = Modifier.fillMaxWidth(),
@@ -177,7 +187,7 @@ fun ColorPickerDialog(
                             lightness = hsl[2]
                         }
                     },
-                    label = { Text("Hex Color") },
+                    label = { Text(hexLabel) },
                     placeholder = { Text("#RRGGBB") },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
@@ -198,7 +208,7 @@ fun ColorPickerDialog(
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Text(
-                            text = "Hue",
+                            text = hueLabel,
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface,
                         )
@@ -228,7 +238,7 @@ fun ColorPickerDialog(
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Text(
-                            text = "Saturation",
+                            text = saturationLabel,
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface,
                         )
@@ -258,7 +268,7 @@ fun ColorPickerDialog(
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Text(
-                            text = "Lightness",
+                            text = lightnessLabel,
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface,
                         )
@@ -289,12 +299,12 @@ fun ColorPickerDialog(
                     onDismiss()
                 },
             ) {
-                Text("Confirm")
+                Text(confirmLabel)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(cancelLabel)
             }
         },
     )

@@ -19,8 +19,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,6 +32,11 @@ fun QrCodeBottomSheet(
     onShowQrCode: () -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val title = stringResource(R.string.common_qr_code)
+    val scanTitle = stringResource(R.string.qr_code_sheet_scan_title)
+    val scanSupporting = stringResource(R.string.qr_code_sheet_scan_supporting)
+    val showTitle = stringResource(R.string.qr_code_sheet_show_title)
+    val showSupporting = stringResource(R.string.qr_code_sheet_show_supporting)
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
@@ -41,7 +48,7 @@ fun QrCodeBottomSheet(
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text(
-                text = "QR Code",
+                text = title,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
@@ -51,8 +58,8 @@ fun QrCodeBottomSheet(
 
             // Scan QR Code option
             ListItem(
-                headlineContent = { Text("Scan QR Code") },
-                supportingContent = { Text("Scan a contact's QR code") },
+                headlineContent = { Text(scanTitle) },
+                supportingContent = { Text(scanSupporting) },
                 leadingContent = {
                     Icon(
                         Icons.Default.QrCodeScanner,
@@ -68,8 +75,8 @@ fun QrCodeBottomSheet(
 
             // Show QR Code option
             ListItem(
-                headlineContent = { Text("Show QR Code") },
-                supportingContent = { Text("Show your QR code for others to scan") },
+                headlineContent = { Text(showTitle) },
+                supportingContent = { Text(showSupporting) },
                 leadingContent = {
                     Icon(
                         Icons.Default.QrCode,

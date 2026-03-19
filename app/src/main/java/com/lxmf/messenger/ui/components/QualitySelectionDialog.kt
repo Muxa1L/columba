@@ -39,9 +39,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 import com.lxmf.messenger.service.ConversationLinkManager
 import java.util.Locale
 
@@ -91,11 +94,13 @@ fun <T> QualitySelectionDialog(
     recommendedOption: T,
     linkState: ConversationLinkManager.LinkState? = null,
     transferTimeEstimates: Map<T, String?>? = null,
-    confirmButtonText: String = "Confirm",
+    confirmButtonText: String? = null,
     onConfirm: (T) -> Unit,
     onDismiss: () -> Unit,
 ) {
     var selectedValue by remember { mutableStateOf(initialSelection) }
+    val resolvedConfirmButtonText = confirmButtonText ?: stringResource(R.string.common_confirm)
+    val cancelLabel = stringResource(R.string.common_cancel)
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -158,12 +163,12 @@ fun <T> QualitySelectionDialog(
             Button(
                 onClick = { onConfirm(selectedValue) },
             ) {
-                Text(confirmButtonText)
+                Text(resolvedConfirmButtonText)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(cancelLabel)
             }
         },
     )
@@ -180,13 +185,16 @@ fun <T> QualitySelectionDialog(
  */
 @Composable
 fun PathInfoSection(linkState: ConversationLinkManager.LinkState?) {
+    val connectingLabel = stringResource(R.string.quality_selection_connecting)
+    val connectionFailedLabel = stringResource(R.string.quality_selection_connection_failed)
+    val noActiveLinkLabel = stringResource(R.string.quality_selection_no_active_link)
     val pathInfo =
         when {
             linkState == null -> null
-            linkState.isEstablishing -> "Connecting..."
+            linkState.isEstablishing -> connectingLabel
             linkState.isActive -> {
                 buildString {
-                    linkState.hops?.let { append("$it hops") }
+                    linkState.hops?.let { append(pluralStringResource(R.plurals.quality_selection_hops, it, it)) }
 
                     linkState.bestRateBps?.let { rate ->
                         if (isNotEmpty()) append(" • ")
@@ -195,12 +203,12 @@ fun PathInfoSection(linkState: ConversationLinkManager.LinkState?) {
 
                     linkState.linkMtu?.let { mtu ->
                         if (isNotEmpty()) append(" • ")
-                        append("${mtu}B MTU")
+                        append(stringResource(R.string.quality_selection_mtu, mtu))
                     }
                 }.ifEmpty { null }
             }
-            linkState.error != null -> "Connection failed"
-            else -> "No active link"
+            linkState.error != null -> connectionFailedLabel
+            else -> noActiveLinkLabel
         }
 
     if (pathInfo != null) {
@@ -325,9 +333,11 @@ fun QualityOptionRow(
  */
 @Composable
 fun RecommendedChip() {
+    val contentDescription = stringResource(R.string.quality_selection_recommended_cd)
+
     Icon(
         imageVector = Icons.Filled.Star,
-        contentDescription = "Recommended",
+        contentDescription = contentDescription,
         modifier = Modifier.height(18.dp),
         tint = MaterialTheme.colorScheme.primary,
     )
@@ -338,9 +348,11 @@ fun RecommendedChip() {
  */
 @Composable
 fun ExperimentalChip() {
+    val contentDescription = stringResource(R.string.quality_selection_experimental_cd)
+
     Icon(
         imageVector = Icons.Filled.Warning,
-        contentDescription = "Experimental",
+        contentDescription = contentDescription,
         modifier = Modifier.height(18.dp),
         tint = MaterialTheme.colorScheme.tertiary,
     )

@@ -34,8 +34,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.model.EnrichedContact
 import com.lxmf.messenger.ui.model.SharingDuration
 
@@ -92,6 +94,11 @@ fun ShareLocationBottomSheet(
                 .distinctBy { it.destinationHash }
                 .filter { it.destinationHash in selectedContactHashes }
         }
+    val title = stringResource(R.string.share_location_title)
+    val searchContactsLabel = stringResource(R.string.share_location_search_contacts)
+    val searchLabel = stringResource(R.string.common_search)
+    val durationLabel = stringResource(R.string.share_location_duration)
+    val startSharingLabel = stringResource(R.string.share_location_start)
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
@@ -107,7 +114,7 @@ fun ShareLocationBottomSheet(
         ) {
             // Title
             Text(
-                text = "Share your location",
+                text = title,
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
             )
@@ -118,11 +125,11 @@ fun ShareLocationBottomSheet(
             OutlinedTextField(
                 value = searchQuery,
                 onValueChange = { searchQuery = it },
-                placeholder = { Text("Search contacts") },
+                placeholder = { Text(searchContactsLabel) },
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Search,
-                        contentDescription = "Search",
+                        contentDescription = searchLabel,
                     )
                 },
                 singleLine = true,
@@ -148,7 +155,7 @@ fun ShareLocationBottomSheet(
                             trailingIcon = {
                                 Icon(
                                     imageVector = Icons.Default.Close,
-                                    contentDescription = "Remove ${contact.displayName}",
+                                    contentDescription = stringResource(R.string.share_location_remove_contact, contact.displayName),
                                     modifier = Modifier.height(InputChipDefaults.IconSize),
                                 )
                             },
@@ -192,7 +199,7 @@ fun ShareLocationBottomSheet(
 
             // Duration label
             Text(
-                text = "Duration:",
+                text = durationLabel,
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.Medium,
             )
@@ -225,7 +232,7 @@ fun ShareLocationBottomSheet(
                 enabled = selectedContacts.isNotEmpty(),
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Text("Start Sharing")
+                Text(startSharingLabel)
             }
 
             Spacer(modifier = Modifier.height(16.dp))

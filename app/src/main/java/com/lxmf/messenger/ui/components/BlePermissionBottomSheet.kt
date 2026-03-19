@@ -23,8 +23,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 
 /**
  * Material 3 bottom sheet that explains Bluetooth permission requirements
@@ -41,9 +43,14 @@ fun BlePermissionBottomSheet(
     onDismiss: () -> Unit,
     onRequestPermissions: () -> Unit,
     sheetState: SheetState,
-    rationale: String = getDefaultRationale(),
-    primaryActionLabel: String = "Grant Permissions",
+    rationale: String? = null,
+    primaryActionLabel: String? = null,
 ) {
+    val resolvedRationale = rationale ?: stringResource(R.string.ble_permission_rationale)
+    val resolvedPrimaryActionLabel = primaryActionLabel ?: stringResource(R.string.ble_permission_primary_action)
+    val title = stringResource(R.string.ble_permission_title)
+    val notNowLabel = stringResource(R.string.common_not_now)
+
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
@@ -69,7 +76,7 @@ fun BlePermissionBottomSheet(
                     modifier = Modifier.padding(end = 12.dp),
                 )
                 Text(
-                    text = "Bluetooth Permissions Required",
+                    text = title,
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
                 )
@@ -79,7 +86,7 @@ fun BlePermissionBottomSheet(
 
             // Rationale text
             Text(
-                text = rationale,
+                text = resolvedRationale,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -92,31 +99,13 @@ fun BlePermissionBottomSheet(
                 horizontalArrangement = Arrangement.End,
             ) {
                 TextButton(onClick = onDismiss) {
-                    Text("Not Now")
+                    Text(notNowLabel)
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 Button(onClick = onRequestPermissions) {
-                    Text(primaryActionLabel)
+                    Text(resolvedPrimaryActionLabel)
                 }
             }
         }
     }
-}
-
-/**
- * Default rationale text explaining why Bluetooth permissions are needed.
- * Matches the rationale provided by BlePermissionManager.
- */
-private fun getDefaultRationale(): String {
-    return """
-        Columba uses Bluetooth Low Energy (BLE) to communicate with nearby devices in a mesh network.
-
-        To enable this functionality, we need the following permissions:
-
-        • Bluetooth Scan: To discover nearby Reticulum peers
-        • Bluetooth Connect: To establish connections with peers
-        • Bluetooth Advertise: To broadcast your presence to other devices
-
-        These permissions allow Columba to create a decentralized, off-grid communication network.
-        """.trimIndent()
 }

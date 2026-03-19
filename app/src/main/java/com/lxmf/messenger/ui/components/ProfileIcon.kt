@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.Font
@@ -48,6 +49,8 @@ fun ProfileIcon(
     fallbackHash: ByteArray,
     modifier: Modifier = Modifier,
 ) {
+    val profileIconContentDescription = stringResource(R.string.profile_icon_content_description)
+
     if (iconName != null && foregroundColor != null && backgroundColor != null) {
         // Get the icon codepoint - only render as MDI icon if we have a valid codepoint
         val codepoint = MaterialDesignIcons.getCodepointOrNull(iconName)
@@ -80,7 +83,7 @@ fun ProfileIcon(
                         .size(size)
                         .clip(CircleShape)
                         .background(bgColor)
-                        .semantics { contentDescription = "Profile icon" },
+                        .semantics { contentDescription = profileIconContentDescription },
                 contentAlignment = Alignment.Center,
             ) {
                 Text(

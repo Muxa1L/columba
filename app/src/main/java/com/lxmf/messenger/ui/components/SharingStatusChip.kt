@@ -12,7 +12,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 
 /**
  * Status chip shown on the map when actively sharing location.
@@ -29,11 +32,14 @@ fun SharingStatusChip(
     onStopAllClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val label = pluralStringResource(R.plurals.sharing_status_with_count, sharingWithCount, sharingWithCount)
+    val stopSharingLabel = stringResource(R.string.sharing_status_stop)
+
     AssistChip(
         onClick = { /* Could open sharing management sheet in future */ },
         label = {
             Text(
-                text = "Sharing with $sharingWithCount ${if (sharingWithCount == 1) "person" else "people"}",
+                text = label,
             )
         },
         leadingIcon = {
@@ -51,7 +57,7 @@ fun SharingStatusChip(
             ) {
                 Icon(
                     imageVector = Icons.Default.Close,
-                    contentDescription = "Stop sharing",
+                    contentDescription = stopSharingLabel,
                     modifier = Modifier.size(16.dp),
                 )
             }

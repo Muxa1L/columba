@@ -23,9 +23,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.lxmf.messenger.util.LocationPermissionManager
+import com.lxmf.messenger.R
 
 /**
  * Material 3 bottom sheet that explains location permission requirements
@@ -42,9 +43,14 @@ fun LocationPermissionBottomSheet(
     onDismiss: () -> Unit,
     onRequestPermissions: () -> Unit,
     sheetState: SheetState,
-    rationale: String = LocationPermissionManager.getPermissionRationale(),
-    primaryActionLabel: String = "Enable Location",
+    rationale: String? = null,
+    primaryActionLabel: String? = null,
 ) {
+    val resolvedRationale = rationale ?: stringResource(R.string.location_permission_rationale)
+    val resolvedPrimaryActionLabel = primaryActionLabel ?: stringResource(R.string.location_permission_primary_action)
+    val title = stringResource(R.string.location_permission_title)
+    val notNowLabel = stringResource(R.string.common_not_now)
+
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
@@ -70,7 +76,7 @@ fun LocationPermissionBottomSheet(
                     modifier = Modifier.padding(end = 12.dp),
                 )
                 Text(
-                    text = "Location Permission",
+                    text = title,
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
                 )
@@ -80,7 +86,7 @@ fun LocationPermissionBottomSheet(
 
             // Rationale text
             Text(
-                text = rationale,
+                text = resolvedRationale,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -93,11 +99,11 @@ fun LocationPermissionBottomSheet(
                 horizontalArrangement = Arrangement.End,
             ) {
                 TextButton(onClick = onDismiss) {
-                    Text("Not Now")
+                    Text(notNowLabel)
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 Button(onClick = onRequestPermissions) {
-                    Text(primaryActionLabel)
+                    Text(resolvedPrimaryActionLabel)
                 }
             }
         }

@@ -42,9 +42,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 import com.lxmf.messenger.reticulum.ble.model.BlePowerPreset
 import com.lxmf.messenger.util.validation.ValidationConstants
 import com.lxmf.messenger.viewmodel.InterfaceConfigState
@@ -62,10 +64,20 @@ fun InterfaceConfigDialog(
     onSave: () -> Unit,
     onConfigUpdate: (InterfaceConfigState) -> Unit,
 ) {
+    val title = stringResource(if (isEditing) R.string.interface_config_edit_title else R.string.interface_config_add_title)
+    val interfaceNameLabel = stringResource(R.string.interface_config_name_label)
+    val interfaceNamePlaceholder = stringResource(R.string.interface_config_name_placeholder)
+    val targetHostLabel = stringResource(R.string.interface_config_target_host_label)
+    val targetHostPlaceholder = stringResource(R.string.interface_config_target_host_placeholder)
+    val enabledLabel = stringResource(R.string.interface_config_enabled)
+    val advancedOptionsLabel = stringResource(R.string.interface_config_advanced_options)
+    val confirmLabel = stringResource(if (isEditing) R.string.interface_config_update else R.string.interface_config_add)
+    val cancelLabel = stringResource(R.string.common_cancel)
+
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text(if (isEditing) "Edit Interface" else "Add Interface")
+            Text(title)
         },
         text = {
             val scrollState = rememberScrollState()
@@ -85,8 +97,8 @@ fun InterfaceConfigDialog(
                             onConfigUpdate(configState.copy(name = newValue))
                         }
                     },
-                    label = { Text("Interface Name") },
-                    placeholder = { Text("e.g., Home WiFi, Laptop TCP") },
+                    label = { Text(interfaceNameLabel) },
+                    placeholder = { Text(interfaceNamePlaceholder) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     isError = configState.nameError != null,
@@ -121,8 +133,8 @@ fun InterfaceConfigDialog(
                                     .removePrefix("https://")
                             onConfigUpdate(configState.copy(targetHost = cleaned))
                         },
-                        label = { Text("Target Host *") },
-                        placeholder = { Text("IP address or hostname") },
+                        label = { Text(targetHostLabel) },
+                        placeholder = { Text(targetHostPlaceholder) },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
                         isError = configState.targetHostError != null,
@@ -136,7 +148,7 @@ fun InterfaceConfigDialog(
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Text(
-                        "Enabled",
+                        enabledLabel,
                         style = MaterialTheme.typography.bodyLarge,
                     )
                     Switch(
@@ -159,7 +171,7 @@ fun InterfaceConfigDialog(
                         contentDescription = null,
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Advanced Options")
+                    Text(advancedOptionsLabel)
                 }
 
                 AnimatedVisibility(visible = showAdvanced) {
@@ -185,12 +197,12 @@ fun InterfaceConfigDialog(
         },
         confirmButton = {
             Button(onClick = onSave) {
-                Text(if (isEditing) "Update" else "Add")
+                Text(confirmLabel)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(cancelLabel)
             }
         },
     )
@@ -207,22 +219,24 @@ fun InterfaceTypeSelector(
 
     val types =
         listOf(
-            "AutoInterface" to "Auto Discovery",
-            "TCPClient" to "TCP Client",
-            "TCPServer" to "TCP Server",
-            "AndroidBLE" to "Bluetooth LE",
+            "AutoInterface" to stringResource(R.string.interface_config_type_auto_discovery),
+            "TCPClient" to stringResource(R.string.interface_config_type_tcp_client),
+            "TCPServer" to stringResource(R.string.interface_config_type_tcp_server),
+            "AndroidBLE" to stringResource(R.string.interface_config_type_bluetooth_le),
         )
+    val unknownLabel = stringResource(R.string.interface_config_unknown)
+    val interfaceTypeLabel = stringResource(R.string.interface_config_type_label)
 
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { if (enabled) expanded = it },
     ) {
         OutlinedTextField(
-            value = types.find { it.first == selectedType }?.second ?: "Unknown",
+            value = types.find { it.first == selectedType }?.second ?: unknownLabel,
             onValueChange = {},
             readOnly = true,
             enabled = enabled,
-            label = { Text("Interface Type") },
+            label = { Text(interfaceTypeLabel) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier =
                 Modifier
@@ -252,8 +266,16 @@ fun AutoInterfaceFields(
     configState: InterfaceConfigState,
     onConfigUpdate: (InterfaceConfigState) -> Unit,
 ) {
+    val autoDiscoveryConfigurationLabel = stringResource(R.string.interface_config_auto_configuration)
+    val groupIdLabel = stringResource(R.string.interface_config_group_id_label)
+    val groupIdPlaceholder = stringResource(R.string.interface_config_group_id_placeholder)
+    val discoveryPortLabel = stringResource(R.string.interface_config_discovery_port_label)
+    val discoveryPortPlaceholder = stringResource(R.string.interface_config_discovery_port_placeholder)
+    val dataPortLabel = stringResource(R.string.interface_config_data_port_label)
+    val dataPortPlaceholder = stringResource(R.string.interface_config_data_port_placeholder)
+
     Text(
-        "Auto Discovery Configuration",
+        autoDiscoveryConfigurationLabel,
         style = MaterialTheme.typography.titleSmall,
         color = MaterialTheme.colorScheme.primary,
     )
@@ -261,8 +283,8 @@ fun AutoInterfaceFields(
     OutlinedTextField(
         value = configState.groupId,
         onValueChange = { onConfigUpdate(configState.copy(groupId = it)) },
-        label = { Text("Group ID (optional)") },
-        placeholder = { Text("Leave empty for default network") },
+        label = { Text(groupIdLabel) },
+        placeholder = { Text(groupIdPlaceholder) },
         modifier = Modifier.fillMaxWidth(),
         singleLine = true,
     )
@@ -275,8 +297,8 @@ fun AutoInterfaceFields(
     OutlinedTextField(
         value = configState.discoveryPort,
         onValueChange = { onConfigUpdate(configState.copy(discoveryPort = it)) },
-        label = { Text("Discovery Port") },
-        placeholder = { Text("29716 (default)") },
+        label = { Text(discoveryPortLabel) },
+        placeholder = { Text(discoveryPortPlaceholder) },
         modifier = Modifier.fillMaxWidth(),
         singleLine = true,
         isError = configState.discoveryPortError != null,
@@ -286,8 +308,8 @@ fun AutoInterfaceFields(
     OutlinedTextField(
         value = configState.dataPort,
         onValueChange = { onConfigUpdate(configState.copy(dataPort = it)) },
-        label = { Text("Data Port") },
-        placeholder = { Text("42671 (default)") },
+        label = { Text(dataPortLabel) },
+        placeholder = { Text(dataPortPlaceholder) },
         modifier = Modifier.fillMaxWidth(),
         singleLine = true,
         isError = configState.dataPortError != null,
@@ -300,8 +322,24 @@ fun TCPClientFields(
     configState: InterfaceConfigState,
     onConfigUpdate: (InterfaceConfigState) -> Unit,
 ) {
+    val tcpClientConfigurationLabel = stringResource(R.string.interface_config_tcp_client_configuration)
+    val targetPortLabel = stringResource(R.string.interface_config_target_port_label)
+    val networkNameLabel = stringResource(R.string.interface_config_network_name_label)
+    val optionalLabel = stringResource(R.string.interface_config_optional)
+    val networkNameHelp = stringResource(R.string.interface_config_network_name_help)
+    val passphraseLabel = stringResource(R.string.interface_config_passphrase_label)
+    val hidePassphrase = stringResource(R.string.interface_config_hide_passphrase)
+    val showPassphrase = stringResource(R.string.interface_config_show_passphrase)
+    val passphraseHelp = stringResource(R.string.interface_config_passphrase_help)
+    val socksProxyLabel = stringResource(R.string.interface_config_socks_proxy_label)
+    val socksProxyHelp = stringResource(R.string.interface_config_socks_proxy_help)
+    val proxyHostLabel = stringResource(R.string.interface_config_proxy_host_label)
+    val proxyHostHelp = stringResource(R.string.interface_config_proxy_host_help)
+    val proxyPortLabel = stringResource(R.string.interface_config_proxy_port_label)
+    val proxyPortHelp = stringResource(R.string.interface_config_proxy_port_help)
+
     Text(
-        "TCP Client Configuration",
+        tcpClientConfigurationLabel,
         style = MaterialTheme.typography.titleSmall,
         color = MaterialTheme.colorScheme.primary,
     )
@@ -309,7 +347,7 @@ fun TCPClientFields(
     OutlinedTextField(
         value = configState.targetPort,
         onValueChange = { onConfigUpdate(configState.copy(targetPort = it)) },
-        label = { Text("Target Port") },
+        label = { Text(targetPortLabel) },
         placeholder = { Text("4242") },
         modifier = Modifier.fillMaxWidth(),
         singleLine = true,
@@ -321,15 +359,13 @@ fun TCPClientFields(
     OutlinedTextField(
         value = configState.networkName,
         onValueChange = { onConfigUpdate(configState.copy(networkName = it)) },
-        label = { Text("Network Name") },
-        placeholder = { Text("Optional") },
+        label = { Text(networkNameLabel) },
+        placeholder = { Text(optionalLabel) },
         modifier = Modifier.fillMaxWidth(),
         singleLine = true,
         supportingText = {
             Text(
-                "Optional: Sets the virtual network name for this segment. " +
-                    "This allows multiple separate networks to exist on the same " +
-                    "physical channel or medium.",
+                networkNameHelp,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -340,8 +376,8 @@ fun TCPClientFields(
     OutlinedTextField(
         value = configState.passphrase,
         onValueChange = { onConfigUpdate(configState.copy(passphrase = it)) },
-        label = { Text("Passphrase") },
-        placeholder = { Text("Optional") },
+        label = { Text(passphraseLabel) },
+        placeholder = { Text(optionalLabel) },
         modifier = Modifier.fillMaxWidth(),
         singleLine = true,
         visualTransformation =
@@ -365,17 +401,16 @@ fun TCPClientFields(
                         },
                     contentDescription =
                         if (configState.passphraseVisible) {
-                            "Hide passphrase"
+                            hidePassphrase
                         } else {
-                            "Show passphrase"
+                            showPassphrase
                         },
                 )
             }
         },
         supportingText = {
             Text(
-                "Optional: Sets an authentication passphrase on the interface. " +
-                    "This can be used in conjunction with Network Name, or alone.",
+                passphraseHelp,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -391,11 +426,11 @@ fun TCPClientFields(
     ) {
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                "SOCKS5 Proxy",
+                socksProxyLabel,
                 style = MaterialTheme.typography.bodyLarge,
             )
             Text(
-                "Route through a SOCKS5 proxy (e.g., Orbot for Tor). Required for .onion addresses.",
+                socksProxyHelp,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -413,7 +448,7 @@ fun TCPClientFields(
                 onValueChange = { host ->
                     onConfigUpdate(configState.copy(socksProxyHost = host.trim()))
                 },
-                label = { Text("Proxy Host") },
+                label = { Text(proxyHostLabel) },
                 placeholder = { Text("127.0.0.1") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
@@ -424,7 +459,7 @@ fun TCPClientFields(
                         Text(error)
                     } else {
                         Text(
-                            "SOCKS5 proxy address. Use 127.0.0.1 for Orbot running on this device.",
+                            proxyHostHelp,
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
@@ -435,7 +470,7 @@ fun TCPClientFields(
             OutlinedTextField(
                 value = configState.socksProxyPort,
                 onValueChange = { onConfigUpdate(configState.copy(socksProxyPort = it)) },
-                label = { Text("Proxy Port") },
+                label = { Text(proxyPortLabel) },
                 placeholder = { Text("9050") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
@@ -446,7 +481,7 @@ fun TCPClientFields(
                         Text(error)
                     } else {
                         Text(
-                            "Orbot default: 9050.",
+                            proxyPortHelp,
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
@@ -467,22 +502,24 @@ fun DiscoveryScopeSelector(
 
     val scopes =
         listOf(
-            "link" to "Link (local network only)",
-            "admin" to "Admin",
-            "site" to "Site",
-            "organisation" to "Organisation",
-            "global" to "Global",
+            "link" to stringResource(R.string.interface_config_scope_link),
+            "admin" to stringResource(R.string.interface_config_scope_admin),
+            "site" to stringResource(R.string.interface_config_scope_site),
+            "organisation" to stringResource(R.string.interface_config_scope_organisation),
+            "global" to stringResource(R.string.interface_config_scope_global),
         )
+    val discoveryScopeLabel = stringResource(R.string.interface_config_discovery_scope_label)
+    val defaultScopeLabel = stringResource(R.string.interface_config_scope_link)
 
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = it },
     ) {
         OutlinedTextField(
-            value = scopes.find { it.first == selectedScope }?.second ?: "Link",
+            value = scopes.find { it.first == selectedScope }?.second ?: defaultScopeLabel,
             onValueChange = {},
             readOnly = true,
-            label = { Text("Discovery Scope") },
+            label = { Text(discoveryScopeLabel) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier =
                 Modifier
@@ -517,22 +554,24 @@ fun InterfaceModeSelector(
 
     val modes =
         listOf(
-            "full" to "Full (all features enabled)",
-            "gateway" to "Gateway (path discovery for others)",
-            "access_point" to "Access Point (quiet unless active)",
-            "roaming" to "Roaming (mobile relative to others)",
-            "boundary" to "Boundary",
+            "full" to stringResource(R.string.interface_config_mode_full),
+            "gateway" to stringResource(R.string.interface_config_mode_gateway),
+            "access_point" to stringResource(R.string.interface_config_mode_access_point),
+            "roaming" to stringResource(R.string.interface_config_mode_roaming),
+            "boundary" to stringResource(R.string.interface_config_mode_boundary),
         )
+    val interfaceModeLabel = stringResource(R.string.interface_config_mode_label)
+    val defaultModeLabel = stringResource(R.string.interface_config_mode_roaming)
 
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = it },
     ) {
         OutlinedTextField(
-            value = modes.find { it.first == selectedMode }?.second ?: "Roaming (mobile relative to others)",
+            value = modes.find { it.first == selectedMode }?.second ?: defaultModeLabel,
             onValueChange = {},
             readOnly = true,
-            label = { Text("Interface Mode") },
+            label = { Text(interfaceModeLabel) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier =
                 Modifier
@@ -564,8 +603,34 @@ fun AndroidBLEFields(
     scrollState: ScrollState? = null,
 ) {
     val coroutineScope = rememberCoroutineScope()
+    val bleConfigurationLabel = stringResource(R.string.interface_config_ble_configuration)
+    val deviceNameLabel = stringResource(R.string.interface_config_device_name_label)
+    val deviceNamePlaceholder = stringResource(R.string.interface_config_device_name_placeholder)
+    val deviceNameHelp = stringResource(R.string.interface_config_device_name_help)
+    val maxConnectionsLabel = stringResource(R.string.interface_config_max_connections_label)
+    val maxConnectionsHelp = stringResource(R.string.interface_config_max_connections_help)
+    val powerProfileLabel = stringResource(R.string.interface_config_power_profile)
+    val presets = listOf("performance", "balanced", "battery_saver", "custom")
+    val labels = listOf(
+        stringResource(R.string.interface_config_power_profile_performance),
+        stringResource(R.string.interface_config_power_profile_balanced),
+        stringResource(R.string.interface_config_power_profile_battery_saver),
+        stringResource(R.string.interface_config_power_profile_custom),
+    )
+    val presetHelp = when (configState.blePowerPreset) {
+        "performance" -> stringResource(R.string.interface_config_power_profile_performance_help)
+        "balanced" -> stringResource(R.string.interface_config_power_profile_balanced_help)
+        "battery_saver" -> stringResource(R.string.interface_config_power_profile_battery_saver_help)
+        "custom" -> stringResource(R.string.interface_config_power_profile_custom_help)
+        else -> ""
+    }
+    val activeScanSeconds = configState.bleDiscoveryIntervalMs.toLongOrNull()?.div(1000) ?: 5L
+    val idleScanSeconds = configState.bleDiscoveryIntervalIdleMs.toLongOrNull()?.div(1000) ?: 30L
+    val scanDurationSeconds = configState.bleScanDurationMs.toLongOrNull()?.div(1000) ?: 10L
+    val advertisingRefreshSeconds = configState.bleAdvertisingRefreshIntervalMs.toLongOrNull()?.div(1000) ?: 60L
+
     Text(
-        "Bluetooth LE Configuration",
+        bleConfigurationLabel,
         style = MaterialTheme.typography.titleSmall,
         color = MaterialTheme.colorScheme.primary,
     )
@@ -578,8 +643,8 @@ fun AndroidBLEFields(
                 onConfigUpdate(configState.copy(deviceName = newValue))
             }
         },
-        label = { Text("Device Name (optional)") },
-        placeholder = { Text("Leave empty to omit from advertisement") },
+        label = { Text(deviceNameLabel) },
+        placeholder = { Text(deviceNamePlaceholder) },
         modifier = Modifier.fillMaxWidth(),
         singleLine = true,
         isError = configState.deviceNameError != null,
@@ -588,12 +653,16 @@ fun AndroidBLEFields(
                 configState.deviceNameError?.let { Text(it) }
                 if (configState.deviceName.isNotEmpty()) {
                     Text(
-                        "${configState.deviceName.length}/${ValidationConstants.MAX_DEVICE_NAME_LENGTH} characters",
+                        stringResource(
+                            R.string.interface_config_device_name_count,
+                            configState.deviceName.length,
+                            ValidationConstants.MAX_DEVICE_NAME_LENGTH,
+                        ),
                         style = MaterialTheme.typography.bodySmall,
                     )
                 }
                 Text(
-                    "Optional: For debugging only. Keep short (max 8 chars recommended) or leave empty to maximize BLE advertisement reliability.",
+                    deviceNameHelp,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -604,7 +673,7 @@ fun AndroidBLEFields(
     OutlinedTextField(
         value = configState.maxConnections,
         onValueChange = { onConfigUpdate(configState.copy(maxConnections = it)) },
-        label = { Text("Max Connections") },
+        label = { Text(maxConnectionsLabel) },
         placeholder = { Text("7") },
         modifier = Modifier.fillMaxWidth(),
         singleLine = true,
@@ -613,7 +682,7 @@ fun AndroidBLEFields(
             Column {
                 configState.maxConnectionsError?.let { Text(it) }
                 Text(
-                    "Maximum simultaneous BLE peers (recommended: 7)",
+                    maxConnectionsHelp,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -624,15 +693,13 @@ fun AndroidBLEFields(
     Spacer(modifier = Modifier.height(16.dp))
 
     Text(
-        "Power Profile",
+        powerProfileLabel,
         style = MaterialTheme.typography.titleSmall,
         color = MaterialTheme.colorScheme.primary,
     )
 
     // Preset selector
     SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
-        val presets = listOf("performance", "balanced", "battery_saver", "custom")
-        val labels = listOf("Performance", "Balanced", "Battery Saver", "Custom")
         presets.forEachIndexed { index, preset ->
             SegmentedButton(
                 selected = configState.blePowerPreset == preset,
@@ -666,13 +733,7 @@ fun AndroidBLEFields(
 
     // Helper text per preset
     Text(
-        when (configState.blePowerPreset) {
-            "performance" -> "Fastest device discovery, higher battery usage"
-            "balanced" -> "Default discovery speed and battery usage"
-            "battery_saver" -> "Reduced scanning to conserve battery"
-            "custom" -> "Manually configure scan and advertising intervals"
-            else -> ""
-        },
+        presetHelp,
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
@@ -681,11 +742,11 @@ fun AndroidBLEFields(
     val isCustom = configState.blePowerPreset == "custom"
 
     Text(
-        "Scan Interval (active): ${configState.bleDiscoveryIntervalMs.toLongOrNull()?.let { "${it / 1000}s" } ?: "5s"}",
+        stringResource(R.string.interface_config_scan_interval_active, activeScanSeconds),
         style = MaterialTheme.typography.bodySmall,
     )
     Text(
-        "Delay between scans while discovering new devices",
+        stringResource(R.string.interface_config_scan_interval_active_help),
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
@@ -698,11 +759,11 @@ fun AndroidBLEFields(
     )
 
     Text(
-        "Scan Interval (idle): ${configState.bleDiscoveryIntervalIdleMs.toLongOrNull()?.let { "${it / 1000}s" } ?: "30s"}",
+        stringResource(R.string.interface_config_scan_interval_idle, idleScanSeconds),
         style = MaterialTheme.typography.bodySmall,
     )
     Text(
-        "Delay between scans when no new devices are being found",
+        stringResource(R.string.interface_config_scan_interval_idle_help),
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
@@ -715,11 +776,11 @@ fun AndroidBLEFields(
     )
 
     Text(
-        "Scan Duration: ${configState.bleScanDurationMs.toLongOrNull()?.let { "${it / 1000}s" } ?: "10s"}",
+        stringResource(R.string.interface_config_scan_duration, scanDurationSeconds),
         style = MaterialTheme.typography.bodySmall,
     )
     Text(
-        "How long each scan listens for nearby devices",
+        stringResource(R.string.interface_config_scan_duration_help),
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
@@ -736,18 +797,18 @@ fun AndroidBLEFields(
     val activeInterval = configState.bleDiscoveryIntervalMs.toLongOrNull() ?: 5000L
     if (isCustom && scanDuration >= activeInterval) {
         Text(
-            "Warning: scan duration ≥ active interval — high duty-cycle scanning will increase battery usage",
+            stringResource(R.string.interface_config_scan_warning),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.error,
         )
     }
 
     Text(
-        "Ad Refresh Interval: ${configState.bleAdvertisingRefreshIntervalMs.toLongOrNull()?.let { "${it / 1000}s" } ?: "60s"}",
+        stringResource(R.string.interface_config_ad_refresh_interval, advertisingRefreshSeconds),
         style = MaterialTheme.typography.bodySmall,
     )
     Text(
-        "How often to restart advertising in case Android silently stopped it",
+        stringResource(R.string.interface_config_ad_refresh_interval_help),
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
@@ -765,15 +826,21 @@ fun TCPServerFields(
     configState: InterfaceConfigState,
     onConfigUpdate: (InterfaceConfigState) -> Unit,
 ) {
+    val tcpServerConfigurationLabel = stringResource(R.string.interface_config_tcp_server_configuration)
+    val tcpServerHelp = stringResource(R.string.interface_config_tcp_server_help)
+    val listenIpLabel = stringResource(R.string.interface_config_listen_ip_label)
+    val listenIpHelp = stringResource(R.string.interface_config_listen_ip_help)
+    val listenPortLabel = stringResource(R.string.interface_config_listen_port_label)
+    val listenPortHelp = stringResource(R.string.interface_config_listen_port_help)
+
     Text(
-        "TCP Server Configuration",
+        tcpServerConfigurationLabel,
         style = MaterialTheme.typography.titleSmall,
         color = MaterialTheme.colorScheme.primary,
     )
 
     Text(
-        "Allows other Reticulum nodes to connect to this device. " +
-            "Useful for Yggdrasil connectivity or when this device should act as a hub.",
+        tcpServerHelp,
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
@@ -788,7 +855,7 @@ fun TCPServerFields(
                     .removePrefix("https://")
             onConfigUpdate(configState.copy(listenIp = cleaned))
         },
-        label = { Text("Listen IP") },
+        label = { Text(listenIpLabel) },
         placeholder = { Text("0.0.0.0") },
         modifier = Modifier.fillMaxWidth(),
         singleLine = true,
@@ -797,7 +864,7 @@ fun TCPServerFields(
             Column {
                 configState.listenIpError?.let { Text(it) }
                 Text(
-                    "IP address to bind to. Use 0.0.0.0 to listen on all interfaces.",
+                    listenIpHelp,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -808,7 +875,7 @@ fun TCPServerFields(
     OutlinedTextField(
         value = configState.listenPort,
         onValueChange = { onConfigUpdate(configState.copy(listenPort = it)) },
-        label = { Text("Listen Port") },
+        label = { Text(listenPortLabel) },
         placeholder = { Text("4242") },
         modifier = Modifier.fillMaxWidth(),
         singleLine = true,
@@ -817,7 +884,7 @@ fun TCPServerFields(
             Column {
                 configState.listenPortError?.let { Text(it) }
                 Text(
-                    "TCP port to listen on for incoming connections.",
+                    listenPortHelp,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

@@ -23,8 +23,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 import com.lxmf.messenger.ui.model.SharingDuration
 
 /**
@@ -45,6 +47,10 @@ fun QuickShareLocationBottomSheet(
     sheetState: SheetState,
 ) {
     var selectedDuration by remember { mutableStateOf(SharingDuration.ONE_HOUR) }
+    val title = stringResource(R.string.share_location_title)
+    val subtitle = stringResource(R.string.share_location_with_contact, contactName)
+    val durationLabel = stringResource(R.string.share_location_duration)
+    val startSharingLabel = stringResource(R.string.share_location_start)
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
@@ -60,7 +66,7 @@ fun QuickShareLocationBottomSheet(
         ) {
             // Title
             Text(
-                text = "Share your location",
+                text = title,
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
             )
@@ -69,7 +75,7 @@ fun QuickShareLocationBottomSheet(
 
             // Subtitle with contact name
             Text(
-                text = "with $contactName",
+                text = subtitle,
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -78,7 +84,7 @@ fun QuickShareLocationBottomSheet(
 
             // Duration label
             Text(
-                text = "Duration:",
+                text = durationLabel,
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.Medium,
             )
@@ -107,7 +113,7 @@ fun QuickShareLocationBottomSheet(
                 onClick = { onStartSharing(selectedDuration) },
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Text("Start Sharing")
+                Text(startSharingLabel)
             }
 
             Spacer(modifier = Modifier.height(16.dp))

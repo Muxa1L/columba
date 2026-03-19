@@ -33,10 +33,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.lxmf.messenger.R
 
 @Composable
 fun AttachmentPanel(
@@ -50,6 +52,12 @@ fun AttachmentPanel(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
+    val permissionPrompt = stringResource(R.string.attachment_panel_permission_prompt)
+    val allowAccessLabel = stringResource(R.string.common_allow_access)
+    val noPhotosLabel = stringResource(R.string.attachment_panel_empty)
+    val photoContentDescription = stringResource(R.string.attachment_panel_photo)
+    val galleryLabel = stringResource(R.string.common_gallery)
+    val fileLabel = stringResource(R.string.common_file)
 
     Surface(
         modifier =
@@ -86,7 +94,7 @@ fun AttachmentPanel(
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                         Text(
-                            text = "Allow access to show recent photos",
+                            text = permissionPrompt,
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
@@ -94,7 +102,7 @@ fun AttachmentPanel(
                             onClick = onRequestMediaPermission,
                             modifier = Modifier.padding(top = 12.dp),
                         ) {
-                            Text("Allow access")
+                            Text(allowAccessLabel)
                         }
                     }
                 } else if (recentPhotos.isEmpty()) {
@@ -104,7 +112,7 @@ fun AttachmentPanel(
                         contentAlignment = Alignment.Center,
                     ) {
                         Text(
-                            text = "No photos found",
+                            text = noPhotosLabel,
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
@@ -126,7 +134,7 @@ fun AttachmentPanel(
                                         .crossfade(true)
                                         .size(256)
                                         .build(),
-                                contentDescription = "Photo",
+                                contentDescription = photoContentDescription,
                                 modifier =
                                     Modifier
                                         .aspectRatio(1f)
@@ -153,11 +161,11 @@ fun AttachmentPanel(
                 FilledTonalIconButton(onClick = onGalleryClick) {
                     Icon(
                         imageVector = Icons.Default.Image,
-                        contentDescription = "Gallery",
+                        contentDescription = galleryLabel,
                     )
                 }
                 Text(
-                    text = "Gallery",
+                    text = galleryLabel,
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(end = 8.dp),
@@ -166,11 +174,11 @@ fun AttachmentPanel(
                 FilledTonalIconButton(onClick = onFileClick) {
                     Icon(
                         imageVector = Icons.Default.AttachFile,
-                        contentDescription = "File",
+                        contentDescription = fileLabel,
                     )
                 }
                 Text(
-                    text = "File",
+                    text = fileLabel,
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

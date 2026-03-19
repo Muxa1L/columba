@@ -19,8 +19,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 
 /**
  * Bottom sheet that shows options for an image attachment.
@@ -42,6 +44,11 @@ fun ImageOptionsSheet(
     onDismiss: () -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val title = stringResource(R.string.image_options_title)
+    val saveToDeviceLabel = stringResource(R.string.common_save_to_device)
+    val saveToDeviceSupporting = stringResource(R.string.common_save_to_device_supporting)
+    val shareLabel = stringResource(R.string.common_share)
+    val shareSupporting = stringResource(R.string.common_share_via_another_app)
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
@@ -54,7 +61,7 @@ fun ImageOptionsSheet(
         ) {
             // Header
             Text(
-                text = "Image",
+                text = title,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp),
@@ -64,8 +71,8 @@ fun ImageOptionsSheet(
 
             // Save to device option
             ListItem(
-                headlineContent = { Text("Save to device") },
-                supportingContent = { Text("Save to a folder on your device") },
+                headlineContent = { Text(saveToDeviceLabel) },
+                supportingContent = { Text(saveToDeviceSupporting) },
                 leadingContent = {
                     Icon(
                         Icons.Default.Save,
@@ -78,8 +85,8 @@ fun ImageOptionsSheet(
 
             // Share option
             ListItem(
-                headlineContent = { Text("Share") },
-                supportingContent = { Text("Share via another app") },
+                headlineContent = { Text(shareLabel) },
+                supportingContent = { Text(shareSupporting) },
                 leadingContent = {
                     Icon(
                         Icons.Default.Share,

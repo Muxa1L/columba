@@ -23,9 +23,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 
 /**
  * Material 3 confirmation dialog for adding a contact from a scanned QR code or deep link.
@@ -43,19 +45,29 @@ fun AddContactConfirmationDialog(
     var nickname by remember { mutableStateOf("") }
     var showFullHash by remember { mutableStateOf(false) }
     val view = LocalView.current
+    val addContactContentDescription = stringResource(R.string.add_contact_content_description)
+    val title = stringResource(R.string.add_contact_title)
+    val destinationHashLabel = stringResource(R.string.add_contact_destination_hash)
+    val showLessLabel = stringResource(R.string.common_show_less)
+    val showFullLabel = stringResource(R.string.common_show_full)
+    val nicknameLabel = stringResource(R.string.add_contact_nickname_label)
+    val nicknamePlaceholder = stringResource(R.string.add_contact_nickname_placeholder)
+    val helperText = stringResource(R.string.add_contact_helper)
+    val addContactLabel = stringResource(R.string.add_contact_content_description)
+    val cancelLabel = stringResource(R.string.common_cancel)
 
     AlertDialog(
         onDismissRequest = onDismiss,
         icon = {
             Icon(
                 imageVector = Icons.Default.PersonAdd,
-                contentDescription = "Add Contact",
+                contentDescription = addContactContentDescription,
                 tint = MaterialTheme.colorScheme.primary,
             )
         },
         title = {
             Text(
-                text = "Add Contact?",
+                text = title,
                 style = MaterialTheme.typography.headlineSmall,
                 textAlign = TextAlign.Center,
             )
@@ -71,7 +83,7 @@ fun AddContactConfirmationDialog(
                     verticalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
                     Text(
-                        text = "Destination Hash",
+                        text = destinationHashLabel,
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -107,7 +119,7 @@ fun AddContactConfirmationDialog(
                                 modifier = Modifier.align(Alignment.End),
                             ) {
                                 Text(
-                                    text = if (showFullHash) "Show less" else "Show full",
+                                    text = if (showFullHash) showLessLabel else showFullLabel,
                                     style = MaterialTheme.typography.labelSmall,
                                 )
                             }
@@ -119,8 +131,8 @@ fun AddContactConfirmationDialog(
                 OutlinedTextField(
                     value = nickname,
                     onValueChange = { nickname = it },
-                    label = { Text("Nickname (optional)") },
-                    placeholder = { Text("Enter a friendly name") },
+                    label = { Text(nicknameLabel) },
+                    placeholder = { Text(nicknamePlaceholder) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     colors =
@@ -132,7 +144,7 @@ fun AddContactConfirmationDialog(
 
                 // Helper text
                 Text(
-                    text = "You can add a nickname to easily identify this contact.",
+                    text = helperText,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -145,12 +157,12 @@ fun AddContactConfirmationDialog(
                     onConfirm(nickname.trim().ifBlank { null })
                 },
             ) {
-                Text("Add Contact")
+                Text(addContactLabel)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(cancelLabel)
             }
         },
     )

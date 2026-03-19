@@ -49,6 +49,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
@@ -84,10 +85,18 @@ fun IconPickerDialog(
     var selectedForegroundColor by remember { mutableStateOf(currentForegroundColor ?: "FFFFFF") }
     var selectedBackgroundColor by remember { mutableStateOf(currentBackgroundColor ?: "1E88E5") }
     var searchQuery by remember { mutableStateOf("") }
+    val title = stringResource(R.string.icon_picker_title)
+    val searchLabel = stringResource(R.string.icon_picker_search_label)
+    val searchPlaceholder = stringResource(R.string.icon_picker_search_placeholder)
+    val searchDescription = stringResource(R.string.common_search)
+    val clearSearchDescription = stringResource(R.string.common_clear_search)
+    val saveLabel = stringResource(R.string.common_save)
+    val clearLabel = stringResource(R.string.common_clear)
+    val cancelLabel = stringResource(R.string.common_cancel)
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Choose Profile Icon") },
+        title = { Text(title) },
         text = {
             Column(
                 modifier = Modifier.fillMaxWidth(),
@@ -116,12 +125,12 @@ fun IconPickerDialog(
                 OutlinedTextField(
                     value = searchQuery,
                     onValueChange = { searchQuery = it },
-                    label = { Text("Search icons") },
-                    placeholder = { Text("e.g., star, heart, wifi") },
+                    label = { Text(searchLabel) },
+                    placeholder = { Text(searchPlaceholder) },
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.Search,
-                            contentDescription = "Search",
+                            contentDescription = searchDescription,
                         )
                     },
                     trailingIcon = {
@@ -129,7 +138,7 @@ fun IconPickerDialog(
                             IconButton(onClick = { searchQuery = "" }) {
                                 Icon(
                                     imageVector = Icons.Default.Clear,
-                                    contentDescription = "Clear search",
+                                    contentDescription = clearSearchDescription,
                                 )
                             }
                         }
@@ -153,7 +162,7 @@ fun IconPickerDialog(
                     onConfirm(selectedIconName, selectedForegroundColor, selectedBackgroundColor)
                 },
             ) {
-                Text("Save")
+                Text(saveLabel)
             }
         },
         dismissButton = {
@@ -165,12 +174,12 @@ fun IconPickerDialog(
                             onConfirm(null, null, null)
                         },
                     ) {
-                        Text("Clear")
+                        Text(clearLabel)
                     }
                     Spacer(modifier = Modifier.width(8.dp))
                 }
                 TextButton(onClick = onDismiss) {
-                    Text("Cancel")
+                    Text(cancelLabel)
                 }
             }
         },
@@ -188,13 +197,14 @@ private fun IconPreviewSection(
 ) {
     val fgColor = parseHexColor(foregroundColor, Color.White)
     val bgColor = parseHexColor(backgroundColor, Color.Gray)
+    val previewLabel = stringResource(R.string.icon_picker_preview)
 
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = "Preview",
+            text = previewLabel,
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -300,6 +310,11 @@ private fun ColorSelectionSection(
 
     val bgColor = parseHexColor(backgroundColor, Color.Gray)
     val fgColor = parseHexColor(foregroundColor, Color.White)
+    val backgroundLabel = stringResource(R.string.icon_picker_background)
+    val iconLabel = stringResource(R.string.icon_picker_icon)
+    val customizeHint = stringResource(R.string.icon_picker_customize_hint)
+    val backgroundColorTitle = stringResource(R.string.icon_picker_background_color_title)
+    val iconColorTitle = stringResource(R.string.icon_picker_icon_color_title)
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -315,7 +330,7 @@ private fun ColorSelectionSection(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
-                    text = "Background",
+                    text = backgroundLabel,
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -347,7 +362,7 @@ private fun ColorSelectionSection(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
-                    text = "Icon",
+                    text = iconLabel,
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -375,7 +390,7 @@ private fun ColorSelectionSection(
         }
 
         Text(
-            text = "Tap a color to customize",
+            text = customizeHint,
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
             modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -386,7 +401,7 @@ private fun ColorSelectionSection(
     if (showBgColorPicker) {
         ColorPickerDialog(
             initialColor = bgColor,
-            title = "Background Color",
+            title = backgroundColorTitle,
             onConfirm = { color ->
                 val hex = String.format(java.util.Locale.US, "%06X", color.toArgb() and 0xFFFFFF)
                 onBackgroundColorChange(hex)
@@ -399,7 +414,7 @@ private fun ColorSelectionSection(
     if (showFgColorPicker) {
         ColorPickerDialog(
             initialColor = fgColor,
-            title = "Icon Color",
+            title = iconColorTitle,
             onConfirm = { color ->
                 val hex = String.format(java.util.Locale.US, "%06X", color.toArgb() and 0xFFFFFF)
                 onForegroundColorChange(hex)
@@ -422,6 +437,8 @@ private fun IconCategoryList(
 ) {
     val categories = MaterialDesignIcons.iconsByCategory
     val expandedCategories = remember { mutableStateMapOf<String, Boolean>() }
+    val searchResultsLabel = stringResource(R.string.icon_picker_search_results)
+    val searchHintText = stringResource(R.string.icon_picker_search_hint, MaterialDesignIcons.iconCount)
 
     // When searching, search ALL icons in the library (7000+)
     // When not searching, show curated categories
@@ -460,14 +477,17 @@ private fun IconCategoryList(
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
                         ) {
                             Text(
-                                text = "Search Results",
+                                text = searchResultsLabel,
                                 style = MaterialTheme.typography.titleSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                             Text(
                                 text =
-                                    "${searchResults.size} icons" +
-                                        if (searchResults.size >= 100) " (showing first 100)" else "",
+                                    if (searchResults.size >= 100) {
+                                        stringResource(R.string.icon_picker_search_results_count_limited, searchResults.size)
+                                    } else {
+                                        stringResource(R.string.icon_picker_search_results_count, searchResults.size)
+                                    },
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                             )
@@ -484,7 +504,7 @@ private fun IconCategoryList(
             } else {
                 item {
                     Text(
-                        text = "No icons found for \"$searchQuery\"",
+                        text = stringResource(R.string.icon_picker_no_results, searchQuery),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(16.dp),
@@ -520,7 +540,7 @@ private fun IconCategoryList(
             // Hint about search
             item(key = "search_hint") {
                 Text(
-                    text = "Search to find any of ${MaterialDesignIcons.iconCount} icons",
+                    text = searchHintText,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                     modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
@@ -540,6 +560,9 @@ private fun CategoryHeader(
     isExpanded: Boolean,
     onToggle: () -> Unit,
 ) {
+    val iconCountLabel = stringResource(R.string.icon_picker_icon_count, iconCount)
+    val expandCollapseLabel = if (isExpanded) stringResource(R.string.common_collapse) else stringResource(R.string.common_expand)
+
     Surface(
         modifier =
             Modifier
@@ -549,14 +572,14 @@ private fun CategoryHeader(
         shape = RoundedCornerShape(8.dp),
     ) {
         Row(
-            modifier =
+                    text = iconCountLabel,
                 Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp, vertical = 8.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Column {
+                contentDescription = expandCollapseLabel,
                 Text(
                     text = category,
                     style = MaterialTheme.typography.titleSmall,

@@ -155,6 +155,125 @@
     <string name="common_exit">Выйти</string>
     <string name="common_menu">Меню</string>
     <string name="common_got_it">Понятно</string>
+    <string name="common_not_now">Не сейчас</string>
+    <string name="common_directions">Маршрут</string>
+    <string name="common_message">Сообщение</string>
+    <string name="common_confirm">Подтвердить</string>
+    <string name="common_gallery">Галерея</string>
+    <string name="common_file">Файл</string>
+    <string name="common_show_less">Свернуть</string>
+    <string name="common_show_full">Показать полностью</string>
+    <string name="common_allow_access">Разрешить доступ</string>
+    <string name="common_search">Поиск</string>
+    <string name="common_close_search">Закрыть поиск</string>
+    <string name="common_clear_search">Очистить поиск</string>
+    <string name="common_save_to_device">Сохранить на устройство</string>
+    <string name="common_save_to_device_supporting">Сохранить в папку на устройстве</string>
+    <string name="common_share_via_another_app">Поделиться через другое приложение</string>
+    <string name="common_open_with">Открыть с помощью...</string>
+    <string name="common_open_in_another_app">Открыть в другом приложении</string>
+    <string name="common_qr_code">QR код</string>
+    <string name="common_clear">Очистить</string>
+    <string name="common_expand">Развернуть</string>
+    <string name="common_collapse">Свернуть</string>
+    <string name="common_selected">Выбрано</string>
+    <string name="common_photo">Фото</string>
+    <string name="icon_picker_title">Выбрать значок профиля</string>
+    <string name="icon_picker_search_label">Поиск значков</string>
+    <string name="icon_picker_search_placeholder">например, star, heart, wifi</string>
+    <string name="icon_picker_preview">Предпросмотр</string>
+    <string name="icon_picker_background">Фон</string>
+    <string name="icon_picker_icon">Значок</string>
+    <string name="icon_picker_customize_hint">Нажмите на цвет, чтобы изменить его</string>
+    <string name="icon_picker_background_color_title">Цвет фона</string>
+    <string name="icon_picker_icon_color_title">Цвет значка</string>
+    <string name="icon_picker_search_results">Результаты поиска</string>
+    <string name="icon_picker_search_results_count">%1$d значков</string>
+    <string name="icon_picker_search_results_count_limited">%1$d значков (показаны первые 100)</string>
+    <string name="icon_picker_no_results">Значки для "%1$s" не найдены</string>
+    <string name="icon_picker_search_hint">Ищите среди %1$d значков</string>
+    <string name="icon_picker_icon_count">%1$d значков</string>
+    <string name="interface_config_edit_title">Изменить интерфейс</string>
+    <string name="interface_config_add_title">Добавить интерфейс</string>
+    <string name="interface_config_name_label">Имя интерфейса</string>
+    <string name="interface_config_name_placeholder">например, Home WiFi, Laptop TCP</string>
+    <string name="interface_config_target_host_label">Целевой хост *</string>
+    <string name="interface_config_target_host_placeholder">IP адрес или имя хоста</string>
+    <string name="interface_config_enabled">Включено</string>
+    <string name="interface_config_advanced_options">Расширенные параметры</string>
+    <string name="interface_config_update">Обновить</string>
+    <string name="interface_config_add">Добавить</string>
+    <string name="interface_config_type_label">Тип интерфейса</string>
+    <string name="interface_config_unknown">Неизвестно</string>
+    <string name="interface_config_type_auto_discovery">Автообнаружение</string>
+    <string name="interface_config_type_tcp_client">TCP клиент</string>
+    <string name="interface_config_type_tcp_server">TCP сервер</string>
+    <string name="interface_config_type_bluetooth_le">Bluetooth LE</string>
+    <string name="interface_config_auto_configuration">Настройка автообнаружения</string>
+    <string name="interface_config_group_id_label">ID группы (необязательно)</string>
+    <string name="interface_config_group_id_placeholder">Оставьте пустым для сети по умолчанию</string>
+    <string name="interface_config_discovery_port_label">Порт обнаружения</string>
+    <string name="interface_config_discovery_port_placeholder">29716 (по умолчанию)</string>
+    <string name="interface_config_data_port_label">Порт данных</string>
+    <string name="interface_config_data_port_placeholder">42671 (по умолчанию)</string>
+    <string name="interface_config_tcp_client_configuration">Настройка TCP клиента</string>
+    <string name="interface_config_target_port_label">Целевой порт</string>
+    <string name="interface_config_network_name_label">Имя сети</string>
+    <string name="interface_config_optional">Необязательно</string>
+    <string name="interface_config_network_name_help">Необязательно: задает имя виртуальной сети для этого сегмента. Это позволяет нескольким отдельным сетям существовать на одном и том же физическом канале или носителе.</string>
+    <string name="interface_config_passphrase_label">Парольная фраза</string>
+    <string name="interface_config_hide_passphrase">Скрыть парольную фразу</string>
+    <string name="interface_config_show_passphrase">Показать парольную фразу</string>
+    <string name="interface_config_passphrase_help">Необязательно: задает парольную фразу аутентификации для интерфейса. Ее можно использовать вместе с именем сети или отдельно.</string>
+    <string name="interface_config_socks_proxy_label">SOCKS5 прокси</string>
+    <string name="interface_config_socks_proxy_help">Маршрутизировать через SOCKS5 прокси, например Orbot для Tor. Требуется для адресов .onion.</string>
+    <string name="interface_config_proxy_host_label">Хост прокси</string>
+    <string name="interface_config_proxy_host_help">Адрес SOCKS5 прокси. Используйте 127.0.0.1 для Orbot, работающего на этом устройстве.</string>
+    <string name="interface_config_proxy_port_label">Порт прокси</string>
+    <string name="interface_config_proxy_port_help">Стандартный порт Orbot: 9050.</string>
+    <string name="interface_config_discovery_scope_label">Область обнаружения</string>
+    <string name="interface_config_scope_link">Link, только локальная сеть</string>
+    <string name="interface_config_scope_admin">Admin</string>
+    <string name="interface_config_scope_site">Site</string>
+    <string name="interface_config_scope_organisation">Organisation</string>
+    <string name="interface_config_scope_global">Global</string>
+    <string name="interface_config_mode_label">Режим интерфейса</string>
+    <string name="interface_config_mode_full">Полный, все функции включены</string>
+    <string name="interface_config_mode_gateway">Шлюз, поиск путей для других</string>
+    <string name="interface_config_mode_access_point">Точка доступа, тихий режим без активности</string>
+    <string name="interface_config_mode_roaming">Роуминг, подвижный относительно других</string>
+    <string name="interface_config_mode_boundary">Граница</string>
+    <string name="interface_config_ble_configuration">Настройка Bluetooth LE</string>
+    <string name="interface_config_device_name_label">Имя устройства (необязательно)</string>
+    <string name="interface_config_device_name_placeholder">Оставьте пустым, чтобы не добавлять в объявление</string>
+    <string name="interface_config_device_name_count">%1$d/%2$d символов</string>
+    <string name="interface_config_device_name_help">Необязательно: только для отладки. Используйте короткое имя, рекомендуется не более 8 символов, или оставьте пустым для максимальной надежности BLE объявления.</string>
+    <string name="interface_config_max_connections_label">Максимум подключений</string>
+    <string name="interface_config_max_connections_help">Максимальное число одновременных BLE узлов, рекомендуется 7</string>
+    <string name="interface_config_power_profile">Профиль питания</string>
+    <string name="interface_config_power_profile_performance">Производительность</string>
+    <string name="interface_config_power_profile_balanced">Сбалансированный</string>
+    <string name="interface_config_power_profile_battery_saver">Экономия батареи</string>
+    <string name="interface_config_power_profile_custom">Пользовательский</string>
+    <string name="interface_config_power_profile_performance_help">Самое быстрое обнаружение устройств, выше расход батареи</string>
+    <string name="interface_config_power_profile_balanced_help">Стандартная скорость обнаружения и расход батареи</string>
+    <string name="interface_config_power_profile_battery_saver_help">Меньше сканирования для экономии батареи</string>
+    <string name="interface_config_power_profile_custom_help">Ручная настройка интервалов сканирования и рекламы</string>
+    <string name="interface_config_scan_interval_active">Интервал сканирования, активный: %1$d с</string>
+    <string name="interface_config_scan_interval_active_help">Задержка между сканированиями при обнаружении новых устройств</string>
+    <string name="interface_config_scan_interval_idle">Интервал сканирования, ожидание: %1$d с</string>
+    <string name="interface_config_scan_interval_idle_help">Задержка между сканированиями, когда новые устройства не находятся</string>
+    <string name="interface_config_scan_duration">Длительность сканирования: %1$d с</string>
+    <string name="interface_config_scan_duration_help">Как долго каждое сканирование слушает ближайшие устройства</string>
+    <string name="interface_config_scan_warning">Предупреждение: длительность сканирования больше или равна активному интервалу. Это увеличит расход батареи.</string>
+    <string name="interface_config_ad_refresh_interval">Интервал обновления рекламы: %1$d с</string>
+    <string name="interface_config_ad_refresh_interval_help">Как часто перезапускать рекламу, если Android незаметно ее остановил</string>
+    <string name="interface_config_tcp_server_configuration">Настройка TCP сервера</string>
+    <string name="interface_config_tcp_server_help">Позволяет другим узлам Reticulum подключаться к этому устройству. Полезно для подключения через Yggdrasil или когда устройство должно работать как узел-концентратор.</string>
+    <string name="interface_config_listen_ip_label">IP прослушивания</string>
+    <string name="interface_config_listen_ip_help">IP адрес для привязки. Используйте 0.0.0.0, чтобы слушать на всех интерфейсах.</string>
+    <string name="interface_config_listen_port_label">Порт прослушивания</string>
+    <string name="interface_config_listen_port_help">TCP порт для входящих подключений.</string>
 
     <!-- Blocked users screen -->
     <string name="blocked_users_title">Заблокированные пользователи</string>
@@ -275,6 +394,155 @@
     <string name="ble_connections_size_mb">%1$.2f МБ</string>
     <string name="ble_connections_size_kb">%1$.2f КБ</string>
     <string name="ble_connections_size_bytes">%1$d Б</string>
+
+    <!-- Color picker -->
+    <string name="color_picker_default_title">Выберите цвет</string>
+    <string name="color_picker_hex_label">HEX цвет</string>
+    <string name="color_picker_hue">Оттенок</string>
+    <string name="color_picker_saturation">Насыщенность</string>
+    <string name="color_picker_lightness">Светлота</string>
+
+    <!-- Codec selection -->
+    <string name="codec_selection_title">Выберите качество звонка</string>
+    <string name="codec_selection_subtitle">Выберите профиль кодека в зависимости от скорости соединения</string>
+    <string name="codec_selection_confirm">Позвонить</string>
+
+    <!-- Permission bottom sheets -->
+    <string name="ble_permission_title">Требуются разрешения Bluetooth</string>
+    <string name="ble_permission_rationale">Columba использует Bluetooth Low Energy (BLE) для связи с ближайшими устройствами в mesh-сети.
+
+Чтобы включить эту возможность, нужны следующие разрешения:
+
+• Сканирование Bluetooth: чтобы находить ближайшие узлы Reticulum
+• Подключение Bluetooth: чтобы устанавливать соединение с узлами
+• Реклама Bluetooth: чтобы объявлять о вашем присутствии другим устройствам
+
+Эти разрешения позволяют Columba создавать децентрализованную автономную сеть связи.</string>
+    <string name="ble_permission_primary_action">Предоставить разрешения</string>
+    <string name="background_location_title">Фоновое местоположение</string>
+    <string name="background_location_message">Чтобы делиться своим местоположением с контактами, когда приложение работает в фоне, Columba требуется разрешение "Разрешить всегда".
+
+Это позволит Columba продолжать отправлять ваше зашифрованное местоположение выбранным контактам, даже если вы переключитесь в другое приложение или заблокируете экран.
+
+На следующем экране выберите "Разрешить всегда".</string>
+    <string name="location_permission_title">Разрешение на доступ к местоположению</string>
+    <string name="location_permission_primary_action">Включить геолокацию</string>
+    <string name="location_permission_rationale">Разрешите доступ к местоположению, чтобы Columba мог делиться вашей текущей геопозицией с контактами и показывать ближайшие обновления на карте.</string>
+
+    <!-- Add contact confirmation -->
+    <string name="add_contact_content_description">Добавить контакт</string>
+    <string name="add_contact_title">Добавить контакт?</string>
+    <string name="add_contact_destination_hash">Хеш назначения</string>
+    <string name="add_contact_nickname_label">Псевдоним (необязательно)</string>
+    <string name="add_contact_nickname_placeholder">Введите понятное имя</string>
+    <string name="add_contact_helper">Вы можете добавить псевдоним, чтобы было проще распознавать этот контакт.</string>
+
+    <!-- Attachment panel -->
+    <string name="attachment_panel_permission_prompt">Разрешите доступ, чтобы показать недавние фото</string>
+    <string name="attachment_panel_empty">Фотографии не найдены</string>
+    <string name="attachment_panel_photo">Изображение</string>
+
+    <!-- Contact location bottom sheet -->
+    <string name="contact_location_remove_from_map">Убрать с карты</string>
+    <string name="contact_location_unknown">Местоположение неизвестно</string>
+    <string name="contact_location_direction_north">север</string>
+    <string name="contact_location_direction_northeast">северо-восток</string>
+    <string name="contact_location_direction_east">восток</string>
+    <string name="contact_location_direction_southeast">юго-восток</string>
+    <string name="contact_location_direction_south">юг</string>
+    <string name="contact_location_direction_southwest">юго-запад</string>
+    <string name="contact_location_direction_west">запад</string>
+    <string name="contact_location_direction_northwest">северо-запад</string>
+    <string name="contact_location_distance_meters">%1$d м</string>
+    <string name="contact_location_distance_kilometers">%1$.1f км</string>
+    <string name="contact_location_distance_with_direction">%1$s %2$s</string>
+    <string name="contact_location_updated_just_now">Обновлено только что</string>
+    <string name="contact_location_updated_seconds">Обновлено %1$d с назад</string>
+    <string name="contact_location_updated_minutes">Обновлено %1$d мин назад</string>
+    <string name="contact_location_updated_hours">Обновлено %1$d ч назад</string>
+    <string name="contact_location_updated_days">Обновлено %1$d д назад</string>
+    <string name="contact_location_no_maps_app">Приложение карт не найдено</string>
+    <string name="contact_location_stale">Устарело</string>
+    <string name="contact_location_last_known">Последнее известное</string>
+
+    <!-- Image and file option sheets -->
+    <string name="image_options_title">Изображение</string>
+    <string name="identity_qr_default_title">Ваш идентификатор</string>
+    <string name="identity_qr_scan_prompt">Отсканируйте этот QR код, чтобы добавить меня в контакты</string>
+    <string name="file_attachment_preview_remove">Удалить %1$s</string>
+    <string name="file_attachment_preview_total">Всего: %1$s</string>
+    <string name="file_attachment_card_type">Тип файла: %1$s</string>
+    <string name="qr_code_sheet_scan_title">Сканировать QR код</string>
+    <string name="qr_code_sheet_scan_supporting">Сканировать QR код контакта</string>
+    <string name="qr_code_sheet_show_title">Показать QR код</string>
+    <string name="qr_code_sheet_show_supporting">Показать ваш QR код для сканирования другими</string>
+
+    <!-- Quality selection dialog -->
+    <string name="quality_selection_connecting">Подключение...</string>
+    <string name="quality_selection_connection_failed">Не удалось подключиться</string>
+    <string name="quality_selection_no_active_link">Нет активного соединения</string>
+    <string name="quality_selection_mtu">MTU %1$d Б</string>
+    <string name="quality_selection_recommended_cd">Рекомендуется</string>
+    <string name="quality_selection_experimental_cd">Экспериментально</string>
+    <plurals name="quality_selection_hops">
+        <item quantity="one">%d переход</item>
+        <item quantity="few">%d перехода</item>
+        <item quantity="many">%d переходов</item>
+        <item quantity="other">%d перехода</item>
+    </plurals>
+
+    <!-- Permissions and profile icons -->
+    <string name="permission_denied_title">Требуются разрешения</string>
+    <string name="permission_denied_message">Разрешения Bluetooth были отклонены. Чтобы использовать BLE функции в Columba, предоставьте разрешения Bluetooth в настройках устройства.
+
+Без этих разрешений Columba не сможет обнаруживать ближайшие устройства через Bluetooth и подключаться к ним.</string>
+    <string name="profile_icon_content_description">Иконка профиля</string>
+
+    <!-- QR helpers -->
+    <string name="qr_code_image_content_description">QR код</string>
+    <string name="qr_code_overlay_content_description">QR код (коснитесь, чтобы закрыть)</string>
+
+    <!-- Share location -->
+    <string name="share_location_title">Поделиться местоположением</string>
+    <string name="share_location_with_contact">с %1$s</string>
+    <string name="share_location_duration">Длительность:</string>
+    <string name="share_location_search_contacts">Поиск контактов</string>
+    <string name="share_location_start">Начать передачу</string>
+    <string name="share_location_remove_contact">Удалить %1$s</string>
+
+    <!-- Reply and reaction UI -->
+    <string name="reply_content_description">Ответить</string>
+    <string name="reply_message_fallback">Сообщение</string>
+    <string name="replying_to_format">Ответ для %1$s</string>
+    <string name="reply_cancel_content_description">Отменить ответ</string>
+    <string name="reaction_more_emojis">Больше эмодзи</string>
+    <string name="reaction_selected_message">Выбранное сообщение</string>
+
+    <!-- Sharing status -->
+    <string name="sharing_status_stop">Остановить передачу</string>
+    <plurals name="sharing_status_with_count">
+        <item quantity="one">Передача для %d человека</item>
+        <item quantity="few">Передача для %d человек</item>
+        <item quantity="many">Передача для %d человек</item>
+        <item quantity="other">Передача для %d человек</item>
+    </plurals>
+
+    <!-- Icon picker -->
+    <string name="icon_picker_title">Выберите иконку профиля</string>
+    <string name="icon_picker_search_label">Поиск иконок</string>
+    <string name="icon_picker_search_placeholder">например, star, heart, wifi</string>
+    <string name="icon_picker_preview">Предпросмотр</string>
+    <string name="icon_picker_background">Фон</string>
+    <string name="icon_picker_icon">Иконка</string>
+    <string name="icon_picker_customize_hint">Коснитесь цвета, чтобы настроить его</string>
+    <string name="icon_picker_background_color_title">Цвет фона</string>
+    <string name="icon_picker_icon_color_title">Цвет иконки</string>
+    <string name="icon_picker_search_results">Результаты поиска</string>
+    <string name="icon_picker_search_results_count">%1$d иконок</string>
+    <string name="icon_picker_search_results_count_limited">%1$d иконок (показаны первые 100)</string>
+    <string name="icon_picker_no_results">Для "%1$s" иконки не найдены</string>
+    <string name="icon_picker_search_hint">Воспользуйтесь поиском среди %1$d иконок</string>
+    <string name="icon_picker_icon_count">%1$d иконок</string>
 
     <!-- NomadNet browser screen -->
     <string name="nomadnet_browser_title">Браузер NomadNet</string>

@@ -40,12 +40,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.lxmf.messenger.R
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.qrcode.QRCodeWriter
@@ -81,6 +83,7 @@ fun QrCodeImage(
     var isLoading by remember(data) { mutableStateOf(true) }
     var error by remember(data) { mutableStateOf<String?>(null) }
     var expanded by remember { mutableStateOf(false) }
+    val qrCodeLabel = stringResource(R.string.qr_code_image_content_description)
 
     val scope = rememberCoroutineScope()
 
@@ -145,7 +148,7 @@ fun QrCodeImage(
                 qrBitmap != null -> {
                     Image(
                         bitmap = qrBitmap!!.asImageBitmap(),
-                        contentDescription = "QR Code",
+                        contentDescription = qrCodeLabel,
                         modifier = Modifier.fillMaxSize(),
                     )
                 }
@@ -156,6 +159,7 @@ fun QrCodeImage(
     // Full-screen expanded QR code overlay
     val activity = LocalContext.current.findActivity()
     if (expanded && qrBitmap != null) {
+        val qrCodeOverlayLabel = stringResource(R.string.qr_code_overlay_content_description)
         Dialog(
             onDismissRequest = { expanded = false },
             properties = DialogProperties(usePlatformDefaultWidth = false),
@@ -191,7 +195,7 @@ fun QrCodeImage(
                 ) {
                     Image(
                         bitmap = qrBitmap!!.asImageBitmap(),
-                        contentDescription = "QR Code (tap to close)",
+                        contentDescription = qrCodeOverlayLabel,
                         modifier =
                             Modifier
                                 .fillMaxWidth()
@@ -280,9 +284,10 @@ fun HashSection(
                     modifier = Modifier.weight(1f),
                 )
                 IconButton(onClick = onCopy) {
+                    val copyLabel = stringResource(R.string.common_copy)
                     Icon(
                         imageVector = Icons.Default.ContentCopy,
-                        contentDescription = "Copy",
+                        contentDescription = copyLabel,
                         modifier = Modifier.size(20.dp),
                     )
                 }

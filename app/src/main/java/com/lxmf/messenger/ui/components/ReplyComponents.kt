@@ -43,10 +43,12 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 import com.lxmf.messenger.ui.model.ReplyPreviewUi
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -86,6 +88,7 @@ fun SwipeableMessageBubble(
 ) {
     val density = LocalDensity.current
     val hapticFeedback = LocalHapticFeedback.current
+    val replyContentDescription = stringResource(R.string.reply_content_description)
 
     val thresholdPx = with(density) { SWIPE_THRESHOLD.toPx() }
     val maxSwipePx = with(density) { MAX_SWIPE.toPx() }
@@ -129,7 +132,7 @@ fun SwipeableMessageBubble(
                 Box(contentAlignment = Alignment.Center) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.Reply,
-                        contentDescription = "Reply",
+                        contentDescription = replyContentDescription,
                         tint = MaterialTheme.colorScheme.onPrimaryContainer,
                         modifier = Modifier.size(24.dp),
                     )
@@ -219,6 +222,10 @@ fun ReplyPreviewBubble(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val imageLabel = stringResource(R.string.attachment_panel_photo)
+    val fileLabel = stringResource(R.string.common_file)
+    val messageFallback = stringResource(R.string.reply_message_fallback)
+
     val accentColor =
         if (isFromMe) {
             MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.6f)
@@ -284,7 +291,7 @@ fun ReplyPreviewBubble(
                     if (replyPreview.hasImage) {
                         Icon(
                             imageVector = Icons.Default.Image,
-                            contentDescription = "Image",
+                            contentDescription = imageLabel,
                             tint = contentColor.copy(alpha = 0.7f),
                             modifier = Modifier.size(14.dp),
                         )
@@ -292,7 +299,7 @@ fun ReplyPreviewBubble(
                     if (replyPreview.hasFileAttachment) {
                         Icon(
                             imageVector = Icons.Default.AttachFile,
-                            contentDescription = "File",
+                            contentDescription = fileLabel,
                             tint = contentColor.copy(alpha = 0.7f),
                             modifier = Modifier.size(14.dp),
                         )
@@ -317,7 +324,7 @@ fun ReplyPreviewBubble(
                         )
                     } else if (!replyPreview.hasImage && !replyPreview.hasFileAttachment) {
                         Text(
-                            text = "Message",
+                            text = messageFallback,
                             style = MaterialTheme.typography.bodySmall,
                             color = contentColor.copy(alpha = 0.5f),
                             fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
@@ -343,6 +350,12 @@ fun ReplyInputBar(
     onCancelReply: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val replyingToLabel = stringResource(R.string.replying_to_format, replyPreview.senderName)
+    val imageLabel = stringResource(R.string.attachment_panel_photo)
+    val fileLabel = stringResource(R.string.common_file)
+    val photoLabel = stringResource(R.string.common_photo)
+    val cancelReplyLabel = stringResource(R.string.reply_cancel_content_description)
+
     Surface(
         modifier = modifier.fillMaxWidth(),
         color = MaterialTheme.colorScheme.surfaceContainerHigh,
@@ -378,7 +391,7 @@ fun ReplyInputBar(
             // Reply info
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "Replying to ${replyPreview.senderName}",
+                    text = replyingToLabel,
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.primary,
@@ -395,12 +408,12 @@ fun ReplyInputBar(
                     if (replyPreview.hasImage) {
                         Icon(
                             imageVector = Icons.Default.Image,
-                            contentDescription = "Image",
+                            contentDescription = imageLabel,
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(14.dp),
                         )
                         Text(
-                            text = "Photo",
+                            text = photoLabel,
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
@@ -408,7 +421,7 @@ fun ReplyInputBar(
                     if (replyPreview.hasFileAttachment && replyPreview.firstFileName != null) {
                         Icon(
                             imageVector = Icons.Default.AttachFile,
-                            contentDescription = "File",
+                            contentDescription = fileLabel,
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(14.dp),
                         )
@@ -439,7 +452,7 @@ fun ReplyInputBar(
             ) {
                 Icon(
                     imageVector = Icons.Default.Close,
-                    contentDescription = "Cancel reply",
+                    contentDescription = cancelReplyLabel,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.size(20.dp),
                 )

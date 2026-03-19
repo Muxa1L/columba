@@ -139,6 +139,125 @@
   <string name="common_exit">Exit</string>
   <string name="common_menu">Menu</string>
   <string name="common_got_it">Got it</string>
+  <string name="common_not_now">Not Now</string>
+  <string name="common_directions">Directions</string>
+  <string name="common_message">Message</string>
+  <string name="common_confirm">Confirm</string>
+  <string name="common_gallery">Gallery</string>
+  <string name="common_file">File</string>
+  <string name="common_show_less">Show less</string>
+  <string name="common_show_full">Show full</string>
+  <string name="common_allow_access">Allow access</string>
+  <string name="common_search">Search</string>
+  <string name="common_close_search">Close search</string>
+  <string name="common_clear_search">Clear search</string>
+  <string name="common_save_to_device">Save to device</string>
+  <string name="common_save_to_device_supporting">Save to a folder on your device</string>
+  <string name="common_share_via_another_app">Share via another app</string>
+  <string name="common_open_with">Open with...</string>
+  <string name="common_open_in_another_app">Open in another app</string>
+  <string name="common_qr_code">QR Code</string>
+  <string name="common_clear">Clear</string>
+  <string name="common_expand">Expand</string>
+  <string name="common_collapse">Collapse</string>
+  <string name="common_selected">Selected</string>
+  <string name="common_photo">Photo</string>
+  <string name="icon_picker_title">Choose Profile Icon</string>
+  <string name="icon_picker_search_label">Search icons</string>
+  <string name="icon_picker_search_placeholder">e.g., star, heart, wifi</string>
+  <string name="icon_picker_preview">Preview</string>
+  <string name="icon_picker_background">Background</string>
+  <string name="icon_picker_icon">Icon</string>
+  <string name="icon_picker_customize_hint">Tap a color to customize</string>
+  <string name="icon_picker_background_color_title">Background Color</string>
+  <string name="icon_picker_icon_color_title">Icon Color</string>
+  <string name="icon_picker_search_results">Search Results</string>
+  <string name="icon_picker_search_results_count">%1$d icons</string>
+  <string name="icon_picker_search_results_count_limited">%1$d icons (showing first 100)</string>
+  <string name="icon_picker_no_results">No icons found for "%1$s"</string>
+  <string name="icon_picker_search_hint">Search to find any of %1$d icons</string>
+  <string name="icon_picker_icon_count">%1$d icons</string>
+  <string name="interface_config_edit_title">Edit Interface</string>
+  <string name="interface_config_add_title">Add Interface</string>
+  <string name="interface_config_name_label">Interface Name</string>
+  <string name="interface_config_name_placeholder">e.g., Home WiFi, Laptop TCP</string>
+  <string name="interface_config_target_host_label">Target Host *</string>
+  <string name="interface_config_target_host_placeholder">IP address or hostname</string>
+  <string name="interface_config_enabled">Enabled</string>
+  <string name="interface_config_advanced_options">Advanced Options</string>
+  <string name="interface_config_update">Update</string>
+  <string name="interface_config_add">Add</string>
+  <string name="interface_config_type_label">Interface Type</string>
+  <string name="interface_config_unknown">Unknown</string>
+  <string name="interface_config_type_auto_discovery">Auto Discovery</string>
+  <string name="interface_config_type_tcp_client">TCP Client</string>
+  <string name="interface_config_type_tcp_server">TCP Server</string>
+  <string name="interface_config_type_bluetooth_le">Bluetooth LE</string>
+  <string name="interface_config_auto_configuration">Auto Discovery Configuration</string>
+  <string name="interface_config_group_id_label">Group ID (optional)</string>
+  <string name="interface_config_group_id_placeholder">Leave empty for default network</string>
+  <string name="interface_config_discovery_port_label">Discovery Port</string>
+  <string name="interface_config_discovery_port_placeholder">29716 (default)</string>
+  <string name="interface_config_data_port_label">Data Port</string>
+  <string name="interface_config_data_port_placeholder">42671 (default)</string>
+  <string name="interface_config_tcp_client_configuration">TCP Client Configuration</string>
+  <string name="interface_config_target_port_label">Target Port</string>
+  <string name="interface_config_network_name_label">Network Name</string>
+  <string name="interface_config_optional">Optional</string>
+  <string name="interface_config_network_name_help">Optional: Sets the virtual network name for this segment. This allows multiple separate networks to exist on the same physical channel or medium.</string>
+  <string name="interface_config_passphrase_label">Passphrase</string>
+  <string name="interface_config_hide_passphrase">Hide passphrase</string>
+  <string name="interface_config_show_passphrase">Show passphrase</string>
+  <string name="interface_config_passphrase_help">Optional: Sets an authentication passphrase on the interface. This can be used in conjunction with Network Name, or alone.</string>
+  <string name="interface_config_socks_proxy_label">SOCKS5 Proxy</string>
+  <string name="interface_config_socks_proxy_help">Route through a SOCKS5 proxy (e.g., Orbot for Tor). Required for .onion addresses.</string>
+  <string name="interface_config_proxy_host_label">Proxy Host</string>
+  <string name="interface_config_proxy_host_help">SOCKS5 proxy address. Use 127.0.0.1 for Orbot running on this device.</string>
+  <string name="interface_config_proxy_port_label">Proxy Port</string>
+  <string name="interface_config_proxy_port_help">Orbot default: 9050.</string>
+  <string name="interface_config_discovery_scope_label">Discovery Scope</string>
+  <string name="interface_config_scope_link">Link (local network only)</string>
+  <string name="interface_config_scope_admin">Admin</string>
+  <string name="interface_config_scope_site">Site</string>
+  <string name="interface_config_scope_organisation">Organisation</string>
+  <string name="interface_config_scope_global">Global</string>
+  <string name="interface_config_mode_label">Interface Mode</string>
+  <string name="interface_config_mode_full">Full (all features enabled)</string>
+  <string name="interface_config_mode_gateway">Gateway (path discovery for others)</string>
+  <string name="interface_config_mode_access_point">Access Point (quiet unless active)</string>
+  <string name="interface_config_mode_roaming">Roaming (mobile relative to others)</string>
+  <string name="interface_config_mode_boundary">Boundary</string>
+  <string name="interface_config_ble_configuration">Bluetooth LE Configuration</string>
+  <string name="interface_config_device_name_label">Device Name (optional)</string>
+  <string name="interface_config_device_name_placeholder">Leave empty to omit from advertisement</string>
+  <string name="interface_config_device_name_count">%1$d/%2$d characters</string>
+  <string name="interface_config_device_name_help">Optional: For debugging only. Keep short (max 8 chars recommended) or leave empty to maximize BLE advertisement reliability.</string>
+  <string name="interface_config_max_connections_label">Max Connections</string>
+  <string name="interface_config_max_connections_help">Maximum simultaneous BLE peers (recommended: 7)</string>
+  <string name="interface_config_power_profile">Power Profile</string>
+  <string name="interface_config_power_profile_performance">Performance</string>
+  <string name="interface_config_power_profile_balanced">Balanced</string>
+  <string name="interface_config_power_profile_battery_saver">Battery Saver</string>
+  <string name="interface_config_power_profile_custom">Custom</string>
+  <string name="interface_config_power_profile_performance_help">Fastest device discovery, higher battery usage</string>
+  <string name="interface_config_power_profile_balanced_help">Default discovery speed and battery usage</string>
+  <string name="interface_config_power_profile_battery_saver_help">Reduced scanning to conserve battery</string>
+  <string name="interface_config_power_profile_custom_help">Manually configure scan and advertising intervals</string>
+  <string name="interface_config_scan_interval_active">Scan Interval (active): %1$ds</string>
+  <string name="interface_config_scan_interval_active_help">Delay between scans while discovering new devices</string>
+  <string name="interface_config_scan_interval_idle">Scan Interval (idle): %1$ds</string>
+  <string name="interface_config_scan_interval_idle_help">Delay between scans when no new devices are being found</string>
+  <string name="interface_config_scan_duration">Scan Duration: %1$ds</string>
+  <string name="interface_config_scan_duration_help">How long each scan listens for nearby devices</string>
+  <string name="interface_config_scan_warning">Warning: scan duration ≥ active interval. High duty-cycle scanning will increase battery usage.</string>
+  <string name="interface_config_ad_refresh_interval">Ad Refresh Interval: %1$ds</string>
+  <string name="interface_config_ad_refresh_interval_help">How often to restart advertising in case Android silently stopped it</string>
+  <string name="interface_config_tcp_server_configuration">TCP Server Configuration</string>
+  <string name="interface_config_tcp_server_help">Allows other Reticulum nodes to connect to this device. Useful for Yggdrasil connectivity or when this device should act as a hub.</string>
+  <string name="interface_config_listen_ip_label">Listen IP</string>
+  <string name="interface_config_listen_ip_help">IP address to bind to. Use 0.0.0.0 to listen on all interfaces.</string>
+  <string name="interface_config_listen_port_label">Listen Port</string>
+  <string name="interface_config_listen_port_help">TCP port to listen on for incoming connections.</string>
   <!-- Blocked users screen -->
   <string name="blocked_users_title">Blocked Users</string>
   <string name="blocked_users_empty">No blocked users</string>
@@ -253,6 +372,137 @@ It will scan automatically</string>
   <string name="ble_connections_size_mb">%1$.2f MB</string>
   <string name="ble_connections_size_kb">%1$.2f KB</string>
   <string name="ble_connections_size_bytes">%1$d B</string>
+  <!-- Color picker -->
+  <string name="color_picker_default_title">Pick a Color</string>
+  <string name="color_picker_hex_label">Hex Color</string>
+  <string name="color_picker_hue">Hue</string>
+  <string name="color_picker_saturation">Saturation</string>
+  <string name="color_picker_lightness">Lightness</string>
+  <!-- Codec selection -->
+  <string name="codec_selection_title">Select Call Quality</string>
+  <string name="codec_selection_subtitle">Choose a codec profile based on your connection speed</string>
+  <string name="codec_selection_confirm">Call</string>
+  <!-- Permission bottom sheets -->
+  <string name="ble_permission_title">Bluetooth Permissions Required</string>
+  <string name="ble_permission_rationale">Columba uses Bluetooth Low Energy (BLE) to communicate with nearby devices in a mesh network.
+
+To enable this functionality, we need the following permissions:
+
+• Bluetooth Scan: To discover nearby Reticulum peers
+• Bluetooth Connect: To establish connections with peers
+• Bluetooth Advertise: To broadcast your presence to other devices
+
+These permissions allow Columba to create a decentralized, off-grid communication network.</string>
+  <string name="ble_permission_primary_action">Grant permissions</string>
+  <string name="background_location_title">Background Location</string>
+  <string name="background_location_message">To share your location with contacts while the app is in the background, Columba needs the "Allow all the time" permission.
+
+This lets Columba continue sending your encrypted location to chosen contacts even when you switch to another app or lock your screen.
+
+On the next screen, please select "Allow all the time".</string>
+  <string name="location_permission_title">Location Permission</string>
+  <string name="location_permission_primary_action">Enable Location</string>
+  <string name="location_permission_rationale">Allow location access so Columba can share your live location with contacts and show nearby location updates on the map.</string>
+  <!-- Add contact confirmation -->
+  <string name="add_contact_content_description">Add contact</string>
+  <string name="add_contact_title">Add Contact?</string>
+  <string name="add_contact_destination_hash">Destination Hash</string>
+  <string name="add_contact_nickname_label">Nickname (optional)</string>
+  <string name="add_contact_nickname_placeholder">Enter a friendly name</string>
+  <string name="add_contact_helper">You can add a nickname to easily identify this contact.</string>
+  <!-- Attachment panel -->
+  <string name="attachment_panel_permission_prompt">Allow access to show recent photos</string>
+  <string name="attachment_panel_empty">No photos found</string>
+  <string name="attachment_panel_photo">Image</string>
+  <!-- Contact location bottom sheet -->
+  <string name="contact_location_remove_from_map">Remove from map</string>
+  <string name="contact_location_unknown">Location unknown</string>
+  <string name="contact_location_direction_north">north</string>
+  <string name="contact_location_direction_northeast">northeast</string>
+  <string name="contact_location_direction_east">east</string>
+  <string name="contact_location_direction_southeast">southeast</string>
+  <string name="contact_location_direction_south">south</string>
+  <string name="contact_location_direction_southwest">southwest</string>
+  <string name="contact_location_direction_west">west</string>
+  <string name="contact_location_direction_northwest">northwest</string>
+  <string name="contact_location_distance_meters">%1$dm</string>
+  <string name="contact_location_distance_kilometers">%1$.1fkm</string>
+  <string name="contact_location_distance_with_direction">%1$s %2$s</string>
+  <string name="contact_location_updated_just_now">Updated just now</string>
+  <string name="contact_location_updated_seconds">Updated %1$ds ago</string>
+  <string name="contact_location_updated_minutes">Updated %1$dm ago</string>
+  <string name="contact_location_updated_hours">Updated %1$dh ago</string>
+  <string name="contact_location_updated_days">Updated %1$dd ago</string>
+  <string name="contact_location_no_maps_app">No maps application found</string>
+  <string name="contact_location_stale">Stale</string>
+  <string name="contact_location_last_known">Last known</string>
+  <!-- Image and file option sheets -->
+  <string name="image_options_title">Image</string>
+  <string name="identity_qr_default_title">Your Identity</string>
+  <string name="identity_qr_scan_prompt">Scan this QR code to add me as a contact</string>
+  <string name="file_attachment_preview_remove">Remove %1$s</string>
+  <string name="file_attachment_preview_total">Total: %1$s</string>
+  <string name="file_attachment_card_type">File type: %1$s</string>
+  <string name="qr_code_sheet_scan_title">Scan QR Code</string>
+  <string name="qr_code_sheet_scan_supporting">Scan a contact QR code</string>
+  <string name="qr_code_sheet_show_title">Show QR Code</string>
+  <string name="qr_code_sheet_show_supporting">Show your QR code for others to scan</string>
+  <!-- Quality selection dialog -->
+  <string name="quality_selection_connecting">Connecting...</string>
+  <string name="quality_selection_connection_failed">Connection failed</string>
+  <string name="quality_selection_no_active_link">No active link</string>
+  <string name="quality_selection_mtu">%1$d B MTU</string>
+  <string name="quality_selection_recommended_cd">Recommended</string>
+  <string name="quality_selection_experimental_cd">Experimental</string>
+  <plurals name="quality_selection_hops">
+    <item quantity="one">%d hop</item>
+    <item quantity="other">%d hops</item>
+  </plurals>
+  <!-- Permissions and profile icons -->
+  <string name="permission_denied_title">Permissions Required</string>
+  <string name="permission_denied_message">Bluetooth permissions have been denied. To use BLE features in Columba, please grant Bluetooth permissions in your device settings.
+
+Without these permissions, Columba cannot discover or connect to nearby devices via Bluetooth.</string>
+  <string name="profile_icon_content_description">Profile icon</string>
+  <!-- QR helpers -->
+  <string name="qr_code_image_content_description">QR Code</string>
+  <string name="qr_code_overlay_content_description">QR Code (tap to close)</string>
+  <!-- Share location -->
+  <string name="share_location_title">Share your location</string>
+  <string name="share_location_with_contact">with %1$s</string>
+  <string name="share_location_duration">Duration:</string>
+  <string name="share_location_search_contacts">Search contacts</string>
+  <string name="share_location_start">Start Sharing</string>
+  <string name="share_location_remove_contact">Remove %1$s</string>
+  <!-- Reply and reaction UI -->
+  <string name="reply_content_description">Reply</string>
+  <string name="reply_message_fallback">Message</string>
+  <string name="replying_to_format">Replying to %1$s</string>
+  <string name="reply_cancel_content_description">Cancel reply</string>
+  <string name="reaction_more_emojis">More emojis</string>
+  <string name="reaction_selected_message">Selected message</string>
+  <!-- Sharing status -->
+  <string name="sharing_status_stop">Stop sharing</string>
+  <plurals name="sharing_status_with_count">
+    <item quantity="one">Sharing with %d person</item>
+    <item quantity="other">Sharing with %d people</item>
+  </plurals>
+  <!-- Icon picker -->
+  <string name="icon_picker_title">Choose Profile Icon</string>
+  <string name="icon_picker_search_label">Search icons</string>
+  <string name="icon_picker_search_placeholder">e.g., star, heart, wifi</string>
+  <string name="icon_picker_preview">Preview</string>
+  <string name="icon_picker_background">Background</string>
+  <string name="icon_picker_icon">Icon</string>
+  <string name="icon_picker_customize_hint">Tap a color to customize</string>
+  <string name="icon_picker_background_color_title">Background Color</string>
+  <string name="icon_picker_icon_color_title">Icon Color</string>
+  <string name="icon_picker_search_results">Search Results</string>
+  <string name="icon_picker_search_results_count">%1$d icons</string>
+  <string name="icon_picker_search_results_count_limited">%1$d icons (showing first 100)</string>
+  <string name="icon_picker_no_results">No icons found for "%1$s"</string>
+  <string name="icon_picker_search_hint">Search to find any of %1$d icons</string>
+  <string name="icon_picker_icon_count">%1$d icons</string>
   <!-- NomadNet browser screen -->
   <string name="nomadnet_browser_title">NomadNet Browser</string>
   <string name="nomadnet_browser_identify_title">Identify to Node</string>

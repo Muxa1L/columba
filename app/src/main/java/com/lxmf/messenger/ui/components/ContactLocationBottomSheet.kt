@@ -36,8 +36,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 import com.lxmf.messenger.viewmodel.ContactMarker
 import com.lxmf.messenger.viewmodel.MarkerState
 
@@ -68,9 +70,55 @@ fun ContactLocationBottomSheet(
     sheetState: SheetState,
 ) {
     val context = LocalContext.current
-    val distanceText = formatDistanceAndDirection(userLocation, marker.latitude, marker.longitude)
-    val updatedText = formatUpdatedTime(marker.timestamp)
     val isStale = marker.state != MarkerState.FRESH
+    val directionsLabel = stringResource(R.string.common_directions)
+    val messageLabel = stringResource(R.string.common_message)
+    val removeFromMapLabel = stringResource(R.string.contact_location_remove_from_map)
+    val noMapsApplicationLabel = stringResource(R.string.contact_location_no_maps_app)
+    val locationUnknownLabel = stringResource(R.string.contact_location_unknown)
+    val northLabel = stringResource(R.string.contact_location_direction_north)
+    val northeastLabel = stringResource(R.string.contact_location_direction_northeast)
+    val eastLabel = stringResource(R.string.contact_location_direction_east)
+    val southeastLabel = stringResource(R.string.contact_location_direction_southeast)
+    val southLabel = stringResource(R.string.contact_location_direction_south)
+    val southwestLabel = stringResource(R.string.contact_location_direction_southwest)
+    val westLabel = stringResource(R.string.contact_location_direction_west)
+    val northwestLabel = stringResource(R.string.contact_location_direction_northwest)
+    val updatedJustNowLabel = stringResource(R.string.contact_location_updated_just_now)
+    val distanceText =
+        formatDistanceAndDirection(
+            userLocation = userLocation,
+            markerLat = marker.latitude,
+            markerLng = marker.longitude,
+            locationUnknown = locationUnknownLabel,
+            metersFormatter = { distance -> context.getString(R.string.contact_location_distance_meters, distance) },
+            kilometersFormatter = { distance -> context.getString(R.string.contact_location_distance_kilometers, distance) },
+            directionFormatter = { bearing ->
+                bearingToDirection(
+                    bearing = bearing,
+                    north = northLabel,
+                    northeast = northeastLabel,
+                    east = eastLabel,
+                    southeast = southeastLabel,
+                    south = southLabel,
+                    southwest = southwestLabel,
+                    west = westLabel,
+                    northwest = northwestLabel,
+                )
+            },
+            distanceWithDirectionFormatter = { distance, direction ->
+                context.getString(R.string.contact_location_distance_with_direction, distance, direction)
+            },
+        )
+    val updatedText =
+        formatUpdatedTime(
+            timestamp = marker.timestamp,
+            justNow = updatedJustNowLabel,
+            secondsFormatter = { seconds -> context.getString(R.string.contact_location_updated_seconds, seconds) },
+            minutesFormatter = { minutes -> context.getString(R.string.contact_location_updated_minutes, minutes) },
+            hoursFormatter = { hours -> context.getString(R.string.contact_location_updated_hours, hours) },
+            daysFormatter = { days -> context.getString(R.string.contact_location_updated_days, days) },
+        )
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
@@ -146,7 +194,7 @@ fun ContactLocationBottomSheet(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 OutlinedButton(
-                    onClick = { openDirectionsInMaps(context, marker.latitude, marker.longitude) },
+                    onClick = { openDirectionsInMaps(context, marker.latitude, marker.longitude, noMapsApplicationLabel) },
                     modifier = Modifier.weight(1f),
                 ) {
                     Icon(
@@ -155,7 +203,7 @@ fun ContactLocationBottomSheet(
                         modifier = Modifier.size(18.dp),
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Directions")
+                    Text(directionsLabel)
                 }
 
                 Button(
@@ -168,7 +216,7 @@ fun ContactLocationBottomSheet(
                         modifier = Modifier.size(18.dp),
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Message")
+                    Text(messageLabel)
                 }
             }
 
@@ -187,7 +235,7 @@ fun ContactLocationBottomSheet(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        "Remove from map",
+                        removeFromMapLabel,
                         color = MaterialTheme.colorScheme.error,
                     )
                 }
@@ -210,8 +258,13 @@ internal fun formatDistanceAndDirection(
     userLocation: Location?,
     markerLat: Double,
     markerLng: Double,
+    locationUnknown: String = "Location unknown",
+    metersFormatter: (Int) -> String = { distance -> "${distance}m" },
+    kilometersFormatter: (Double) -> String = { distance -> "%.1fkm".format(distance) },
+    directionFormatter: (Float) -> String = { bearing -> bearingToDirection(bearing) },
+    distanceWithDirectionFormatter: (String, String) -> String = { distance, direction -> "$distance $direction" },
 ): String {
-    if (userLocation == null) return "Location unknown"
+    if (userLocation == null) return locationUnknown
 
     val results = FloatArray(2)
     Location.distanceBetween(
@@ -226,12 +279,12 @@ internal fun formatDistanceAndDirection(
 
     val distanceText =
         when {
-            distance < 1000 -> "${distance.toInt()}m"
-            else -> "%.1fkm".format(distance / 1000)
+            distance < 1000 -> metersFormatter(distance.toInt())
+            else -> kilometersFormatter(distance / 1000.0)
         }
 
-    val direction = bearingToDirection(bearing)
-    return "$distanceText $direction"
+    val direction = directionFormatter(bearing)
+    return distanceWithDirectionFormatter(distanceText, direction)
 }
 
 /**
@@ -240,17 +293,27 @@ internal fun formatDistanceAndDirection(
  * @param bearing Bearing in degrees (0-360)
  * @return Direction string like "north", "southeast", etc.
  */
-internal fun bearingToDirection(bearing: Float): String {
+internal fun bearingToDirection(
+    bearing: Float,
+    north: String = "north",
+    northeast: String = "northeast",
+    east: String = "east",
+    southeast: String = "southeast",
+    south: String = "south",
+    southwest: String = "southwest",
+    west: String = "west",
+    northwest: String = "northwest",
+): String {
     val normalized = (bearing + 360) % 360
     return when {
-        normalized < 22.5 || normalized >= 337.5 -> "north"
-        normalized < 67.5 -> "northeast"
-        normalized < 112.5 -> "east"
-        normalized < 157.5 -> "southeast"
-        normalized < 202.5 -> "south"
-        normalized < 247.5 -> "southwest"
-        normalized < 292.5 -> "west"
-        else -> "northwest"
+        normalized < 22.5 || normalized >= 337.5 -> north
+        normalized < 67.5 -> northeast
+        normalized < 112.5 -> east
+        normalized < 157.5 -> southeast
+        normalized < 202.5 -> south
+        normalized < 247.5 -> southwest
+        normalized < 292.5 -> west
+        else -> northwest
     }
 }
 
@@ -260,16 +323,23 @@ internal fun bearingToDirection(bearing: Float): String {
  * @param timestamp Timestamp in milliseconds since epoch
  * @return Formatted string like "Updated just now", "Updated 30s ago", "Updated 5m ago"
  */
-internal fun formatUpdatedTime(timestamp: Long): String {
+internal fun formatUpdatedTime(
+    timestamp: Long,
+    justNow: String = "Updated just now",
+    secondsFormatter: (Long) -> String = { seconds -> "Updated ${seconds}s ago" },
+    minutesFormatter: (Long) -> String = { minutes -> "Updated ${minutes}m ago" },
+    hoursFormatter: (Long) -> String = { hours -> "Updated ${hours}h ago" },
+    daysFormatter: (Long) -> String = { days -> "Updated ${days}d ago" },
+): String {
     val now = System.currentTimeMillis()
     val diff = now - timestamp
 
     return when {
-        diff < 10_000 -> "Updated just now"
-        diff < 60_000 -> "Updated ${diff / 1000}s ago"
-        diff < 3600_000 -> "Updated ${diff / 60_000}m ago"
-        diff < 86400_000 -> "Updated ${diff / 3600_000}h ago"
-        else -> "Updated ${diff / 86400_000}d ago"
+        diff < 10_000 -> justNow
+        diff < 60_000 -> secondsFormatter(diff / 1000)
+        diff < 3600_000 -> minutesFormatter(diff / 60_000)
+        diff < 86400_000 -> hoursFormatter(diff / 3600_000)
+        else -> daysFormatter(diff / 86400_000)
     }
 }
 
@@ -286,6 +356,7 @@ internal fun openDirectionsInMaps(
     context: Context,
     lat: Double,
     lng: Double,
+    noMapsApplicationLabel: String = "No maps application found",
 ) {
     try {
         // Try Google Maps navigation first (walking mode)
@@ -302,7 +373,7 @@ internal fun openDirectionsInMaps(
         }
     } catch (_: android.content.ActivityNotFoundException) {
         android.widget.Toast
-            .makeText(context, "No maps application found", android.widget.Toast.LENGTH_SHORT)
+            .makeText(context, noMapsApplicationLabel, android.widget.Toast.LENGTH_SHORT)
             .show()
     }
 }
@@ -318,8 +389,8 @@ private fun StaleLocationBadge(state: MarkerState) {
 
     val (text, color) =
         when (state) {
-            MarkerState.STALE -> "Stale" to MaterialTheme.colorScheme.outline
-            MarkerState.EXPIRED_GRACE_PERIOD -> "Last known" to MaterialTheme.colorScheme.error.copy(alpha = 0.7f)
+            MarkerState.STALE -> stringResource(R.string.contact_location_stale) to MaterialTheme.colorScheme.outline
+            MarkerState.EXPIRED_GRACE_PERIOD -> stringResource(R.string.contact_location_last_known) to MaterialTheme.colorScheme.error.copy(alpha = 0.7f)
             else -> return
         }
 

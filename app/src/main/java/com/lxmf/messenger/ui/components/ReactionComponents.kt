@@ -55,6 +55,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
@@ -63,6 +64,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.lxmf.messenger.R
 import com.lxmf.messenger.ui.model.ReactionUi
 import kotlinx.coroutines.launch
 
@@ -602,6 +604,8 @@ private fun AddMoreEmojiButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val moreEmojisLabel = stringResource(R.string.reaction_more_emojis)
+
     Surface(
         modifier =
             modifier
@@ -617,7 +621,7 @@ private fun AddMoreEmojiButton(
         ) {
             Icon(
                 imageVector = Icons.Default.Add,
-                contentDescription = "More emojis",
+                contentDescription = moreEmojisLabel,
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(24.dp),
             )
@@ -817,6 +821,8 @@ fun ReactionModeOverlay(
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val selectedMessageLabel = stringResource(R.string.reaction_selected_message)
+
     var visible by remember { mutableStateOf(false) }
     var isDismissing by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
@@ -998,7 +1004,7 @@ fun ReactionModeOverlay(
                 // Message snapshot - keep at full opacity during animation
                 Image(
                     bitmap = bitmap,
-                    contentDescription = "Selected message",
+                    contentDescription = selectedMessageLabel,
                     modifier =
                         Modifier
                             .size(width = displayWidthDp, height = displayHeightDp)

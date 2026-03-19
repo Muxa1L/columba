@@ -23,8 +23,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 
 /**
  * Material 3 bottom sheet that explains why background location ("Allow all the time")
@@ -44,6 +46,11 @@ fun BackgroundLocationPermissionBottomSheet(
     onRequestPermission: () -> Unit,
     sheetState: SheetState,
 ) {
+    val title = stringResource(R.string.background_location_title)
+    val message = stringResource(R.string.background_location_message)
+    val notNowLabel = stringResource(R.string.common_not_now)
+    val continueLabel = stringResource(R.string.common_continue)
+
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
@@ -69,7 +76,7 @@ fun BackgroundLocationPermissionBottomSheet(
                     modifier = Modifier.padding(end = 12.dp),
                 )
                 Text(
-                    text = "Background Location",
+                    text = title,
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
                 )
@@ -78,12 +85,7 @@ fun BackgroundLocationPermissionBottomSheet(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text =
-                    "To share your location with contacts while the app is in the background, " +
-                        "Columba needs the \"Allow all the time\" permission.\n\n" +
-                        "This lets Columba continue sending your encrypted location to chosen " +
-                        "contacts even when you switch to another app or lock your screen.\n\n" +
-                        "On the next screen, please select \"Allow all the time\".",
+                text = message,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -96,11 +98,11 @@ fun BackgroundLocationPermissionBottomSheet(
                 horizontalArrangement = Arrangement.End,
             ) {
                 TextButton(onClick = onDismiss) {
-                    Text("Not Now")
+                    Text(notNowLabel)
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 Button(onClick = onRequestPermission) {
-                    Text("Continue")
+                    Text(continueLabel)
                 }
             }
 

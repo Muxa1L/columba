@@ -26,8 +26,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 
 /**
  * A card for selecting "custom settings" option in wizard flows.
@@ -44,6 +46,8 @@ fun CustomSettingsCard(
     isSelected: Boolean,
     onClick: () -> Unit,
 ) {
+    val selectedLabel = stringResource(R.string.common_selected)
+
     val containerColor =
         if (isSelected) {
             MaterialTheme.colorScheme.primaryContainer
@@ -90,7 +94,7 @@ fun CustomSettingsCard(
             if (isSelected) {
                 Icon(
                     imageVector = Icons.Default.Check,
-                    contentDescription = "Selected",
+                    contentDescription = selectedLabel,
                     tint = MaterialTheme.colorScheme.primary,
                 )
             }

@@ -27,10 +27,12 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.lxmf.messenger.R
 
 /**
  * Reusable full-screen dialog for displaying identity QR code and details.
@@ -47,9 +49,13 @@ fun IdentityQrCodeDialogContent(
     displayName: String,
     qrCodeData: String?,
     onDismiss: () -> Unit,
-    title: String = "Your Identity",
+    title: String? = null,
     actionsContent: @Composable ColumnScope.() -> Unit,
 ) {
+    val resolvedTitle = title ?: stringResource(R.string.identity_qr_default_title)
+    val closeLabel = stringResource(R.string.common_close)
+    val scanPrompt = stringResource(R.string.identity_qr_scan_prompt)
+
     // Capture Activity context before Dialog (inside Dialog, LocalContext is a ContextThemeWrapper)
     val activity = LocalContext.current.findActivity()
     Dialog(
@@ -81,12 +87,12 @@ fun IdentityQrCodeDialogContent(
             Scaffold(
                 topBar = {
                     TopAppBar(
-                        title = { Text(title) },
+                        title = { Text(resolvedTitle) },
                         navigationIcon = {
                             IconButton(onClick = onDismiss) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
-                                    contentDescription = "Close",
+                                    contentDescription = closeLabel,
                                 )
                             }
                         },
@@ -125,7 +131,7 @@ fun IdentityQrCodeDialogContent(
                         )
 
                         Text(
-                            text = "Scan this QR code to add me as a contact",
+                            text = scanPrompt,
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
