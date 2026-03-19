@@ -16,11 +16,18 @@
   <string name="offline_banner_reconnecting">Reconnecting\u2026</string>
   <string name="offline_banner_reconnect">Reconnect</string>
   <string name="offline_banner_reconnecting_description">Reconnecting in progress</string>
+  <string name="notification_ble_peer_connected_title">BLE Peer Connected</string>
+  <string name="notification_ble_peer_connected_message">Connected to %1$s</string>
+  <string name="notification_ble_peer_disconnected_title">BLE Peer Disconnected</string>
+  <string name="notification_ble_peer_disconnected_message">Disconnected from %1$s</string>
+  <string name="service_notification_rnode_disconnected_title">RNode Disconnected</string>
+  <string name="service_notification_rnode_disconnected_message">%1$s lost connection. Attempting to reconnect...</string>
   <!-- Common -->
   <string name="common_go_back">Go Back</string>
   <string name="common_block">Block</string>
   <string name="common_remove">Remove</string>
   <string name="common_cancel">Cancel</string>
+   <string name="main_back_again_to_exit">Press back again to exit</string>
   <string name="cd_back">Back</string>
   <!-- Announce detail screen -->
   <string name="announce_detail_title">Node Details</string>
@@ -28,6 +35,9 @@
   <string name="announce_detail_cd_save_peer">Save peer</string>
   <string name="announce_detail_node_not_found">Node not found</string>
   <string name="announce_detail_start_chat">Start Chat</string>
+   <string name="sort_mode_quality">Quality</string>
+   <string name="sort_mode_proximity">Proximity</string>
+   <string name="permissions_page_granted">Granted</string>
   <string name="announce_detail_current_relay">Current Relay</string>
   <string name="announce_detail_set_as_my_relay">Set as My Relay</string>
   <string name="announce_detail_view_messaging_destination">View messaging destination</string>
@@ -35,6 +45,11 @@
   <string name="announce_detail_browse_node">Browse Node</string>
   <string name="announce_detail_destination_hash">Destination Hash</string>
   <string name="announce_detail_network_distance">Network Distance</string>
+   <string name="rnode_device_discovery_unknown_type">Unknown type</string>
+   <string name="rnode_device_discovery_type_classic">Classic</string>
+   <string name="rnode_device_discovery_type_ble">BLE</string>
+   <string name="rnode_device_discovery_type_unknown">Unknown</string>
+   <string name="rnode_device_discovery_paired">Paired</string>
   <string name="announce_detail_signal_excellent">Excellent signal strength</string>
   <string name="announce_detail_signal_good">Good signal strength</string>
   <string name="announce_detail_signal_weak">Weak signal strength</string>
@@ -44,6 +59,10 @@
   <string name="announce_detail_destination_aspect">Destination Aspect</string>
   <string name="announce_detail_aspect_unknown">unknown</string>
   <string name="announce_detail_aspect_lxmf_delivery">LXMF messaging peer</string>
+   <plurals name="contacts_hops_bulleted">
+     <item quantity="one">• %1$d hop</item>
+     <item quantity="other">• %1$d hops</item>
+   </plurals>
   <string name="announce_detail_aspect_lxst_telephony">LXST telephony destination</string>
   <string name="announce_detail_aspect_lxmf_propagation">Message relay/propagation node</string>
   <string name="announce_detail_aspect_nomadnetwork">NomadNet content node</string>

@@ -19,6 +19,12 @@
     <string name="offline_banner_reconnecting">Переподключение...</string>
     <string name="offline_banner_reconnect">Подключиться снова</string>
     <string name="offline_banner_reconnecting_description">Выполняется переподключение</string>
+    <string name="notification_ble_peer_connected_title">BLE-пир подключен</string>
+    <string name="notification_ble_peer_connected_message">Подключено к %1$s</string>
+    <string name="notification_ble_peer_disconnected_title">BLE-пир отключен</string>
+    <string name="notification_ble_peer_disconnected_message">Отключено от %1$s</string>
+    <string name="service_notification_rnode_disconnected_title">RNode отключен</string>
+    <string name="service_notification_rnode_disconnected_message">%1$s потерял соединение. Выполняется переподключение...</string>
 
     <!-- Common -->
     <string name="common_go_back">Назад</string>
@@ -256,6 +262,7 @@
     <string name="common_save">Сохранить</string>
     <string name="offline_map_download_http_reenable_note"> Примечание: HTTP был автоматически отключен, перед повторной попыткой его нужно включить снова.</string>
     <string name="offline_map_download_http_disabled_ready">HTTP отключен. Ваши офлайн-карты готовы.</string>
+        <string name="main_back_again_to_exit">Нажмите назад еще раз, чтобы выйти</string>
     <string name="offline_map_download_step_location">Выбрать местоположение</string>
     <string name="offline_map_download_step_area">Выбрать область</string>
     <string name="offline_map_download_step_confirm">Подтвердить загрузку</string>
@@ -271,6 +278,11 @@
     <string name="offline_map_download_latitude">Широта</string>
     <string name="offline_map_download_longitude">Долгота</string>
     <string name="offline_map_download_search_address">Искать город или адрес</string>
+        <string name="rnode_device_discovery_unknown_type">Неизвестный тип</string>
+        <string name="rnode_device_discovery_type_classic">Классический</string>
+        <string name="rnode_device_discovery_type_ble">BLE</string>
+        <string name="rnode_device_discovery_type_unknown">Неизвестный</string>
+        <string name="rnode_device_discovery_paired">Сопряжено</string>
     <string name="offline_map_download_invalid_geohash">Неверный geohash</string>
     <string name="offline_map_download_geohash">Geohash</string>
     <string name="offline_map_download_geohash_placeholder">например, dqcjq</string>
@@ -280,6 +292,12 @@
     <string name="offline_map_download_estimated_download">Оценка загрузки</string>
     <string name="offline_map_download_name_map">Назовите карту</string>
     <string name="offline_map_download_region_name">Название региона</string>
+        <plurals name="contacts_hops_bulleted">
+            <item quantity="one">• %1$d переход</item>
+            <item quantity="few">• %1$d перехода</item>
+            <item quantity="many">• %1$d переходов</item>
+            <item quantity="other">• %1$d перехода</item>
+        </plurals>
     <string name="offline_map_download_region_name_placeholder">например, Дом, Центр, Тропа</string>
     <string name="offline_map_download_summary">Сводка</string>
     <string name="offline_map_download_radius">Радиус</string>
@@ -457,6 +475,9 @@
     <string name="common_collapse">Свернуть</string>
     <string name="common_selected">Выбрано</string>
     <string name="common_photo">Фото</string>
+    <string name="sort_mode_quality">Качество</string>
+    <string name="sort_mode_proximity">Близость</string>
+    <string name="permissions_page_granted">Предоставлено</string>
     <string name="image_quality_choose_title">Выберите качество изображения</string>
     <string name="image_quality_send_action">Отправить</string>
     <string name="image_quality_transfer_time_each">%1$s каждое</string>

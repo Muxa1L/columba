@@ -630,7 +630,7 @@ private fun PopularPresetCard(
                 Column(horizontalAlignment = Alignment.End) {
                     if (slot != null) {
                         Text(
-                            text = "Slot $slot",
+                            text = stringResource(R.string.rnode_frequency_slot_slot_number, slot),
                             style = MaterialTheme.typography.labelMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
@@ -646,7 +646,7 @@ private fun PopularPresetCard(
                     Spacer(Modifier.width(12.dp))
                     Icon(
                         imageVector = Icons.Default.Check,
-                        contentDescription = "Selected",
+                        contentDescription = stringResource(R.string.common_selected),
                         tint = MaterialTheme.colorScheme.primary,
                     )
                 }

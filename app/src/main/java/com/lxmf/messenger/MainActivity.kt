@@ -53,6 +53,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -994,12 +995,14 @@ fun ColumbaNavigation(
 
     @Composable
     fun DoubleBackToExitHandler(route: String) {
+        val pressBackAgainLabel = stringResource(R.string.main_back_again_to_exit)
+
         BackHandler(enabled = currentRoute == route) {
             if (backPressedOnce) {
                 (context as? ComponentActivity)?.finish()
             } else {
                 backPressedOnce = true
-                Toast.makeText(context, "Press back again to exit", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, pressBackAgainLabel, Toast.LENGTH_SHORT).show()
             }
         }
     }

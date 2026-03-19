@@ -96,6 +96,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -1166,9 +1167,10 @@ fun ContactListItem(
                                         },
                                 )
 
-                                if (contact.isOnline && contact.hops != null) {
+                                val contactHops = contact.hops
+                                if (contact.isOnline && contactHops != null) {
                                     Text(
-                                        text = "• ${contact.hops} hops",
+                                        text = pluralStringResource(R.plurals.contacts_hops_bulleted, contactHops, contactHops),
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     )

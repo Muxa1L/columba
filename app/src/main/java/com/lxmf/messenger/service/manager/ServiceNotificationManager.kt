@@ -236,8 +236,13 @@ class ServiceNotificationManager(
                     NotificationCompat
                         .Builder(context, CHANNEL_ID_RNODE)
                         .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("RNode Disconnected")
-                        .setContentText("$names lost connection. Attempting to reconnect...")
+                        .setContentTitle(context.getString(R.string.service_notification_rnode_disconnected_title))
+                        .setContentText(
+                            context.getString(
+                                R.string.service_notification_rnode_disconnected_message,
+                                names,
+                            ),
+                        )
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true)
                         .setPriority(NotificationCompat.PRIORITY_HIGH)

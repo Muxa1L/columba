@@ -267,7 +267,7 @@ private fun PermissionCard(
             if (isGranted) {
                 Icon(
                     imageVector = Icons.Default.Check,
-                    contentDescription = "Granted",
+                    contentDescription = stringResource(R.string.permissions_page_granted),
                     modifier = Modifier.size(24.dp),
                     tint = MaterialTheme.colorScheme.primary,
                 )

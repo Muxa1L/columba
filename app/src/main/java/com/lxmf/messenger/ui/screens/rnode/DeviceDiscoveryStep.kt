@@ -255,7 +255,7 @@ private fun TcpConnectionForm(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             Icons.Default.CheckCircle,
-                            contentDescription = "Success",
+                            contentDescription = stringResource(R.string.main_screen_success),
                             tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(20.dp),
                         )
@@ -837,12 +837,12 @@ private fun BluetoothDeviceCard(
                                 ) {
                                     Icon(
                                         Icons.Default.Warning,
-                                        contentDescription = "Unknown type",
+                                        contentDescription = stringResource(R.string.rnode_device_discovery_unknown_type),
                                         modifier = Modifier.size(14.dp),
                                         tint = MaterialTheme.colorScheme.error,
                                     )
                                     Text(
-                                        "Unknown type",
+                                        stringResource(R.string.rnode_device_discovery_unknown_type),
                                         style = MaterialTheme.typography.labelSmall,
                                         color = MaterialTheme.colorScheme.error,
                                     )
@@ -850,9 +850,9 @@ private fun BluetoothDeviceCard(
                             } else {
                                 Text(
                                     when (device.type) {
-                                        BluetoothType.CLASSIC -> "Classic"
-                                        BluetoothType.BLE -> "BLE"
-                                        BluetoothType.UNKNOWN -> "Unknown"
+                                        BluetoothType.CLASSIC -> stringResource(R.string.rnode_device_discovery_type_classic)
+                                        BluetoothType.BLE -> stringResource(R.string.rnode_device_discovery_type_ble)
+                                        BluetoothType.UNKNOWN -> stringResource(R.string.rnode_device_discovery_type_unknown)
                                     },
                                     style = MaterialTheme.typography.labelSmall,
                                     color =
@@ -908,7 +908,7 @@ private fun BluetoothDeviceCard(
                                     )
                                     Spacer(Modifier.width(2.dp))
                                     Text(
-                                        "Paired",
+                                        stringResource(R.string.rnode_device_discovery_paired),
                                         style = MaterialTheme.typography.labelSmall,
                                         color =
                                             if (isSelected) {
@@ -928,7 +928,7 @@ private fun BluetoothDeviceCard(
                     isSelected -> {
                         Icon(
                             Icons.Default.Check,
-                            contentDescription = "Selected",
+                            contentDescription = stringResource(R.string.common_selected),
                             tint = MaterialTheme.colorScheme.primary,
                         )
                     }

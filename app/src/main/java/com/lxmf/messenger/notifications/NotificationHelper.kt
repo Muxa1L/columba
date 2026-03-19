@@ -339,8 +339,13 @@ class NotificationHelper
                 NotificationCompat
                     .Builder(context, CHANNEL_ID_BLE_EVENTS)
                     .setSmallIcon(R.mipmap.ic_launcher)
-                    .setContentTitle("BLE Peer Connected")
-                    .setContentText("Connected to $displayName")
+                    .setContentTitle(context.getString(R.string.notification_ble_peer_connected_title))
+                    .setContentText(
+                        context.getString(
+                            R.string.notification_ble_peer_connected_message,
+                            displayName,
+                        ),
+                    )
                     .setPriority(NotificationCompat.PRIORITY_LOW)
                     .setCategory(NotificationCompat.CATEGORY_STATUS)
                     .setAutoCancel(true)
@@ -384,8 +389,13 @@ class NotificationHelper
                 NotificationCompat
                     .Builder(context, CHANNEL_ID_BLE_EVENTS)
                     .setSmallIcon(R.mipmap.ic_launcher)
-                    .setContentTitle("BLE Peer Disconnected")
-                    .setContentText("Disconnected from $displayName")
+                    .setContentTitle(context.getString(R.string.notification_ble_peer_disconnected_title))
+                    .setContentText(
+                        context.getString(
+                            R.string.notification_ble_peer_disconnected_message,
+                            displayName,
+                        ),
+                    )
                     .setPriority(NotificationCompat.PRIORITY_LOW)
                     .setCategory(NotificationCompat.CATEGORY_STATUS)
                     .setAutoCancel(true)

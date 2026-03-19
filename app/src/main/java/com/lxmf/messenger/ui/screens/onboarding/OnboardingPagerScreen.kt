@@ -35,8 +35,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.lxmf.messenger.R
 import com.lxmf.messenger.ui.screens.onboarding.pages.CompletePage
 import com.lxmf.messenger.ui.screens.onboarding.pages.ConnectivityPage
 import com.lxmf.messenger.ui.screens.onboarding.pages.IdentityPage
@@ -293,7 +295,7 @@ private fun TopBar(
                 modifier = Modifier.align(Alignment.CenterEnd),
             ) {
                 Text(
-                    text = "Skip",
+                    text = stringResource(R.string.common_skip),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
