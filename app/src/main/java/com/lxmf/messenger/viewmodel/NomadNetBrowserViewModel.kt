@@ -274,7 +274,7 @@ class NomadNetBrowserViewModel
             lastFetchPath = path
             lastFetchFormDataJson = formDataJson
             _browserState.value = BrowserState.Loading("Requesting page...")
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch {
                 try {
                     val protocol = reticulumProtocol as? ServiceReticulumProtocol
                     if (protocol == null) {
@@ -378,7 +378,7 @@ class NomadNetBrowserViewModel
             if (nodeHash.isEmpty()) return
 
             _identifyInProgress.value = true
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch {
                 try {
                     val protocol =
                         reticulumProtocol as? ServiceReticulumProtocol
@@ -465,7 +465,7 @@ class NomadNetBrowserViewModel
             lastFetchFormDataJson = null
             _browserState.value = BrowserState.Loading("Requesting page...")
 
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch {
                 try {
                     val protocol = reticulumProtocol as? ServiceReticulumProtocol
                     if (protocol == null) {

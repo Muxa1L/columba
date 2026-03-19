@@ -608,7 +608,7 @@ After flashing, you will be prompted to configure the radio parameters for trans
   <string name="identity_screen_view_qr_code">View QR Code</string>
   <string name="identity_screen_destination">Destination</string>
   <string name="identity_screen_view_identity_hint">Tap to view full identity details and QR code for sharing</string>
-  <string name="identity_screen_ble_shared_unavailable">BLE connections are not available while using a shared Reticulum instance. Only Columba's own instance can initiate Bluetooth LE connections.</string>
+  <string name="identity_screen_ble_shared_unavailable">BLE connections are not available while using a shared Reticulum instance. Only the Columba app instance can initiate Bluetooth LE connections.</string>
   <string name="identity_screen_no_active_ble_connections">No active BLE connections</string>
   <string name="identity_screen_signal_excellent">Excellent Signal</string>
   <string name="identity_screen_signal_good">Good Signal</string>

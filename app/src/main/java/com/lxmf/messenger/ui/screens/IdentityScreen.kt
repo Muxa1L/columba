@@ -517,7 +517,6 @@ fun InterfacesCard(
                     tint = MaterialTheme.colorScheme.error,
                 )
             },
-            title = { Text(if (hasFailed) "Interface Failed" else "Interface Offline") },
             title = {
                 Text(
                     if (hasFailed) {
