@@ -14,6 +14,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import com.lxmf.messenger.R
 import com.lxmf.messenger.reticulum.ble.util.BlePermissionManager
 
 /**
@@ -38,6 +40,8 @@ fun rememberBluetoothPermissionController(
     onOpenSettingsRequested: (Context) -> Unit,
 ): BluetoothPermissionController {
     val context = LocalContext.current
+    val openSettingsLabel = stringResource(R.string.common_open_settings)
+    val grantPermissionsLabel = stringResource(R.string.ble_permission_primary_action)
     val prefs =
         remember(context) {
             context.getSharedPreferences("bluetooth_permission_prefs", Context.MODE_PRIVATE)
@@ -142,7 +146,7 @@ fun rememberBluetoothPermissionController(
                 }
             },
             sheetState = sheetState,
-            primaryActionLabel = if (useAppSettings) "Open Settings" else "Grant Permissions",
+            primaryActionLabel = if (useAppSettings) openSettingsLabel else grantPermissionsLabel,
         )
     }
 

@@ -38,11 +38,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.model.InterfaceType
 import com.lxmf.messenger.data.repository.Announce
 import com.lxmf.messenger.ui.theme.MeshConnected
@@ -254,7 +257,7 @@ fun SignalStrengthIndicator(
 
         // Hop count
         Text(
-            text = "$hops ${if (hops == 1) "hop" else "hops"}",
+            text = pluralStringResource(R.plurals.peer_card_hops, hops, hops),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontSize = 10.sp,
@@ -280,10 +283,10 @@ fun InterfaceTypeIcon(
 
     val (icon, contentDescription) =
         when (type) {
-            InterfaceType.AUTO_INTERFACE -> Icons.Default.Wifi to "WiFi"
-            InterfaceType.TCP_CLIENT -> Icons.Default.Public to "Internet"
-            InterfaceType.ANDROID_BLE -> Icons.Default.Bluetooth to "Bluetooth"
-            InterfaceType.RNODE -> ImageVector.vectorResource(com.composables.icons.lucide.R.drawable.lucide_ic_antenna) to "LoRa/RNode"
+            InterfaceType.AUTO_INTERFACE -> Icons.Default.Wifi to stringResource(R.string.peer_card_interface_wifi)
+            InterfaceType.TCP_CLIENT -> Icons.Default.Public to stringResource(R.string.peer_card_interface_internet)
+            InterfaceType.ANDROID_BLE -> Icons.Default.Bluetooth to stringResource(R.string.peer_card_interface_bluetooth)
+            InterfaceType.RNODE -> ImageVector.vectorResource(com.composables.icons.lucide.R.drawable.lucide_ic_antenna) to stringResource(R.string.peer_card_interface_lora_rnode)
             InterfaceType.UNKNOWN -> return
         }
 
@@ -299,11 +302,11 @@ fun InterfaceTypeIcon(
 fun NodeTypeBadge(nodeType: String) {
     val (text, color) =
         when (nodeType) {
-            "NODE" -> "Node" to MaterialTheme.colorScheme.tertiary
-            "PEER" -> "Peer" to MaterialTheme.colorScheme.primary
-            "PROPAGATION_NODE" -> "Relay" to MaterialTheme.colorScheme.secondary
-            "PHONE" -> "Phone" to MaterialTheme.colorScheme.error
-            else -> "Node" to MaterialTheme.colorScheme.tertiary
+            "NODE" -> stringResource(R.string.announce_stream_node_type_node) to MaterialTheme.colorScheme.tertiary
+            "PEER" -> stringResource(R.string.announce_stream_node_type_peer) to MaterialTheme.colorScheme.primary
+            "PROPAGATION_NODE" -> stringResource(R.string.announce_stream_node_type_relay) to MaterialTheme.colorScheme.secondary
+            "PHONE" -> stringResource(R.string.peer_card_node_type_phone) to MaterialTheme.colorScheme.error
+            else -> stringResource(R.string.announce_stream_node_type_node) to MaterialTheme.colorScheme.tertiary
         }
 
     Surface(
@@ -323,13 +326,14 @@ fun NodeTypeBadge(nodeType: String) {
 @Composable
 fun OtherBadge() {
     val color = MaterialTheme.colorScheme.outline
+    val label = stringResource(R.string.peer_card_other)
 
     Surface(
         shape = RoundedCornerShape(12.dp),
         color = color.copy(alpha = 0.15f),
     ) {
         Text(
-            text = "Other",
+            text = label,
             style = MaterialTheme.typography.labelSmall,
             color = color,
             fontWeight = FontWeight.SemiBold,

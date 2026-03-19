@@ -2,6 +2,7 @@
 
 package com.lxmf.messenger.ui.screens.settings.cards
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -52,9 +53,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.model.EnrichedContact
 import com.lxmf.messenger.service.SharingSession
 import com.lxmf.messenger.ui.components.CollapsibleSettingsCard
@@ -125,9 +129,10 @@ fun LocationSharingCard(
 ) {
     var showDurationPicker by remember { mutableStateOf(false) }
     var showPrecisionPicker by remember { mutableStateOf(false) }
+    val localizedSelfDisplayName = if (localDisplayName == "Myself") stringResource(R.string.settings_location_sharing_myself) else localDisplayName
 
     CollapsibleSettingsCard(
-        title = "Location Sharing",
+        title = stringResource(R.string.settings_location_sharing_title),
         icon = Icons.Default.LocationOn,
         isExpanded = isExpanded,
         onExpandedChange = onExpandedChange,
@@ -140,9 +145,7 @@ fun LocationSharingCard(
     ) {
         // Description
         Text(
-            text =
-                "Share your real-time location with contacts. " +
-                    "When disabled, all active sharing sessions will be stopped.",
+            text = stringResource(R.string.settings_location_sharing_description),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -177,11 +180,11 @@ fun LocationSharingCard(
                 Text(
                     text =
                         if (hasBackgroundLocationPermission) {
-                            "Background location: Always"
+                            stringResource(R.string.settings_location_sharing_background_always)
                         } else if (hasForegroundLocationPermission) {
-                            "Background location: While using"
+                            stringResource(R.string.settings_location_sharing_background_while_using)
                         } else {
-                            "Background location: Not granted"
+                            stringResource(R.string.settings_location_sharing_background_not_granted)
                         },
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
@@ -189,11 +192,11 @@ fun LocationSharingCard(
                 Text(
                     text =
                         if (hasBackgroundLocationPermission) {
-                            "Tap to change (Permissions > Location)"
+                            stringResource(R.string.settings_location_sharing_background_change)
                         } else if (hasForegroundLocationPermission) {
-                            "Tap to enable background location"
+                            stringResource(R.string.settings_location_sharing_background_enable)
                         } else {
-                            "Tap to grant location permission"
+                            stringResource(R.string.settings_location_sharing_background_grant)
                         },
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -201,7 +204,7 @@ fun LocationSharingCard(
             }
             Icon(
                 imageVector = Icons.Default.ChevronRight,
-                contentDescription = "Change",
+                contentDescription = stringResource(R.string.common_change),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(20.dp),
             )
@@ -220,15 +223,15 @@ fun LocationSharingCard(
 
         // Default duration picker
         SettingsRow(
-            label = "Default duration",
-            value = getDurationDisplayText(defaultDuration),
+            label = stringResource(R.string.settings_location_sharing_default_duration),
+            value = localizedDurationDisplayText(defaultDuration),
             onClick = { showDurationPicker = true },
         )
 
         // Location precision picker
         SettingsRow(
-            label = "Location precision",
-            value = getPrecisionRadiusDisplayText(locationPrecisionRadius),
+            label = stringResource(R.string.settings_location_sharing_location_precision),
+            value = localizedPrecisionRadiusDisplayText(locationPrecisionRadius),
             onClick = { showPrecisionPicker = true },
         )
 
@@ -262,7 +265,7 @@ fun LocationSharingCard(
             onAllowedRequestersChange = onTelemetryAllowedRequestersChange,
             // Local identity for "Myself" option
             localDestinationHash = localDestinationHash,
-            localDisplayName = localDisplayName,
+            localDisplayName = localizedSelfDisplayName,
             localIconName = localIconName,
             localIconForegroundColor = localIconForegroundColor,
             localIconBackgroundColor = localIconBackgroundColor,
@@ -304,7 +307,7 @@ private fun ActiveSessionsSection(
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Text(
-            text = "Currently sharing with:",
+            text = stringResource(R.string.settings_location_sharing_currently_sharing),
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Medium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -323,7 +326,7 @@ private fun ActiveSessionsSection(
                 onClick = onStopAllSharing,
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Text("Stop All Sharing")
+                Text(stringResource(R.string.settings_location_sharing_stop_all))
             }
         }
     }
@@ -350,13 +353,13 @@ private fun ActiveSessionRow(
                 style = MaterialTheme.typography.bodyMedium,
             )
             Text(
-                text = formatTimeRemaining(session.endTime),
+                text = localizedFormatTimeRemaining(session.endTime),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
         TextButton(onClick = onStopSharing) {
-            Text("Stop")
+            Text(stringResource(R.string.settings_location_sharing_stop))
         }
     }
 }
@@ -390,7 +393,7 @@ private fun SettingsRow(
         }
         Icon(
             imageVector = Icons.Default.ChevronRight,
-            contentDescription = "Select",
+            contentDescription = stringResource(R.string.common_select),
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.size(24.dp),
         )
@@ -406,11 +409,11 @@ private fun DurationPickerDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Default Duration") },
+        title = { Text(stringResource(R.string.settings_location_sharing_dialog_default_duration)) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(
-                    "Select the default duration for new location sharing sessions:",
+                    stringResource(R.string.settings_location_sharing_dialog_default_duration_description),
                     style = MaterialTheme.typography.bodyMedium,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -422,7 +425,7 @@ private fun DurationPickerDialog(
                         FilterChip(
                             selected = currentDuration == duration.name,
                             onClick = { onDurationSelected(duration.name) },
-                            label = { Text(duration.displayText) },
+                            label = { Text(localizedDurationDisplayText(duration.name)) },
                             colors =
                                 FilterChipDefaults.filterChipColors(
                                     selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -435,7 +438,7 @@ private fun DurationPickerDialog(
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text("Done")
+                Text(stringResource(R.string.common_done))
             }
         },
     )
@@ -446,13 +449,13 @@ private fun DurationPickerDialog(
  */
 private enum class PrecisionPreset(
     val radiusMeters: Int,
-    val displayName: String,
-    val description: String,
+    val displayNameRes: Int,
+    val descriptionRes: Int,
 ) {
-    PRECISE(0, "Precise", "Exact GPS location"),
-    NEIGHBORHOOD(100, "Neighborhood", "~100m radius"),
-    CITY(1000, "City", "~1km radius"),
-    REGION(10000, "Region", "~10km radius"),
+    PRECISE(0, R.string.settings_location_sharing_precision_precise, R.string.settings_location_sharing_precision_exact_gps),
+    NEIGHBORHOOD(100, R.string.settings_location_sharing_precision_neighborhood, R.string.settings_location_sharing_precision_neighborhood_radius),
+    CITY(1000, R.string.settings_location_sharing_precision_city, R.string.settings_location_sharing_precision_city_radius),
+    REGION(10000, R.string.settings_location_sharing_precision_region, R.string.settings_location_sharing_precision_region_radius),
 }
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -464,19 +467,19 @@ private fun PrecisionRadiusPickerDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Location Precision") },
+        title = { Text(stringResource(R.string.settings_location_sharing_dialog_location_precision)) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text(
-                    "Choose how precisely your location is shared:",
+                    stringResource(R.string.settings_location_sharing_dialog_location_precision_description),
                     style = MaterialTheme.typography.bodyMedium,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
 
                 PrecisionPreset.entries.forEach { preset ->
                     PrecisionRadiusOption(
-                        title = preset.displayName,
-                        description = preset.description,
+                        title = stringResource(preset.displayNameRes),
+                        description = stringResource(preset.descriptionRes),
                         isSelected = currentRadius == preset.radiusMeters,
                         onClick = { onRadiusSelected(preset.radiusMeters) },
                     )
@@ -485,7 +488,7 @@ private fun PrecisionRadiusPickerDialog(
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text("Done")
+                Text(stringResource(R.string.common_done))
             }
         },
     )
@@ -563,6 +566,48 @@ internal fun getPrecisionRadiusDisplayText(radiusMeters: Int): String =
         else -> if (radiusMeters >= 1000) "${radiusMeters / 1000}km" else "${radiusMeters}m"
     }
 
+@Composable
+private fun localizedDurationDisplayText(durationName: String): String =
+    when (durationName) {
+        SharingDuration.FIFTEEN_MINUTES.name -> stringResource(R.string.settings_location_sharing_duration_fifteen_minutes)
+        SharingDuration.ONE_HOUR.name -> stringResource(R.string.settings_location_sharing_duration_one_hour)
+        SharingDuration.FOUR_HOURS.name -> stringResource(R.string.settings_location_sharing_duration_four_hours)
+        SharingDuration.UNTIL_MIDNIGHT.name -> stringResource(R.string.settings_location_sharing_duration_until_midnight)
+        SharingDuration.INDEFINITE.name -> stringResource(R.string.settings_location_sharing_duration_until_i_stop)
+        else -> stringResource(R.string.settings_location_sharing_duration_fallback)
+    }
+
+@Composable
+private fun localizedPrecisionRadiusDisplayText(radiusMeters: Int): String =
+    when (radiusMeters) {
+        0 -> stringResource(R.string.settings_location_sharing_precision_precise)
+        1000 -> stringResource(R.string.settings_location_sharing_precision_neighborhood_display)
+        10000 -> stringResource(R.string.settings_location_sharing_precision_city_display)
+        100000 -> stringResource(R.string.settings_location_sharing_precision_region_display)
+        else -> {
+            if (radiusMeters >= 1000) {
+                stringResource(R.string.settings_location_sharing_precision_km, radiusMeters / 1000)
+            } else {
+                stringResource(R.string.settings_location_sharing_precision_meters, radiusMeters)
+            }
+        }
+    }
+
+@Composable
+private fun localizedFormatTimeRemaining(endTime: Long?): String {
+    if (endTime == null) return stringResource(R.string.settings_location_sharing_until_stopped)
+    val remaining = endTime - System.currentTimeMillis()
+    if (remaining <= 0) return stringResource(R.string.settings_location_sharing_expiring)
+
+    val minutes = remaining / 60_000
+    val hours = minutes / 60
+
+    return when {
+        hours > 0 -> stringResource(R.string.settings_location_sharing_remaining_hours_minutes, hours, minutes % 60)
+        else -> stringResource(R.string.settings_location_sharing_remaining_minutes, minutes)
+    }
+}
+
 // =============================================================================
 // Telemetry Collector Section
 // =============================================================================
@@ -633,12 +678,12 @@ private fun TelemetryCollectorSection(
         ) {
             Icon(
                 imageVector = Icons.Default.CloudUpload,
-                contentDescription = "Group Tracker",
+                contentDescription = stringResource(R.string.settings_location_sharing_group_tracker),
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(20.dp),
             )
             Text(
-                text = "Group Tracker",
+                text = stringResource(R.string.settings_location_sharing_group_tracker),
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Medium,
             )
@@ -646,7 +691,7 @@ private fun TelemetryCollectorSection(
 
         // Description
         Text(
-            text = "Share your location with a group and see where everyone is",
+            text = stringResource(R.string.settings_location_sharing_group_tracker_description),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -665,12 +710,12 @@ private fun TelemetryCollectorSection(
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "Share with group",
+                    text = stringResource(R.string.settings_location_sharing_share_with_group),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
                 )
                 Text(
-                    text = "Automatically share your location",
+                    text = stringResource(R.string.settings_location_sharing_share_with_group_description),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -684,7 +729,7 @@ private fun TelemetryCollectorSection(
         // Select from contacts
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text(
-                text = "Group Host",
+                text = stringResource(R.string.settings_location_sharing_group_host),
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
             )
@@ -733,10 +778,10 @@ private fun TelemetryCollectorSection(
                 Text(
                     text =
                         when {
-                            isSelfSelected -> "$localDisplayName (myself)"
+                            isSelfSelected -> stringResource(R.string.settings_location_sharing_self_suffix, localDisplayName)
                             selectedContact != null -> selectedContact.displayName
                             collectorAddress != null -> collectorAddress
-                            else -> "Select from contacts..."
+                            else -> stringResource(R.string.settings_location_sharing_select_contact)
                         },
                     style = MaterialTheme.typography.bodyMedium,
                     color =
@@ -781,7 +826,7 @@ private fun TelemetryCollectorSection(
         // Send interval chips
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text(
-                text = "Send every: ${formatTelemetryIntervalDisplay(sendIntervalSeconds)}",
+                text = stringResource(R.string.settings_location_sharing_send_every, localizedTelemetryIntervalDisplay(sendIntervalSeconds)),
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.primary,
@@ -792,25 +837,25 @@ private fun TelemetryCollectorSection(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 TelemetryIntervalChip(
-                    label = "5min",
+                    label = stringResource(R.string.settings_interval_five_minutes_short),
                     selected = sendIntervalSeconds == 300,
                     enabled = enabled && collectorAddress != null,
                     onClick = { onSendIntervalChange(300) },
                 )
                 TelemetryIntervalChip(
-                    label = "15min",
+                    label = stringResource(R.string.settings_interval_fifteen_minutes_short),
                     selected = sendIntervalSeconds == 900,
                     enabled = enabled && collectorAddress != null,
                     onClick = { onSendIntervalChange(900) },
                 )
                 TelemetryIntervalChip(
-                    label = "30min",
+                    label = stringResource(R.string.settings_interval_thirty_minutes_short),
                     selected = sendIntervalSeconds == 1800,
                     enabled = enabled && collectorAddress != null,
                     onClick = { onSendIntervalChange(1800) },
                 )
                 TelemetryIntervalChip(
-                    label = "1hr",
+                    label = stringResource(R.string.settings_interval_one_hour_short),
                     selected = sendIntervalSeconds == 3600,
                     enabled = enabled && collectorAddress != null,
                     onClick = { onSendIntervalChange(3600) },
@@ -839,7 +884,7 @@ private fun TelemetryCollectorSection(
                         color = MaterialTheme.colorScheme.onSecondary,
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Sending...")
+                    Text(stringResource(R.string.settings_location_sharing_sending))
                 } else {
                     Icon(
                         imageVector = Icons.Default.Send,
@@ -847,7 +892,7 @@ private fun TelemetryCollectorSection(
                         modifier = Modifier.size(16.dp),
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Send Now")
+                    Text(stringResource(R.string.settings_location_sharing_send_now))
                 }
             }
             // Last send timestamp with periodic refresh
@@ -860,7 +905,7 @@ private fun TelemetryCollectorSection(
                     }
                 }
                 Text(
-                    text = "Last sent: ${formatTelemetryRelativeTime(lastSendTime, currentTime)}",
+                    text = stringResource(R.string.settings_location_sharing_last_sent, localizedTelemetryRelativeTime(lastSendTime, currentTime)),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -888,7 +933,7 @@ private fun TelemetryCollectorSection(
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "Receive locations from group",
+                    text = stringResource(R.string.settings_location_sharing_receive_locations),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
                     color =
@@ -899,7 +944,7 @@ private fun TelemetryCollectorSection(
                         },
                 )
                 Text(
-                    text = "Get everyone's location periodically",
+                    text = stringResource(R.string.settings_location_sharing_receive_locations_description),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -914,7 +959,7 @@ private fun TelemetryCollectorSection(
         // Request interval chips
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text(
-                text = "Request every: ${formatTelemetryIntervalDisplay(requestIntervalSeconds)}",
+                text = stringResource(R.string.settings_location_sharing_request_every, localizedTelemetryIntervalDisplay(requestIntervalSeconds)),
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
                 color =
@@ -930,25 +975,25 @@ private fun TelemetryCollectorSection(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 TelemetryIntervalChip(
-                    label = "5min",
+                    label = stringResource(R.string.settings_interval_five_minutes_short),
                     selected = requestIntervalSeconds == 300,
                     enabled = requestEnabled && collectorAddress != null,
                     onClick = { onRequestIntervalChange(300) },
                 )
                 TelemetryIntervalChip(
-                    label = "15min",
+                    label = stringResource(R.string.settings_interval_fifteen_minutes_short),
                     selected = requestIntervalSeconds == 900,
                     enabled = requestEnabled && collectorAddress != null,
                     onClick = { onRequestIntervalChange(900) },
                 )
                 TelemetryIntervalChip(
-                    label = "30min",
+                    label = stringResource(R.string.settings_interval_thirty_minutes_short),
                     selected = requestIntervalSeconds == 1800,
                     enabled = requestEnabled && collectorAddress != null,
                     onClick = { onRequestIntervalChange(1800) },
                 )
                 TelemetryIntervalChip(
-                    label = "1hr",
+                    label = stringResource(R.string.settings_interval_one_hour_short),
                     selected = requestIntervalSeconds == 3600,
                     enabled = requestEnabled && collectorAddress != null,
                     onClick = { onRequestIntervalChange(3600) },
@@ -976,7 +1021,7 @@ private fun TelemetryCollectorSection(
                         color = MaterialTheme.colorScheme.primary,
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Requesting...")
+                    Text(stringResource(R.string.settings_location_sharing_requesting))
                 } else {
                     Icon(
                         imageVector = Icons.Default.CloudDownload,
@@ -984,7 +1029,7 @@ private fun TelemetryCollectorSection(
                         modifier = Modifier.size(16.dp),
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Request Now")
+                    Text(stringResource(R.string.settings_location_sharing_request_now))
                 }
             }
             // Last request timestamp with periodic refresh
@@ -997,7 +1042,7 @@ private fun TelemetryCollectorSection(
                     }
                 }
                 Text(
-                    text = "Last received: ${formatTelemetryRelativeTime(lastRequestTime, currentTime)}",
+                    text = stringResource(R.string.settings_location_sharing_last_received, localizedTelemetryRelativeTime(lastRequestTime, currentTime)),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -1024,12 +1069,12 @@ private fun TelemetryCollectorSection(
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "Host Group",
+                    text = stringResource(R.string.settings_location_sharing_host_group),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
                 )
                 Text(
-                    text = "Let others use you as their group tracker",
+                    text = stringResource(R.string.settings_location_sharing_host_group_description),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -1083,14 +1128,14 @@ private fun AllowedRequestersSection(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
-                text = "Allowed Requesters",
+                text = stringResource(R.string.settings_location_sharing_allowed_requesters),
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
             )
             IconButton(onClick = onEditClick) {
                 Icon(
                     imageVector = Icons.Default.Edit,
-                    contentDescription = "Edit allowed requesters",
+                    contentDescription = stringResource(R.string.settings_location_sharing_edit_allowed_requesters),
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(20.dp),
                 )
@@ -1110,7 +1155,7 @@ private fun AllowedRequestersSection(
                     modifier = Modifier.size(16.dp),
                 )
                 Text(
-                    text = "No contacts selected - all requests blocked",
+                    text = stringResource(R.string.settings_location_sharing_no_contacts_selected),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.error,
                 )
@@ -1123,18 +1168,18 @@ private fun AllowedRequestersSection(
 
             val displayText =
                 if (remaining > 0) {
-                    displayNames.joinToString(", ") + " +$remaining more"
+                    stringResource(R.string.settings_location_sharing_more_contacts, displayNames.joinToString(", "), remaining)
                 } else {
                     displayNames.joinToString(", ")
                 }
 
             Text(
-                text = displayText.ifEmpty { "${allowedRequesters.size} selected" },
+                text = displayText.ifEmpty { stringResource(R.string.settings_location_sharing_selected_count, allowedRequesters.size) },
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Text(
-                text = "Only selected contacts can request your group's locations",
+                text = stringResource(R.string.settings_location_sharing_allowed_requesters_description),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
             )
@@ -1169,7 +1214,7 @@ private fun AllowedRequestersDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Select Allowed Requesters") },
+        title = { Text(stringResource(R.string.settings_location_sharing_select_allowed_requesters)) },
         text = {
             Column(
                 modifier = Modifier.fillMaxWidth(),
@@ -1177,9 +1222,7 @@ private fun AllowedRequestersDialog(
             ) {
                 // Description
                 Text(
-                    text =
-                        "Only selected contacts can request your group's location data. " +
-                            "If no contacts are selected, all requests will be blocked.",
+                    text = stringResource(R.string.settings_location_sharing_select_allowed_requesters_description),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -1188,7 +1231,7 @@ private fun AllowedRequestersDialog(
                 OutlinedTextField(
                     value = searchQuery,
                     onValueChange = { searchQuery = it },
-                    label = { Text("Search contacts") },
+                    label = { Text(stringResource(R.string.settings_location_sharing_search_contacts)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                 )
@@ -1220,7 +1263,7 @@ private fun AllowedRequestersDialog(
                 // Show count
                 if (selectedHashes.isNotEmpty()) {
                     Text(
-                        text = "${selectedHashes.size} contact(s) selected",
+                        text = stringResource(R.string.settings_location_sharing_contacts_selected, selectedHashes.size),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.primary,
                     )
@@ -1229,12 +1272,12 @@ private fun AllowedRequestersDialog(
         },
         confirmButton = {
             Button(onClick = { onConfirm(selectedHashes) }) {
-                Text("Done")
+                Text(stringResource(R.string.common_done))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.common_cancel))
             }
         },
     )
@@ -1335,6 +1378,39 @@ private fun formatTelemetryIntervalDisplay(seconds: Int): String {
     }
 }
 
+@Composable
+private fun localizedTelemetryRelativeTime(
+    timestamp: Long,
+    now: Long = System.currentTimeMillis(),
+): String {
+    val diff = now - timestamp
+
+    return when {
+        diff < 5_000 -> stringResource(R.string.common_relative_time_just_now)
+        diff < 60_000 -> pluralStringResource(R.plurals.common_relative_time_seconds_ago, (diff / 1000).toInt(), (diff / 1000).toInt())
+        diff < 120_000 -> stringResource(R.string.common_relative_time_one_minute)
+        diff < 3600_000 -> pluralStringResource(R.plurals.common_relative_time_minutes_ago, (diff / 60_000).toInt(), (diff / 60_000).toInt())
+        diff < 7200_000 -> stringResource(R.string.common_relative_time_one_hour)
+        diff < 86400_000 -> pluralStringResource(R.plurals.common_relative_time_hours_ago, (diff / 3600_000).toInt(), (diff / 3600_000).toInt())
+        else -> pluralStringResource(R.plurals.common_relative_time_days_ago, (diff / 86400_000).toInt(), (diff / 86400_000).toInt())
+    }
+}
+
+@Composable
+private fun localizedTelemetryIntervalDisplay(seconds: Int): String {
+    val hours = seconds / 3600
+    val minutes = (seconds % 3600) / 60
+    val secs = seconds % 60
+
+    return when {
+        seconds < 60 -> stringResource(R.string.settings_interval_seconds_short, seconds)
+        hours > 0 && minutes == 0 && secs == 0 -> stringResource(R.string.settings_interval_hours_short, hours)
+        hours > 0 -> stringResource(R.string.settings_interval_hours_minutes_short, hours, minutes)
+        secs == 0 -> stringResource(R.string.settings_interval_minutes_short, minutes)
+        else -> stringResource(R.string.settings_interval_minutes_seconds_short, minutes, secs)
+    }
+}
+
 /**
  * Dialog for selecting a contact as the group host/collector.
  */
@@ -1359,21 +1435,21 @@ private fun GroupHostPickerDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Select Group Host") },
+        title = { Text(stringResource(R.string.settings_location_sharing_select_group_host)) },
         text = {
             Column(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 // Caution text
                 Text(
-                    text = "Select yourself to host the group, or choose a contact to send your location to.",
+                    text = stringResource(R.string.settings_location_sharing_select_group_host_description),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
 
                 if (contacts.isEmpty() && localDestinationHash == null) {
                     Text(
-                        text = "No contacts available. Add contacts first.",
+                        text = stringResource(R.string.settings_location_sharing_no_contacts),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -1406,7 +1482,7 @@ private fun GroupHostPickerDialog(
                                     )
                                     Spacer(modifier = Modifier.width(12.dp))
                                     Text(
-                                        text = "$localDisplayName (myself)",
+                                        text = stringResource(R.string.settings_location_sharing_self_suffix, localDisplayName),
                                         style = MaterialTheme.typography.bodyLarge,
                                         color =
                                             if (isSelfSelected) {
@@ -1440,7 +1516,7 @@ private fun GroupHostPickerDialog(
                                     )
                                     Spacer(modifier = Modifier.width(12.dp))
                                     Text(
-                                        text = "None",
+                                        text = stringResource(R.string.common_none),
                                         style = MaterialTheme.typography.bodyLarge,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     )
@@ -1461,7 +1537,7 @@ private fun GroupHostPickerDialog(
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.common_cancel))
             }
         },
     )

@@ -1,6 +1,9 @@
 package com.lxmf.messenger.ui.components
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.model.ImageCompressionPreset
 import com.lxmf.messenger.service.ConversationLinkManager
 
@@ -50,23 +53,25 @@ fun ImageQualitySelectionDialog(
 
     val title =
         if (imageCount > 1) {
-            "Send $imageCount Images"
+            pluralStringResource(R.plurals.image_quality_send_images_title, imageCount, imageCount)
         } else {
-            "Choose Image Quality"
+            stringResource(R.string.image_quality_choose_title)
         }
 
     val confirmText =
         if (imageCount > 1) {
-            "Send $imageCount Images"
+            pluralStringResource(R.plurals.image_quality_send_images_action, imageCount, imageCount)
         } else {
-            "Send"
+            stringResource(R.string.image_quality_send_action)
         }
 
     // For multi-image shares, append " each" to transfer time estimates so the user
     // understands the time shown is per-image, not total.
     val displayEstimates =
         if (imageCount > 1) {
-            transferTimeEstimates.mapValues { (_, time) -> time?.let { "$it each" } }
+            transferTimeEstimates.mapValues { (_, time) ->
+                time?.let { estimate -> stringResource(R.string.image_quality_transfer_time_each, estimate) }
+            }
         } else {
             transferTimeEstimates
         }

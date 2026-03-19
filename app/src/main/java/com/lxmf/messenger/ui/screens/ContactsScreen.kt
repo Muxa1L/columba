@@ -173,12 +173,12 @@ fun ContactsScreen(
     // Show toast for announce success/error
     LaunchedEffect(announceSuccess) {
         if (announceSuccess) {
-            Toast.makeText(context, "Announce sent!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.contacts_announce_sent), Toast.LENGTH_SHORT).show()
         }
     }
     LaunchedEffect(announceError) {
         announceError?.let { error ->
-            Toast.makeText(context, "Error: $error", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, context.getString(R.string.contacts_error_message, error), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -535,7 +535,7 @@ fun ContactsScreen(
                             if (contactsState.groupedContacts.pinned.isNotEmpty()) {
                                 item {
                                     Text(
-                                        text = "PINNED",
+                                        text = stringResource(R.string.contacts_section_pinned),
                                         style = MaterialTheme.typography.labelMedium,
                                         color = MaterialTheme.colorScheme.primary,
                                         modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 4.dp),
@@ -586,7 +586,7 @@ fun ContactsScreen(
                                 if (contactsState.groupedContacts.relay != null || contactsState.groupedContacts.pinned.isNotEmpty()) {
                                     item {
                                         Text(
-                                            text = "ALL CONTACTS",
+                                            text = stringResource(R.string.contacts_section_all),
                                             style = MaterialTheme.typography.labelMedium,
                                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                                             modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 4.dp),
@@ -1422,14 +1422,14 @@ fun EmptyContactsState(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "No contacts yet",
+            text = stringResource(R.string.contacts_empty_title),
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Star peers in the Announce Stream\nor add contacts via QR code",
+            text = stringResource(R.string.contacts_empty_subtitle),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
             modifier = Modifier.padding(horizontal = 32.dp),
