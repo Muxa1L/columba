@@ -20,7 +20,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.model.ImageCompressionPreset
 import com.lxmf.messenger.ui.components.CollapsibleSettingsCard
 
@@ -47,16 +49,14 @@ fun ImageCompressionCard(
 ) {
     android.util.Log.d("ImageCompressionCard", "Rendering: selected=$selectedPreset, detected=$detectedPreset, hasSlowInterface=$hasSlowInterface")
     CollapsibleSettingsCard(
-        title = "Image Compression",
+        title = stringResource(R.string.settings_image_compression_title),
         icon = Icons.Default.Image,
         isExpanded = isExpanded,
         onExpandedChange = onExpandedChange,
     ) {
         // Description
         Text(
-            text =
-                "Select compression level for image attachments. " +
-                    "Auto mode detects your network type and selects the optimal preset.",
+            text = stringResource(R.string.settings_image_compression_description),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -100,6 +100,7 @@ fun ImageCompressionCard(
 /**
  * Build the label for a preset chip.
  */
+@Composable
 private fun buildPresetLabel(
     preset: ImageCompressionPreset,
     detectedPreset: ImageCompressionPreset?,
@@ -107,9 +108,12 @@ private fun buildPresetLabel(
 ): String {
     return when {
         preset == ImageCompressionPreset.AUTO && isSelected && detectedPreset != null -> {
-            "Auto (${detectedPreset.displayName})"
+            stringResource(
+                R.string.settings_image_compression_auto_with_preset,
+                presetDisplayName(detectedPreset),
+            )
         }
-        else -> preset.displayName
+        else -> presetDisplayName(preset)
     }
 }
 
@@ -141,16 +145,18 @@ private fun PresetDescription(
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             Text(
-                text = displayPreset.description,
+                text = presetDescription(displayPreset),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
             if (displayPreset != ImageCompressionPreset.AUTO) {
                 Text(
-                    text =
-                        "Max: ${formatDimension(displayPreset.maxDimensionPx)}px, " +
-                            "${formatBytes(displayPreset.targetSizeBytes)}",
+                    text = stringResource(
+                        R.string.settings_image_compression_max,
+                        formatDimension(displayPreset.maxDimensionPx),
+                        formatBytes(displayPreset.targetSizeBytes),
+                    ),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.outline,
                 )
@@ -179,13 +185,11 @@ private fun SlowInterfaceWarning() {
         ) {
             Icon(
                 imageVector = Icons.Default.Info,
-                contentDescription = "Warning",
+                contentDescription = stringResource(R.string.common_warning),
                 tint = MaterialTheme.colorScheme.onErrorContainer,
             )
             Text(
-                text =
-                    "Slow interfaces (LoRa/BLE) are enabled. " +
-                        "Sending large images may take a very long time or fail.",
+                text = stringResource(R.string.settings_image_compression_warning_message),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onErrorContainer,
             )
@@ -196,17 +200,39 @@ private fun SlowInterfaceWarning() {
 /**
  * Format dimension for display.
  */
+@Composable
 private fun formatDimension(px: Int): String {
-    return if (px == Int.MAX_VALUE) "unlimited" else px.toString()
+    return if (px == Int.MAX_VALUE) stringResource(R.string.settings_image_compression_unlimited) else "$px${stringResource(R.string.settings_image_compression_px)}"
 }
 
 /**
  * Format bytes into a human-readable string.
  */
+@Composable
 private fun formatBytes(bytes: Long): String {
     return when {
-        bytes < 1024 -> "$bytes B"
-        bytes < 1024 * 1024 -> "${bytes / 1024} KB"
-        else -> "${bytes / (1024 * 1024)} MB"
+        bytes < 1024 -> stringResource(R.string.settings_image_compression_bytes_b, bytes)
+        bytes < 1024 * 1024 -> stringResource(R.string.settings_image_compression_bytes_kb, bytes / 1024)
+        else -> stringResource(R.string.settings_image_compression_bytes_mb, bytes / (1024 * 1024))
     }
 }
+
+@Composable
+private fun presetDisplayName(preset: ImageCompressionPreset): String =
+    when (preset) {
+        ImageCompressionPreset.LOW -> stringResource(R.string.settings_image_compression_preset_low)
+        ImageCompressionPreset.MEDIUM -> stringResource(R.string.settings_image_compression_preset_medium)
+        ImageCompressionPreset.HIGH -> stringResource(R.string.settings_image_compression_preset_high)
+        ImageCompressionPreset.ORIGINAL -> stringResource(R.string.settings_image_compression_preset_original)
+        ImageCompressionPreset.AUTO -> stringResource(R.string.settings_image_compression_preset_auto)
+    }
+
+@Composable
+private fun presetDescription(preset: ImageCompressionPreset): String =
+    when (preset) {
+        ImageCompressionPreset.LOW -> stringResource(R.string.settings_image_compression_description_low)
+        ImageCompressionPreset.MEDIUM -> stringResource(R.string.settings_image_compression_description_medium)
+        ImageCompressionPreset.HIGH -> stringResource(R.string.settings_image_compression_description_high)
+        ImageCompressionPreset.ORIGINAL -> stringResource(R.string.settings_image_compression_description_original)
+        ImageCompressionPreset.AUTO -> stringResource(R.string.settings_image_compression_description_auto)
+    }
