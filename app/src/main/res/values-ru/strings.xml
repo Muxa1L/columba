@@ -26,6 +26,9 @@
     <string name="offline_banner_reconnecting">Переподключение...</string>
     <string name="offline_banner_reconnect">Подключиться снова</string>
     <string name="offline_banner_reconnecting_description">Выполняется переподключение</string>
+    <string name="offline_map_download_min_zoom">Минимальный масштаб: %1$d (меньше деталей, меньше размер)</string>
+    <string name="offline_map_download_max_zoom">Максимальный масштаб: %1$d (больше деталей, больше размер)</string>
+    <string name="offline_map_download_resources_progress">%1$d / %2$d ресурсов</string>
     <string name="notification_ble_peer_connected_title">BLE-пир подключен</string>
     <string name="notification_ble_peer_connected_message">Подключено к %1$s</string>
     <string name="notification_ble_peer_disconnected_title">BLE-пир отключен</string>
@@ -103,6 +106,30 @@
     <string name="common_cancel">Отмена</string>
     <string name="cd_back">Назад</string>
     <string name="reaction_picker_title">Выберите реакцию</string>
+    <string name="messaging_pending_file_fetching">Получение файла...</string>
+    <string name="messaging_pending_file_sent_large_file">%1$s отправил большой файл</string>
+    <string name="messaging_sync_status_tap_fetch">Нажмите, чтобы получить с ретранслятора</string>
+    <string name="messaging_sync_status_connecting_relay">Подключение к ретранслятору...</string>
+    <string name="messaging_sync_status_discovering_path">Поиск сетевого маршрута...</string>
+    <string name="messaging_sync_status_establishing_connection">Установка соединения...</string>
+    <string name="messaging_sync_status_connected_preparing">Подключено, подготовка...</string>
+    <string name="messaging_sync_status_requesting_messages">Запрос сообщений...</string>
+    <string name="messaging_sync_status_downloading_progress">Загрузка: %1$d%%</string>
+    <string name="messaging_sync_status_downloading">Загрузка...</string>
+    <string name="messaging_sync_status_processing">Обработка...</string>
+    <string name="messaging_sync_status_complete">Загрузка завершена</string>
+    <plurals name="messaging_pending_file_more_files">
+        <item quantity="one">+%1$d файл</item>
+        <item quantity="few">+%1$d файла</item>
+        <item quantity="many">+%1$d файлов</item>
+        <item quantity="other">+%1$d файла</item>
+    </plurals>
+    <plurals name="offline_map_download_estimated_tiles">
+        <item quantity="one">%1$d тайл</item>
+        <item quantity="few">%1$d тайла</item>
+        <item quantity="many">%1$d тайлов</item>
+        <item quantity="other">%1$d тайла</item>
+    </plurals>
 
     <!-- Announce detail screen -->
     <string name="announce_detail_title">Детали узла</string>
@@ -1694,7 +1721,7 @@
     <string name="offline_maps_remove_default">Убрать значение по умолчанию</string>
     <string name="offline_maps_set_default">Сделать картой по умолчанию</string>
     <string name="offline_maps_delete_title">Удалить офлайн-карту</string>
-    <string name="offline_maps_delete_message">Вы уверены, что хотите удалить "%1$s"? Это освободит %2$s памяти.</string>
+    <string name="offline_maps_delete_message">Вы уверены, что хотите удалить %1$s? Это освободит %2$s памяти.</string>
     <string name="offline_maps_update_title">Обновить офлайн-карту</string>
     <string name="offline_maps_update_message">Загрузить свежие данные карты для "%1$s"? Текущие данные будут заменены, и это может занять несколько минут.</string>
     <string name="offline_maps_update">Обновить</string>

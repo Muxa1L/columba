@@ -63,6 +63,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
@@ -712,7 +713,7 @@ fun RadiusSelectionStep(
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "Min zoom: $minZoom (less detail, smaller size)",
+            text = stringResource(R.string.offline_map_download_min_zoom, minZoom),
             style = MaterialTheme.typography.bodyMedium,
         )
 
@@ -726,7 +727,7 @@ fun RadiusSelectionStep(
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "Max zoom: $maxZoom (more detail, larger size)",
+            text = stringResource(R.string.offline_map_download_max_zoom, maxZoom),
             style = MaterialTheme.typography.bodyMedium,
         )
 
@@ -762,7 +763,11 @@ fun RadiusSelectionStep(
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Text(
-                        text = "$estimatedTileCount tiles",
+                        text = pluralStringResource(
+                            R.plurals.offline_map_download_estimated_tiles,
+                            estimatedTileCount.toInt(),
+                            estimatedTileCount,
+                        ),
                         style = MaterialTheme.typography.bodyLarge,
                     )
                     Text(
@@ -1036,7 +1041,11 @@ fun DownloadingStep(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "${progress.completedResources} / ${progress.requiredResources} resources",
+                text = stringResource(
+                    R.string.offline_map_download_resources_progress,
+                    progress.completedResources,
+                    progress.requiredResources,
+                ),
                 style = MaterialTheme.typography.bodyLarge,
             )
 

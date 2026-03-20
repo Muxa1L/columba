@@ -23,6 +23,9 @@
   <string name="offline_banner_reconnecting">Reconnecting\u2026</string>
   <string name="offline_banner_reconnect">Reconnect</string>
   <string name="offline_banner_reconnecting_description">Reconnecting in progress</string>
+  <string name="offline_map_download_min_zoom">Min zoom: %1$d (less detail, smaller size)</string>
+  <string name="offline_map_download_max_zoom">Max zoom: %1$d (more detail, larger size)</string>
+  <string name="offline_map_download_resources_progress">%1$d / %2$d resources</string>
   <string name="notification_ble_peer_connected_title">BLE Peer Connected</string>
   <string name="notification_ble_peer_connected_message">Connected to %1$s</string>
   <string name="notification_ble_peer_disconnected_title">BLE Peer Disconnected</string>
@@ -98,6 +101,26 @@
    <string name="main_back_again_to_exit">Press back again to exit</string>
   <string name="cd_back">Back</string>
   <string name="reaction_picker_title">Choose a reaction</string>
+  <string name="messaging_pending_file_fetching">Fetching file...</string>
+  <string name="messaging_pending_file_sent_large_file">%1$s sent a large file</string>
+  <string name="messaging_sync_status_tap_fetch">Tap to fetch from relay</string>
+  <string name="messaging_sync_status_connecting_relay">Connecting to relay...</string>
+  <string name="messaging_sync_status_discovering_path">Discovering network path...</string>
+  <string name="messaging_sync_status_establishing_connection">Establishing connection...</string>
+  <string name="messaging_sync_status_connected_preparing">Connected, preparing...</string>
+  <string name="messaging_sync_status_requesting_messages">Requesting messages...</string>
+  <string name="messaging_sync_status_downloading_progress">Downloading: %1$d%%</string>
+  <string name="messaging_sync_status_downloading">Downloading...</string>
+  <string name="messaging_sync_status_processing">Processing...</string>
+  <string name="messaging_sync_status_complete">Download complete</string>
+  <plurals name="messaging_pending_file_more_files">
+    <item quantity="one">+%1$d more file</item>
+    <item quantity="other">+%1$d more files</item>
+  </plurals>
+  <plurals name="offline_map_download_estimated_tiles">
+    <item quantity="one">%1$d tile</item>
+    <item quantity="other">%1$d tiles</item>
+  </plurals>
   <!-- Announce detail screen -->
   <string name="announce_detail_title">Node Details</string>
   <string name="announce_detail_cd_remove_from_saved">Remove from saved</string>
@@ -1622,7 +1645,7 @@ Your location is encrypted and only readable by the group host you configure.</s
   <string name="offline_maps_remove_default">Remove as default</string>
   <string name="offline_maps_set_default">Set as default</string>
   <string name="offline_maps_delete_title">Delete Offline Map</string>
-  <string name="offline_maps_delete_message">Are you sure you want to delete "%1$s"? This will free up %2$s of storage.</string>
+  <string name="offline_maps_delete_message">Are you sure you want to delete %1$s? This will free up %2$s of storage.</string>
   <string name="offline_maps_update_title">Update Offline Map</string>
   <string name="offline_maps_update_message">Download the latest map data for "%1$s"? This will replace the current data and may take a few minutes.</string>
   <string name="offline_maps_update">Update</string>

@@ -138,6 +138,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalViewConfiguration
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -2805,8 +2806,13 @@ fun PendingFileNotificationBubble(
                         )
                     }
                     Column {
+                        val additionalFileCount = pendingFileInfo.fileCount - 1
                         Text(
-                            text = if (isSyncing) "Fetching file..." else "$peerName sent a large file",
+                            text = if (isSyncing) {
+                                stringResource(R.string.messaging_pending_file_fetching)
+                            } else {
+                                stringResource(R.string.messaging_pending_file_sent_large_file, peerName)
+                            },
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.Medium,
                         )
@@ -2817,7 +2823,11 @@ fun PendingFileNotificationBubble(
                         )
                         if (!isSyncing && pendingFileInfo.fileCount > 1) {
                             Text(
-                                text = "+${pendingFileInfo.fileCount - 1} more file${if (pendingFileInfo.fileCount > 2) "s" else ""}",
+                                text = pluralStringResource(
+                                    R.plurals.messaging_pending_file_more_files,
+                                    additionalFileCount,
+                                    additionalFileCount,
+                                ),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
@@ -2851,25 +2861,29 @@ fun PendingFileNotificationBubble(
 /**
  * Get status text for pending file notification based on sync progress.
  */
+@Composable
 private fun getSyncStatusText(syncProgress: SyncProgress): String =
     when (syncProgress) {
-        is SyncProgress.Idle -> "Tap to fetch from relay"
-        is SyncProgress.Starting -> "Connecting to relay..."
+        is SyncProgress.Idle -> stringResource(R.string.messaging_sync_status_tap_fetch)
+        is SyncProgress.Starting -> stringResource(R.string.messaging_sync_status_connecting_relay)
         is SyncProgress.InProgress ->
             when (syncProgress.stateName.lowercase()) {
-                "path_requested" -> "Discovering network path..."
-                "link_establishing" -> "Establishing connection..."
-                "link_established" -> "Connected, preparing..."
-                "request_sent" -> "Requesting messages..."
+                "path_requested" -> stringResource(R.string.messaging_sync_status_discovering_path)
+                "link_establishing" -> stringResource(R.string.messaging_sync_status_establishing_connection)
+                "link_established" -> stringResource(R.string.messaging_sync_status_connected_preparing)
+                "request_sent" -> stringResource(R.string.messaging_sync_status_requesting_messages)
                 "receiving", "downloading" ->
                     if (syncProgress.progress > 0f) {
-                        "Downloading: ${(syncProgress.progress * 100).toInt()}%"
+                        stringResource(
+                            R.string.messaging_sync_status_downloading_progress,
+                            (syncProgress.progress * 100).toInt(),
+                        )
                     } else {
-                        "Downloading..."
+                        stringResource(R.string.messaging_sync_status_downloading)
                     }
-                else -> "Processing..."
+                else -> stringResource(R.string.messaging_sync_status_processing)
             }
-        is SyncProgress.Complete -> "Download complete"
+        is SyncProgress.Complete -> stringResource(R.string.messaging_sync_status_complete)
     }
 
 /**
