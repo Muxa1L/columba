@@ -65,6 +65,11 @@
   <string name="interface_info_lora">LoRa Radio</string>
   <string name="interface_info_serial">Serial</string>
   <string name="main_usb_device_fallback">USB Device</string>
+  <string name="local_hotspot_error_disallowed">Hotspot is not allowed by device policy</string>
+  <string name="local_hotspot_error_incompatible_mode">WiFi is in a mode that prevents hotspot creation</string>
+  <string name="local_hotspot_error_no_channel">No WiFi channel available for hotspot</string>
+  <string name="local_hotspot_error_generic">Could not start hotspot</string>
+  <string name="local_hotspot_error_with_code">Hotspot failed (error %1$d)</string>
   <string name="apk_sharing_download_page_title">Download Columba</string>
   <string name="apk_sharing_download_page_description">Tap the button below to download the Columba messenger APK.</string>
   <string name="apk_sharing_download_page_button">Download APK</string>
@@ -375,6 +380,7 @@
   <string name="offline_map_download_longitude_range">Must be between -180 and 180</string>
   <string name="offline_map_download_location_prompt">Choose the center point for your offline map region.</string>
   <string name="offline_map_download_use_current_location">Use Current Location</string>
+  <string name="offline_map_download_separator_or">- or -</string>
   <string name="offline_map_download_latitude">Latitude</string>
   <string name="offline_map_download_longitude">Longitude</string>
   <string name="offline_map_download_search_address">Search City or Address</string>
@@ -1528,6 +1534,7 @@ Scan QR code or use:
   <string name="apk_sharing_error_hotspot_stopped">WiFi hotspot was stopped by the system. Please start sharing again.</string>
   <string name="apk_sharing_error_hotspot_ip">Hotspot started but could not determine IP address. Please try again.</string>
   <string name="apk_sharing_error_hotspot_permission">Permission required to create a WiFi hotspot. Please grant the permission and try again.</string>
+  <string name="apk_sharing_error_hotspot_start">Could not start WiFi hotspot</string>
   <string name="apk_sharing_error_start_server">Failed to start sharing server</string>
   <!-- Contacts screen -->
   <string name="contacts_scan_qr_supporting">Scan a contact\'s QR code to add them</string>

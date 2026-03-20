@@ -271,7 +271,7 @@ class ApkSharingViewModel
                                         is SecurityException ->
                                             application.getString(R.string.apk_sharing_error_hotspot_permission)
                                         else ->
-                                            error.message ?: "Could not start WiFi hotspot"
+                                            error.message ?: application.getString(R.string.apk_sharing_error_hotspot_start)
                                     },
                             )
                     }

@@ -68,6 +68,11 @@
     <string name="interface_info_lora">Радио LoRa</string>
     <string name="interface_info_serial">Последовательный порт</string>
     <string name="main_usb_device_fallback">USB-устройство</string>
+    <string name="local_hotspot_error_disallowed">Политика устройства не разрешает запуск хотспота</string>
+    <string name="local_hotspot_error_incompatible_mode">WiFi работает в режиме, который не позволяет создать хотспот</string>
+    <string name="local_hotspot_error_no_channel">Для хотспота нет доступного WiFi канала</string>
+    <string name="local_hotspot_error_generic">Не удалось запустить хотспот</string>
+    <string name="local_hotspot_error_with_code">Ошибка запуска хотспота (код %1$d)</string>
     <string name="apk_sharing_download_page_title">Скачать Columba</string>
     <string name="apk_sharing_download_page_description">Нажмите кнопку ниже, чтобы скачать APK мессенджера Columba.</string>
     <string name="apk_sharing_download_page_button">Скачать APK</string>
@@ -386,6 +391,7 @@
     <string name="offline_map_download_longitude_range">Значение должно быть от -180 до 180</string>
     <string name="offline_map_download_location_prompt">Выберите центральную точку для региона офлайн-карты.</string>
     <string name="offline_map_download_use_current_location">Использовать текущее местоположение</string>
+    <string name="offline_map_download_separator_or">- или -</string>
     <string name="offline_map_download_latitude">Широта</string>
     <string name="offline_map_download_longitude">Долгота</string>
     <string name="offline_map_download_search_address">Искать город или адрес</string>
@@ -1604,6 +1610,7 @@
     <string name="apk_sharing_error_hotspot_stopped">WiFi хотспот был остановлен системой. Запустите отправку снова.</string>
     <string name="apk_sharing_error_hotspot_ip">Хотспот запустился, но не удалось определить IP адрес. Попробуйте еще раз.</string>
     <string name="apk_sharing_error_hotspot_permission">Для создания WiFi хотспота требуется разрешение. Выдайте разрешение и попробуйте еще раз.</string>
+    <string name="apk_sharing_error_hotspot_start">Не удалось запустить WiFi хотспот</string>
     <string name="apk_sharing_error_start_server">Не удалось запустить сервер раздачи</string>
     <!-- Contacts screen -->
     <string name="contacts_scan_qr_supporting">Отсканируйте QR код контакта, чтобы добавить его</string>

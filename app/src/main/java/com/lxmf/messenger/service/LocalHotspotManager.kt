@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import com.lxmf.messenger.R
 
 /**
  * Manages a local-only WiFi hotspot for APK sharing without requiring
@@ -103,15 +104,15 @@ class LocalHotspotManager(private val context: Context) {
                         reservation = null
                         val message = when (reason) {
                             ERROR_TETHERING_DISALLOWED ->
-                                "Hotspot is not allowed by device policy"
+                                context.getString(R.string.local_hotspot_error_disallowed)
                             ERROR_INCOMPATIBLE_MODE ->
-                                "WiFi is in a mode that prevents hotspot creation"
+                                context.getString(R.string.local_hotspot_error_incompatible_mode)
                             ERROR_NO_CHANNEL ->
-                                "No WiFi channel available for hotspot"
+                                context.getString(R.string.local_hotspot_error_no_channel)
                             ERROR_GENERIC ->
-                                "Could not start hotspot"
+                                context.getString(R.string.local_hotspot_error_generic)
                             else ->
-                                "Hotspot failed (error $reason)"
+                                context.getString(R.string.local_hotspot_error_with_code, reason)
                         }
                         callback(Result.failure(HotspotException(message, reason)))
                     }

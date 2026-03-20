@@ -414,7 +414,7 @@ fun LocationSelectionStep(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "- or -",
+                text = stringResource(R.string.offline_map_download_separator_or),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -492,7 +492,7 @@ fun LocationSelectionStep(
             // Address/City search - only show if geocoder is available (requires Google Play Services)
             if (isGeocoderAvailable) {
                 Text(
-                    text = "- or -",
+                    text = stringResource(R.string.offline_map_download_separator_or),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -560,7 +560,7 @@ fun LocationSelectionStep(
             }
 
             Text(
-                text = "- or -",
+                text = stringResource(R.string.offline_map_download_separator_or),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
