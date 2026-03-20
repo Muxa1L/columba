@@ -796,6 +796,7 @@
     <string name="device_selection_unknown_device">Неизвестное устройство</string>
     <string name="device_selection_no_devices">USB устройства не найдены</string>
     <string name="device_selection_no_devices_hint">Подключите устройство RNode через USB и нажмите обновить</string>
+    <string name="device_selection_usb_ids">VID: %1$s | PID: %2$s</string>
     <string name="firmware_selection_title">Выбор прошивки</string>
     <string name="firmware_selection_subtitle">Выберите прошивку для записи</string>
     <string name="firmware_selection_about_microreticulum_title">О microReticulum</string>

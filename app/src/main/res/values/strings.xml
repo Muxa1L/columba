@@ -765,6 +765,7 @@
   <string name="device_selection_unknown_device">Unknown Device</string>
   <string name="device_selection_no_devices">No USB devices found</string>
   <string name="device_selection_no_devices_hint">Connect an RNode device via USB and tap refresh</string>
+  <string name="device_selection_usb_ids">VID: %1$s | PID: %2$s</string>
   <string name="firmware_selection_title">Firmware Selection</string>
   <string name="firmware_selection_subtitle">Choose the firmware to flash</string>
   <string name="firmware_selection_about_microreticulum_title">About microReticulum</string>

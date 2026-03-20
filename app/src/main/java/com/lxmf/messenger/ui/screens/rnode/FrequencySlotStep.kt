@@ -713,7 +713,7 @@ private fun MeshtasticSlotCard(
 
             Column(horizontalAlignment = Alignment.End) {
                 Text(
-                    text = "Slot ${slot.slot}",
+                        text = stringResource(R.string.rnode_frequency_slot_slot_number, slot.slot),
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

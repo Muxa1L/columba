@@ -232,7 +232,12 @@ private fun DeviceCard(
                         },
                 )
                 Text(
-                    text = "VID: ${formatHex(device.vendorId)} | PID: ${formatHex(device.productId)}",
+                        text =
+                            stringResource(
+                                R.string.device_selection_usb_ids,
+                                formatHex(device.vendorId),
+                                formatHex(device.productId),
+                            ),
                     style = MaterialTheme.typography.bodySmall,
                     color =
                         if (isSelected) {
