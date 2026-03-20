@@ -907,6 +907,11 @@ After flashing, you will be prompted to configure the radio parameters for trans
   <string name="discovered_interfaces_copy_params">Copy Params</string>
   <string name="discovered_interfaces_use_for_rnode">Use for RNode</string>
   <string name="discovered_interfaces_open_in_maps">Open in maps</string>
+  <string name="discovered_interfaces_last_heard">Last heard: %1$s</string>
+  <plurals name="discovered_interfaces_hops">
+    <item quantity="one">%1$d hop</item>
+    <item quantity="other">%1$d hops</item>
+  </plurals>
   <string name="discovered_interfaces_yggdrasil_network">Yggdrasil network</string>
   <string name="discovered_interfaces_tcp_network">TCP network</string>
   <string name="discovered_interfaces_i2p_network">I2P network</string>
@@ -1522,6 +1527,8 @@ Scan QR code or use:
   <string name="theme_editor_tertiary">Tertiary</string>
   <string name="theme_editor_pick_color">Pick %1$s Color</string>
   <string name="theme_editor_top_app_bar">Top App Bar</string>
+  <string name="theme_editor_surface">Surface</string>
+  <string name="theme_editor_surface_variant">Surface Variant</string>
   <!-- Settings screen -->
   <string name="settings_shared_instance_available">Shared instance available</string>
   <string name="settings_switch">Switch</string>

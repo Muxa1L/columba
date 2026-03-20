@@ -938,6 +938,13 @@
     <string name="discovered_interfaces_copy_params">Копировать параметры</string>
     <string name="discovered_interfaces_use_for_rnode">Использовать для RNode</string>
     <string name="discovered_interfaces_open_in_maps">Открыть на карте</string>
+    <string name="discovered_interfaces_last_heard">Последний сигнал: %1$s</string>
+    <plurals name="discovered_interfaces_hops">
+        <item quantity="one">%1$d переход</item>
+        <item quantity="few">%1$d перехода</item>
+        <item quantity="many">%1$d переходов</item>
+        <item quantity="other">%1$d перехода</item>
+    </plurals>
     <string name="discovered_interfaces_yggdrasil_network">Сеть Yggdrasil</string>
     <string name="discovered_interfaces_tcp_network">Сеть TCP</string>
     <string name="discovered_interfaces_i2p_network">Сеть I2P</string>
@@ -1596,6 +1603,8 @@
     <string name="theme_editor_tertiary">Третичный</string>
     <string name="theme_editor_pick_color">Выбрать цвет %1$s</string>
     <string name="theme_editor_top_app_bar">Верхняя панель</string>
+    <string name="theme_editor_surface">Поверхность</string>
+    <string name="theme_editor_surface_variant">Вариант поверхности</string>
     <!-- Settings screen -->
     <string name="settings_shared_instance_available">Доступен общий экземпляр</string>
     <string name="settings_switch">Переключить</string>

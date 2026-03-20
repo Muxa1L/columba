@@ -58,6 +58,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -942,13 +943,13 @@ internal fun DiscoveredInterfaceCard(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 Text(
-                    text = "Last heard: ${formatLastHeard(iface.lastHeard)}",
+                    text = stringResource(R.string.discovered_interfaces_last_heard, formatLastHeard(iface.lastHeard)),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 if (iface.hops > 0) {
                     Text(
-                        text = "${iface.hops} ${if (iface.hops == 1) "hop" else "hops"}",
+                        text = pluralStringResource(R.plurals.discovered_interfaces_hops, iface.hops, iface.hops),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )

@@ -541,7 +541,7 @@ private fun ThemePreview(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Text(
-                    text = "Surface",
+                    text = stringResource(R.string.theme_editor_surface),
                     color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.bodyMedium,
                 )
@@ -555,7 +555,7 @@ private fun ThemePreview(
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
-                        text = "Surface Variant",
+                        text = stringResource(R.string.theme_editor_surface_variant),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodySmall,
                     )
