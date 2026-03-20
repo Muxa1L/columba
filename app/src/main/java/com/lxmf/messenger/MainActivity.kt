@@ -1271,6 +1271,7 @@ fun ColumbaNavigation(
                                     },
                                 ),
                         ) { backStackEntry ->
+                            val context = LocalContext.current
                             val lat = backStackEntry.arguments?.getFloat("lat")?.toDouble()
                             val lon = backStackEntry.arguments?.getFloat("lon")?.toDouble()
                             val label = backStackEntry.arguments?.getString("label")
@@ -1290,6 +1291,7 @@ fun ColumbaNavigation(
                             // Build FocusInterfaceDetails if we have valid lat/lon
                             val focusDetails =
                                 buildFocusInterfaceDetails(
+                                    context = context,
                                     lat = lat,
                                     lon = lon,
                                     label = label,

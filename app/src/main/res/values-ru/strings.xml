@@ -97,10 +97,12 @@
 
     <!-- Common -->
     <string name="common_go_back">Назад</string>
+    <string name="common_unknown">Неизвестно</string>
     <string name="common_block">Заблокировать</string>
     <string name="common_remove">Удалить</string>
     <string name="common_cancel">Отмена</string>
     <string name="cd_back">Назад</string>
+    <string name="reaction_picker_title">Выберите реакцию</string>
 
     <!-- Announce detail screen -->
     <string name="announce_detail_title">Детали узла</string>

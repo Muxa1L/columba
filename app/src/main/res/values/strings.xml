@@ -91,11 +91,13 @@
   </plurals>
   <!-- Common -->
   <string name="common_go_back">Go Back</string>
+  <string name="common_unknown">Unknown</string>
   <string name="common_block">Block</string>
   <string name="common_remove">Remove</string>
   <string name="common_cancel">Cancel</string>
    <string name="main_back_again_to_exit">Press back again to exit</string>
   <string name="cd_back">Back</string>
+  <string name="reaction_picker_title">Choose a reaction</string>
   <!-- Announce detail screen -->
   <string name="announce_detail_title">Node Details</string>
   <string name="announce_detail_cd_remove_from_saved">Remove from saved</string>

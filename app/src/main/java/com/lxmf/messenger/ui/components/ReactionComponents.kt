@@ -552,7 +552,7 @@ fun FullEmojiPickerDialog(
                 modifier = Modifier.padding(16.dp),
             ) {
                 Text(
-                    text = "Choose a reaction",
+                    text = stringResource(R.string.reaction_picker_title),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.padding(bottom = 12.dp),

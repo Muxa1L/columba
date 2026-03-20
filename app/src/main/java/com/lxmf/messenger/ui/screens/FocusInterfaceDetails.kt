@@ -1,5 +1,8 @@
 package com.lxmf.messenger.ui.screens
 
+import android.content.Context
+import com.lxmf.messenger.R
+
 /**
  * Check if a coordinate value is valid (non-null and non-zero).
  * Used for validating latitude/longitude from navigation arguments.
@@ -49,6 +52,48 @@ internal fun buildFocusInterfaceDetails(
     return FocusInterfaceDetails(
         name = label ?: "Unknown",
         type = type?.ifEmpty { null } ?: "Unknown",
+        latitude = lat!!,
+        longitude = lon!!,
+        height = if (height?.isNaN() == false) height else null,
+        reachableOn = reachableOn?.ifEmpty { null },
+        port = if (port != -1) port else null,
+        frequency = if (frequency != -1L) frequency else null,
+        bandwidth = if (bandwidth != -1) bandwidth else null,
+        spreadingFactor = if (sf != -1) sf else null,
+        codingRate = if (cr != -1) cr else null,
+        modulation = modulation?.ifEmpty { null },
+        status = status?.ifEmpty { null },
+        lastHeard = if (lastHeard != -1L) lastHeard else null,
+        hops = if (hops != -1) hops else null,
+    )
+}
+
+@Suppress("LongParameterList")
+internal fun buildFocusInterfaceDetails(
+    context: Context,
+    lat: Double?,
+    lon: Double?,
+    label: String?,
+    type: String?,
+    height: Double? = null,
+    reachableOn: String? = null,
+    port: Int? = null,
+    frequency: Long? = null,
+    bandwidth: Int? = null,
+    sf: Int? = null,
+    cr: Int? = null,
+    modulation: String? = null,
+    status: String? = null,
+    lastHeard: Long? = null,
+    hops: Int? = null,
+): FocusInterfaceDetails? {
+    if (!isValidCoordinate(lat) || !isValidCoordinate(lon)) return null
+
+    val unknownLabel = context.getString(R.string.common_unknown)
+
+    return FocusInterfaceDetails(
+        name = label ?: unknownLabel,
+        type = type?.ifEmpty { null } ?: unknownLabel,
         latitude = lat!!,
         longitude = lon!!,
         height = if (height?.isNaN() == false) height else null,
