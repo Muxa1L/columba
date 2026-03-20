@@ -51,6 +51,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.annotation.StringRes
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -536,22 +537,22 @@ sealed class PendingNavigation {
 
 sealed class Screen(
     val route: String,
-    val title: String,
+    @StringRes val titleRes: Int,
     val icon: androidx.compose.ui.graphics.vector.ImageVector,
 ) {
-    object Welcome : Screen("welcome", "Welcome", Icons.Default.Sensors)
+    object Welcome : Screen("welcome", R.string.main_nav_welcome, Icons.Default.Sensors)
 
-    object Chats : Screen("chats", "Chats", Icons.Default.Chat)
+    object Chats : Screen("chats", R.string.chats_title, Icons.Default.Chat)
 
-    object Announces : Screen("announce_stream", "Announces", Icons.Default.Sensors)
+    object Announces : Screen("announce_stream", R.string.main_nav_announces, Icons.Default.Sensors)
 
-    object Contacts : Screen("contacts", "Contacts", Icons.Default.People)
+    object Contacts : Screen("contacts", R.string.contacts_title, Icons.Default.People)
 
-    object Map : Screen("map", "Map", Icons.Default.Map)
+    object Map : Screen("map", R.string.map_screen_title, Icons.Default.Map)
 
-    object Identity : Screen("identity", "Network Status", Icons.Default.Info)
+    object Identity : Screen("identity", R.string.main_screen_network_status_title, Icons.Default.Info)
 
-    object Settings : Screen("settings", "Settings", Icons.Default.Settings)
+    object Settings : Screen("settings", R.string.settings_screen_title, Icons.Default.Settings)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -1020,7 +1021,7 @@ fun ColumbaNavigation(
                             screens.forEachIndexed { index, screen ->
                                 NavigationBarItem(
                                     icon = { Icon(screen.icon, contentDescription = null) },
-                                    label = { Text(screen.title) },
+                                    label = { Text(stringResource(screen.titleRes)) },
                                     selected = selectedTab == index,
                                     onClick = {
                                         selectedTab = index
@@ -1438,7 +1439,7 @@ fun ColumbaNavigation(
                             val usbDeviceId = backStackEntry.arguments?.getInt("usbDeviceId") ?: -1
                             val usbVendorId = backStackEntry.arguments?.getInt("usbVendorId") ?: -1
                             val usbProductId = backStackEntry.arguments?.getInt("usbProductId") ?: -1
-                            val usbDeviceName = backStackEntry.arguments?.getString("usbDeviceName") ?: "USB Device"
+                            val usbDeviceName = backStackEntry.arguments?.getString("usbDeviceName") ?: stringResource(R.string.main_usb_device_fallback)
 
                             // State for disable transport operation
                             val context = androidx.compose.ui.platform.LocalContext.current

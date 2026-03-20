@@ -24,9 +24,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.lxmf.messenger.R
 import com.lxmf.messenger.util.CrashReport
-import java.text.SimpleDateFormat
+import java.text.DateFormat
 import java.util.Date
-import java.util.Locale
 
 /**
  * Dialog shown when the app restarts after a crash.
@@ -40,7 +39,7 @@ fun CrashReportDialog(
     onDismiss: () -> Unit,
     onReportBug: () -> Unit,
 ) {
-    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+    val dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM)
     val crashTime = dateFormat.format(Date(crashReport.timestamp))
 
     // Extract just the class name (without package)

@@ -90,6 +90,7 @@ import com.lxmf.messenger.ui.components.simpleVerticalScrollbar
 import com.lxmf.messenger.viewmodel.ChatsViewModel
 import com.lxmf.messenger.viewmodel.SharedImageViewModel
 import com.lxmf.messenger.viewmodel.SharedTextViewModel
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -927,6 +928,8 @@ private fun String.hexStringToByteArray(): ByteArray = chunked(2).map { it.toInt
 private fun formatTimestamp(timestamp: Long): String {
     val now = System.currentTimeMillis()
     val diff = now - timestamp
+    val timeFormat = DateFormat.getTimeInstance(DateFormat.SHORT)
+    val dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM)
 
     return when {
         diff < 60_000 -> stringResource(R.string.chats_timestamp_now)
@@ -935,13 +938,13 @@ private fun formatTimestamp(timestamp: Long): String {
             stringResource(R.string.chats_timestamp_minutes_short, minutes)
         }
         diff < 86400_000 -> {
-            SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date(timestamp))
+            timeFormat.format(Date(timestamp))
         }
         diff < 604800_000 -> { // Less than a week
             SimpleDateFormat("EEE", Locale.getDefault()).format(Date(timestamp))
         }
         else -> {
-            SimpleDateFormat("MMM dd", Locale.getDefault()).format(Date(timestamp))
+            dateFormat.format(Date(timestamp))
         }
     }
 }

@@ -417,7 +417,7 @@ private fun ConnectionCard(
                 connectionMode == "usb" && usbDeviceId != null -> {
                     StatsInfoRow(
                         label = stringResource(R.string.interface_stats_usb_device),
-                        value = "ID: $usbDeviceId",
+                        value = stringResource(R.string.interface_stats_id_prefix, usbDeviceId),
                     )
                 }
                 targetDeviceName != null && targetDeviceName.isNotBlank() -> {

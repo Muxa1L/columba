@@ -64,6 +64,13 @@
   <string name="interface_info_bluetooth">Bluetooth</string>
   <string name="interface_info_lora">LoRa Radio</string>
   <string name="interface_info_serial">Serial</string>
+  <string name="main_usb_device_fallback">USB Device</string>
+  <string name="apk_sharing_download_page_title">Download Columba</string>
+  <string name="apk_sharing_download_page_description">Tap the button below to download the Columba messenger APK.</string>
+  <string name="apk_sharing_download_page_button">Download APK</string>
+  <string name="apk_sharing_download_page_install_note_line_1">After downloading, open the file to install.</string>
+  <string name="apk_sharing_download_page_install_note_line_2">You may need to enable Install from unknown sources.</string>
+  <string name="interface_stats_id_prefix">ID: %1$s</string>
   <string name="service_notification_channel_name">Reticulum Network Service</string>
   <string name="service_notification_channel_description">Keeps Reticulum network running in background</string>
   <string name="service_notification_rnode_channel_name">RNode Connection Alerts</string>
@@ -747,6 +754,8 @@
   <string name="interface_config_listen_port_help">TCP port to listen on for incoming connections.</string>
   <string name="main_screen_title">Columba LXMF Messenger</string>
   <string name="main_screen_network_status_cd">Network status</string>
+  <string name="main_nav_welcome">Welcome</string>
+  <string name="main_nav_announces">Announces</string>
   <string name="main_screen_heading">Hello, Reticulum!</string>
   <string name="main_screen_intro">This is a demonstration of the Kotlin UI layer communicating with the Reticulum abstraction layer.</string>
   <string name="main_screen_network_status_title">Network Status</string>
@@ -1515,6 +1524,11 @@ Scan QR code or use:
   <string name="apk_sharing_alternative_title">Or share another way</string>
   <string name="apk_sharing_alternative_subtitle">Use Bluetooth, Nearby Share, or any other installed sharing app.</string>
   <string name="apk_sharing_share_apk_via">Share APK via...</string>
+  <string name="apk_sharing_error_prepare_apk">Could not prepare APK file for sharing</string>
+  <string name="apk_sharing_error_hotspot_stopped">WiFi hotspot was stopped by the system. Please start sharing again.</string>
+  <string name="apk_sharing_error_hotspot_ip">Hotspot started but could not determine IP address. Please try again.</string>
+  <string name="apk_sharing_error_hotspot_permission">Permission required to create a WiFi hotspot. Please grant the permission and try again.</string>
+  <string name="apk_sharing_error_start_server">Failed to start sharing server</string>
   <!-- Contacts screen -->
   <string name="contacts_scan_qr_supporting">Scan a contact\'s QR code to add them</string>
   <string name="messaging_file_saved">File saved</string>

@@ -201,9 +201,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.text.SimpleDateFormat
+import java.text.DateFormat
 import java.util.Date
-import java.util.Locale
 
 private const val URL_ANNOTATION_TAG = "url"
 
@@ -2612,6 +2611,8 @@ private fun formatTimestamp(
 ): String {
     val now = System.currentTimeMillis()
     val diff = now - timestamp
+    val timeFormat = DateFormat.getTimeInstance(DateFormat.SHORT)
+    val dateTimeFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT)
 
     return when {
         diff < 60_000 -> context.getString(R.string.common_relative_time_just_now)
@@ -2620,10 +2621,10 @@ private fun formatTimestamp(
             context.resources.getQuantityString(R.plurals.common_relative_time_minutes_ago, minutes, minutes)
         }
         diff < 86400_000 -> {
-            SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date(timestamp))
+            timeFormat.format(Date(timestamp))
         }
         else -> {
-            SimpleDateFormat("MMM dd, HH:mm", Locale.getDefault()).format(Date(timestamp))
+            dateTimeFormat.format(Date(timestamp))
         }
     }
 }

@@ -89,6 +89,13 @@ class ApkSharingServer {
     /** Base64-encoded PNG app icon for the download page. Set by the ViewModel. */
     var iconBase64: String? = null
 
+    /** Localized text shown on the download page. Set by the ViewModel. */
+    var downloadPageTitle: String = "Download Columba"
+    var downloadPageDescription: String = "Tap the button below to download the Columba messenger APK."
+    var downloadPageButtonLabel: String = "Download APK"
+    var downloadPageInstallNoteLine1: String = "After downloading, open the file to install."
+    var downloadPageInstallNoteLine2: String = "You may need to enable Install from unknown sources."
+
     private var serverSocket: ServerSocket? = null
     private val isRunning = AtomicBoolean(false)
     private var clientExecutor: ExecutorService? = null
@@ -276,7 +283,7 @@ class ApkSharingServer {
             <head>
                 <meta charset="utf-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1">
-                <title>Download Columba</title>
+                <title>$downloadPageTitle</title>
                 <style>
                     body {
                         font-family: -apple-system, system-ui, sans-serif;
@@ -324,10 +331,10 @@ class ApkSharingServer {
                 <div class="card">
                     $iconTag
                     <h1>Columba</h1>
-                    <p>Tap the button below to download the Columba messenger APK.</p>
-                    <a class="btn" href="/columba.apk">Download APK</a>
-                    <p class="note">After downloading, open the file to install.<br>
-                    You may need to enable "Install from unknown sources".</p>
+                    <p>$downloadPageDescription</p>
+                    <a class="btn" href="/columba.apk">$downloadPageButtonLabel</a>
+                    <p class="note">$downloadPageInstallNoteLine1<br>
+                    $downloadPageInstallNoteLine2</p>
                 </div>
             </body>
             </html>

@@ -75,9 +75,8 @@ import com.lxmf.messenger.R
 import com.lxmf.messenger.data.db.entity.LocalIdentityEntity
 import com.lxmf.messenger.viewmodel.IdentityManagerUiState
 import com.lxmf.messenger.viewmodel.IdentityManagerViewModel
-import java.text.SimpleDateFormat
+import java.text.DateFormat
 import java.util.Date
-import java.util.Locale
 
 /**
  * Identity Manager screen for creating, managing, and switching identities.
@@ -1047,12 +1046,13 @@ private fun RenameIdentityDialog(
 private fun formatTimestamp(timestamp: Long): String {
     val now = System.currentTimeMillis()
     val diff = now - timestamp
+    val dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM)
 
     return when {
         diff < 60_000 -> stringResource(R.string.identity_manager_just_now)
         diff < 3600_000 -> stringResource(R.string.identity_manager_minutes_ago, diff / 60_000)
         diff < 86400_000 -> stringResource(R.string.identity_manager_hours_ago, diff / 3600_000)
         diff < 604800_000 -> stringResource(R.string.identity_manager_days_ago, diff / 86400_000)
-        else -> SimpleDateFormat("MMM d, yyyy", Locale.getDefault()).format(Date(timestamp))
+        else -> dateFormat.format(Date(timestamp))
     }
 }

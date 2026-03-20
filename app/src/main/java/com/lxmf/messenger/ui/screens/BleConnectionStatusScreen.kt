@@ -75,9 +75,8 @@ import com.lxmf.messenger.ui.components.rememberBluetoothPermissionController
 import com.lxmf.messenger.viewmodel.BleConnectionsUiState
 import com.lxmf.messenger.viewmodel.BleConnectionsViewModel
 import kotlinx.coroutines.delay
-import java.text.SimpleDateFormat
+import java.text.DateFormat
 import java.util.Date
-import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -721,8 +720,8 @@ private fun formatDuration(milliseconds: Long): String {
 }
 
 private fun formatTimestamp(timestamp: Long): String {
-    val sdf = SimpleDateFormat("MMM dd, HH:mm:ss", Locale.getDefault())
-    return sdf.format(Date(timestamp))
+    val dateTimeFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM)
+    return dateTimeFormat.format(Date(timestamp))
 }
 
 @Composable

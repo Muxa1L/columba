@@ -67,6 +67,13 @@
     <string name="interface_info_bluetooth">Bluetooth</string>
     <string name="interface_info_lora">Радио LoRa</string>
     <string name="interface_info_serial">Последовательный порт</string>
+    <string name="main_usb_device_fallback">USB-устройство</string>
+    <string name="apk_sharing_download_page_title">Скачать Columba</string>
+    <string name="apk_sharing_download_page_description">Нажмите кнопку ниже, чтобы скачать APK мессенджера Columba.</string>
+    <string name="apk_sharing_download_page_button">Скачать APK</string>
+    <string name="apk_sharing_download_page_install_note_line_1">После загрузки откройте файл, чтобы установить приложение.</string>
+    <string name="apk_sharing_download_page_install_note_line_2">Возможно, потребуется разрешить установку из неизвестных источников.</string>
+    <string name="interface_stats_id_prefix">ID: %1$s</string>
     <string name="service_notification_channel_name">Сетевая служба Reticulum</string>
     <string name="service_notification_channel_description">Поддерживает работу сети Reticulum в фоне</string>
     <string name="service_notification_rnode_channel_name">Оповещения о подключении RNode</string>
@@ -778,6 +785,8 @@
     <string name="interface_config_listen_port_help">TCP порт для входящих подключений.</string>
     <string name="main_screen_title">Columba LXMF Messenger</string>
     <string name="main_screen_network_status_cd">Состояние сети</string>
+    <string name="main_nav_welcome">Добро пожаловать</string>
+    <string name="main_nav_announces">Объявления</string>
     <string name="main_screen_heading">Привет, Reticulum!</string>
     <string name="main_screen_intro">Это демонстрация того, как слой интерфейса Kotlin взаимодействует со слоем абстракции Reticulum.</string>
     <string name="main_screen_network_status_title">Состояние сети</string>
@@ -1591,6 +1600,11 @@
     <string name="apk_sharing_alternative_title">Или поделитесь другим способом</string>
     <string name="apk_sharing_alternative_subtitle">Используйте Bluetooth, Nearby Share или любое другое установленное приложение для обмена.</string>
     <string name="apk_sharing_share_apk_via">Поделиться APK через...</string>
+    <string name="apk_sharing_error_prepare_apk">Не удалось подготовить APK файл для отправки</string>
+    <string name="apk_sharing_error_hotspot_stopped">WiFi хотспот был остановлен системой. Запустите отправку снова.</string>
+    <string name="apk_sharing_error_hotspot_ip">Хотспот запустился, но не удалось определить IP адрес. Попробуйте еще раз.</string>
+    <string name="apk_sharing_error_hotspot_permission">Для создания WiFi хотспота требуется разрешение. Выдайте разрешение и попробуйте еще раз.</string>
+    <string name="apk_sharing_error_start_server">Не удалось запустить сервер раздачи</string>
     <!-- Contacts screen -->
     <string name="contacts_scan_qr_supporting">Отсканируйте QR код контакта, чтобы добавить его</string>
     <!-- Theme editor -->

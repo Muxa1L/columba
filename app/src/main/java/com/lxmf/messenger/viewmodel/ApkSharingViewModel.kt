@@ -88,6 +88,11 @@ class ApkSharingViewModel
             ApkSharingServer().apply {
                 downloadFileName = APK_FILE_NAME
                 iconBase64 = loadIconBase64()
+                downloadPageTitle = application.getString(R.string.apk_sharing_download_page_title)
+                downloadPageDescription = application.getString(R.string.apk_sharing_download_page_description)
+                downloadPageButtonLabel = application.getString(R.string.apk_sharing_download_page_button)
+                downloadPageInstallNoteLine1 = application.getString(R.string.apk_sharing_download_page_install_note_line_1)
+                downloadPageInstallNoteLine2 = application.getString(R.string.apk_sharing_download_page_install_note_line_2)
             }
         private var serverJob: Job? = null
         private var cachedApkFile: File? = null
@@ -144,7 +149,7 @@ class ApkSharingViewModel
                     if (apkFile == null) {
                         _state.value =
                             _state.value.copy(
-                                errorMessage = "Could not prepare APK file for sharing",
+                                errorMessage = application.getString(R.string.apk_sharing_error_prepare_apk),
                             )
                         return@launch
                     }
@@ -225,8 +230,7 @@ class ApkSharingViewModel
                     _state.value =
                         ApkSharingState(
                             errorMessage =
-                                "WiFi hotspot was stopped by the system. " +
-                                    "Please start sharing again.",
+                                application.getString(R.string.apk_sharing_error_hotspot_stopped),
                         )
                 },
             ) { result ->
@@ -244,9 +248,7 @@ class ApkSharingViewModel
                                     _state.value =
                                         _state.value.copy(
                                             isHotspotStarting = false,
-                                            errorMessage =
-                                                "Hotspot started but could not determine IP address. " +
-                                                    "Please try again.",
+                                            errorMessage = application.getString(R.string.apk_sharing_error_hotspot_ip),
                                         )
                                     hotspotManager.stop()
                                     return@launch
@@ -267,8 +269,7 @@ class ApkSharingViewModel
                                 errorMessage =
                                     when (error) {
                                         is SecurityException ->
-                                            "Permission required to create a WiFi hotspot. " +
-                                                "Please grant the permission and try again."
+                                            application.getString(R.string.apk_sharing_error_hotspot_permission)
                                         else ->
                                             error.message ?: "Could not start WiFi hotspot"
                                     },
@@ -294,7 +295,7 @@ class ApkSharingViewModel
             if (port == 0) {
                 _state.value =
                     _state.value.copy(
-                        errorMessage = "Failed to start sharing server",
+                        errorMessage = application.getString(R.string.apk_sharing_error_start_server),
                     )
                 return
             }
