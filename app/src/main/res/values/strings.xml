@@ -292,6 +292,8 @@
   <string name="messaging_image_not_available_body">The original image could not be found. This can happen when importing data without attachments included.</string>
   <string name="messaging_reply">Reply</string>
   <string name="messaging_view_details">View Details</string>
+  <string name="messaging_close_attachments">Close attachments</string>
+  <string name="messaging_attach">Attach</string>
   <string name="messaging_selected_animated_image">Selected animated image</string>
   <string name="messaging_selected_image">Selected image</string>
   <string name="messaging_gif_attached">GIF attached (%1$d KB)</string>
@@ -593,6 +595,8 @@
   <string name="common_open_settings">Open Settings</string>
   <string name="common_refresh">Refresh</string>
   <string name="common_retry">Retry</string>
+  <string name="reaction_action_reply">Reply</string>
+  <string name="reaction_action_details">Details</string>
   <string name="common_share">Share</string>
   <string name="common_copy">Copy</string>
   <string name="common_close">Close</string>
@@ -1387,6 +1391,8 @@ Without these permissions, Columba cannot discover or connect to nearby devices 
   <string name="reply_cancel_content_description">Cancel reply</string>
   <string name="reaction_more_emojis">More emojis</string>
   <string name="reaction_selected_message">Selected message</string>
+  <string name="star_toggle_save_to_contacts">Save to contacts</string>
+  <string name="star_toggle_remove_from_contacts">Remove from contacts</string>
   <!-- Sharing status -->
   <string name="sharing_status_stop">Stop sharing</string>
   <plurals name="sharing_status_with_count">

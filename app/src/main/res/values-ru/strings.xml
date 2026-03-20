@@ -301,6 +301,8 @@
     <string name="messaging_image_not_available_body">Исходное изображение не найдено. Это может случиться при импорте данных без вложений.</string>
     <string name="messaging_reply">Ответить</string>
     <string name="messaging_view_details">Показать подробности</string>
+    <string name="messaging_close_attachments">Закрыть вложения</string>
+    <string name="messaging_attach">Прикрепить</string>
     <string name="messaging_selected_animated_image">Выбрано анимированное изображение</string>
     <string name="messaging_selected_image">Выбрано изображение</string>
     <string name="messaging_gif_attached">GIF прикреплен (%1$d КБ)</string>
@@ -615,6 +617,8 @@
     <string name="common_open_settings">Открыть настройки</string>
     <string name="common_refresh">Обновить</string>
     <string name="common_retry">Повторить</string>
+    <string name="reaction_action_reply">Ответить</string>
+    <string name="reaction_action_details">Подробности</string>
     <string name="common_share">Поделиться</string>
     <string name="common_copy">Копировать</string>
     <string name="common_close">Закрыть</string>
@@ -1457,6 +1461,8 @@
     <string name="reply_cancel_content_description">Отменить ответ</string>
     <string name="reaction_more_emojis">Больше эмодзи</string>
     <string name="reaction_selected_message">Выбранное сообщение</string>
+    <string name="star_toggle_save_to_contacts">Сохранить в контакты</string>
+    <string name="star_toggle_remove_from_contacts">Удалить из контактов</string>
 
     <!-- Sharing status -->
     <string name="sharing_status_stop">Остановить передачу</string>

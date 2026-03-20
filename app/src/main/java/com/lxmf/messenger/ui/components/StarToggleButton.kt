@@ -15,7 +15,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.lxmf.messenger.R
 
 /**
  * Reusable star toggle button for contact status.
@@ -51,7 +53,12 @@ fun StarToggleButton(
         ) {
             Icon(
                 imageVector = if (isStarred) Icons.Default.Star else Icons.Default.StarBorder,
-                contentDescription = if (isStarred) "Remove from contacts" else "Save to contacts",
+                contentDescription =
+                    if (isStarred) {
+                        stringResource(R.string.star_toggle_remove_from_contacts)
+                    } else {
+                        stringResource(R.string.star_toggle_save_to_contacts)
+                    },
                 tint =
                     if (isStarred) {
                         MaterialTheme.colorScheme.primary

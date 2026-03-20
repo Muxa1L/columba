@@ -510,13 +510,17 @@ fun MessagingScreen(
                 when (result) {
                     is SyncResult.Success ->
                         if (result.messagesReceived > 0) {
-                            "Sync complete: ${result.messagesReceived} new messages"
+                            context.resources.getQuantityString(
+                                R.plurals.chats_sync_complete_with_new_messages,
+                                result.messagesReceived,
+                                result.messagesReceived,
+                            )
                         } else {
-                            "Sync complete"
+                            context.getString(R.string.chats_sync_complete)
                         }
-                    is SyncResult.Error -> "Sync failed: ${result.message}"
-                    is SyncResult.NoRelay -> "No relay configured"
-                    is SyncResult.Timeout -> "Sync timed out"
+                    is SyncResult.Error -> context.getString(R.string.chats_sync_failed, result.message)
+                    is SyncResult.NoRelay -> context.getString(R.string.chats_sync_no_relay)
+                    is SyncResult.Timeout -> context.getString(R.string.chats_sync_timed_out)
                 }
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         }
@@ -527,8 +531,8 @@ fun MessagingScreen(
         viewModel.contactToggleResult.collect { result ->
             val message =
                 when (result) {
-                    is ContactToggleResult.Added -> "Saved $peerName to Contacts"
-                    is ContactToggleResult.Removed -> "Removed $peerName from Contacts"
+                    is ContactToggleResult.Added -> context.getString(R.string.chats_saved_to_contacts, peerName)
+                    is ContactToggleResult.Removed -> context.getString(R.string.chats_removed_from_contacts, peerName)
                     is ContactToggleResult.Error -> result.message
                 }
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
@@ -2518,7 +2522,12 @@ fun MessageInputBar(
                 ) {
                     Icon(
                         imageVector = if (isAttachmentPanelActive) Icons.Default.Close else Icons.Default.Add,
-                        contentDescription = if (isAttachmentPanelActive) "Close attachments" else "Attach",
+                        contentDescription =
+                            if (isAttachmentPanelActive) {
+                                stringResource(R.string.messaging_close_attachments)
+                            } else {
+                                stringResource(R.string.messaging_attach)
+                            },
                         modifier = Modifier.size(24.dp),
                     )
                 }

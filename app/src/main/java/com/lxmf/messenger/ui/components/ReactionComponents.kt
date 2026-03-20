@@ -377,7 +377,7 @@ fun MessageActionBar(
                 if (onRetry != null) {
                     ActionButton(
                         icon = Icons.Default.Refresh,
-                        label = "Retry",
+                        label = stringResource(R.string.common_retry),
                         onClick = {
                             hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
                             onRetry()
@@ -388,7 +388,7 @@ fun MessageActionBar(
                 // Reply button
                 ActionButton(
                     icon = Icons.AutoMirrored.Filled.Reply,
-                    label = "Reply",
+                    label = stringResource(R.string.reaction_action_reply),
                     onClick = {
                         hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
                         onReply()
@@ -398,7 +398,7 @@ fun MessageActionBar(
                 // Copy button
                 ActionButton(
                     icon = Icons.Default.ContentCopy,
-                    label = "Copy",
+                    label = stringResource(R.string.common_copy),
                     onClick = {
                         hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
                         onCopy()
@@ -409,7 +409,7 @@ fun MessageActionBar(
                 if (onViewDetails != null) {
                     ActionButton(
                         icon = Icons.Default.Info,
-                        label = "Details",
+                        label = stringResource(R.string.reaction_action_details),
                         onClick = {
                             hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
                             onViewDetails()
@@ -1108,7 +1108,7 @@ private fun MessageActionButtons(
             if (onRetry != null) {
                 ReactionModeActionButton(
                     icon = Icons.Default.Refresh,
-                    label = "Retry",
+                    label = stringResource(R.string.common_retry),
                     onClick = onRetry,
                 )
             }
@@ -1116,14 +1116,14 @@ private fun MessageActionButtons(
             // Reply button (all messages)
             ReactionModeActionButton(
                 icon = Icons.AutoMirrored.Filled.Reply,
-                label = "Reply",
+                label = stringResource(R.string.reaction_action_reply),
                 onClick = onReply,
             )
 
             // Copy button (all messages)
             ReactionModeActionButton(
                 icon = Icons.Default.ContentCopy,
-                label = "Copy",
+                label = stringResource(R.string.common_copy),
                 onClick = onCopy,
             )
 
@@ -1131,7 +1131,7 @@ private fun MessageActionButtons(
             if (onViewDetails != null) {
                 ReactionModeActionButton(
                     icon = Icons.Default.Info,
-                    label = "Details",
+                    label = stringResource(R.string.reaction_action_details),
                     onClick = onViewDetails,
                 )
             }
@@ -1140,7 +1140,7 @@ private fun MessageActionButtons(
             if (onDelete != null) {
                 ReactionModeActionButton(
                     icon = Icons.Default.Delete,
-                    label = "Delete",
+                    label = stringResource(R.string.common_delete),
                     onClick = onDelete,
                 )
             }
