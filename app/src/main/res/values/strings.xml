@@ -298,6 +298,8 @@
   <string name="messaging_selected_image">Selected image</string>
   <string name="messaging_gif_attached">GIF attached (%1$d KB)</string>
   <string name="messaging_image_attached">Image attached (%1$d KB)</string>
+  <string name="messaging_file_too_large">File too large (%1$dKB). Max size is %2$dKB.</string>
+  <string name="messaging_failed_to_attach_file">Failed to attach file: %1$s</string>
   <string name="messaging_remove_image">Remove image</string>
   <string name="messaging_characters_remaining">%1$d characters remaining</string>
   <string name="messaging_type_a_message">Type a message...</string>
@@ -1377,6 +1379,8 @@ Without these permissions, Columba cannot discover or connect to nearby devices 
   <!-- QR helpers -->
   <string name="qr_code_image_content_description">QR Code</string>
   <string name="qr_code_overlay_content_description">QR Code (tap to close)</string>
+  <string name="qr_code_error_no_data">No data to encode</string>
+  <string name="qr_code_error_generation_failed">Failed to generate QR code</string>
   <!-- Share location -->
   <string name="share_location_title">Share your location</string>
   <string name="share_location_with_contact">with %1$s</string>
@@ -1412,6 +1416,7 @@ Without these permissions, Columba cannot discover or connect to nearby devices 
   <string name="nomadnet_browser_render_monospace_zoom">Monospace (zoom)</string>
   <string name="nomadnet_browser_render_proportional_wrap">Proportional (wrap)</string>
   <string name="nomadnet_browser_failed_to_load_page">Failed to load page</string>
+  <string name="nomadnet_browser_failed_to_load_partial">Failed to load partial</string>
   <!-- My identity screen -->
   <string name="my_identity_title">My Identity</string>
   <string name="my_identity_display_name_title">Display Name &amp; Identity</string>

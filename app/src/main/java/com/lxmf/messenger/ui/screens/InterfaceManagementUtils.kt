@@ -1,7 +1,9 @@
 package com.lxmf.messenger.ui.screens
 
 import android.bluetooth.BluetoothAdapter
+import android.content.Context
 import android.util.Log
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.database.entity.InterfaceEntity
 import org.json.JSONException
 import org.json.JSONObject
@@ -63,6 +65,7 @@ fun InterfaceEntity.canOperate(
  */
 @Suppress("ReturnCount")
 fun InterfaceEntity.getErrorMessage(
+    context: Context,
     bluetoothState: Int,
     permissionsGranted: Boolean,
     isOnline: Boolean? = null,
@@ -70,14 +73,14 @@ fun InterfaceEntity.getErrorMessage(
     // Check BLE-related errors for BLE interfaces
     if (isBleInterface()) {
         when {
-            bluetoothState != BluetoothAdapter.STATE_ON -> return "Bluetooth Off"
-            !permissionsGranted -> return "Permission Required"
+            bluetoothState != BluetoothAdapter.STATE_ON -> return context.getString(R.string.ble_connections_bluetooth_off_title)
+            !permissionsGranted -> return context.getString(R.string.identity_screen_bluetooth_permissions_required)
         }
     }
 
     // Check online status for all enabled interfaces
     if (enabled && isOnline == false) {
-        return "Interface Offline"
+        return context.getString(R.string.identity_screen_interface_offline_title)
     }
 
     return null

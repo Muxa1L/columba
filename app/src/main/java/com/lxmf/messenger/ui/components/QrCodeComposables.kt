@@ -84,13 +84,15 @@ fun QrCodeImage(
     var error by remember(data) { mutableStateOf<String?>(null) }
     var expanded by remember { mutableStateOf(false) }
     val qrCodeLabel = stringResource(R.string.qr_code_image_content_description)
+    val noDataError = stringResource(R.string.qr_code_error_no_data)
+    val generationFailedError = stringResource(R.string.qr_code_error_generation_failed)
 
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(data) {
         if (data.isBlank()) {
             isLoading = false
-            error = "No data to encode"
+            error = noDataError
             return@LaunchedEffect
         }
 
@@ -107,7 +109,7 @@ fun QrCodeImage(
                 qrBitmap = bitmap
                 isLoading = false
             } catch (e: Exception) {
-                error = "Failed to generate QR code"
+                error = generationFailedError
                 isLoading = false
             }
         }

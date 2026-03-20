@@ -307,6 +307,8 @@
     <string name="messaging_selected_image">Выбрано изображение</string>
     <string name="messaging_gif_attached">GIF прикреплен (%1$d КБ)</string>
     <string name="messaging_image_attached">Изображение прикреплено (%1$d КБ)</string>
+    <string name="messaging_file_too_large">Файл слишком большой (%1$dКБ). Максимальный размер: %2$dКБ.</string>
+    <string name="messaging_failed_to_attach_file">Не удалось прикрепить файл: %1$s</string>
     <string name="messaging_remove_image">Удалить изображение</string>
     <string name="messaging_characters_remaining">Осталось символов: %1$d</string>
     <string name="messaging_type_a_message">Введите сообщение...</string>
@@ -1445,6 +1447,8 @@
     <!-- QR helpers -->
     <string name="qr_code_image_content_description">QR код</string>
     <string name="qr_code_overlay_content_description">QR код (коснитесь, чтобы закрыть)</string>
+    <string name="qr_code_error_no_data">Нет данных для кодирования</string>
+    <string name="qr_code_error_generation_failed">Не удалось создать QR код</string>
 
     <!-- Share location -->
     <string name="share_location_title">Поделиться местоположением</string>
@@ -1486,6 +1490,7 @@
     <string name="nomadnet_browser_render_monospace_zoom">Моноширинный (масштаб)</string>
     <string name="nomadnet_browser_render_proportional_wrap">Пропорциональный (перенос)</string>
     <string name="nomadnet_browser_failed_to_load_page">Не удалось загрузить страницу</string>
+    <string name="nomadnet_browser_failed_to_load_partial">Не удалось загрузить частичный блок</string>
 
     <!-- My identity screen -->
     <string name="my_identity_title">Моя личность</string>

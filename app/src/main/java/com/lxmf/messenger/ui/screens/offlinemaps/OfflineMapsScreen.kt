@@ -64,9 +64,8 @@ import com.lxmf.messenger.R
 import com.lxmf.messenger.data.repository.OfflineMapRegion
 import com.lxmf.messenger.viewmodel.OfflineMapsViewModel
 import com.lxmf.messenger.viewmodel.UpdateCheckResult
-import java.text.SimpleDateFormat
+import java.text.DateFormat
 import java.util.Date
-import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -672,6 +671,6 @@ fun EmptyOfflineMapsState(modifier: Modifier = Modifier) {
 }
 
 private fun formatDate(timestamp: Long): String {
-    val formatter = SimpleDateFormat("MMM d, yyyy", Locale.getDefault())
+    val formatter = DateFormat.getDateInstance(DateFormat.MEDIUM)
     return formatter.format(Date(timestamp))
 }

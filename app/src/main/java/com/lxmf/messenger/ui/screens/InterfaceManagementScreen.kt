@@ -393,6 +393,7 @@ fun InterfaceManagementScreen(
         val isOnline = state.interfaceOnlineStatus[iface.name]
         val errorMessage =
             iface.getErrorMessage(
+                context,
                 state.bluetoothState,
                 state.blePermissionsGranted,
                 isOnline,
@@ -479,7 +480,7 @@ fun InterfaceCard(
 
     // Determine if toggle should be enabled and if there's an error
     val toggleEnabled = interfaceEntity.shouldToggleBeEnabled(bluetoothState, blePermissionsGranted)
-    val errorMessage = interfaceEntity.getErrorMessage(bluetoothState, blePermissionsGranted, isOnline)
+    val errorMessage = interfaceEntity.getErrorMessage(context, bluetoothState, blePermissionsGranted, isOnline)
 
     Card(
         modifier =

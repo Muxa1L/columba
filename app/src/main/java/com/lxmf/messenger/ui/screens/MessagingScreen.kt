@@ -608,7 +608,11 @@ fun MessagingScreen(
                                 Toast
                                     .makeText(
                                         context,
-                                        "File too large (${actualSizeKb}KB). Max size is ${maxSizeKb}KB.",
+                                        context.getString(
+                                            R.string.messaging_file_too_large,
+                                            actualSizeKb,
+                                            maxSizeKb,
+                                        ),
                                         Toast.LENGTH_LONG,
                                     ).show()
                             }
@@ -616,7 +620,10 @@ fun MessagingScreen(
                                 Toast
                                     .makeText(
                                         context,
-                                        "Failed to attach file: ${result.message}",
+                                        context.getString(
+                                            R.string.messaging_failed_to_attach_file,
+                                            result.message,
+                                        ),
                                         Toast.LENGTH_SHORT,
                                     ).show()
                             }
@@ -1733,7 +1740,11 @@ fun MessagingScreen(
                 showBlockDialog = false
                 onBackClick()
                 android.widget.Toast
-                    .makeText(context, "Blocked $peerName", android.widget.Toast.LENGTH_SHORT)
+                    .makeText(
+                        context,
+                        context.getString(R.string.chats_blocked_user, peerName),
+                        android.widget.Toast.LENGTH_SHORT,
+                    )
                     .show()
             },
             onDismiss = { showBlockDialog = false },
@@ -1915,7 +1926,7 @@ fun MessageBubble(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
-                            text = formatTimestamp(message.receivedAt ?: message.timestamp),
+                            text = formatTimestamp(context, message.receivedAt ?: message.timestamp),
                             style = MaterialTheme.typography.labelSmall,
                             color = Color.White,
                         )
@@ -2172,7 +2183,7 @@ fun MessageBubble(
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Text(
-                                text = formatTimestamp(message.receivedAt ?: message.timestamp),
+                                text = formatTimestamp(context, message.receivedAt ?: message.timestamp),
                                 style = MaterialTheme.typography.labelSmall,
                                 color =
                                     if (isFromMe) {
@@ -2595,15 +2606,18 @@ fun EmptyMessagesState() {
 
 private enum class InputPanelMode { NONE, KEYBOARD, PANEL }
 
-private fun formatTimestamp(timestamp: Long): String {
+private fun formatTimestamp(
+    context: android.content.Context,
+    timestamp: Long,
+): String {
     val now = System.currentTimeMillis()
     val diff = now - timestamp
 
     return when {
-        diff < 60_000 -> "Just now"
+        diff < 60_000 -> context.getString(R.string.common_relative_time_just_now)
         diff < 3600_000 -> {
             val minutes = (diff / 60_000).toInt()
-            "$minutes min ago"
+            context.resources.getQuantityString(R.plurals.common_relative_time_minutes_ago, minutes, minutes)
         }
         diff < 86400_000 -> {
             SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date(timestamp))

@@ -43,6 +43,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.lxmf.messenger.R
 import com.lxmf.messenger.data.db.entity.BlockedPeerEntity
 import com.lxmf.messenger.viewmodel.BlockedUsersViewModel
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -158,7 +159,7 @@ private fun BlockedPeerCard(
     onUnblock: () -> Unit,
     onToggleBlackhole: () -> Unit,
 ) {
-    val dateFormat = remember { SimpleDateFormat("MMM d, yyyy", Locale.getDefault()) }
+    val dateFormat = remember { DateFormat.getDateInstance(DateFormat.MEDIUM) }
     val blockedOnText = stringResource(R.string.blocked_users_blocked_on, dateFormat.format(Date(peer.blockedTimestamp)))
     val blackholeLabel = stringResource(R.string.blocked_users_blackhole_label)
 

@@ -21,6 +21,7 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -173,7 +174,7 @@ private fun MicronLineComposable(
             }
             PartialManager.PartialState.Status.ERROR -> {
                 Text(
-                    "Failed to load partial",
+                    stringResource(R.string.nomadnet_browser_failed_to_load_partial),
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.padding(4.dp),
