@@ -1341,43 +1341,6 @@ private fun TelemetryIntervalChip(
     )
 }
 
-/**
- * Format a timestamp as relative time (e.g., "2 minutes ago", "Just now").
- */
-private fun formatTelemetryRelativeTime(
-    timestamp: Long,
-    now: Long = System.currentTimeMillis(),
-): String {
-    val diff = now - timestamp
-
-    return when {
-        diff < 5_000 -> "Just now"
-        diff < 60_000 -> "${diff / 1000} seconds ago"
-        diff < 120_000 -> "1 minute ago"
-        diff < 3600_000 -> "${diff / 60_000} minutes ago"
-        diff < 7200_000 -> "1 hour ago"
-        diff < 86400_000 -> "${diff / 3600_000} hours ago"
-        else -> "${diff / 86400_000} days ago"
-    }
-}
-
-/**
- * Format interval in seconds to a readable string.
- */
-private fun formatTelemetryIntervalDisplay(seconds: Int): String {
-    val hours = seconds / 3600
-    val minutes = (seconds % 3600) / 60
-    val secs = seconds % 60
-
-    return when {
-        seconds < 60 -> "${seconds}s"
-        hours > 0 && minutes == 0 && secs == 0 -> "${hours}hr"
-        hours > 0 -> "${hours}h ${minutes}m"
-        secs == 0 -> "${minutes}min"
-        else -> "${minutes}m ${secs}s"
-    }
-}
-
 @Composable
 private fun localizedTelemetryRelativeTime(
     timestamp: Long,

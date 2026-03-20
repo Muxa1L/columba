@@ -974,6 +974,7 @@ fun ClearAllAnnouncesDialog(
     )
 }
 
+@Suppress("LongParameterList")
 private fun LazyListScope.announcePagingItems(
     pagingItems: LazyPagingItems<Announce>,
     showContextMenu: Boolean,

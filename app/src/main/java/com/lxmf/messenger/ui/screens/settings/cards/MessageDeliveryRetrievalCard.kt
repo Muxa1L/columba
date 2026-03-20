@@ -552,30 +552,30 @@ fun MessageDeliveryRetrievalCard(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                SizeLimitChip(
-                    label = "1 MB",
+                FilterChip(
                     selected = incomingMessageSizeLimitKb == 1024,
                     onClick = { onIncomingMessageSizeLimitChange(1024) },
+                    label = { Text("1 MB") },
                 )
-                SizeLimitChip(
-                    label = "5 MB",
+                FilterChip(
                     selected = incomingMessageSizeLimitKb == 5120,
                     onClick = { onIncomingMessageSizeLimitChange(5120) },
+                    label = { Text("5 MB") },
                 )
-                SizeLimitChip(
-                    label = "10 MB",
+                FilterChip(
                     selected = incomingMessageSizeLimitKb == 10240,
                     onClick = { onIncomingMessageSizeLimitChange(10240) },
+                    label = { Text("10 MB") },
                 )
-                SizeLimitChip(
-                    label = "25 MB",
+                FilterChip(
                     selected = incomingMessageSizeLimitKb == 25600,
                     onClick = { onIncomingMessageSizeLimitChange(25600) },
+                    label = { Text("25 MB") },
                 )
-                SizeLimitChip(
-                    label = stringResource(R.string.settings_message_size_unlimited),
+                FilterChip(
                     selected = incomingMessageSizeLimitKb == 131072,
                     onClick = { onIncomingMessageSizeLimitChange(131072) },
+                    label = { Text(stringResource(R.string.settings_message_size_unlimited)) },
                 )
                 // Custom chip
                 FilterChip(
@@ -768,38 +768,6 @@ private fun CurrentRelayInfo(
         }
     }
 }
-
-/**
- * Format a timestamp as relative time (e.g., "2 minutes ago", "Just now").
- * @param timestamp The timestamp to format
- * @param now The current time (passed in to trigger recomposition on change)
- */
-private fun formatRelativeTime(
-    timestamp: Long,
-    now: Long = System.currentTimeMillis(),
-): String {
-    val diff = now - timestamp
-
-    return when {
-        diff < 5_000 -> "Just now"
-        diff < 60_000 -> "${diff / 1000} seconds ago"
-        diff < 120_000 -> "1 minute ago"
-        diff < 3600_000 -> "${diff / 60_000} minutes ago"
-        diff < 7200_000 -> "1 hour ago"
-        diff < 86400_000 -> "${diff / 3600_000} hours ago"
-        else -> "${diff / 86400_000} days ago"
-    }
-}
-
-/**
- * Format interval in seconds to a readable string (e.g., "30s", "2min", "5min").
- */
-private fun formatIntervalDisplay(seconds: Int): String =
-    when {
-        seconds < 60 -> "${seconds}s"
-        seconds % 60 == 0 -> "${seconds / 60}min"
-        else -> "${seconds / 60}m ${seconds % 60}s"
-    }
 
 @Composable
 private fun localizedRelativeTime(
@@ -1122,36 +1090,6 @@ private fun MoreRelaysItem(onClick: () -> Unit) {
         }
     }
 }
-
-@Composable
-private fun SizeLimitChip(
-    label: String,
-    selected: Boolean,
-    onClick: () -> Unit,
-) {
-    FilterChip(
-        selected = selected,
-        onClick = onClick,
-        label = { Text(label) },
-    )
-}
-
-/**
- * Format size limit in KB to a readable string (e.g., "1 MB", "5.5 MB", "128 MB").
- */
-private fun formatSizeLimit(limitKb: Int): String =
-    when {
-        limitKb >= 131072 -> "Unlimited (128 MB)"
-        limitKb >= 1024 -> {
-            val mb = limitKb / 1024.0
-            if (mb == mb.toInt().toDouble()) {
-                "${mb.toInt()} MB"
-            } else {
-                "%.1f MB".format(mb)
-            }
-        }
-        else -> "$limitKb KB"
-    }
 
 @Composable
 private fun localizedSizeLimit(limitKb: Int): String =
