@@ -29,6 +29,7 @@
     <string name="offline_map_download_min_zoom">Минимальный масштаб: %1$d (меньше деталей, меньше размер)</string>
     <string name="offline_map_download_max_zoom">Максимальный масштаб: %1$d (больше деталей, больше размер)</string>
     <string name="offline_map_download_resources_progress">%1$d / %2$d ресурсов</string>
+    <string name="offline_map_download_location_set">Местоположение задано: %1$s, %2$s</string>
     <string name="notification_ble_peer_connected_title">BLE-пир подключен</string>
     <string name="notification_ble_peer_connected_message">Подключено к %1$s</string>
     <string name="notification_ble_peer_disconnected_title">BLE-пир отключен</string>

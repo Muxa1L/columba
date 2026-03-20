@@ -26,6 +26,7 @@
   <string name="offline_map_download_min_zoom">Min zoom: %1$d (less detail, smaller size)</string>
   <string name="offline_map_download_max_zoom">Max zoom: %1$d (more detail, larger size)</string>
   <string name="offline_map_download_resources_progress">%1$d / %2$d resources</string>
+  <string name="offline_map_download_location_set">Location set: %1$s, %2$s</string>
   <string name="notification_ble_peer_connected_title">BLE Peer Connected</string>
   <string name="notification_ble_peer_connected_message">Connected to %1$s</string>
   <string name="notification_ble_peer_disconnected_title">BLE Peer Disconnected</string>

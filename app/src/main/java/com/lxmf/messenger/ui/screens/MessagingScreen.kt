@@ -2958,7 +2958,7 @@ private fun TextSizeDialog(
 
                 // Scale label
                 Text(
-                    text = "${(sliderValue * 100).toInt()}%",
+                    text = stringResource(R.string.common_percent_value, (sliderValue * 100).toInt()),
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

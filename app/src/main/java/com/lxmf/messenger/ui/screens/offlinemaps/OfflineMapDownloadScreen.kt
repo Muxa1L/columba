@@ -626,8 +626,11 @@ fun LocationSelectionStep(
                         )
                         Text(
                             text =
-                                "Location set: ${String.format(Locale.US, "%.4f", latitude)}, " +
+                                stringResource(
+                                    R.string.offline_map_download_location_set,
+                                    String.format(Locale.US, "%.4f", latitude),
                                     String.format(Locale.US, "%.4f", longitude),
+                                ),
                             style = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier.padding(start = 8.dp),
                         )
