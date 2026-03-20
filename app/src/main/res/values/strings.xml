@@ -98,6 +98,7 @@
   <string name="common_block">Block</string>
   <string name="common_remove">Remove</string>
   <string name="common_cancel">Cancel</string>
+  <string name="common_percent_value">%1$d%%</string>
    <string name="main_back_again_to_exit">Press back again to exit</string>
   <string name="cd_back">Back</string>
   <string name="reaction_picker_title">Choose a reaction</string>
@@ -1504,6 +1505,10 @@ Scan QR code or use:
   <string name="apk_sharing_share_apk_via">Share APK via...</string>
   <!-- Contacts screen -->
   <string name="contacts_scan_qr_supporting">Scan a contact\'s QR code to add them</string>
+  <string name="messaging_file_saved">File saved</string>
+  <string name="messaging_file_save_failed">Failed to save file</string>
+  <string name="messaging_image_saved">Image saved</string>
+  <string name="messaging_image_save_failed">Failed to save image</string>
   <!-- Theme editor -->
   <string name="theme_editor_create_title">Create Theme</string>
   <string name="theme_editor_edit_title">Edit Theme</string>
@@ -2110,6 +2115,7 @@ Your location is encrypted and only readable by the group host you configure.</s
   <string name="flasher_tnc_selected_region_tx">TX: %1$d dBm (max %2$d)</string>
   <string name="flasher_tnc_advanced_settings">Advanced Settings</string>
   <string name="flasher_tnc_frequency_mhz">Frequency (MHz)</string>
+  <string name="flasher_tnc_frequency_value_mhz">%1$.3f MHz</string>
   <string name="flasher_tnc_bandwidth_khz">BW (kHz)</string>
   <string name="flasher_tnc_spreading_factor">SF (7-12)</string>
   <string name="flasher_tnc_coding_rate">CR (5-8)</string>
@@ -2118,6 +2124,7 @@ Your location is encrypted and only readable by the group host you configure.</s
   <string name="flasher_tnc_apply_configuration">Apply Configuration</string>
   <string name="flasher_tnc_skip_configure_later">Skip (configure later)</string>
   <string name="flasher_progress_title">Flashing Firmware</string>
+  <string name="flasher_progress_percent">%1$d%%</string>
   <string name="flasher_progress_warning">Do not disconnect the device while flashing is in progress.</string>
   <string name="flasher_progress_reset_required">Reset Required</string>
   <string name="flasher_progress_flashing_complete">Flashing complete!</string>

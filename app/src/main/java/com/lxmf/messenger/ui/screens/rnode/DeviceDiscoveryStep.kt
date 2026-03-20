@@ -880,7 +880,7 @@ private fun BluetoothDeviceCard(
                                     )
                                     Spacer(Modifier.width(2.dp))
                                     Text(
-                                        "${rssi}dBm",
+                                        stringResource(R.string.ble_connections_rssi_dbm, rssi),
                                         style = MaterialTheme.typography.labelSmall,
                                         color =
                                             if (isSelected) {

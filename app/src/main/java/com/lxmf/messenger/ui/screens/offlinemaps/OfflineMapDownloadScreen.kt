@@ -1034,7 +1034,7 @@ fun DownloadingStep(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "${(progress.progress * 100).toInt()}%",
+                text = stringResource(R.string.common_percent_value, (progress.progress * 100).toInt()),
                 style = MaterialTheme.typography.displaySmall,
             )
 

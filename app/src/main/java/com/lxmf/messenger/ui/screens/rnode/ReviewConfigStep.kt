@@ -240,7 +240,9 @@ fun ReviewConfigStep(viewModel: RNodeWizardViewModel) {
                                 style = MaterialTheme.typography.titleMedium,
                             )
                             Text(
-                                "SF${preset.spreadingFactor} • ${preset.bandwidth / 1000} kHz • 4/${preset.codingRate}",
+                                "${stringResource(R.string.rnode_modem_preset_sf_chip, preset.spreadingFactor)} • " +
+                                    "${stringResource(R.string.rnode_modem_preset_khz_chip, preset.bandwidth / 1000)} • " +
+                                    stringResource(R.string.rnode_modem_preset_cr_chip, preset.codingRate),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )

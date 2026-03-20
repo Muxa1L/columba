@@ -646,7 +646,12 @@ fun MessagingScreen(
                                 destinationUri,
                             )
                         withContext(Dispatchers.Main) {
-                            val message = if (success) "File saved" else "Failed to save file"
+                            val message =
+                                if (success) {
+                                    context.getString(R.string.messaging_file_saved)
+                                } else {
+                                    context.getString(R.string.messaging_file_save_failed)
+                                }
                             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                         }
                     }
@@ -673,7 +678,12 @@ fun MessagingScreen(
                     scope.launch(Dispatchers.IO) {
                         val success = viewModel.saveImage(context, messageId, destinationUri)
                         withContext(Dispatchers.Main) {
-                            val message = if (success) "Image saved" else "Failed to save image"
+                            val message =
+                                if (success) {
+                                    context.getString(R.string.messaging_image_saved)
+                                } else {
+                                    context.getString(R.string.messaging_image_save_failed)
+                                }
                             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                         }
                     }

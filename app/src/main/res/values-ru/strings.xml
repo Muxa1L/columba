@@ -104,6 +104,7 @@
     <string name="common_block">Заблокировать</string>
     <string name="common_remove">Удалить</string>
     <string name="common_cancel">Отмена</string>
+    <string name="common_percent_value">%1$d%%</string>
     <string name="cd_back">Назад</string>
     <string name="reaction_picker_title">Выберите реакцию</string>
     <string name="messaging_pending_file_fetching">Получение файла...</string>
@@ -1664,6 +1665,10 @@
     <string name="about_card_view_release">Открыть релиз</string>
     <string name="about_card_copy_system_info">Копировать системную информацию</string>
     <string name="about_card_report_bug">Сообщить об ошибке</string>
+    <string name="messaging_file_saved">Файл сохранен</string>
+    <string name="messaging_file_save_failed">Не удалось сохранить файл</string>
+    <string name="messaging_image_saved">Изображение сохранено</string>
+    <string name="messaging_image_save_failed">Не удалось сохранить изображение</string>
     <!-- Auto announce -->
     <string name="auto_announce_title">Автообъявление</string>
     <string name="auto_announce_description">Автоматически объявляйте о своем присутствии в сети через заданные интервалы. Это помогает другим узлам находить вас.</string>
@@ -2209,6 +2214,7 @@
     <string name="flasher_tnc_selected_region_tx">TX: %1$d dBm, максимум %2$d</string>
     <string name="flasher_tnc_advanced_settings">Расширенные настройки</string>
     <string name="flasher_tnc_frequency_mhz">Частота, МГц</string>
+    <string name="flasher_tnc_frequency_value_mhz">%1$.3f МГц</string>
     <string name="flasher_tnc_bandwidth_khz">BW, кГц</string>
     <string name="flasher_tnc_spreading_factor">SF, 7-12</string>
     <string name="flasher_tnc_coding_rate">CR, 5-8</string>
@@ -2217,6 +2223,7 @@
     <string name="flasher_tnc_apply_configuration">Применить конфигурацию</string>
     <string name="flasher_tnc_skip_configure_later">Пропустить, настроить позже</string>
     <string name="flasher_progress_title">Прошивка устройства</string>
+    <string name="flasher_progress_percent">%1$d%%</string>
     <string name="flasher_progress_warning">Не отключайте устройство, пока выполняется прошивка.</string>
     <string name="flasher_progress_reset_required">Требуется перезагрузка</string>
     <string name="flasher_progress_flashing_complete">Прошивка завершена!</string>

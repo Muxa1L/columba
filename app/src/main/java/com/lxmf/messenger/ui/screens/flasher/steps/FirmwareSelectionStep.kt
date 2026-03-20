@@ -460,7 +460,7 @@ private fun DownloadProgressCard(
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    text = "$progress%",
+                    text = stringResource(R.string.common_percent_value, progress),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,

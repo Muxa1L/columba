@@ -215,7 +215,7 @@ fun TncConfigurationStep(
                 ) {
                     Column {
                         Text(
-                            text = "${String.format(java.util.Locale.US, "%.3f", selectedRegion.frequency / 1_000_000.0)} MHz",
+                            text = stringResource(R.string.flasher_tnc_frequency_value_mhz, selectedRegion.frequency / 1_000_000.0),
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.Medium,
                         )
@@ -468,9 +468,9 @@ private fun TncPresetCard(
                 FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(6.dp),
                 ) {
-                    ParamChip(label = "SF${preset.spreadingFactor}")
-                    ParamChip(label = "${preset.bandwidth / 1000} kHz")
-                    ParamChip(label = "4/${preset.codingRate}")
+                    ParamChip(label = stringResource(R.string.rnode_modem_preset_sf_chip, preset.spreadingFactor))
+                    ParamChip(label = stringResource(R.string.rnode_modem_preset_khz_chip, preset.bandwidth / 1000))
+                    ParamChip(label = stringResource(R.string.rnode_modem_preset_cr_chip, preset.codingRate))
                 }
             }
 

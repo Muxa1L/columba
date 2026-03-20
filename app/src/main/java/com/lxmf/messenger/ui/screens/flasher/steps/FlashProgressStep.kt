@@ -169,7 +169,7 @@ private fun FlashingContent(
             ) {
                 // Progress percentage
                 Text(
-                    text = "$progress%",
+                    text = stringResource(R.string.flasher_progress_percent, progress),
                     style = MaterialTheme.typography.displaySmall,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary,

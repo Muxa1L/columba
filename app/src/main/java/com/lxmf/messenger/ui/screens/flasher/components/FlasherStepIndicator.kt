@@ -21,10 +21,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.lxmf.messenger.R
 import com.lxmf.messenger.viewmodel.FlasherStep
 
 /**
@@ -48,11 +50,11 @@ fun FlasherStepIndicator(
 ) {
     val steps =
         listOf(
-            StepInfo(FlasherStep.DEVICE_SELECTION, "Device", 1),
-            StepInfo(FlasherStep.DEVICE_DETECTION, "Detect", 2),
-            StepInfo(FlasherStep.FIRMWARE_SELECTION, "Firmware", 3),
-            StepInfo(FlasherStep.FLASH_PROGRESS, "Flash", 4),
-            StepInfo(FlasherStep.COMPLETE, "Done", 5),
+            StepInfo(FlasherStep.DEVICE_SELECTION, stringResource(R.string.device_selection_title), 1),
+            StepInfo(FlasherStep.DEVICE_DETECTION, stringResource(R.string.device_detection_title), 2),
+            StepInfo(FlasherStep.FIRMWARE_SELECTION, stringResource(R.string.firmware_selection_title), 3),
+            StepInfo(FlasherStep.FLASH_PROGRESS, stringResource(R.string.rnode_flasher_flashing), 4),
+            StepInfo(FlasherStep.COMPLETE, stringResource(R.string.rnode_flasher_complete), 5),
         )
 
     Column(
