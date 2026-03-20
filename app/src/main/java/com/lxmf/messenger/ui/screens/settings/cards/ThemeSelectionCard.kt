@@ -34,6 +34,22 @@ import com.lxmf.messenger.ui.components.CollapsibleSettingsCard
 import com.lxmf.messenger.ui.theme.AppTheme
 import com.lxmf.messenger.ui.theme.PresetTheme
 
+@Composable
+private fun localizedThemeDisplayName(theme: AppTheme): String =
+    if (theme is PresetTheme) {
+        stringResource(theme.displayNameRes)
+    } else {
+        theme.displayName
+    }
+
+@Composable
+private fun localizedThemeDescription(theme: AppTheme): String =
+    if (theme is PresetTheme) {
+        stringResource(theme.descriptionRes)
+    } else {
+        theme.description
+    }
+
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ThemeSelectionCard(
@@ -85,7 +101,7 @@ fun ThemeSelectionCard(
                 FilterChip(
                     selected = selectedTheme == theme,
                     onClick = { onThemeChange(theme) },
-                    label = { Text(theme.displayName) },
+                    label = { Text(localizedThemeDisplayName(theme)) },
                     leadingIcon =
                         if (selectedTheme == theme) {
                             {
@@ -120,7 +136,7 @@ fun ThemeSelectionCard(
                     FilterChip(
                         selected = selectedTheme == theme,
                         onClick = { onThemeChange(theme) },
-                        label = { Text(theme.displayName) },
+                        label = { Text(localizedThemeDisplayName(theme)) },
                         leadingIcon =
                             if (selectedTheme == theme) {
                                 {
@@ -140,7 +156,7 @@ fun ThemeSelectionCard(
 
         // Description of selected theme
         Text(
-            text = selectedTheme.description,
+            text = localizedThemeDescription(selectedTheme),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.primary,
             fontWeight = FontWeight.Medium,

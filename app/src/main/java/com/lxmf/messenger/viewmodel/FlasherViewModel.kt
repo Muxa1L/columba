@@ -5,6 +5,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lxmf.messenger.R
 import com.lxmf.messenger.reticulum.flasher.FirmwarePackage
 import com.lxmf.messenger.reticulum.flasher.FirmwareSource
 import com.lxmf.messenger.reticulum.flasher.FrequencyBand
@@ -309,7 +310,11 @@ class FlasherViewModel
                     _state.update {
                         it.copy(
                             isRefreshingDevices = false,
-                            error = "Failed to scan devices: ${e.message}",
+                            error =
+                                context.getString(
+                                    R.string.flasher_scan_devices_failed,
+                                    e.message ?: context.getString(R.string.common_unknown),
+                                ),
                         )
                     }
                 }
@@ -328,7 +333,7 @@ class FlasherViewModel
                         Log.d(TAG, "USB permission granted for device ${device.deviceId}")
                     } else {
                         Log.w(TAG, "USB permission denied for device ${device.deviceId}")
-                        _state.update { it.copy(permissionError = "USB permission denied") }
+                        _state.update { it.copy(permissionError = context.getString(R.string.flasher_usb_permission_denied)) }
                     }
                 }
             }
@@ -383,7 +388,7 @@ class FlasherViewModel
                         _state.update {
                             it.copy(
                                 isDetecting = false,
-                                detectionError = "Could not identify device. You can proceed with manual board selection.",
+                                detectionError = context.getString(R.string.flasher_detection_unknown_device),
                             )
                         }
                     }
@@ -392,7 +397,11 @@ class FlasherViewModel
                     _state.update {
                         it.copy(
                             isDetecting = false,
-                            detectionError = "Detection failed: ${e.message}",
+                            detectionError =
+                                context.getString(
+                                    R.string.flasher_detection_failed,
+                                    e.message ?: context.getString(R.string.common_unknown),
+                                ),
                         )
                     }
                 }
@@ -504,7 +513,15 @@ class FlasherViewModel
                     fetchAvailableVersions()
                 } catch (e: Exception) {
                     Log.e(TAG, "Failed to load firmware", e)
-                    _state.update { it.copy(downloadError = "Failed to load firmware: ${e.message}") }
+                    _state.update {
+                        it.copy(
+                            downloadError =
+                                context.getString(
+                                    R.string.flasher_load_firmware_failed,
+                                    e.message ?: context.getString(R.string.common_unknown),
+                                ),
+                        )
+                    }
                 }
             }
         }
@@ -603,7 +620,7 @@ class FlasherViewModel
                     currentStep = FlasherStep.FLASH_PROGRESS,
                     isFlashing = true,
                     flashProgress = 0,
-                    flashMessage = "Starting flash...",
+                    flashMessage = context.getString(R.string.flasher_starting_flash),
                     showCancelConfirmation = false,
                 )
             }
@@ -689,7 +706,7 @@ class FlasherViewModel
                 it.copy(
                     needsManualReset = false,
                     isProvisioning = true,
-                    provisioningMessage = "Connecting...",
+                    provisioningMessage = context.getString(R.string.flasher_provision_connecting),
                 )
             }
 
@@ -726,8 +743,8 @@ class FlasherViewModel
                 it.copy(
                     currentStep = FlasherStep.FLASH_PROGRESS,
                     needsManualReset = true,
-                    resetMessage = "Connect your ${board.displayName} and press RST if needed.",
-                    flashMessage = "Ready to provision ${board.displayName}",
+                    resetMessage = context.getString(R.string.flasher_reset_message, board.displayName),
+                    flashMessage = context.getString(R.string.flasher_ready_to_provision, board.displayName),
                 )
             }
         }

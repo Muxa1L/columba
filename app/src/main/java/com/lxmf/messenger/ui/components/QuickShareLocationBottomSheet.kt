@@ -101,7 +101,7 @@ fun QuickShareLocationBottomSheet(
                     FilterChip(
                         selected = selectedDuration == duration,
                         onClick = { selectedDuration = duration },
-                        label = { Text(duration.displayText) },
+                        label = { Text(stringResource(duration.labelRes)) },
                     )
                 }
             }

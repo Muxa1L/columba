@@ -1,19 +1,25 @@
 package com.lxmf.messenger.ui.model
 
+import androidx.annotation.StringRes
+import com.lxmf.messenger.R
 import java.util.Calendar
 
 /**
  * Duration options for location sharing.
  *
- * @property displayText User-facing text for the duration option
+ * @property labelRes String resource for the duration option
  * @property durationMillis Duration in milliseconds, or null for computed/indefinite durations
  */
-enum class SharingDuration(val displayText: String, val durationMillis: Long?) {
-    FIFTEEN_MINUTES("15 min", 15 * 60 * 1000L),
-    ONE_HOUR("1 hour", 60 * 60 * 1000L),
-    FOUR_HOURS("4 hours", 4 * 60 * 60 * 1000L),
-    UNTIL_MIDNIGHT("Until midnight", null),
-    INDEFINITE("Until I stop", null),
+enum class SharingDuration(
+    @StringRes val labelRes: Int,
+    val displayText: String,
+    val durationMillis: Long?,
+) {
+    FIFTEEN_MINUTES(R.string.settings_location_sharing_duration_fifteen_minutes, "15 min", 15 * 60 * 1000L),
+    ONE_HOUR(R.string.settings_location_sharing_duration_one_hour, "1 hour", 60 * 60 * 1000L),
+    FOUR_HOURS(R.string.settings_location_sharing_duration_four_hours, "4 hours", 4 * 60 * 60 * 1000L),
+    UNTIL_MIDNIGHT(R.string.settings_location_sharing_duration_until_midnight, "Until midnight", null),
+    INDEFINITE(R.string.settings_location_sharing_duration_until_i_stop, "Until I stop", null),
     ;
 
     /**

@@ -11,6 +11,7 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.database.entity.InterfaceEntity
 import com.lxmf.messenger.repository.InterfaceRepository
 import com.lxmf.messenger.reticulum.protocol.ReticulumProtocol
@@ -135,7 +136,12 @@ class InterfaceStatsViewModel
                     observeReconnectSignal()
                 }
             } else {
-                _state.update { it.copy(isLoading = false, errorMessage = "Invalid interface ID") }
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = context.getString(R.string.interface_stats_invalid_id),
+                    )
+                }
             }
         }
 
@@ -180,13 +186,23 @@ class InterfaceStatsViewModel
                         Log.d(TAG, "Loaded interface: ${entity.name}")
                     } else {
                         _state.update {
-                            it.copy(isLoading = false, errorMessage = "Interface not found")
+                            it.copy(
+                                isLoading = false,
+                                errorMessage = context.getString(R.string.interface_stats_not_found),
+                            )
                         }
                     }
                 } catch (e: Exception) {
                     Log.e(TAG, "Error loading interface", e)
                     _state.update {
-                        it.copy(isLoading = false, errorMessage = "Error loading interface: ${e.message}")
+                        it.copy(
+                            isLoading = false,
+                            errorMessage =
+                                context.getString(
+                                    R.string.interface_stats_load_error,
+                                    e.message ?: context.getString(R.string.common_unknown),
+                                ),
+                        )
                     }
                 }
             }

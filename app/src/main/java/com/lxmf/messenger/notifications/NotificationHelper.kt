@@ -220,7 +220,13 @@ class NotificationHelper
                     return receivingInterface.substring(bracketStart + 1, bracketEnd)
                 }
             }
-            return interfaceType.displayLabel
+            return when (interfaceType) {
+                InterfaceType.AUTO_INTERFACE -> context.getString(R.string.interface_info_auto)
+                InterfaceType.TCP_CLIENT -> context.getString(R.string.interface_info_tcp)
+                InterfaceType.ANDROID_BLE -> context.getString(R.string.interface_info_bluetooth)
+                InterfaceType.RNODE -> context.getString(R.string.announce_stream_interface_rnode)
+                InterfaceType.UNKNOWN -> context.getString(R.string.common_unknown)
+            }
         }
 
         /**

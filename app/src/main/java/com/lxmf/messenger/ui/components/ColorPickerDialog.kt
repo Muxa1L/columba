@@ -85,6 +85,7 @@ fun ColorPickerDialog(
 ) {
     val resolvedTitle = title ?: stringResource(R.string.color_picker_default_title)
     val hexLabel = stringResource(R.string.color_picker_hex_label)
+    val hexPlaceholder = stringResource(R.string.color_picker_hex_placeholder)
     val hueLabel = stringResource(R.string.color_picker_hue)
     val saturationLabel = stringResource(R.string.color_picker_saturation)
     val lightnessLabel = stringResource(R.string.color_picker_lightness)
@@ -188,7 +189,7 @@ fun ColorPickerDialog(
                         }
                     },
                     label = { Text(hexLabel) },
-                    placeholder = { Text("#RRGGBB") },
+                    placeholder = { Text(hexPlaceholder) },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                     modifier =

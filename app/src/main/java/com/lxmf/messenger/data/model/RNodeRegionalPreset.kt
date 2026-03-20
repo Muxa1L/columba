@@ -1,6 +1,8 @@
 package com.lxmf.messenger.data.model
 
 import android.bluetooth.BluetoothDevice
+import androidx.annotation.StringRes
+import com.lxmf.messenger.R
 import java.util.Locale
 
 /**
@@ -96,66 +98,84 @@ data class RNodeRegionalPreset(
  * @property description Brief description of use case
  */
 enum class ModemPreset(
+    @StringRes val displayNameRes: Int,
     val displayName: String,
     val spreadingFactor: Int,
     val bandwidth: Int,
     val codingRate: Int,
+    @StringRes val descriptionRes: Int,
     val description: String,
 ) {
     SHORT_TURBO(
+        displayNameRes = R.string.rnode_modem_preset_short_turbo_name,
         displayName = "Short Turbo",
         spreadingFactor = 7,
         bandwidth = 500000,
         codingRate = 5,
+        descriptionRes = R.string.rnode_modem_preset_short_turbo_description,
         description = "Fastest speed, very short range",
     ),
     SHORT_FAST(
+        displayNameRes = R.string.rnode_modem_preset_short_fast_name,
         displayName = "Short Fast",
         spreadingFactor = 7,
         bandwidth = 250000,
         codingRate = 5,
+        descriptionRes = R.string.rnode_modem_preset_short_fast_description,
         description = "Fast speed, short range",
     ),
     SHORT_SLOW(
+        displayNameRes = R.string.rnode_modem_preset_short_slow_name,
         displayName = "Short Slow",
         spreadingFactor = 8,
         bandwidth = 250000,
         codingRate = 5,
+        descriptionRes = R.string.rnode_modem_preset_short_slow_description,
         description = "Moderate speed, short range",
     ),
     MEDIUM_FAST(
+        displayNameRes = R.string.rnode_modem_preset_medium_fast_name,
         displayName = "Medium Fast",
         spreadingFactor = 9,
         bandwidth = 250000,
         codingRate = 5,
+        descriptionRes = R.string.rnode_modem_preset_medium_fast_description,
         description = "Balanced speed and range",
     ),
     MEDIUM_SLOW(
+        displayNameRes = R.string.rnode_modem_preset_medium_slow_name,
         displayName = "Medium Slow",
         spreadingFactor = 10,
         bandwidth = 250000,
         codingRate = 5,
+        descriptionRes = R.string.rnode_modem_preset_medium_slow_description,
         description = "Slower speed, medium range",
     ),
     LONG_FAST(
+        displayNameRes = R.string.rnode_modem_preset_long_fast_name,
         displayName = "Long Fast",
         spreadingFactor = 11,
         bandwidth = 250000,
         codingRate = 5,
+        descriptionRes = R.string.rnode_modem_preset_long_fast_description,
         description = "Good balance of speed and range",
     ),
     LONG_MODERATE(
+        displayNameRes = R.string.rnode_modem_preset_long_moderate_name,
         displayName = "Long Moderate",
         spreadingFactor = 11,
         bandwidth = 125000,
         codingRate = 8,
+        descriptionRes = R.string.rnode_modem_preset_long_moderate_description,
         description = "Better range, slower speed",
     ),
     LONG_SLOW(
+        displayNameRes = R.string.rnode_modem_preset_long_slow_name,
         displayName = "Long Slow",
         spreadingFactor = 12,
         bandwidth = 125000,
         codingRate = 8,
+        descriptionRes = R.string.rnode_modem_preset_long_slow_description,
         description = "Maximum range, slowest speed",
     ),
     ;

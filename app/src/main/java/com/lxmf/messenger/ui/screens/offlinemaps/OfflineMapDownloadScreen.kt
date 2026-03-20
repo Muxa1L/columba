@@ -697,7 +697,7 @@ fun RadiusSelectionStep(
                         onClick = null,
                     )
                     Text(
-                        text = option.label,
+                        text = stringResource(option.labelRes),
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.padding(start = 8.dp),
                     )

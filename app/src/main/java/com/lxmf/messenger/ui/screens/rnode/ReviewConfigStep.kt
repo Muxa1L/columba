@@ -220,7 +220,7 @@ fun ReviewConfigStep(viewModel: RNodeWizardViewModel) {
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Icon(
-                            if (preset.displayName.startsWith("Short")) {
+                            if (preset.name.startsWith("SHORT")) {
                                 Icons.Default.Speed
                             } else {
                                 Icons.Default.Radio
@@ -236,7 +236,7 @@ fun ReviewConfigStep(viewModel: RNodeWizardViewModel) {
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                             Text(
-                                preset.displayName,
+                                stringResource(preset.displayNameRes),
                                 style = MaterialTheme.typography.titleMedium,
                             )
                             Text(

@@ -1,9 +1,11 @@
 package com.lxmf.messenger.ui.theme
 
+import androidx.annotation.StringRes
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
+import com.lxmf.messenger.R
 
 /**
  * Sealed interface for app themes.
@@ -37,39 +39,57 @@ sealed interface AppTheme {
  * These are the 6 pre-configured themes that ship with the app.
  */
 enum class PresetTheme(
+    @StringRes val displayNameRes: Int,
     override val displayName: String,
+    @StringRes val descriptionRes: Int,
     override val description: String,
 ) : AppTheme {
     VIBRANT(
+        displayNameRes = R.string.settings_theme_preset_vibrant_name,
         displayName = "Vibrant",
+        descriptionRes = R.string.settings_theme_preset_vibrant_description,
         description = "Purple-pink gradient matching the app icon",
     ),
     DYNAMIC(
+        displayNameRes = R.string.settings_theme_preset_dynamic_name,
         displayName = "Dynamic",
+        descriptionRes = R.string.settings_theme_preset_dynamic_description,
         description = "Extracts colors from your device wallpaper",
     ),
     OCEAN(
+        displayNameRes = R.string.settings_theme_preset_ocean_name,
         displayName = "Ocean",
+        descriptionRes = R.string.settings_theme_preset_ocean_description,
         description = "Cool blue tones for clarity and focus",
     ),
     FOREST(
+        displayNameRes = R.string.settings_theme_preset_forest_name,
         displayName = "Forest",
+        descriptionRes = R.string.settings_theme_preset_forest_description,
         description = "Natural green tones, easy on the eyes",
     ),
     SUNSET(
+        displayNameRes = R.string.settings_theme_preset_sunset_name,
         displayName = "Sunset",
+        descriptionRes = R.string.settings_theme_preset_sunset_description,
         description = "Warm orange-red tones for energy",
     ),
     MONOCHROME(
+        displayNameRes = R.string.settings_theme_preset_monochrome_name,
         displayName = "Monochrome",
+        descriptionRes = R.string.settings_theme_preset_monochrome_description,
         description = "Grayscale minimalism for professionals",
     ),
     OLED_BLACK(
+        displayNameRes = R.string.settings_theme_preset_oled_black_name,
         displayName = "OLED Black",
+        descriptionRes = R.string.settings_theme_preset_oled_black_description,
         description = "True black (#000000) for OLED screens - maximum battery savings",
     ),
     EXPRESSIVE(
+        displayNameRes = R.string.settings_theme_preset_expressive_name,
         displayName = "Expressive",
+        descriptionRes = R.string.settings_theme_preset_expressive_description,
         description = "Purple/lavender palette with sage/mint green accents",
     ),
     ;

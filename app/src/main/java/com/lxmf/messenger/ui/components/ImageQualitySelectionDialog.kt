@@ -7,6 +7,26 @@ import com.lxmf.messenger.R
 import com.lxmf.messenger.data.model.ImageCompressionPreset
 import com.lxmf.messenger.service.ConversationLinkManager
 
+@Composable
+private fun localizedImageCompressionPresetName(preset: ImageCompressionPreset): String =
+    when (preset) {
+        ImageCompressionPreset.LOW -> stringResource(R.string.settings_image_compression_preset_low)
+        ImageCompressionPreset.MEDIUM -> stringResource(R.string.settings_image_compression_preset_medium)
+        ImageCompressionPreset.HIGH -> stringResource(R.string.settings_image_compression_preset_high)
+        ImageCompressionPreset.ORIGINAL -> stringResource(R.string.settings_image_compression_preset_original)
+        ImageCompressionPreset.AUTO -> stringResource(R.string.settings_image_compression_preset_auto)
+    }
+
+@Composable
+private fun localizedImageCompressionPresetDescription(preset: ImageCompressionPreset): String =
+    when (preset) {
+        ImageCompressionPreset.LOW -> stringResource(R.string.settings_image_compression_description_low)
+        ImageCompressionPreset.MEDIUM -> stringResource(R.string.settings_image_compression_description_medium)
+        ImageCompressionPreset.HIGH -> stringResource(R.string.settings_image_compression_description_high)
+        ImageCompressionPreset.ORIGINAL -> stringResource(R.string.settings_image_compression_description_original)
+        ImageCompressionPreset.AUTO -> stringResource(R.string.settings_image_compression_description_auto)
+    }
+
 /**
  * Dialog for selecting image quality/compression level before sending.
  *
@@ -46,8 +66,8 @@ fun ImageQualitySelectionDialog(
         presets.map { preset ->
             QualityOption(
                 value = preset,
-                displayName = preset.displayName,
-                description = preset.description,
+                displayName = localizedImageCompressionPresetName(preset),
+                description = localizedImageCompressionPresetDescription(preset),
             )
         }
 

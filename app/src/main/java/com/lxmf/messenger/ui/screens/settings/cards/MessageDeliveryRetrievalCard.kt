@@ -555,22 +555,22 @@ fun MessageDeliveryRetrievalCard(
                 FilterChip(
                     selected = incomingMessageSizeLimitKb == 1024,
                     onClick = { onIncomingMessageSizeLimitChange(1024) },
-                    label = { Text("1 MB") },
+                    label = { Text(stringResource(R.string.settings_message_size_mb, 1)) },
                 )
                 FilterChip(
                     selected = incomingMessageSizeLimitKb == 5120,
                     onClick = { onIncomingMessageSizeLimitChange(5120) },
-                    label = { Text("5 MB") },
+                    label = { Text(stringResource(R.string.settings_message_size_mb, 5)) },
                 )
                 FilterChip(
                     selected = incomingMessageSizeLimitKb == 10240,
                     onClick = { onIncomingMessageSizeLimitChange(10240) },
-                    label = { Text("10 MB") },
+                    label = { Text(stringResource(R.string.settings_message_size_mb, 10)) },
                 )
                 FilterChip(
                     selected = incomingMessageSizeLimitKb == 25600,
                     onClick = { onIncomingMessageSizeLimitChange(25600) },
-                    label = { Text("25 MB") },
+                    label = { Text(stringResource(R.string.settings_message_size_mb, 25)) },
                 )
                 FilterChip(
                     selected = incomingMessageSizeLimitKb == 131072,

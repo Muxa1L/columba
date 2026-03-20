@@ -1,9 +1,11 @@
 package com.lxmf.messenger.viewmodel
 
 import android.bluetooth.BluetoothAdapter
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.database.entity.InterfaceEntity
 import com.lxmf.messenger.data.model.BleConnectionsState
 import com.lxmf.messenger.data.repository.BleStatusRepository
@@ -15,6 +17,7 @@ import com.lxmf.messenger.service.InterfaceConfigManager
 import com.lxmf.messenger.util.validation.InputValidator
 import com.lxmf.messenger.util.validation.ValidationResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -145,6 +148,7 @@ class InterfaceManagementViewModel
         private val configManager: InterfaceConfigManager,
         private val bleStatusRepository: BleStatusRepository,
         private val reticulumProtocol: ReticulumProtocol,
+        @ApplicationContext private val context: Context? = null,
     ) : ViewModel() {
         companion object {
             private const val TAG = "InterfaceMgmtVM"
@@ -377,13 +381,13 @@ class InterfaceManagementViewModel
                 // Bluetooth turned off while it was on
                 previousBluetoothState == BluetoothAdapter.STATE_ON &&
                     newState == BluetoothAdapter.STATE_OFF -> {
-                    showInfo("Bluetooth turned off - BLE interface paused")
+                    showInfo(context?.getString(R.string.interface_management_bluetooth_paused) ?: "Bluetooth turned off - BLE interface paused")
                 }
 
                 // Bluetooth turned back on while it was off
                 previousBluetoothState == BluetoothAdapter.STATE_OFF &&
                     newState == BluetoothAdapter.STATE_ON -> {
-                    showInfo("Bluetooth enabled - BLE interface resuming")
+                    showInfo(context?.getString(R.string.interface_management_bluetooth_resuming) ?: "Bluetooth enabled - BLE interface resuming")
                 }
             }
 
@@ -449,11 +453,11 @@ class InterfaceManagementViewModel
                     if (editingId != null) {
                         // Update existing interface
                         interfaceRepository.updateInterface(editingId, config)
-                        showSuccess("Interface updated successfully")
+                        showSuccess(context?.getString(R.string.interface_management_interface_updated) ?: "Interface updated successfully")
                     } else {
                         // Insert new interface
                         interfaceRepository.insertInterface(config)
-                        showSuccess("Interface added successfully")
+                        showSuccess(context?.getString(R.string.interface_management_interface_added) ?: "Interface added successfully")
                     }
 
                     // Mark that there are pending changes
@@ -461,7 +465,12 @@ class InterfaceManagementViewModel
 
                     hideDialog()
                 } catch (e: Exception) {
-                    showError("Failed to save interface: ${e.message}")
+                    showError(
+                        context?.getString(
+                            R.string.interface_management_save_failed,
+                            e.message ?: context.getString(R.string.common_unknown),
+                        ) ?: "Failed to save interface: ${e.message ?: "Unknown"}",
+                    )
                 }
             }
         }
@@ -473,12 +482,17 @@ class InterfaceManagementViewModel
             viewModelScope.launch {
                 try {
                     interfaceRepository.deleteInterface(id)
-                    showSuccess("Interface deleted successfully")
+                    showSuccess(context?.getString(R.string.interface_management_interface_deleted) ?: "Interface deleted successfully")
 
                     // Mark that there are pending changes
                     _state.value = _state.value.copy(hasPendingChanges = true)
                 } catch (e: Exception) {
-                    showError("Failed to delete interface: ${e.message}")
+                    showError(
+                        context?.getString(
+                            R.string.interface_management_delete_failed,
+                            e.message ?: context.getString(R.string.common_unknown),
+                        ) ?: "Failed to delete interface: ${e.message ?: "Unknown"}",
+                    )
                 }
             }
         }
@@ -515,7 +529,12 @@ class InterfaceManagementViewModel
                     // Mark that there are pending changes
                     _state.value = _state.value.copy(hasPendingChanges = true)
                 } catch (e: Exception) {
-                    showError("Failed to toggle interface: ${e.message}")
+                    showError(
+                        context?.getString(
+                            R.string.interface_management_toggle_failed,
+                            e.message ?: context.getString(R.string.common_unknown),
+                        ) ?: "Failed to toggle interface: ${e.message ?: "Unknown"}",
+                    )
                 }
             }
         }
@@ -749,7 +768,10 @@ class InterfaceManagementViewModel
                     // Validate max connections
                     val maxConn = config.maxConnections.toIntOrNull()
                     if (maxConn == null || maxConn !in 1..7) {
-                        _configState.value = _configState.value.copy(maxConnectionsError = "Max connections must be 1-7")
+                        _configState.value =
+                            _configState.value.copy(
+                                maxConnectionsError = context?.getString(R.string.interface_management_max_connections_error) ?: "Max connections must be 1-7",
+                            )
                         isValid = false
                     } else {
                         _configState.value = _configState.value.copy(maxConnectionsError = null)
@@ -972,12 +994,16 @@ class InterfaceManagementViewModel
                                 hasPendingChanges = false,
                                 isApplyingChanges = false,
                             )
-                        showSuccess("Configuration applied successfully")
+                        showSuccess(context?.getString(R.string.interface_management_apply_changes_success) ?: "Configuration applied successfully")
                     }.onFailure { error ->
                         _state.value =
                             _state.value.copy(
                                 isApplyingChanges = false,
-                                applyChangesError = error.message ?: "Failed to apply changes",
+                                applyChangesError =
+                                    context?.getString(
+                                        R.string.interface_management_apply_changes_failed,
+                                        error.message ?: context.getString(R.string.common_unknown),
+                                    ) ?: "Failed to apply changes: ${error.message ?: "Unknown"}",
                             )
                     }
                 } catch (e: Exception) {
@@ -985,7 +1011,11 @@ class InterfaceManagementViewModel
                     _state.value =
                         _state.value.copy(
                             isApplyingChanges = false,
-                            applyChangesError = e.message ?: "Unexpected error occurred",
+                            applyChangesError =
+                                context?.getString(
+                                    R.string.interface_management_unexpected_error,
+                                    e.message ?: context.getString(R.string.common_unknown),
+                                ) ?: "Unexpected error occurred: ${e.message ?: "Unknown"}",
                         )
                 }
             }

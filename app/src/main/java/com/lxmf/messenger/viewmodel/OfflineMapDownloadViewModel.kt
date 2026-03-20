@@ -5,9 +5,11 @@ import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.util.Log
+import androidx.annotation.StringRes
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.repository.OfflineMapRegion
 import com.lxmf.messenger.data.repository.OfflineMapRegionRepository
 import com.lxmf.messenger.di.IoDispatcher
@@ -57,13 +59,14 @@ enum class DownloadWizardStep {
  */
 enum class RadiusOption(
     val km: Int,
+    @StringRes val labelRes: Int,
     val label: String,
 ) {
-    SMALL(5, "5 km"),
-    MEDIUM(10, "10 km"),
-    LARGE(25, "25 km"),
-    EXTRA_LARGE(50, "50 km"),
-    HUGE(100, "100 km"),
+    SMALL(5, R.string.offline_map_download_radius_small, "5 km"),
+    MEDIUM(10, R.string.offline_map_download_radius_medium, "10 km"),
+    LARGE(25, R.string.offline_map_download_radius_large, "25 km"),
+    EXTRA_LARGE(50, R.string.offline_map_download_radius_extra_large, "50 km"),
+    HUGE(100, R.string.offline_map_download_radius_huge, "100 km"),
 }
 
 /**
@@ -326,7 +329,8 @@ class OfflineMapDownloadViewModel
                         it.copy(
                             addressSearchResults = results,
                             isSearchingAddress = false,
-                            addressSearchError = if (results.isEmpty()) "No results found" else null,
+                            addressSearchError =
+                                if (results.isEmpty()) context.getString(R.string.offline_map_download_no_results) else null,
                         )
                     }
                 } catch (e: Exception) {
@@ -334,7 +338,11 @@ class OfflineMapDownloadViewModel
                     _state.update {
                         it.copy(
                             isSearchingAddress = false,
-                            addressSearchError = "Search failed: ${e.message}",
+                            addressSearchError =
+                                context.getString(
+                                    R.string.offline_map_download_search_failed,
+                                    e.message ?: context.getString(R.string.common_unknown),
+                                ),
                         )
                     }
                 }
@@ -393,7 +401,7 @@ class OfflineMapDownloadViewModel
                 parts.joinToString(", ")
             } else {
                 // Fallback to full address line
-                address.getAddressLine(0) ?: "Unknown location"
+                address.getAddressLine(0) ?: context.getString(R.string.offline_map_download_unknown_location)
             }
         }
 
@@ -633,12 +641,12 @@ class OfflineMapDownloadViewModel
                 .build()
         }
 
-        @Suppress("LongMethod") // Orchestrates download process - splitting would fragment cohesive flow
+        @Suppress("LongMethod", "CyclomaticComplexMethod") // Orchestrates download process - splitting would fragment cohesive flow
         private fun startDownload() {
             val currentState = _state.value
             val lat = currentState.centerLatitude ?: return
             val lon = currentState.centerLongitude ?: return
-            val name = currentState.name.ifBlank { "Offline Map" }
+            val name = currentState.name.ifBlank { context.getString(R.string.offline_map_download_default_name) }
 
             if (isDownloading) {
                 Log.w(TAG, "Download already in progress")
@@ -758,7 +766,7 @@ class OfflineMapDownloadViewModel
                                         it.copy(
                                             downloadProgress =
                                                 it.downloadProgress?.copy(
-                                                    statusMessage = "Finalizing offline style…",
+                                                    statusMessage = context.getString(R.string.offline_map_download_finalizing_style),
                                                 ),
                                         )
                                     }
@@ -772,9 +780,7 @@ class OfflineMapDownloadViewModel
                                     val styleCacheWarning =
                                         if (!styleCached) {
                                             Log.w(TAG, "Style caching failed — offline map may not work after 24h")
-                                            "Map tiles saved, but offline style caching failed. " +
-                                                "The map may stop working offline after 24 hours. " +
-                                                "Try re-downloading while connected to the internet."
+                                            context.getString(R.string.offline_map_download_style_cache_warning)
                                         } else {
                                             null
                                         }
@@ -820,8 +826,10 @@ class OfflineMapDownloadViewModel
                                         it.copy(
                                             downloadProgress = it.downloadProgress?.copy(statusMessage = null),
                                             errorMessage =
-                                                "Error finalizing download: ${e.message}. " +
-                                                    "MapLibre region saved but finalization failed.",
+                                                context.getString(
+                                                    R.string.offline_map_download_finalize_failed,
+                                                    e.message ?: context.getString(R.string.common_unknown),
+                                                ),
                                         )
                                     }
                                 }
@@ -841,7 +849,7 @@ class OfflineMapDownloadViewModel
 
                             _state.update {
                                 it.copy(
-                                    errorMessage = "Download failed: $errorMessage",
+                                    errorMessage = context.getString(R.string.offline_map_download_failed, errorMessage),
                                     downloadProgress =
                                         (it.downloadProgress ?: DownloadProgress()).copy(
                                             errorMessage = errorMessage,
@@ -856,7 +864,13 @@ class OfflineMapDownloadViewModel
                     Log.e(TAG, "Failed to start download", e)
                     isDownloading = false
                     _state.update {
-                        it.copy(errorMessage = "Download failed: ${e.message}")
+                        it.copy(
+                            errorMessage =
+                                context.getString(
+                                    R.string.offline_map_download_failed,
+                                    e.message ?: context.getString(R.string.common_unknown),
+                                ),
+                        )
                     }
                 }
             }

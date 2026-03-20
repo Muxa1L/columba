@@ -23,6 +23,7 @@ import android.os.ParcelUuid
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.model.BluetoothType
 import com.lxmf.messenger.data.model.CommunitySlots
 import com.lxmf.messenger.data.model.DeviceClassifier
@@ -878,7 +879,7 @@ class RNodeWizardViewModel
         fun startDeviceScan() {
             // Check for Bluetooth availability early before starting scan
             if (bluetoothAdapter == null) {
-                setScanError("Bluetooth not available on this device")
+                setScanError(context.getString(R.string.rnode_wizard_bluetooth_unavailable))
                 return
             }
 
@@ -1025,9 +1026,7 @@ class RNodeWizardViewModel
             if (devices.isEmpty()) {
                 _state.update {
                     it.copy(
-                        scanError =
-                            "No RNode devices found. " +
-                                "Make sure your RNode is powered on and Bluetooth is enabled.",
+                        scanError = context.getString(R.string.rnode_wizard_no_devices_found),
                     )
                 }
             }
@@ -1109,13 +1108,13 @@ class RNodeWizardViewModel
                         Log.e(TAG, "BLE scan failed: $errorCode")
                         val errorMessage =
                             when (errorCode) {
-                                1 -> "BLE scan failed: already started"
-                                2 -> "BLE scan failed: app not registered"
-                                3 -> "BLE scan failed: internal error"
-                                4 -> "BLE scan failed: feature unsupported"
-                                5 -> "BLE scan failed: out of hardware resources"
-                                6 -> "BLE scan failed: scanning too frequently"
-                                else -> "BLE scan failed: error code $errorCode"
+                                1 -> context.getString(R.string.rnode_wizard_ble_scan_failed_already_started)
+                                2 -> context.getString(R.string.rnode_wizard_ble_scan_failed_app_not_registered)
+                                3 -> context.getString(R.string.rnode_wizard_ble_scan_failed_internal_error)
+                                4 -> context.getString(R.string.rnode_wizard_ble_scan_failed_feature_unsupported)
+                                5 -> context.getString(R.string.rnode_wizard_ble_scan_failed_hardware_resources)
+                                6 -> context.getString(R.string.rnode_wizard_ble_scan_failed_too_frequent)
+                                else -> context.getString(R.string.rnode_wizard_ble_scan_failed_code, errorCode)
                             }
                         setScanError(errorMessage)
                     }
@@ -1127,7 +1126,7 @@ class RNodeWizardViewModel
                 scanner.stopScan(callback)
             } catch (e: SecurityException) {
                 Log.e(TAG, "BLE scan permission denied", e)
-                setScanError("Bluetooth permission required. Please grant Bluetooth permissions in Settings.")
+                setScanError(context.getString(R.string.rnode_wizard_bluetooth_permission_required_settings))
             }
         }
 
@@ -1935,7 +1934,7 @@ class RNodeWizardViewModel
                         _state.update {
                             it.copy(
                                 showManualPinEntry = true,
-                                usbPairingStatus = "Enter the PIN shown on your RNode's display",
+                                usbPairingStatus = context.getString(R.string.rnode_device_discovery_pairing_hint),
                             )
                         }
                         // Keep USB connected - we'll disconnect after manual PIN entry
@@ -1946,7 +1945,11 @@ class RNodeWizardViewModel
                     _state.update {
                         it.copy(
                             isUsbPairingMode = false,
-                            usbScanError = "Error: ${e.message}",
+                            usbScanError =
+                                context.getString(
+                                    R.string.rnode_wizard_error_with_reason,
+                                    e.message ?: context.getString(R.string.common_unknown),
+                                ),
                         )
                     }
                 }
@@ -3081,9 +3084,7 @@ class RNodeWizardViewModel
                                 _state.update {
                                     it.copy(
                                         pairingError =
-                                            "Pairing was cancelled or the PIN was " +
-                                                "incorrect. Try again and enter the PIN shown " +
-                                                "on the RNode.",
+                                            context.getString(R.string.rnode_wizard_pairing_cancelled_or_incorrect_pin),
                                     )
                                 }
                             }
@@ -3095,7 +3096,11 @@ class RNodeWizardViewModel
                     }
                 } catch (e: Exception) {
                     Log.e(TAG, "Pairing failed", e)
-                    _state.update { it.copy(pairingError = e.message ?: "Pairing failed") }
+                    _state.update {
+                        it.copy(
+                            pairingError = e.message ?: context.getString(R.string.rnode_wizard_pairing_failed),
+                        )
+                    }
                 } finally {
                     pairingHandler?.unregister()
                     pairingHandler = null

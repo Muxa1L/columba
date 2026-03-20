@@ -436,7 +436,7 @@ private fun TncPresetCard(
             Column(modifier = Modifier.weight(1f)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = preset.displayName,
+                        text = stringResource(preset.displayNameRes),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
                     )
@@ -458,7 +458,7 @@ private fun TncPresetCard(
                 }
 
                 Text(
-                    text = preset.description,
+                    text = stringResource(preset.descriptionRes),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

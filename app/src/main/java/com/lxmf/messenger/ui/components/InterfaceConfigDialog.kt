@@ -322,6 +322,9 @@ fun TCPClientFields(
     configState: InterfaceConfigState,
     onConfigUpdate: (InterfaceConfigState) -> Unit,
 ) {
+    val examplePort4242 = stringResource(R.string.interface_config_example_port_4242)
+    val exampleLoopbackIp = stringResource(R.string.interface_config_example_loopback_ip)
+    val examplePort9050 = stringResource(R.string.interface_config_example_port_9050)
     val tcpClientConfigurationLabel = stringResource(R.string.interface_config_tcp_client_configuration)
     val targetPortLabel = stringResource(R.string.interface_config_target_port_label)
     val networkNameLabel = stringResource(R.string.interface_config_network_name_label)
@@ -348,7 +351,7 @@ fun TCPClientFields(
         value = configState.targetPort,
         onValueChange = { onConfigUpdate(configState.copy(targetPort = it)) },
         label = { Text(targetPortLabel) },
-        placeholder = { Text("4242") },
+        placeholder = { Text(examplePort4242) },
         modifier = Modifier.fillMaxWidth(),
         singleLine = true,
         isError = configState.targetPortError != null,
@@ -449,7 +452,7 @@ fun TCPClientFields(
                     onConfigUpdate(configState.copy(socksProxyHost = host.trim()))
                 },
                 label = { Text(proxyHostLabel) },
-                placeholder = { Text("127.0.0.1") },
+                placeholder = { Text(exampleLoopbackIp) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 isError = configState.socksProxyHostError != null,
@@ -471,7 +474,7 @@ fun TCPClientFields(
                 value = configState.socksProxyPort,
                 onValueChange = { onConfigUpdate(configState.copy(socksProxyPort = it)) },
                 label = { Text(proxyPortLabel) },
-                placeholder = { Text("9050") },
+                placeholder = { Text(examplePort9050) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 isError = configState.socksProxyPortError != null,
@@ -602,6 +605,7 @@ fun AndroidBLEFields(
     onConfigUpdate: (InterfaceConfigState) -> Unit,
     scrollState: ScrollState? = null,
 ) {
+    val exampleMaxConnections = stringResource(R.string.interface_config_example_max_connections)
     val coroutineScope = rememberCoroutineScope()
     val bleConfigurationLabel = stringResource(R.string.interface_config_ble_configuration)
     val deviceNameLabel = stringResource(R.string.interface_config_device_name_label)
@@ -674,7 +678,7 @@ fun AndroidBLEFields(
         value = configState.maxConnections,
         onValueChange = { onConfigUpdate(configState.copy(maxConnections = it)) },
         label = { Text(maxConnectionsLabel) },
-        placeholder = { Text("7") },
+        placeholder = { Text(exampleMaxConnections) },
         modifier = Modifier.fillMaxWidth(),
         singleLine = true,
         isError = configState.maxConnectionsError != null,
@@ -826,6 +830,8 @@ fun TCPServerFields(
     configState: InterfaceConfigState,
     onConfigUpdate: (InterfaceConfigState) -> Unit,
 ) {
+    val exampleAnyAddress = stringResource(R.string.interface_config_example_any_address)
+    val examplePort4242 = stringResource(R.string.interface_config_example_port_4242)
     val tcpServerConfigurationLabel = stringResource(R.string.interface_config_tcp_server_configuration)
     val tcpServerHelp = stringResource(R.string.interface_config_tcp_server_help)
     val listenIpLabel = stringResource(R.string.interface_config_listen_ip_label)
@@ -856,7 +862,7 @@ fun TCPServerFields(
             onConfigUpdate(configState.copy(listenIp = cleaned))
         },
         label = { Text(listenIpLabel) },
-        placeholder = { Text("0.0.0.0") },
+        placeholder = { Text(exampleAnyAddress) },
         modifier = Modifier.fillMaxWidth(),
         singleLine = true,
         isError = configState.listenIpError != null,
@@ -876,7 +882,7 @@ fun TCPServerFields(
         value = configState.listenPort,
         onValueChange = { onConfigUpdate(configState.copy(listenPort = it)) },
         label = { Text(listenPortLabel) },
-        placeholder = { Text("4242") },
+        placeholder = { Text(examplePort4242) },
         modifier = Modifier.fillMaxWidth(),
         singleLine = true,
         isError = configState.listenPortError != null,

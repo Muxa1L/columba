@@ -549,7 +549,13 @@ internal fun formatTimeRemaining(endTime: Long?): String {
  */
 internal fun getDurationDisplayText(durationName: String): String =
     try {
-        SharingDuration.valueOf(durationName).displayText
+        when (SharingDuration.valueOf(durationName)) {
+            SharingDuration.FIFTEEN_MINUTES -> "15 min"
+            SharingDuration.ONE_HOUR -> "1 hour"
+            SharingDuration.FOUR_HOURS -> "4 hours"
+            SharingDuration.UNTIL_MIDNIGHT -> "Until midnight"
+            SharingDuration.INDEFINITE -> "Until I stop"
+        }
     } catch (e: IllegalArgumentException) {
         "1 hour" // Default fallback
     }

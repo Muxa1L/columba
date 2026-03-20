@@ -2,6 +2,7 @@ package com.lxmf.messenger.map
 
 import android.content.Context
 import android.util.Log
+import com.lxmf.messenger.R
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.maplibre.android.geometry.LatLngBounds
 import org.maplibre.android.offline.OfflineManager
@@ -168,7 +169,7 @@ class MapLibreOfflineManager
                     override fun onList(offlineRegions: Array<OfflineRegion>?) {
                         val regions =
                             offlineRegions?.map { region ->
-                                val name = region.metadata?.toString(Charsets.UTF_8) ?: "Unknown"
+                                val name = region.metadata?.toString(Charsets.UTF_8) ?: context.getString(R.string.common_unknown)
                                 OfflineRegionInfo(
                                     id = region.id,
                                     name = name,

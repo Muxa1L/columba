@@ -137,7 +137,7 @@ private fun ModemPresetCard(
                 // Preset name
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = preset.displayName,
+                        text = stringResource(preset.displayNameRes),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
                     )
@@ -160,7 +160,7 @@ private fun ModemPresetCard(
 
                 // Description
                 Text(
-                    text = preset.description,
+                    text = stringResource(preset.descriptionRes),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

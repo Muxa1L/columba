@@ -1,11 +1,14 @@
 package com.lxmf.messenger.service
 
+import android.content.Context
 import android.util.Log
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.repository.IdentityRepository
 import com.lxmf.messenger.di.ApplicationScope
 import com.lxmf.messenger.repository.SettingsRepository
 import com.lxmf.messenger.reticulum.protocol.ReticulumProtocol
 import com.lxmf.messenger.reticulum.protocol.ServiceReticulumProtocol
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -34,6 +37,7 @@ class AutoAnnounceManager
         private val identityRepository: IdentityRepository,
         private val reticulumProtocol: ReticulumProtocol,
         @ApplicationScope private val scope: CoroutineScope,
+        @ApplicationContext private val context: Context? = null,
     ) {
         companion object {
             private const val TAG = "AutoAnnounceManager"
@@ -128,7 +132,7 @@ class AutoAnnounceManager
                     // Only perform announce if using ServiceReticulumProtocol
                     if (reticulumProtocol is ServiceReticulumProtocol) {
                         // Perform announce
-                        val effectiveDisplayName = displayName ?: "Anonymous Peer"
+                        val effectiveDisplayName = displayName ?: context?.getString(R.string.onboarding_identity_anonymous_peer) ?: "Anonymous Peer"
                         Log.d(TAG, "Triggering auto-announce...")
 
                         val result = reticulumProtocol.triggerAutoAnnounce(effectiveDisplayName)
