@@ -7,6 +7,7 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,6 +39,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -69,15 +71,88 @@ fun BatteryOptimizationCard(
         }
     }
 
-    // Dynamic colors based on exemption status
+    ExpandableStatusCard(
+        isExpanded = isExpanded,
+        onExpandedChange = onExpandedChange,
+        isHealthy = isExempted,
+        title = stringResource(R.string.battery_optimization_title),
+        collapseContentDescription = stringResource(R.string.battery_optimization_collapse),
+        expandContentDescription = stringResource(R.string.battery_optimization_expand),
+    ) { contentColor ->
+        if (isCheckingStatus) {
+            CircularProgressIndicator(modifier = Modifier.size(24.dp))
+        } else if (isExempted) {
+            Text(
+                text = stringResource(R.string.battery_optimization_exempted),
+                style = MaterialTheme.typography.bodyMedium,
+                color = contentColor,
+            )
+
+            OutlinedButton(
+                onClick = {
+                    val intent = BatteryOptimizationManager.createBatterySettingsIntent()
+                    context.startActivity(intent)
+                },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Icon(Icons.Default.Settings, contentDescription = null)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(stringResource(R.string.battery_optimization_view_settings))
+            }
+        } else {
+            Text(
+                text = stringResource(R.string.battery_optimization_enabled_message),
+                style = MaterialTheme.typography.bodyMedium,
+                color = contentColor,
+            )
+
+            Button(
+                onClick = {
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                        BatteryOptimizationManager.recordPromptShown(context)
+                        BatteryOptimizationManager.requestBatteryOptimizationExemption(context)
+                    }
+                },
+                modifier = Modifier.fillMaxWidth(),
+                colors =
+                    ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.error,
+                    ),
+            ) {
+                Text(stringResource(R.string.battery_optimization_request_exemption))
+            }
+
+            TextButton(
+                onClick = {
+                    val intent = BatteryOptimizationManager.createBatterySettingsIntent()
+                    context.startActivity(intent)
+                },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text(stringResource(R.string.battery_optimization_open_settings_manually))
+            }
+        }
+    }
+}
+
+@Composable
+internal fun ExpandableStatusCard(
+    isExpanded: Boolean,
+    onExpandedChange: (Boolean) -> Unit,
+    isHealthy: Boolean,
+    title: String,
+    collapseContentDescription: String,
+    expandContentDescription: String,
+    content: @Composable ColumnScope.(contentColor: Color) -> Unit,
+) {
     val containerColor =
-        if (isExempted) {
+        if (isHealthy) {
             MaterialTheme.colorScheme.secondaryContainer
         } else {
             MaterialTheme.colorScheme.errorContainer
         }
     val contentColor =
-        if (isExempted) {
+        if (isHealthy) {
             MaterialTheme.colorScheme.onSecondaryContainer
         } else {
             MaterialTheme.colorScheme.onErrorContainer
@@ -101,7 +176,6 @@ fun BatteryOptimizationCard(
                     .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            // Header row (always visible)
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -113,19 +187,18 @@ fun BatteryOptimizationCard(
                     modifier = Modifier.weight(1f),
                 ) {
                     Icon(
-                        imageVector = if (isExempted) Icons.Default.CheckCircle else Icons.Default.Info,
+                        imageVector = if (isHealthy) Icons.Default.CheckCircle else Icons.Default.Info,
                         contentDescription = null,
                         tint = contentColor,
                     )
                     Text(
-                        text = stringResource(R.string.battery_optimization_title),
+                        text = title,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = contentColor,
                     )
                 }
 
-                // Chevron indicator
                 Icon(
                     imageVector =
                         if (isExpanded) {
@@ -133,12 +206,16 @@ fun BatteryOptimizationCard(
                         } else {
                             Icons.Default.KeyboardArrowDown
                         },
-                    contentDescription = if (isExpanded) stringResource(R.string.battery_optimization_collapse) else stringResource(R.string.battery_optimization_expand),
+                    contentDescription =
+                        if (isExpanded) {
+                            collapseContentDescription
+                        } else {
+                            expandContentDescription
+                        },
                     tint = contentColor,
                 )
             }
 
-            // Expanded content with animation
             AnimatedVisibility(
                 visible = isExpanded,
                 enter = expandVertically(animationSpec = tween(durationMillis = 300)),
@@ -147,60 +224,7 @@ fun BatteryOptimizationCard(
                 Column(
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
-                    if (isCheckingStatus) {
-                        CircularProgressIndicator(modifier = Modifier.size(24.dp))
-                    } else if (isExempted) {
-                        Text(
-                            text = stringResource(R.string.battery_optimization_exempted),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = contentColor,
-                        )
-
-                        OutlinedButton(
-                            onClick = {
-                                val intent = BatteryOptimizationManager.createBatterySettingsIntent()
-                                context.startActivity(intent)
-                            },
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            Icon(Icons.Default.Settings, contentDescription = null)
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(stringResource(R.string.battery_optimization_view_settings))
-                        }
-                    } else {
-                        Text(
-                            text = stringResource(R.string.battery_optimization_enabled_message),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = contentColor,
-                        )
-
-                        Button(
-                            onClick = {
-                                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                                    BatteryOptimizationManager.recordPromptShown(context)
-                                    BatteryOptimizationManager.requestBatteryOptimizationExemption(context)
-                                    // Status will auto-refresh within 3 seconds
-                                }
-                            },
-                            modifier = Modifier.fillMaxWidth(),
-                            colors =
-                                ButtonDefaults.buttonColors(
-                                    containerColor = MaterialTheme.colorScheme.error,
-                                ),
-                        ) {
-                            Text(stringResource(R.string.battery_optimization_request_exemption))
-                        }
-
-                        TextButton(
-                            onClick = {
-                                val intent = BatteryOptimizationManager.createBatterySettingsIntent()
-                                context.startActivity(intent)
-                            },
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            Text(stringResource(R.string.battery_optimization_open_settings_manually))
-                        }
-                    }
+                    content(contentColor)
                 }
             }
         }

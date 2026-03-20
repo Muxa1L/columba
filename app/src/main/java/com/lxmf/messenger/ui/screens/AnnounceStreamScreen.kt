@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -67,6 +68,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.lxmf.messenger.R
 import com.lxmf.messenger.data.model.InterfaceType
@@ -260,59 +262,23 @@ fun AnnounceStreamScreen(
                     contentPadding = PaddingValues(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
-                    items(
-                        count = pagingItems.itemCount,
-                        key = { index ->
-                            val announce = pagingItems.peek(index)
-                            if (announce != null) "${announce.destinationHash}_$index" else "placeholder_$index"
+                    announcePagingItems(
+                        pagingItems = pagingItems,
+                        showContextMenu = showContextMenu,
+                        contextMenuAnnounce = contextMenuAnnounce,
+                        onPeerClick = onPeerClick,
+                        onToggleFavorite = viewModel::toggleContact,
+                        onShowContextMenu = { announce ->
+                            contextMenuAnnounce = announce
+                            showContextMenu = true
                         },
-                    ) { index ->
-                        val announce = pagingItems[index]
-                        if (announce != null) {
-                            Box {
-                                AnnounceCard(
-                                    announce = announce,
-                                    onClick = {
-                                        onPeerClick(announce.destinationHash, announce.peerName)
-                                    },
-                                    onFavoriteClick = {
-                                        viewModel.toggleContact(announce.destinationHash)
-                                    },
-                                    onLongPress = {
-                                        contextMenuAnnounce = announce
-                                        showContextMenu = true
-                                    },
-                                )
-
-                                // Show context menu for this announce
-                                if (showContextMenu && contextMenuAnnounce == announce) {
-                                    PeerContextMenu(
-                                        expanded = true,
-                                        onDismiss = { showContextMenu = false },
-                                        announce = announce,
-                                        onToggleFavorite = {
-                                            viewModel.toggleContact(announce.destinationHash)
-                                        },
-                                        onStartChat = {
-                                            onStartChat(announce.destinationHash, announce.peerName)
-                                        },
-                                        onViewDetails = {
-                                            onPeerClick(announce.destinationHash, announce.peerName)
-                                        },
-                                        onDeleteAnnounce = {
-                                            announceToDelete = announce
-                                            showDeleteDialog = true
-                                        },
-                                    )
-                                }
-                            }
-                        }
-                    }
-
-                    // Bottom spacing for navigation bar (fixed height since M3 NavigationBar consumes the insets)
-                    item {
-                        Spacer(modifier = Modifier.height(100.dp))
-                    }
+                        onDismissContextMenu = { showContextMenu = false },
+                        onStartChat = onStartChat,
+                        onDeleteAnnounce = { announce ->
+                            announceToDelete = announce
+                            showDeleteDialog = true
+                        },
+                    )
                 }
 
                 // New announces indicator button
@@ -836,61 +802,23 @@ fun AnnounceStreamContent(
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                items(
-                    count = pagingItems.itemCount,
-                    key = { index ->
-                        // Include index to prevent duplicate key crash when Paging3
-                        // transiently returns overlapping items (issue #542)
-                        val hash = pagingItems.peek(index)?.destinationHash
-                        if (hash != null) "${hash}_$index" else "placeholder_$index"
+                announcePagingItems(
+                    pagingItems = pagingItems,
+                    showContextMenu = showContextMenu,
+                    contextMenuAnnounce = contextMenuAnnounce,
+                    onPeerClick = onPeerClick,
+                    onToggleFavorite = viewModel::toggleContact,
+                    onShowContextMenu = { announce ->
+                        contextMenuAnnounce = announce
+                        showContextMenu = true
                     },
-                ) { index ->
-                    val announce = pagingItems[index]
-                    if (announce != null) {
-                        Box {
-                            AnnounceCard(
-                                announce = announce,
-                                onClick = {
-                                    onPeerClick(announce.destinationHash, announce.peerName)
-                                },
-                                onFavoriteClick = {
-                                    viewModel.toggleContact(announce.destinationHash)
-                                },
-                                onLongPress = {
-                                    contextMenuAnnounce = announce
-                                    showContextMenu = true
-                                },
-                            )
-
-                            // Show context menu for this announce
-                            if (showContextMenu && contextMenuAnnounce == announce) {
-                                PeerContextMenu(
-                                    expanded = true,
-                                    onDismiss = { showContextMenu = false },
-                                    announce = announce,
-                                    onToggleFavorite = {
-                                        viewModel.toggleContact(announce.destinationHash)
-                                    },
-                                    onStartChat = {
-                                        onStartChat(announce.destinationHash, announce.peerName)
-                                    },
-                                    onViewDetails = {
-                                        onPeerClick(announce.destinationHash, announce.peerName)
-                                    },
-                                    onDeleteAnnounce = {
-                                        announceToDelete = announce
-                                        showDeleteDialog = true
-                                    },
-                                )
-                            }
-                        }
-                    }
-                }
-
-                // Bottom spacing for navigation bar
-                item {
-                    Spacer(modifier = Modifier.height(100.dp))
-                }
+                    onDismissContextMenu = { showContextMenu = false },
+                    onStartChat = onStartChat,
+                    onDeleteAnnounce = { announce ->
+                        announceToDelete = announce
+                        showDeleteDialog = true
+                    },
+                )
             }
         }
     }
@@ -1044,4 +972,57 @@ fun ClearAllAnnouncesDialog(
             }
         },
     )
+}
+
+private fun LazyListScope.announcePagingItems(
+    pagingItems: LazyPagingItems<Announce>,
+    showContextMenu: Boolean,
+    contextMenuAnnounce: Announce?,
+    onPeerClick: (destinationHash: String, peerName: String) -> Unit,
+    onToggleFavorite: (destinationHash: String) -> Unit,
+    onShowContextMenu: (Announce) -> Unit,
+    onDismissContextMenu: () -> Unit,
+    onStartChat: (destinationHash: String, peerName: String) -> Unit,
+    onDeleteAnnounce: (Announce) -> Unit,
+) {
+    items(
+        count = pagingItems.itemCount,
+        key = { index -> announcePagingItemKey(pagingItems, index) },
+    ) { index ->
+        val announce = pagingItems[index]
+        if (announce != null) {
+            Box {
+                AnnounceCard(
+                    announce = announce,
+                    onClick = { onPeerClick(announce.destinationHash, announce.peerName) },
+                    onFavoriteClick = { onToggleFavorite(announce.destinationHash) },
+                    onLongPress = { onShowContextMenu(announce) },
+                )
+
+                if (showContextMenu && contextMenuAnnounce == announce) {
+                    PeerContextMenu(
+                        expanded = true,
+                        onDismiss = onDismissContextMenu,
+                        announce = announce,
+                        onToggleFavorite = { onToggleFavorite(announce.destinationHash) },
+                        onStartChat = { onStartChat(announce.destinationHash, announce.peerName) },
+                        onViewDetails = { onPeerClick(announce.destinationHash, announce.peerName) },
+                        onDeleteAnnounce = { onDeleteAnnounce(announce) },
+                    )
+                }
+            }
+        }
+    }
+
+    item {
+        Spacer(modifier = Modifier.height(100.dp))
+    }
+}
+
+private fun announcePagingItemKey(
+    pagingItems: LazyPagingItems<Announce>,
+    index: Int,
+): String {
+    val hash = pagingItems.peek(index)?.destinationHash
+    return if (hash != null) "${hash}_$index" else "placeholder_$index"
 }

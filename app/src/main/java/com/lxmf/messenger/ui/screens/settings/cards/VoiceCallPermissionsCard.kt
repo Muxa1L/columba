@@ -6,28 +6,17 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -92,157 +81,86 @@ fun VoiceCallPermissionsCard(
         }
     }
 
-    val containerColor =
-        if (allGranted) {
-            MaterialTheme.colorScheme.secondaryContainer
-        } else {
-            MaterialTheme.colorScheme.errorContainer
-        }
-    val contentColor =
-        if (allGranted) {
-            MaterialTheme.colorScheme.onSecondaryContainer
-        } else {
-            MaterialTheme.colorScheme.onErrorContainer
-        }
+    ExpandableStatusCard(
+        isExpanded = isExpanded,
+        onExpandedChange = onExpandedChange,
+        isHealthy = allGranted,
+        title = stringResource(R.string.settings_voice_call_permissions_title),
+        collapseContentDescription = stringResource(R.string.battery_optimization_collapse),
+        expandContentDescription = stringResource(R.string.battery_optimization_expand),
+    ) { contentColor ->
+        if (isCheckingStatus) {
+            CircularProgressIndicator(modifier = Modifier.size(24.dp))
+        } else if (allGranted) {
+            Text(
+                text = stringResource(R.string.settings_voice_call_permissions_all_granted),
+                style = MaterialTheme.typography.bodyMedium,
+                color = contentColor,
+            )
 
-    Card(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .clickable { onExpandedChange(!isExpanded) },
-        shape = RoundedCornerShape(12.dp),
-        colors =
-            CardDefaults.cardColors(
-                containerColor = containerColor,
-            ),
-    ) {
-        Column(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            // Header row (always visible)
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier.weight(1f),
-                ) {
-                    Icon(
-                        imageVector = if (allGranted) Icons.Default.CheckCircle else Icons.Default.Info,
-                        contentDescription = null,
-                        tint = contentColor,
-                    )
-                    Text(
-                        text = stringResource(R.string.settings_voice_call_permissions_title),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = contentColor,
-                    )
-                }
+            PermissionStatusRow(
+                label = stringResource(R.string.settings_voice_call_permissions_microphone),
+                granted = true,
+                contentColor = contentColor,
+            )
 
-                Icon(
-                    imageVector =
-                        if (isExpanded) {
-                            Icons.Default.KeyboardArrowUp
-                        } else {
-                            Icons.Default.KeyboardArrowDown
-                        },
-                    contentDescription = if (isExpanded) stringResource(R.string.battery_optimization_collapse) else stringResource(R.string.battery_optimization_expand),
-                    tint = contentColor,
+            PermissionStatusRow(
+                label = stringResource(R.string.settings_voice_call_permissions_overlay),
+                granted = true,
+                contentColor = contentColor,
+            )
+
+            if (needsFullScreenPermission) {
+                PermissionStatusRow(
+                    label = stringResource(R.string.settings_voice_call_permissions_full_screen),
+                    granted = true,
+                    contentColor = contentColor,
                 )
             }
+        } else {
+            Text(
+                text = stringResource(R.string.settings_voice_call_permissions_missing),
+                style = MaterialTheme.typography.bodyMedium,
+                color = contentColor,
+            )
 
-            // Expanded content with animation
-            AnimatedVisibility(
-                visible = isExpanded,
-                enter = expandVertically(animationSpec = tween(durationMillis = 300)),
-                exit = shrinkVertically(animationSpec = tween(durationMillis = 300)),
-            ) {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                ) {
-                    if (isCheckingStatus) {
-                        CircularProgressIndicator(modifier = Modifier.size(24.dp))
-                    } else if (allGranted) {
-                        Text(
-                            text = stringResource(R.string.settings_voice_call_permissions_all_granted),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = contentColor,
+            PermissionRow(
+                label = stringResource(R.string.settings_voice_call_permissions_microphone),
+                description = stringResource(R.string.settings_voice_call_permissions_microphone_description),
+                granted = micGranted,
+                contentColor = contentColor,
+                onGrantClick = {
+                    val intent =
+                        Intent(
+                            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                            Uri.parse("package:${context.packageName}"),
                         )
+                    context.startActivity(intent)
+                },
+            )
 
-                        PermissionStatusRow(
-                            label = stringResource(R.string.settings_voice_call_permissions_microphone),
-                            granted = true,
-                            contentColor = contentColor,
-                        )
+            PermissionRow(
+                label = stringResource(R.string.settings_voice_call_permissions_overlay),
+                description = stringResource(R.string.settings_voice_call_permissions_overlay_description),
+                granted = overlayGranted,
+                contentColor = contentColor,
+                onGrantClick = {
+                    context.startActivity(helper.getOverlayPermissionSettingsIntent())
+                },
+            )
 
-                        PermissionStatusRow(
-                            label = stringResource(R.string.settings_voice_call_permissions_overlay),
-                            granted = true,
-                            contentColor = contentColor,
-                        )
-
-                        if (needsFullScreenPermission) {
-                            PermissionStatusRow(
-                                label = stringResource(R.string.settings_voice_call_permissions_full_screen),
-                                granted = true,
-                                contentColor = contentColor,
-                            )
+            if (needsFullScreenPermission) {
+                PermissionRow(
+                    label = stringResource(R.string.settings_voice_call_permissions_full_screen),
+                    description = stringResource(R.string.settings_voice_call_permissions_full_screen_description),
+                    granted = fullScreenGranted,
+                    contentColor = contentColor,
+                    onGrantClick = {
+                        helper.getFullScreenIntentSettingsIntent()?.let {
+                            context.startActivity(it)
                         }
-                    } else {
-                        Text(
-                            text = stringResource(R.string.settings_voice_call_permissions_missing),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = contentColor,
-                        )
-
-                        PermissionRow(
-                            label = stringResource(R.string.settings_voice_call_permissions_microphone),
-                            description = stringResource(R.string.settings_voice_call_permissions_microphone_description),
-                            granted = micGranted,
-                            contentColor = contentColor,
-                            onGrantClick = {
-                                val intent =
-                                    Intent(
-                                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                        Uri.parse("package:${context.packageName}"),
-                                    )
-                                context.startActivity(intent)
-                            },
-                        )
-
-                        PermissionRow(
-                            label = stringResource(R.string.settings_voice_call_permissions_overlay),
-                            description = stringResource(R.string.settings_voice_call_permissions_overlay_description),
-                            granted = overlayGranted,
-                            contentColor = contentColor,
-                            onGrantClick = {
-                                context.startActivity(helper.getOverlayPermissionSettingsIntent())
-                            },
-                        )
-
-                        if (needsFullScreenPermission) {
-                            PermissionRow(
-                                label = stringResource(R.string.settings_voice_call_permissions_full_screen),
-                                description = stringResource(R.string.settings_voice_call_permissions_full_screen_description),
-                                granted = fullScreenGranted,
-                                contentColor = contentColor,
-                                onGrantClick = {
-                                    helper.getFullScreenIntentSettingsIntent()?.let {
-                                        context.startActivity(it)
-                                    }
-                                },
-                            )
-                        }
-                    }
-                }
+                    },
+                )
             }
         }
     }
