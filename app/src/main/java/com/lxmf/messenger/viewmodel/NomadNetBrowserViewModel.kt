@@ -1,8 +1,10 @@
 package com.lxmf.messenger.viewmodel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lxmf.messenger.R
 import com.lxmf.messenger.micron.MicronDocument
 import com.lxmf.messenger.micron.MicronParser
 import com.lxmf.messenger.nomadnet.NomadNetPageCache
@@ -10,6 +12,7 @@ import com.lxmf.messenger.nomadnet.PartialManager
 import com.lxmf.messenger.reticulum.protocol.ReticulumProtocol
 import com.lxmf.messenger.reticulum.protocol.ServiceReticulumProtocol
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
@@ -30,6 +33,7 @@ class NomadNetBrowserViewModel
     constructor(
         private val reticulumProtocol: ReticulumProtocol,
         private val pageCache: NomadNetPageCache,
+        @ApplicationContext private val context: Context? = null,
     ) : ViewModel() {
         companion object {
             private const val TAG = "NomadNetBrowserVM"
@@ -273,12 +277,12 @@ class NomadNetBrowserViewModel
             lastFetchNodeHash = nodeHash
             lastFetchPath = path
             lastFetchFormDataJson = formDataJson
-            _browserState.value = BrowserState.Loading("Requesting page...")
+            _browserState.value = BrowserState.Loading(string(R.string.nomadnet_requesting_page, "Requesting page..."))
             viewModelScope.launch {
                 try {
                     val protocol = reticulumProtocol as? ServiceReticulumProtocol
                     if (protocol == null) {
-                        _browserState.value = BrowserState.Error("Service not available")
+                        _browserState.value = BrowserState.Error(string(R.string.nomadnet_service_not_available, "Service not available"))
                         return@launch
                     }
 
@@ -299,13 +303,13 @@ class NomadNetBrowserViewModel
                         onFailure = { error ->
                             _browserState.value =
                                 BrowserState.Error(
-                                    error.message ?: "Unknown error",
+                                    error.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
                                 )
                         },
                     )
                 } catch (e: Exception) {
                     Log.e(TAG, "Error navigating", e)
-                    _browserState.value = BrowserState.Error(e.message ?: "Unknown error")
+                    _browserState.value = BrowserState.Error(e.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"))
                 }
             }
         }
@@ -347,7 +351,7 @@ class NomadNetBrowserViewModel
 
         fun cancelLoading() {
             val epoch = ++fetchEpoch
-            _browserState.value = BrowserState.Error("Cancelled")
+            _browserState.value = BrowserState.Error(string(R.string.nomadnet_cancelled, "Cancelled"))
             _isPullRefreshing.value = false
             viewModelScope.launch(Dispatchers.IO) {
                 // Only send cancel if no new fetch has started since we were called
@@ -382,16 +386,16 @@ class NomadNetBrowserViewModel
                 try {
                     val protocol =
                         reticulumProtocol as? ServiceReticulumProtocol
-                            ?: error("Service not available")
+                            ?: error(string(R.string.nomadnet_service_not_available, "Service not available"))
                     protocol.identifyNomadnetLink(nodeHash).fold(
                         onSuccess = { alreadyIdentified ->
                             _isIdentified.value = true
                             if (!alreadyIdentified) refresh()
                         },
-                        onFailure = { _identifyError.value = it.message ?: "Unknown error" },
+                        onFailure = { _identifyError.value = it.message ?: string(R.string.identity_screen_unknown_error, "Unknown error") },
                     )
                 } catch (e: Exception) {
-                    _identifyError.value = e.message ?: "Unknown error"
+                    _identifyError.value = e.message ?: string(R.string.identity_screen_unknown_error, "Unknown error")
                 } finally {
                     _identifyInProgress.value = false
                 }
@@ -463,18 +467,18 @@ class NomadNetBrowserViewModel
             lastFetchNodeHash = nodeHash
             lastFetchPath = path
             lastFetchFormDataJson = null
-            _browserState.value = BrowserState.Loading("Requesting page...")
+            _browserState.value = BrowserState.Loading(string(R.string.nomadnet_requesting_page, "Requesting page..."))
 
             viewModelScope.launch {
                 try {
                     val protocol = reticulumProtocol as? ServiceReticulumProtocol
                     if (protocol == null) {
                         _isPullRefreshing.value = false
-                        _browserState.value = BrowserState.Error("Service not available")
+                        _browserState.value = BrowserState.Error(string(R.string.nomadnet_service_not_available, "Service not available"))
                         return@launch
                     }
 
-                    _browserState.value = BrowserState.Loading("Connecting to node...")
+                    _browserState.value = BrowserState.Loading(string(R.string.nomadnet_connecting_to_node, "Connecting to node..."))
 
                     val result =
                         protocol.requestNomadnetPage(
@@ -496,15 +500,30 @@ class NomadNetBrowserViewModel
                             _isPullRefreshing.value = false
                             _browserState.value =
                                 BrowserState.Error(
-                                    error.message ?: "Unknown error",
+                                    error.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
                                 )
                         },
                     )
                 } catch (e: Exception) {
                     _isPullRefreshing.value = false
                     Log.e(TAG, "Error loading page", e)
-                    _browserState.value = BrowserState.Error(e.message ?: "Unknown error")
+                    _browserState.value = BrowserState.Error(e.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"))
                 }
             }
         }
+
+        private fun string(
+            resId: Int,
+            fallback: String,
+            vararg args: Any,
+        ): String =
+            runCatching {
+                if (args.isEmpty()) {
+                    context?.getString(resId)?.takeIf { it.isNotBlank() } ?: fallback
+                } else {
+                    context?.getString(resId, *args)?.takeIf { it.isNotBlank() } ?: fallback.format(*args)
+                }
+            }.getOrElse {
+                if (args.isEmpty()) fallback else fallback.format(*args)
+            }
     }

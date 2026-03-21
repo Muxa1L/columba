@@ -1,11 +1,13 @@
 package com.lxmf.messenger.viewmodel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.filter
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.model.InterfaceType
 import com.lxmf.messenger.data.repository.Announce
 import com.lxmf.messenger.data.repository.AnnounceRepository
@@ -18,6 +20,7 @@ import com.lxmf.messenger.reticulum.protocol.ServiceReticulumProtocol
 import com.lxmf.messenger.service.IdentityResolutionManager
 import com.lxmf.messenger.service.PropagationNodeManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -49,6 +52,7 @@ class AnnounceStreamViewModel
         private val identityRepository: IdentityRepository,
         private val blockedPeerRepository: com.lxmf.messenger.data.repository.BlockedPeerRepository,
         private val identityResolutionManager: IdentityResolutionManager,
+        @ApplicationContext private val context: Context? = null,
     ) : ViewModel() {
         companion object {
             private const val TAG = "AnnounceStreamViewModel"
@@ -161,7 +165,7 @@ class AnnounceStreamViewModel
         private val _reachableAnnounceCount = MutableStateFlow(0)
         val reachableAnnounceCount: StateFlow<Int> = _reachableAnnounceCount.asStateFlow()
 
-        private val _initializationStatus = MutableStateFlow<String>("Initializing...")
+        private val _initializationStatus = MutableStateFlow<String>(string(R.string.announce_stream_initializing, "Initializing..."))
         val initializationStatus: StateFlow<String> = _initializationStatus.asStateFlow()
 
         // Manual announce state
@@ -186,7 +190,7 @@ class AnnounceStreamViewModel
             // Reticulum is now initialized by ColumbaApplication with config from database
             // No need to initialize here
             Log.d(TAG, "AnnounceStreamViewModel initialized - using RNS from ColumbaApplication")
-            _initializationStatus.value = "Reticulum managed by app"
+            _initializationStatus.value = string(R.string.announce_stream_managed_by_app, "Reticulum managed by app")
 
             // Start collecting announces - but only if service is ready
             startCollectingAnnouncesWhenReady()
@@ -249,12 +253,17 @@ class AnnounceStreamViewModel
                                 when (status) {
                                     is com.lxmf.messenger.reticulum.model.NetworkStatus.READY -> {
                                         Log.d(TAG, "Service is READY, starting announce collection")
-                                        _initializationStatus.value = "Ready"
+                                        _initializationStatus.value = string(R.string.main_screen_ready, "Ready")
                                         true
                                     }
                                     is com.lxmf.messenger.reticulum.model.NetworkStatus.ERROR -> {
                                         Log.e(TAG, "Service entered ERROR state: $status, not starting announce collection")
-                                        _initializationStatus.value = "Error: ${status.message}"
+                                        _initializationStatus.value =
+                                            string(
+                                                R.string.announce_stream_error_with_reason,
+                                                "Error: %s",
+                                                status.message,
+                                            )
                                         throw RuntimeException("Service error: ${status.message}")
                                     }
                                     is com.lxmf.messenger.reticulum.model.NetworkStatus.CONNECTING -> {
@@ -278,13 +287,19 @@ class AnnounceStreamViewModel
                     } else {
                         // Timeout reached
                         Log.e(TAG, "Timeout waiting for service to become READY")
-                        _initializationStatus.value = "Timeout waiting for service"
+                        _initializationStatus.value =
+                            string(R.string.announce_stream_timeout_waiting_service, "Timeout waiting for service")
                     }
                 } catch (e: CancellationException) {
                     throw e
                 } catch (e: Exception) {
                     Log.e(TAG, "Error waiting for service readiness", e)
-                    _initializationStatus.value = "Error: ${e.message}"
+                    _initializationStatus.value =
+                        string(
+                            R.string.announce_stream_error_with_reason,
+                            "Error: %s",
+                            e.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+                        )
                 }
             }
         }
@@ -446,7 +461,7 @@ class AnnounceStreamViewModel
                     Log.d(TAG, "Triggering manual announce...")
 
                     // Get display name from active identity
-                    val displayName = identityRepository.getActiveIdentitySync()?.displayName ?: "Unknown"
+                    val displayName = identityRepository.getActiveIdentitySync()?.displayName ?: string(R.string.common_unknown, "Unknown")
 
                     // Trigger announce if using ServiceReticulumProtocol
                     val protocol = reticulumProtocol
@@ -462,7 +477,7 @@ class AnnounceStreamViewModel
                             delay(3000)
                             clearAnnounceStatus()
                         } else {
-                            val error = result.exceptionOrNull()?.message ?: "Unknown error"
+                            val error = result.exceptionOrNull()?.message ?: string(R.string.identity_screen_unknown_error, "Unknown error")
                             _isAnnouncing.value = false
                             _announceError.value = error
                             Log.e(TAG, "Manual announce failed: $error")
@@ -473,7 +488,7 @@ class AnnounceStreamViewModel
                         }
                     } else {
                         _isAnnouncing.value = false
-                        _announceError.value = "Service not available"
+                        _announceError.value = string(R.string.announce_stream_service_not_available, "Service not available")
                         Log.w(TAG, "Manual announce skipped: ReticulumProtocol is not ServiceReticulumProtocol")
 
                         // Auto-dismiss error message after 5 seconds
@@ -493,6 +508,21 @@ class AnnounceStreamViewModel
                 }
             }
         }
+
+        private fun string(
+            resId: Int,
+            fallback: String,
+            vararg args: Any,
+        ): String =
+            runCatching {
+                if (args.isEmpty()) {
+                    context?.getString(resId)?.takeIf { it.isNotBlank() } ?: fallback
+                } else {
+                    context?.getString(resId, *args)?.takeIf { it.isNotBlank() } ?: fallback.format(*args)
+                }
+            }.getOrElse {
+                if (args.isEmpty()) fallback else fallback.format(*args)
+            }
 
         /**
          * Clear manual announce status messages.

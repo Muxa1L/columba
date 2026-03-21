@@ -5,6 +5,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.db.entity.LocalIdentityEntity
 import com.lxmf.messenger.data.repository.IdentityRepository
 import com.lxmf.messenger.reticulum.protocol.ReticulumProtocol
@@ -30,6 +31,7 @@ private const val TAG = "IdentityManagerVM"
  * Handles creation, deletion, switching, importing, and exporting of identities.
  */
 @HiltViewModel
+@Suppress("LargeClass", "TooManyFunctions")
 class IdentityManagerViewModel
     @Inject
     constructor(
@@ -69,6 +71,25 @@ class IdentityManagerViewModel
          */
         private var _exportedIdentityUri: Uri? = null
 
+        private fun string(
+            resId: Int,
+            fallback: String,
+            vararg args: Any,
+        ): String =
+            runCatching {
+                if (args.isEmpty()) {
+                    context.getString(resId).takeIf { it.isNotBlank() } ?: fallback
+                } else {
+                    context.getString(resId, *args).takeIf { it.isNotBlank() } ?: fallback.format(*args)
+                }
+            }.getOrElse {
+                if (args.isEmpty()) {
+                    fallback
+                } else {
+                    fallback.format(*args)
+                }
+            }
+
         /**
          * Create a new identity with the given display name.
          */
@@ -76,7 +97,10 @@ class IdentityManagerViewModel
             viewModelScope.launch {
                 try {
                     Log.d(TAG, "createNewIdentity: Starting creation")
-                    _uiState.value = IdentityManagerUiState.Loading("Creating identity...")
+                    _uiState.value =
+                        IdentityManagerUiState.Loading(
+                            string(R.string.identity_manager_creating_identity, "Creating identity..."),
+                        )
 
                     // Call Python service to create identity file
                     Log.d(TAG, "createNewIdentity: Calling Python service...")
@@ -123,9 +147,14 @@ class IdentityManagerViewModel
 
                     if (createResult.isSuccess) {
                         Log.d(TAG, "createNewIdentity: Database save SUCCESS")
-                        _uiState.value = IdentityManagerUiState.Success("Identity created successfully")
+                        _uiState.value =
+                            IdentityManagerUiState.Success(
+                                string(R.string.identity_manager_created_success, "Identity created successfully"),
+                            )
                     } else {
-                        val error = createResult.exceptionOrNull()?.message ?: "Unknown database error"
+                        val error =
+                            createResult.exceptionOrNull()?.message
+                                ?: string(R.string.identity_manager_failed_create, "Failed to create identity")
                         Log.e(TAG, "createNewIdentity: Database save FAILED: $error")
                         _uiState.value = IdentityManagerUiState.Error(error)
                     }
@@ -133,7 +162,7 @@ class IdentityManagerViewModel
                     Log.e(TAG, "createNewIdentity: Exception caught", e)
                     _uiState.value =
                         IdentityManagerUiState.Error(
-                            e.message ?: "Failed to create identity",
+                            e.message ?: string(R.string.identity_manager_failed_create, "Failed to create identity"),
                         )
                 }
             }
@@ -152,7 +181,10 @@ class IdentityManagerViewModel
         fun switchToIdentity(identityHash: String) {
             viewModelScope.launch {
                 try {
-                    _uiState.value = IdentityManagerUiState.Loading("Switching identity...")
+                    _uiState.value =
+                        IdentityManagerUiState.Loading(
+                            string(R.string.identity_manager_switching_identity, "Switching identity..."),
+                        )
 
                     // Check if identity file exists and recover if needed
                     val identity = identityRepository.getIdentity(identityHash)
@@ -161,7 +193,13 @@ class IdentityManagerViewModel
                         val keyDataBackup = identity.keyData
                         if (!identityFile.exists() && keyDataBackup != null) {
                             Log.d(TAG, "Identity file missing, attempting recovery from backup keyData...")
-                            _uiState.value = IdentityManagerUiState.Loading("Recovering identity file...")
+                            _uiState.value =
+                                IdentityManagerUiState.Loading(
+                                    string(
+                                        R.string.identity_manager_recovering_identity_file,
+                                        "Recovering identity file...",
+                                    ),
+                                )
 
                             val recoveryResult =
                                 reticulumProtocol.recoverIdentityFile(
@@ -172,11 +210,17 @@ class IdentityManagerViewModel
 
                             val success = recoveryResult["success"] as? Boolean ?: false
                             if (!success) {
-                                val error = recoveryResult["error"] as? String ?: "Unknown recovery error"
+                                val error =
+                                    recoveryResult["error"] as? String
+                                        ?: string(R.string.identity_screen_unknown_error, "Unknown error")
                                 Log.e(TAG, "Failed to recover identity file: $error")
                                 _uiState.value =
                                     IdentityManagerUiState.Error(
-                                        "Failed to recover identity file: $error",
+                                        string(
+                                            R.string.identity_manager_failed_recover_file,
+                                            "Failed to recover identity file: %s",
+                                            error,
+                                        ),
                                     )
                                 return@launch
                             }
@@ -185,7 +229,10 @@ class IdentityManagerViewModel
                             Log.e(TAG, "Identity file missing and no backup keyData available")
                             _uiState.value =
                                 IdentityManagerUiState.Error(
-                                    "Identity file is missing and cannot be recovered",
+                                    string(
+                                        R.string.identity_manager_missing_file_unrecoverable,
+                                        "Identity file is missing and cannot be recovered",
+                                    ),
                                 )
                             return@launch
                         }
@@ -201,30 +248,43 @@ class IdentityManagerViewModel
                         .onSuccess {
                             // Restart service with new identity (no app restart needed)
                             Log.d(TAG, "Identity switched in database, restarting service...")
-                            _uiState.value = IdentityManagerUiState.Loading("Restarting service...")
+                            _uiState.value =
+                                IdentityManagerUiState.Loading(
+                                    string(R.string.identity_manager_restarting_service, "Restarting service..."),
+                                )
 
                             interfaceConfigManager
                                 .applyInterfaceChanges()
                                 .onSuccess {
                                     Log.d(TAG, "Service restarted with new identity")
-                                    _uiState.value = IdentityManagerUiState.Success("Identity switched successfully")
+                                    _uiState.value =
+                                        IdentityManagerUiState.Success(
+                                            string(
+                                                R.string.identity_manager_switched_success,
+                                                "Identity switched successfully",
+                                            ),
+                                        )
                                 }.onFailure { e ->
                                     Log.e(TAG, "Failed to restart service", e)
                                     _uiState.value =
                                         IdentityManagerUiState.Error(
-                                            "Identity switched but service restart failed: ${e.message}",
+                                            string(
+                                                R.string.identity_manager_restart_failed_after_switch,
+                                                "Identity switched but service restart failed: %s",
+                                                e.message ?: string(R.string.common_unknown, "Unknown"),
+                                            ),
                                         )
                                 }
                         }.onFailure { e ->
                             _uiState.value =
                                 IdentityManagerUiState.Error(
-                                    e.message ?: "Failed to switch identity",
+                                    e.message ?: string(R.string.identity_manager_failed_switch, "Failed to switch identity"),
                                 )
                         }
                 } catch (e: Exception) {
                     _uiState.value =
                         IdentityManagerUiState.Error(
-                            e.message ?: "Failed to switch identity",
+                            e.message ?: string(R.string.identity_manager_failed_switch, "Failed to switch identity"),
                         )
                 }
             }
@@ -237,14 +297,20 @@ class IdentityManagerViewModel
         fun deleteIdentity(identityHash: String) {
             viewModelScope.launch {
                 try {
-                    _uiState.value = IdentityManagerUiState.Loading("Deleting identity...")
+                    _uiState.value =
+                        IdentityManagerUiState.Loading(
+                            string(R.string.identity_manager_deleting_identity, "Deleting identity..."),
+                        )
 
                     // Check if this is the active identity
                     val active = activeIdentity.value
                     if (active?.identityHash == identityHash) {
                         _uiState.value =
                             IdentityManagerUiState.Error(
-                                "Cannot delete the active identity. Switch to another identity first.",
+                                string(
+                                    R.string.identity_manager_cannot_delete_active,
+                                    "Cannot delete the active identity. Switch to another identity first.",
+                                ),
                             )
                         return@launch
                     }
@@ -253,8 +319,15 @@ class IdentityManagerViewModel
                     val deleteResult = reticulumProtocol.deleteIdentityFile(identityHash)
 
                     if (deleteResult["success"] != true) {
-                        val error = deleteResult["error"] as? String ?: "Unknown error"
-                        _uiState.value = IdentityManagerUiState.Error("Failed to delete identity file: $error")
+                        val error = deleteResult["error"] as? String ?: string(R.string.identity_screen_unknown_error, "Unknown error")
+                        _uiState.value =
+                            IdentityManagerUiState.Error(
+                                string(
+                                    R.string.identity_manager_failed_delete_file,
+                                    "Failed to delete identity file: %s",
+                                    error,
+                                ),
+                            )
                         return@launch
                     }
 
@@ -262,17 +335,24 @@ class IdentityManagerViewModel
                     identityRepository
                         .deleteIdentity(identityHash)
                         .onSuccess {
-                            _uiState.value = IdentityManagerUiState.Success("Identity deleted successfully")
+                            _uiState.value =
+                                IdentityManagerUiState.Success(
+                                    string(R.string.identity_manager_deleted_success, "Identity deleted successfully"),
+                                )
                         }.onFailure { e ->
                             _uiState.value =
                                 IdentityManagerUiState.Error(
-                                    e.message ?: "Failed to delete identity from database",
+                                    e.message
+                                        ?: string(
+                                            R.string.identity_manager_failed_delete_db,
+                                            "Failed to delete identity from database",
+                                        ),
                                 )
                         }
                 } catch (e: Exception) {
                     _uiState.value =
                         IdentityManagerUiState.Error(
-                            e.message ?: "Failed to delete identity",
+                            e.message ?: string(R.string.identity_manager_failed_delete, "Failed to delete identity"),
                         )
                 }
             }
@@ -287,22 +367,28 @@ class IdentityManagerViewModel
         ) {
             viewModelScope.launch {
                 try {
-                    _uiState.value = IdentityManagerUiState.Loading("Renaming identity...")
+                    _uiState.value =
+                        IdentityManagerUiState.Loading(
+                            string(R.string.identity_manager_renaming_identity, "Renaming identity..."),
+                        )
 
                     identityRepository
                         .updateDisplayName(identityHash, newName)
                         .onSuccess {
-                            _uiState.value = IdentityManagerUiState.Success("Identity renamed successfully")
+                            _uiState.value =
+                                IdentityManagerUiState.Success(
+                                    string(R.string.identity_manager_renamed_success, "Identity renamed successfully"),
+                                )
                         }.onFailure { e ->
                             _uiState.value =
                                 IdentityManagerUiState.Error(
-                                    e.message ?: "Failed to rename identity",
+                                    e.message ?: string(R.string.identity_manager_failed_rename, "Failed to rename identity"),
                                 )
                         }
                 } catch (e: Exception) {
                     _uiState.value =
                         IdentityManagerUiState.Error(
-                            e.message ?: "Failed to rename identity",
+                            e.message ?: string(R.string.identity_manager_failed_rename, "Failed to rename identity"),
                         )
                 }
             }
@@ -311,21 +397,31 @@ class IdentityManagerViewModel
         /**
          * Import an identity from a file URI.
          */
+        @Suppress("LongMethod", "ThrowsCount")
         fun importIdentity(
             fileUri: Uri,
             displayName: String,
         ) {
             viewModelScope.launch {
                 try {
-                    _uiState.value = IdentityManagerUiState.Loading("Importing identity...")
+                    _uiState.value =
+                        IdentityManagerUiState.Loading(
+                            string(R.string.identity_manager_importing_identity, "Importing identity..."),
+                        )
 
                     // Read file data
                     val fileData =
                         try {
                             context.contentResolver.openInputStream(fileUri)?.use { it.readBytes() }
-                                ?: throw Exception("Failed to read file")
+                                ?: error("Failed to read file")
                         } catch (e: Exception) {
-                            throw Exception("Failed to read identity file: ${e.message}")
+                            error(
+                                string(
+                                    R.string.identity_manager_failed_read_file_with_reason,
+                                    "Failed to read identity file: %s",
+                                    e.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+                                ),
+                            )
                         }
 
                     // Import via Python service
@@ -334,7 +430,7 @@ class IdentityManagerViewModel
                     if (result.containsKey("error")) {
                         _uiState.value =
                             IdentityManagerUiState.Error(
-                                result["error"] as? String ?: "Unknown error",
+                                result["error"] as? String ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
                             )
                         return@launch
                     }
@@ -358,7 +454,11 @@ class IdentityManagerViewModel
                     if (existingIdentity != null) {
                         _uiState.value =
                             IdentityManagerUiState.Error(
-                                "Identity already exists as \"${existingIdentity.displayName}\"",
+                                string(
+                                    R.string.identity_manager_exists_as,
+                                    "Identity already exists as \"%s\"",
+                                    existingIdentity.displayName,
+                                ),
                             )
                         return@launch
                     }
@@ -372,17 +472,24 @@ class IdentityManagerViewModel
                             filePath = filePath,
                             keyData = keyData,
                         ).onSuccess {
-                            _uiState.value = IdentityManagerUiState.Success("Identity imported successfully")
+                            _uiState.value =
+                                IdentityManagerUiState.Success(
+                                    string(R.string.identity_manager_imported_success, "Identity imported successfully"),
+                                )
                         }.onFailure { e ->
                             _uiState.value =
                                 IdentityManagerUiState.Error(
-                                    e.message ?: "Failed to save imported identity",
+                                    e.message
+                                        ?: string(
+                                            R.string.identity_manager_failed_save_imported,
+                                            "Failed to save imported identity",
+                                        ),
                                 )
                         }
                 } catch (e: Exception) {
                     _uiState.value =
                         IdentityManagerUiState.Error(
-                            e.message ?: "Failed to import identity",
+                            e.message ?: string(R.string.identity_manager_failed_import, "Failed to import identity"),
                         )
                 }
             }
@@ -397,13 +504,19 @@ class IdentityManagerViewModel
         ) {
             viewModelScope.launch {
                 try {
-                    _uiState.value = IdentityManagerUiState.Loading("Exporting identity...")
+                    _uiState.value =
+                        IdentityManagerUiState.Loading(
+                            string(R.string.identity_manager_exporting_identity, "Exporting identity..."),
+                        )
 
                     // Export via Python service
                     val fileData = reticulumProtocol.exportIdentityFile(identityHash, filePath)
 
                     if (fileData.isEmpty()) {
-                        _uiState.value = IdentityManagerUiState.Error("Failed to read identity file")
+                        _uiState.value =
+                            IdentityManagerUiState.Error(
+                                string(R.string.identity_manager_failed_read_file, "Failed to read identity file"),
+                            )
                         return@launch
                     }
 
@@ -416,13 +529,17 @@ class IdentityManagerViewModel
                         }.onFailure { e ->
                             _uiState.value =
                                 IdentityManagerUiState.Error(
-                                    e.message ?: "Failed to create shareable file",
+                                    e.message
+                                        ?: string(
+                                            R.string.identity_manager_failed_create_shareable,
+                                            "Failed to create shareable file",
+                                        ),
                                 )
                         }
                 } catch (e: Exception) {
                     _uiState.value =
                         IdentityManagerUiState.Error(
-                            e.message ?: "Failed to export identity",
+                            e.message ?: string(R.string.identity_manager_failed_export, "Failed to export identity"),
                         )
                 }
             }
@@ -440,7 +557,10 @@ class IdentityManagerViewModel
         ) {
             viewModelScope.launch {
                 try {
-                    _uiState.value = IdentityManagerUiState.Loading("Importing identity...")
+                    _uiState.value =
+                        IdentityManagerUiState.Loading(
+                            string(R.string.identity_manager_importing_identity, "Importing identity..."),
+                        )
 
                     // Decode Base32 to raw bytes
                     val fileData =
@@ -460,7 +580,7 @@ class IdentityManagerViewModel
                     if (result.containsKey("error")) {
                         _uiState.value =
                             IdentityManagerUiState.Error(
-                                result["error"] as? String ?: "Unknown error",
+                                result["error"] as? String ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
                             )
                         return@launch
                     }
@@ -477,7 +597,11 @@ class IdentityManagerViewModel
                     if (existingIdentity != null) {
                         _uiState.value =
                             IdentityManagerUiState.Error(
-                                "Identity already exists as \"${existingIdentity.displayName}\"",
+                                string(
+                                    R.string.identity_manager_exists_as,
+                                    "Identity already exists as \"%s\"",
+                                    existingIdentity.displayName,
+                                ),
                             )
                         return@launch
                     }
@@ -492,17 +616,23 @@ class IdentityManagerViewModel
                             keyData = keyData,
                         ).onSuccess {
                             _uiState.value =
-                                IdentityManagerUiState.Success("Identity imported successfully")
+                                IdentityManagerUiState.Success(
+                                    string(R.string.identity_manager_imported_success, "Identity imported successfully"),
+                                )
                         }.onFailure { e ->
                             _uiState.value =
                                 IdentityManagerUiState.Error(
-                                    e.message ?: "Failed to save imported identity",
+                                    e.message
+                                        ?: string(
+                                            R.string.identity_manager_failed_save_imported,
+                                            "Failed to save imported identity",
+                                        ),
                                 )
                         }
                 } catch (e: Exception) {
                     _uiState.value =
                         IdentityManagerUiState.Error(
-                            e.message ?: "Failed to import identity from text",
+                            e.message ?: string(R.string.identity_manager_failed_import, "Failed to import identity"),
                         )
                 }
             }
@@ -517,7 +647,10 @@ class IdentityManagerViewModel
         ) {
             viewModelScope.launch {
                 try {
-                    _uiState.value = IdentityManagerUiState.Loading("Exporting identity...")
+                    _uiState.value =
+                        IdentityManagerUiState.Loading(
+                            string(R.string.identity_manager_exporting_identity, "Exporting identity..."),
+                        )
 
                     val fileData = withContext(Dispatchers.IO) {
                         reticulumProtocol.exportIdentityFile(identityHash, filePath)
@@ -525,7 +658,9 @@ class IdentityManagerViewModel
 
                     if (fileData.isEmpty()) {
                         _uiState.value =
-                            IdentityManagerUiState.Error("Failed to read identity file")
+                            IdentityManagerUiState.Error(
+                                string(R.string.identity_manager_failed_read_file, "Failed to read identity file"),
+                            )
                         return@launch
                     }
 
@@ -534,7 +669,7 @@ class IdentityManagerViewModel
                 } catch (e: Exception) {
                     _uiState.value =
                         IdentityManagerUiState.Error(
-                            e.message ?: "Failed to export identity as text",
+                            e.message ?: string(R.string.identity_manager_failed_export, "Failed to export identity"),
                         )
                 }
             }

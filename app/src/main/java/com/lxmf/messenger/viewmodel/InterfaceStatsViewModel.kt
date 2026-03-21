@@ -88,6 +88,21 @@ class InterfaceStatsViewModel
             internal var enableReconnectSignalObserver = true
         }
 
+        private fun string(
+            resId: Int,
+            fallback: String,
+            vararg args: Any,
+        ): String =
+            runCatching {
+                if (args.isEmpty()) {
+                    context.getString(resId).takeIf { it.isNotBlank() } ?: fallback
+                } else {
+                    context.getString(resId, *args).takeIf { it.isNotBlank() } ?: fallback.format(*args)
+                }
+            }.getOrElse {
+                if (args.isEmpty()) fallback else fallback.format(*args)
+            }
+
         private val usbManager: UsbManager by lazy {
             context.getSystemService(Context.USB_SERVICE) as UsbManager
         }
@@ -139,7 +154,7 @@ class InterfaceStatsViewModel
                 _state.update {
                     it.copy(
                         isLoading = false,
-                        errorMessage = context.getString(R.string.interface_stats_invalid_id),
+                        errorMessage = string(R.string.interface_stats_invalid_id, "Invalid interface ID"),
                     )
                 }
             }
@@ -188,7 +203,7 @@ class InterfaceStatsViewModel
                         _state.update {
                             it.copy(
                                 isLoading = false,
-                                errorMessage = context.getString(R.string.interface_stats_not_found),
+                                errorMessage = string(R.string.interface_stats_not_found, "Interface not found"),
                             )
                         }
                     }
@@ -198,9 +213,10 @@ class InterfaceStatsViewModel
                         it.copy(
                             isLoading = false,
                             errorMessage =
-                                context.getString(
+                                string(
                                     R.string.interface_stats_load_error,
-                                    e.message ?: context.getString(R.string.common_unknown),
+                                    "Error loading interface: %s",
+                                    e.message ?: string(R.string.common_unknown, "Unknown"),
                                 ),
                         )
                     }

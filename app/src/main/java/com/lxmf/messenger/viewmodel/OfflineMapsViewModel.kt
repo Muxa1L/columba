@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.repository.OfflineMapRegion
 import com.lxmf.messenger.data.repository.OfflineMapRegionRepository
 import com.lxmf.messenger.map.MapLibreOfflineManager
@@ -85,6 +86,21 @@ class OfflineMapsViewModel
         companion object {
             private const val TAG = "OfflineMapsViewModel"
         }
+
+        private fun string(
+            resId: Int,
+            fallback: String,
+            vararg args: Any,
+        ): String =
+            runCatching {
+                if (args.isEmpty()) {
+                    context.getString(resId).takeIf { it.isNotBlank() } ?: fallback
+                } else {
+                    context.getString(resId, *args).takeIf { it.isNotBlank() } ?: fallback.format(*args)
+                }
+            }.getOrElse {
+                if (args.isEmpty()) fallback else fallback.format(*args)
+            }
 
         private val _errorMessage = MutableStateFlow<String?>(null)
         private val _isDeleting = MutableStateFlow(false)
@@ -168,7 +184,12 @@ class OfflineMapsViewModel
                     // Delete from database
                     offlineMapRegionRepository.deleteRegion(region.id)
                 } catch (e: Exception) {
-                    _errorMessage.value = "Failed to delete region: ${e.message}"
+                    _errorMessage.value =
+                        string(
+                            R.string.offline_maps_failed_delete_region,
+                            "Failed to delete region: %s",
+                            e.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+                        )
                 } finally {
                     _isDeleting.value = false
                 }
@@ -256,10 +277,16 @@ class OfflineMapsViewModel
                     cacheStyleForRegion(regionId, destFile, regionName)
 
                     Log.i(TAG, "Imported MBTiles file: ${destFile.name} as region $regionId ($regionName)")
-                    _importSuccessMessage.value = "Imported \"$regionName\""
+                    _importSuccessMessage.value =
+                        string(R.string.offline_maps_imported_region, "Imported \"%s\"", regionName)
                 } catch (e: Exception) {
                     Log.e(TAG, "Failed to import MBTiles file", e)
-                    _errorMessage.value = "Import failed: ${e.message}"
+                    _errorMessage.value =
+                        string(
+                            R.string.offline_maps_import_failed,
+                            "Import failed: %s",
+                            e.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+                        )
                     // Clean up the copied file on any failure (copy or DB registration)
                     destFile?.let { file ->
                         if (file.exists() && !file.delete()) {
@@ -283,7 +310,12 @@ class OfflineMapsViewModel
                     Log.d(TAG, "Set default region: $regionId")
                 } catch (e: Exception) {
                     Log.e(TAG, "Failed to set default region", e)
-                    _errorMessage.value = "Failed to set default region: ${e.message}"
+                    _errorMessage.value =
+                        string(
+                            R.string.offline_maps_failed_set_default_region,
+                            "Failed to set default region: %s",
+                            e.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+                        )
                 }
             }
         }
@@ -360,7 +392,11 @@ class OfflineMapsViewModel
                                     currentVersion = region.tileVersion,
                                     latestVersion = null,
                                     isChecking = false,
-                                    error = "Could not reach update server",
+                                    error =
+                                        string(
+                                            R.string.offline_maps_could_not_reach_update_server,
+                                            "Could not reach update server",
+                                        ),
                                 )
                         )
                     }
@@ -377,7 +413,12 @@ class OfflineMapsViewModel
                                 currentVersion = region.tileVersion,
                                 latestVersion = null,
                                 isChecking = false,
-                                error = "Check failed: ${e.message ?: "Unknown error"}",
+                                error =
+                                    string(
+                                        R.string.offline_maps_update_check_failed,
+                                        "Check failed: %s",
+                                        e.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+                                    ),
                             )
                     )
                 }

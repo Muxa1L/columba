@@ -1,12 +1,15 @@
 package com.lxmf.messenger.viewmodel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.repository.AnnounceRepository
 import com.lxmf.messenger.data.repository.ContactRepository
 import com.lxmf.messenger.reticulum.protocol.ReticulumProtocol
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,6 +40,7 @@ class CallViewModel
         private val contactRepository: ContactRepository,
         private val announceRepository: AnnounceRepository,
         private val protocol: ReticulumProtocol,
+        @ApplicationContext private val context: Context? = null,
     ) : ViewModel() {
         companion object {
             private const val TAG = "CallViewModel"
@@ -340,12 +344,27 @@ class CallViewModel
         fun getStatusText(state: CallState): String =
             when (state) {
                 is CallState.Idle -> ""
-                is CallState.Connecting -> "Connecting..."
-                is CallState.Ringing -> "Ringing..."
-                is CallState.Incoming -> "Incoming Call"
-                is CallState.Active -> "Connected"
-                is CallState.Busy -> "Line Busy"
-                is CallState.Rejected -> "Call Rejected"
-                is CallState.Ended -> "Call Ended"
+                is CallState.Connecting -> string(R.string.call_status_connecting, "Connecting...")
+                is CallState.Ringing -> string(R.string.call_status_ringing, "Ringing...")
+                is CallState.Incoming -> string(R.string.call_status_incoming, "Incoming Call")
+                is CallState.Active -> string(R.string.call_status_connected, "Connected")
+                is CallState.Busy -> string(R.string.call_status_line_busy, "Line Busy")
+                is CallState.Rejected -> string(R.string.call_status_rejected, "Call Rejected")
+                is CallState.Ended -> string(R.string.call_status_ended, "Call Ended")
+            }
+
+        private fun string(
+            resId: Int,
+            fallback: String,
+            vararg args: Any,
+        ): String =
+            runCatching {
+                if (args.isEmpty()) {
+                    context?.getString(resId)?.takeIf { it.isNotBlank() } ?: fallback
+                } else {
+                    context?.getString(resId, *args)?.takeIf { it.isNotBlank() } ?: fallback.format(*args)
+                }
+            }.getOrElse {
+                if (args.isEmpty()) fallback else fallback.format(*args)
             }
     }

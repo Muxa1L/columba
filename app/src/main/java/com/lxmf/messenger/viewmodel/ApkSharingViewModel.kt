@@ -174,10 +174,7 @@ class ApkSharingViewModel
                         // API < 26 and no WiFi
                         _state.value =
                             _state.value.copy(
-                                errorMessage =
-                                    "No WiFi connection detected. " +
-                                        "Both devices must be on the same WiFi network, " +
-                                        "or use the \"Share via...\" option below.",
+                                errorMessage = application.getString(R.string.apk_sharing_no_wifi_or_share_via),
                             )
                     }
                 }

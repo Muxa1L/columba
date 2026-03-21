@@ -1,7 +1,9 @@
 package com.lxmf.messenger.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lxmf.messenger.R
 import com.lxmf.messenger.reticulum.model.DestinationType
 import com.lxmf.messenger.reticulum.model.Direction
 import com.lxmf.messenger.reticulum.model.Identity
@@ -11,6 +13,7 @@ import com.lxmf.messenger.reticulum.model.NetworkStatus
 import com.lxmf.messenger.reticulum.model.ReticulumConfig
 import com.lxmf.messenger.reticulum.protocol.ReticulumProtocol
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,6 +29,7 @@ class MainViewModel
     @Inject
     constructor(
         private val reticulumProtocol: ReticulumProtocol,
+        @ApplicationContext private val context: Context? = null,
     ) : ViewModel() {
         private val _uiState = MutableStateFlow<UiState>(UiState.Initial)
         val uiState: StateFlow<UiState> = _uiState.asStateFlow()
@@ -35,9 +39,24 @@ class MainViewModel
 
         private var currentIdentity: Identity? = null
 
+        private fun string(
+            resId: Int,
+            fallback: String,
+            vararg args: Any,
+        ): String =
+            runCatching {
+                if (args.isEmpty()) {
+                    context?.getString(resId)?.takeIf { it.isNotBlank() } ?: fallback
+                } else {
+                    context?.getString(resId, *args)?.takeIf { it.isNotBlank() } ?: fallback.format(*args)
+                }
+            }.getOrElse {
+                if (args.isEmpty()) fallback else fallback.format(*args)
+            }
+
         fun initializeReticulum() {
             viewModelScope.launch {
-                _uiState.value = UiState.Loading("Initializing Reticulum...")
+                _uiState.value = UiState.Loading(string(R.string.main_viewmodel_initializing_reticulum, "Initializing Reticulum..."))
 
                 val config =
                     ReticulumConfig(
@@ -49,26 +68,40 @@ class MainViewModel
                 reticulumProtocol.initialize(config)
                     .onSuccess {
                         _networkStatus.value = reticulumProtocol.networkStatus.value
-                        _uiState.value = UiState.Success("Reticulum initialized successfully")
+                        _uiState.value = UiState.Success(string(R.string.main_viewmodel_reticulum_initialized, "Reticulum initialized successfully"))
                     }
                     .onFailure { error ->
-                        _uiState.value = UiState.Error("Failed to initialize: ${error.message}")
+                        _uiState.value =
+                            UiState.Error(
+                                string(
+                                    R.string.main_viewmodel_failed_initialize,
+                                    "Failed to initialize: %s",
+                                    error.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+                                ),
+                            )
                     }
             }
         }
 
         fun createIdentity() {
             viewModelScope.launch {
-                _uiState.value = UiState.Loading("Creating identity...")
+                _uiState.value = UiState.Loading(string(R.string.main_viewmodel_creating_identity, "Creating identity..."))
 
                 reticulumProtocol.createIdentity()
                     .onSuccess { identity ->
                         currentIdentity = identity
                         val hexHash = identity.hash.joinToString("") { "%02x".format(it) }
-                        _uiState.value = UiState.Success("Identity created!\nHash: $hexHash")
+                        _uiState.value = UiState.Success(string(R.string.main_viewmodel_identity_created, "Identity created!\nHash: %s", hexHash))
                     }
                     .onFailure { error ->
-                        _uiState.value = UiState.Error("Failed to create identity: ${error.message}")
+                        _uiState.value =
+                            UiState.Error(
+                                string(
+                                    R.string.main_viewmodel_failed_create_identity,
+                                    "Failed to create identity: %s",
+                                    error.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+                                ),
+                            )
                     }
             }
         }
@@ -77,11 +110,17 @@ class MainViewModel
             viewModelScope.launch {
                 val identity = currentIdentity
                 if (identity == null) {
-                    _uiState.value = UiState.Error("Please create an identity first")
+                    _uiState.value = UiState.Error(string(R.string.main_viewmodel_create_identity_first, "Please create an identity first"))
                     return@launch
                 }
 
-                _uiState.value = UiState.Loading("Creating destination and sending packet...")
+                _uiState.value =
+                    UiState.Loading(
+                        string(
+                            R.string.main_viewmodel_creating_destination_and_packet,
+                            "Creating destination and sending packet...",
+                        ),
+                    )
 
                 // Create a test destination
                 reticulumProtocol.createDestination(
@@ -98,14 +137,32 @@ class MainViewModel
                     ).onSuccess { receipt ->
                         _uiState.value =
                             UiState.Success(
-                                "Packet sent!\nDelivered: ${receipt.delivered}\n" +
-                                    "Receipt hash: ${receipt.hash.take(8).joinToString("") { "%02x".format(it) }}...",
+                                string(
+                                    R.string.main_viewmodel_packet_sent,
+                                    "Packet sent!\nDelivered: %s\nReceipt hash: %s...",
+                                    receipt.delivered,
+                                    receipt.hash.take(8).joinToString("") { "%02x".format(it) },
+                                ),
                             )
                     }.onFailure { error ->
-                        _uiState.value = UiState.Error("Failed to send packet: ${error.message}")
+                        _uiState.value =
+                            UiState.Error(
+                                string(
+                                    R.string.main_viewmodel_failed_send_packet,
+                                    "Failed to send packet: %s",
+                                    error.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+                                ),
+                            )
                     }
                 }.onFailure { error ->
-                    _uiState.value = UiState.Error("Failed to create destination: ${error.message}")
+                    _uiState.value =
+                        UiState.Error(
+                            string(
+                                R.string.main_viewmodel_failed_create_destination,
+                                "Failed to create destination: %s",
+                                error.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+                            ),
+                        )
                 }
             }
         }

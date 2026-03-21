@@ -269,6 +269,21 @@ class RNodeWizardViewModel
             internal var enableRssiPolling = true
         }
 
+        private fun string(
+            resId: Int,
+            fallback: String,
+            vararg args: Any,
+        ): String =
+            runCatching {
+                if (args.isEmpty()) {
+                    context.getString(resId).takeIf { it.isNotBlank() } ?: fallback
+                } else {
+                    context.getString(resId, *args).takeIf { it.isNotBlank() } ?: fallback.format(*args)
+                }
+            }.getOrElse {
+                if (args.isEmpty()) fallback else fallback.format(*args)
+            }
+
         private val _state = MutableStateFlow(RNodeWizardState())
         val state: StateFlow<RNodeWizardState> = _state.asStateFlow()
 
@@ -1077,6 +1092,7 @@ class RNodeWizardViewModel
 
             val callback =
                 object : ScanCallback() {
+                    @Suppress("LongMethod")
                     override fun onScanResult(
                         callbackType: Int,
                         result: ScanResult,
@@ -1688,7 +1704,12 @@ class RNodeWizardViewModel
                         it.copy(
                             isUsbScanning = false,
                             usbDevices = usbDevices,
-                            usbScanError = if (usbDevices.isEmpty()) "No USB serial devices found" else null,
+                            usbScanError =
+                                if (usbDevices.isEmpty()) {
+                                    string(R.string.rnode_wizard_no_usb_serial_devices, "No USB serial devices found")
+                                } else {
+                                    null
+                                },
                         )
                     }
 
@@ -1698,7 +1719,12 @@ class RNodeWizardViewModel
                     _state.update {
                         it.copy(
                             isUsbScanning = false,
-                            usbScanError = "Failed to scan USB devices: ${e.message}",
+                            usbScanError =
+                                string(
+                                    R.string.rnode_wizard_failed_scan_usb_devices,
+                                    "Failed to scan USB devices: %s",
+                                    e.message ?: string(R.string.common_unknown, "Unknown"),
+                                ),
                         )
                     }
                 }
@@ -1715,7 +1741,7 @@ class RNodeWizardViewModel
                     // Auto-generate interface name if user hasn't customized it
                     val newInterfaceName =
                         if (it.interfaceName == DEFAULT_INTERFACE_NAME) {
-                            "RNode USB"
+                            string(R.string.rnode_wizard_usb_interface_name, "RNode USB")
                         } else {
                             it.interfaceName
                         }
@@ -1750,7 +1776,7 @@ class RNodeWizardViewModel
                             // Auto-generate interface name if user hasn't customized it
                             val newInterfaceName =
                                 if (it.interfaceName == DEFAULT_INTERFACE_NAME) {
-                                    "RNode USB"
+                                    string(R.string.rnode_wizard_usb_interface_name, "RNode USB")
                                 } else {
                                     it.interfaceName
                                 }
@@ -1766,7 +1792,11 @@ class RNodeWizardViewModel
                         _state.update {
                             it.copy(
                                 isRequestingUsbPermission = false,
-                                usbScanError = "USB permission denied. Please grant permission to use this device.",
+                                usbScanError =
+                                    string(
+                                        R.string.rnode_wizard_usb_permission_denied_device,
+                                        "USB permission denied. Please grant permission to use this device.",
+                                    ),
                             )
                         }
                     }
@@ -1895,7 +1925,11 @@ class RNodeWizardViewModel
                         _state.update {
                             it.copy(
                                 isUsbPairingMode = false,
-                                usbScanError = "Failed to send pairing command",
+                                usbScanError =
+                                    string(
+                                        R.string.rnode_wizard_failed_send_pairing_command,
+                                        "Failed to send pairing command",
+                                    ),
                             )
                         }
                         usbBridge.disconnect()
@@ -1906,7 +1940,13 @@ class RNodeWizardViewModel
 
                     // Show unified status during PIN wait + discovery
                     _state.update {
-                        it.copy(usbPairingStatus = "Waiting for PIN or scanning for RNode...")
+                        it.copy(
+                            usbPairingStatus =
+                                string(
+                                    R.string.rnode_wizard_waiting_for_pin_or_scan,
+                                    "Waiting for PIN or scanning for RNode...",
+                                ),
+                        )
                     }
 
                     // Start discovery IMMEDIATELY - don't wait for PIN entry!
@@ -1981,14 +2021,27 @@ class RNodeWizardViewModel
                 // - Boards with HAS_BLE (e.g., Heltec v3): BLE only
                 // We don't know which type we're pairing with, so run BOTH discovery methods.
                 Log.d(TAG, "Starting BOTH Classic BT discovery AND BLE scan for RNode")
-                _state.update { it.copy(usbPairingStatus = "Scanning for RNode...") }
+                _state.update {
+                    it.copy(
+                        usbPairingStatus = string(R.string.rnode_wizard_scanning_for_rnode, "Scanning for RNode..."),
+                    )
+                }
 
                 // Start both discovery methods in parallel
                 startClassicBluetoothDiscovery(pin)
                 startBleScanForPairing(pin)
             } catch (e: Exception) {
                 Log.e(TAG, "Auto-pairing failed", e)
-                _state.update { it.copy(usbPairingStatus = "Auto-pairing failed: ${e.message}") }
+                _state.update {
+                    it.copy(
+                        usbPairingStatus =
+                            string(
+                                R.string.rnode_wizard_auto_pairing_failed,
+                                "Auto-pairing failed: %s",
+                                e.message ?: string(R.string.common_unknown, "Unknown"),
+                            ),
+                    )
+                }
             }
         }
 
@@ -2045,7 +2098,15 @@ class RNodeWizardViewModel
             val scanner = bluetoothAdapter?.bluetoothLeScanner
             if (scanner == null) {
                 Log.e(TAG, "BLE scanner not available")
-                _state.update { it.copy(usbPairingStatus = "BLE scanner not available") }
+                _state.update {
+                    it.copy(
+                        usbPairingStatus =
+                            string(
+                                R.string.rnode_wizard_ble_scanner_not_available,
+                                "BLE scanner not available",
+                            ),
+                    )
+                }
                 return
             }
 
@@ -2070,18 +2131,9 @@ class RNodeWizardViewModel
                     ) {
                         val device = result.device
                         val deviceName = device.name ?: return
-
-                        // Only log and process RNode devices to reduce noise
                         if (!deviceName.startsWith("RNode", ignoreCase = true)) return
-
                         val isAlreadyBonded = bondedAddresses.contains(device.address)
-
-                        Log.d(
-                            TAG,
-                            "BLE scan found: $deviceName (${device.address}), " +
-                                "bondState=${device.bondState}, isAlreadyBonded=$isAlreadyBonded",
-                        )
-
+                        Log.d(TAG, "BLE scan found: $deviceName (${device.address}), bondState=${device.bondState}, isAlreadyBonded=$isAlreadyBonded")
                         // Stop the scan - we found an RNode
                         try {
                             scanner.stopScan(this)
@@ -2089,7 +2141,6 @@ class RNodeWizardViewModel
                         } catch (e: Exception) {
                             Log.w(TAG, "Failed to stop BLE scan", e)
                         }
-
                         if (isAlreadyBonded) {
                             // RNode is already paired - no need to pair again, just add it to discovered devices
                             Log.i(TAG, "Found already-bonded RNode via BLE: $deviceName - adding to discovered devices")
@@ -2105,7 +2156,12 @@ class RNodeWizardViewModel
                             viewModelScope.launch {
                                 _state.update { state ->
                                     state.copy(
-                                        usbPairingStatus = "$deviceName is already paired!",
+                                        usbPairingStatus =
+                                            string(
+                                                R.string.rnode_wizard_device_already_paired,
+                                                "%s is already paired!",
+                                                deviceName,
+                                            ),
                                         isUsbPairingMode = false,
                                         usbBluetoothPin = null,
                                         // Add to discovered devices and auto-select it
@@ -2132,7 +2188,14 @@ class RNodeWizardViewModel
 
                             viewModelScope.launch {
                                 _state.update {
-                                    it.copy(usbPairingStatus = "Found $deviceName, pairing...")
+                                    it.copy(
+                                        usbPairingStatus =
+                                            string(
+                                                R.string.rnode_wizard_found_device_pairing,
+                                                "Found %s, pairing...",
+                                                deviceName,
+                                            ),
+                                    )
                                 }
 
                                 // Initiate bonding with BLE transport
@@ -2158,13 +2221,13 @@ class RNodeWizardViewModel
                         pairingScanCallback = null
                         val errorMessage =
                             when (errorCode) {
-                                1 -> "BLE scan failed: already started"
-                                2 -> "BLE scan failed: app not registered"
-                                3 -> "BLE scan failed: internal error"
-                                4 -> "BLE scan failed: feature unsupported"
-                                5 -> "BLE scan failed: out of hardware resources"
-                                6 -> "BLE scan failed: scanning too frequently"
-                                else -> "BLE scan failed: error code $errorCode"
+                                1 -> string(R.string.rnode_wizard_ble_scan_failed_already_started, "BLE scan failed: already started")
+                                2 -> string(R.string.rnode_wizard_ble_scan_failed_app_not_registered, "BLE scan failed: app not registered")
+                                3 -> string(R.string.rnode_wizard_ble_scan_failed_internal_error, "BLE scan failed: internal error")
+                                4 -> string(R.string.rnode_wizard_ble_scan_failed_feature_unsupported, "BLE scan failed: feature unsupported")
+                                5 -> string(R.string.rnode_wizard_ble_scan_failed_hardware_resources, "BLE scan failed: out of hardware resources")
+                                6 -> string(R.string.rnode_wizard_ble_scan_failed_too_frequent, "BLE scan failed: scanning too frequently")
+                                else -> string(R.string.rnode_wizard_ble_scan_failed_code, "BLE scan failed: error code %s", errorCode)
                             }
                         _state.update { it.copy(usbPairingStatus = errorMessage) }
                     }
@@ -2189,16 +2252,30 @@ class RNodeWizardViewModel
                         }
                         pairingScanCallback = null
                         // Only update status if we're still in scanning state
-                        if (_state.value.usbPairingStatus == "Scanning for RNode...") {
+                        if (_state.value.usbPairingStatus == string(R.string.rnode_wizard_scanning_for_rnode, "Scanning for RNode...")) {
                             _state.update {
-                                it.copy(usbPairingStatus = "No RNode found. Make sure your RNode is in pairing mode.")
+                                it.copy(
+                                    usbPairingStatus =
+                                        string(
+                                            R.string.rnode_wizard_no_rnode_in_pairing_mode,
+                                            "No RNode found. Make sure your RNode is in pairing mode.",
+                                        ),
+                                )
                             }
                         }
                     }
                 }
             } catch (e: SecurityException) {
                 Log.e(TAG, "BLE scan permission denied", e)
-                _state.update { it.copy(usbPairingStatus = "Bluetooth permission required") }
+                _state.update {
+                    it.copy(
+                        usbPairingStatus =
+                            string(
+                                R.string.rnode_wizard_bluetooth_permission_required,
+                                "Bluetooth permission required",
+                            ),
+                    )
+                }
             }
         }
 
@@ -2240,6 +2317,7 @@ class RNodeWizardViewModel
 
             val discoveryReceiver =
                 object : BroadcastReceiver() {
+                    @Suppress("LongMethod")
                     override fun onReceive(
                         ctx: Context,
                         intent: Intent,
@@ -2277,7 +2355,14 @@ class RNodeWizardViewModel
 
                                         viewModelScope.launch {
                                             _state.update { state ->
-                                                state.copy(usbPairingStatus = "Found $deviceName, pairing...")
+                                                state.copy(
+                                                    usbPairingStatus =
+                                                        string(
+                                                            R.string.rnode_wizard_found_device_pairing,
+                                                            "Found %s, pairing...",
+                                                            deviceName,
+                                                        ),
+                                                )
                                             }
 
                                             // Initiate bonding
@@ -2309,9 +2394,15 @@ class RNodeWizardViewModel
                             BluetoothAdapter.ACTION_DISCOVERY_FINISHED -> {
                                 Log.d(TAG, "Classic Bluetooth discovery finished")
                                 // Check if we're still in scanning state (no device found)
-                                if (_state.value.usbPairingStatus == "Scanning for RNode...") {
+                                if (_state.value.usbPairingStatus == string(R.string.rnode_wizard_scanning_for_rnode, "Scanning for RNode...")) {
                                     _state.update {
-                                        it.copy(usbPairingStatus = "No RNode found. Make sure your RNode is in pairing mode.")
+                                        it.copy(
+                                            usbPairingStatus =
+                                                string(
+                                                    R.string.rnode_wizard_no_rnode_in_pairing_mode,
+                                                    "No RNode found. Make sure your RNode is in pairing mode.",
+                                                ),
+                                        )
                                     }
                                 }
                                 try {
