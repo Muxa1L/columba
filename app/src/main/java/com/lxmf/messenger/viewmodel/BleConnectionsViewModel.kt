@@ -1,16 +1,19 @@
 package com.lxmf.messenger.viewmodel
 
 import android.bluetooth.BluetoothAdapter
+import android.content.Context
 import android.content.Intent
 import android.provider.Settings
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.model.BleConnectionInfo
 import com.lxmf.messenger.data.model.BleConnectionsState
 import com.lxmf.messenger.data.model.ConnectionType
 import com.lxmf.messenger.data.repository.BleStatusRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -47,10 +50,26 @@ class BleConnectionsViewModel
     @Inject
     constructor(
         private val bleStatusRepository: BleStatusRepository,
+        @ApplicationContext private val context: Context? = null,
     ) : ViewModel() {
         companion object {
             private const val TAG = "BleConnectionsViewModel"
         }
+
+        private fun string(
+            resId: Int,
+            fallback: String,
+            vararg args: Any,
+        ): String =
+            runCatching {
+                if (args.isEmpty()) {
+                    context?.getString(resId)?.takeIf { it.isNotBlank() } ?: fallback
+                } else {
+                    context?.getString(resId, *args)?.takeIf { it.isNotBlank() } ?: fallback.format(*args)
+                }
+            }.getOrElse {
+                if (args.isEmpty()) fallback else fallback.format(*args)
+            }
 
         private val _uiState = MutableStateFlow<BleConnectionsUiState>(BleConnectionsUiState.Loading)
         val uiState: StateFlow<BleConnectionsUiState> = _uiState.asStateFlow()
@@ -72,7 +91,7 @@ class BleConnectionsViewModel
                         Log.e(TAG, "Error observing connections", e)
                         _uiState.value =
                             BleConnectionsUiState.Error(
-                                e.message ?: "Unknown error",
+                                e.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
                             )
                     }
                     .collect { state ->
@@ -138,7 +157,7 @@ class BleConnectionsViewModel
                     Log.e(TAG, "Error refreshing connections", e)
                     _uiState.value =
                         BleConnectionsUiState.Error(
-                            e.message ?: "Failed to refresh",
+                            e.message ?: string(R.string.ble_connections_failed_refresh, "Failed to refresh"),
                         )
                 }
             }

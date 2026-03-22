@@ -688,79 +688,109 @@ class IdentityManagerViewModel
         ) {
             viewModelScope.launch {
                 try {
-                    _uiState.value = IdentityManagerUiState.Loading("Extracting backup...")
+                    _uiState.value =
+                        IdentityManagerUiState.Loading(
+                            string(R.string.identity_manager_extracting_backup, "Extracting backup..."),
+                        )
 
-                    // Read and extract identity from tar.gz (I/O off main thread)
-                    val fileData =
-                        withContext(Dispatchers.IO) {
-                            checkNotNull(
-                                context.contentResolver.openInputStream(fileUri)?.use { inputStream ->
-                                    GZIPInputStream(inputStream).use { gzipStream ->
-                                        extractIdentityFromTar(gzipStream)
-                                    }
-                                },
-                            ) { "Failed to open backup file" }
-                        }
+                    val fileData = readIdentityFromBackup(fileUri)
 
-                    require(fileData.size == 64) {
-                        "Invalid identity in backup: expected 64 bytes, got ${fileData.size}"
-                    }
-
-                    // Import via Python service (same path as file import)
-                    _uiState.value = IdentityManagerUiState.Loading("Importing identity...")
+                    _uiState.value =
+                        IdentityManagerUiState.Loading(
+                            string(R.string.identity_manager_importing_identity, "Importing identity..."),
+                        )
                     val result = reticulumProtocol.importIdentityFile(fileData, displayName)
 
                     if (result.containsKey("error")) {
                         _uiState.value =
                             IdentityManagerUiState.Error(
-                                result["error"] as? String ?: "Unknown error",
+                                result["error"] as? String ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
                             )
                         return@launch
                     }
 
-                    // Extract identity info
-                    val identityHash = checkNotNull(result["identity_hash"] as? String) { "No identity_hash in result" }
-                    val destinationHash = checkNotNull(result["destination_hash"] as? String) { "No destination_hash in result" }
-                    val resultFilePath = checkNotNull(result["file_path"] as? String) { "No file_path in result" }
-                    val keyData =
-                        result["key_data"] as? ByteArray
-
-                    // Check if identity already exists
-                    val existingIdentity = identities.value.find { it.identityHash == identityHash }
-                    if (existingIdentity != null) {
-                        _uiState.value =
-                            IdentityManagerUiState.Error(
-                                "Identity already exists as \"${existingIdentity.displayName}\"",
-                            )
-                        return@launch
-                    }
-
-                    // Save to database
-                    identityRepository
-                        .importIdentity(
-                            identityHash = identityHash,
-                            displayName = displayName,
-                            destinationHash = destinationHash,
-                            filePath = resultFilePath,
-                            keyData = keyData,
-                        ).onSuccess {
-                            _uiState.value =
-                                IdentityManagerUiState.Success(
-                                    "Identity imported from backup successfully",
-                                )
-                        }.onFailure { e ->
-                            _uiState.value =
-                                IdentityManagerUiState.Error(
-                                    e.message ?: "Failed to save imported identity",
-                                )
-                        }
+                    importBackupIdentity(result, displayName)
                 } catch (e: Exception) {
                     _uiState.value =
                         IdentityManagerUiState.Error(
-                            e.message ?: "Failed to import from backup",
+                            e.message
+                                ?: string(
+                                    R.string.identity_manager_failed_import_backup,
+                                    "Failed to import from backup",
+                                ),
                         )
                 }
             }
+        }
+
+        private suspend fun readIdentityFromBackup(fileUri: Uri): ByteArray {
+            val fileData =
+                withContext(Dispatchers.IO) {
+                    checkNotNull(
+                        context.contentResolver.openInputStream(fileUri)?.use { inputStream ->
+                            GZIPInputStream(inputStream).use { gzipStream ->
+                                extractIdentityFromTar(gzipStream)
+                            }
+                        },
+                    ) {
+                        string(R.string.identity_manager_failed_open_backup_file, "Failed to open backup file")
+                    }
+                }
+
+            require(fileData.size == 64) {
+                string(
+                    R.string.identity_manager_invalid_backup_identity_size,
+                    "Invalid identity in backup: expected 64 bytes, got %s",
+                    fileData.size,
+                )
+            }
+
+            return fileData
+        }
+
+        private suspend fun importBackupIdentity(
+            result: Map<String, Any?>,
+            displayName: String,
+        ) {
+            val identityHash = checkNotNull(result["identity_hash"] as? String) { "No identity_hash in result" }
+            val destinationHash = checkNotNull(result["destination_hash"] as? String) { "No destination_hash in result" }
+            val resultFilePath = checkNotNull(result["file_path"] as? String) { "No file_path in result" }
+            val keyData = result["key_data"] as? ByteArray
+
+            val existingIdentity = identities.value.find { it.identityHash == identityHash }
+            if (existingIdentity != null) {
+                _uiState.value =
+                    IdentityManagerUiState.Error(
+                        string(
+                            R.string.identity_manager_exists_as,
+                            "Identity already exists as \"%s\"",
+                            existingIdentity.displayName,
+                        ),
+                    )
+                return
+            }
+
+            identityRepository
+                .importIdentity(
+                    identityHash = identityHash,
+                    displayName = displayName,
+                    destinationHash = destinationHash,
+                    filePath = resultFilePath,
+                    keyData = keyData,
+                ).onSuccess {
+                    _uiState.value =
+                        IdentityManagerUiState.Success(
+                            string(
+                                R.string.identity_manager_imported_backup_success,
+                                "Identity imported from backup successfully",
+                            ),
+                        )
+                }.onFailure { e ->
+                    _uiState.value =
+                        IdentityManagerUiState.Error(
+                            e.message ?: "Failed to save imported identity",
+                        )
+                }
         }
 
         /**
@@ -798,12 +828,20 @@ class IdentityManagerViewModel
                         } ?: error("Could not open identity file")
                     }
                     _uiState.value =
-                        IdentityManagerUiState.Success("Identity exported successfully")
+                        IdentityManagerUiState.Success(
+                            string(R.string.identity_manager_exported_success, "Identity exported successfully"),
+                        )
                     _exportedIdentityUri = null
                 } catch (e: Exception) {
                     Log.e(TAG, "Failed to save identity file", e)
                     _uiState.value =
-                        IdentityManagerUiState.Error("Failed to save identity: ${e.message}")
+                        IdentityManagerUiState.Error(
+                            string(
+                                R.string.identity_manager_failed_save_identity,
+                                "Failed to save identity: %s",
+                                e.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+                            ),
+                        )
                 }
             }
         }

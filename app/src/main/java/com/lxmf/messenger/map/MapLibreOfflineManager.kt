@@ -52,6 +52,21 @@ class MapLibreOfflineManager
             }
         }
 
+        private fun string(
+            resId: Int,
+            fallback: String,
+            vararg args: Any,
+        ): String =
+            runCatching {
+                if (args.isEmpty()) {
+                    context.getString(resId).takeIf { it.isNotBlank() } ?: fallback
+                } else {
+                    context.getString(resId, *args).takeIf { it.isNotBlank() } ?: fallback.format(*args)
+                }
+            }.getOrElse {
+                if (args.isEmpty()) fallback else fallback.format(*args)
+            }
+
         /**
          * Download a region for offline use.
          *
@@ -135,13 +150,26 @@ class MapLibreOfflineManager
                                 override fun onError(error: OfflineRegionError) {
                                     Log.e(TAG, "Download error: ${error.reason} - ${error.message}")
                                     offlineRegion.setObserver(null)
-                                    onError("${error.reason}: ${error.message}")
+                                    onError(
+                                        string(
+                                            R.string.maplibre_offline_download_error,
+                                            "%1\$s: %2\$s",
+                                            error.reason,
+                                            error.message,
+                                        ),
+                                    )
                                 }
 
                                 override fun mapboxTileCountLimitExceeded(limit: Long) {
                                     Log.e(TAG, "Tile count limit exceeded: $limit")
                                     offlineRegion.setObserver(null)
-                                    onError("Tile count limit exceeded ($limit tiles). Try a smaller region or fewer zoom levels.")
+                                    onError(
+                                        string(
+                                            R.string.maplibre_offline_tile_limit_exceeded,
+                                            "Tile count limit exceeded (%1\$s tiles). Try a smaller region or fewer zoom levels.",
+                                            limit,
+                                        ),
+                                    )
                                 }
                             },
                         )

@@ -5,6 +5,7 @@ import android.net.Uri
 import android.util.Base64
 import android.util.Log
 import androidx.room.withTransaction
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.crypto.IdentityKeyEncryptor
 import com.lxmf.messenger.data.crypto.WrongPasswordException
 import com.lxmf.messenger.data.database.InterfaceDatabase
@@ -60,6 +61,21 @@ class MigrationImporter
             private const val ATTACHMENTS_PREFIX = "attachments/"
         }
 
+        private fun string(
+            resId: Int,
+            fallback: String,
+            vararg args: Any,
+        ): String =
+            runCatching {
+                if (args.isEmpty()) {
+                    context.getString(resId).takeIf { it.isNotBlank() } ?: fallback
+                } else {
+                    context.getString(resId, *args).takeIf { it.isNotBlank() } ?: fallback.format(*args)
+                }
+            }.getOrElse {
+                if (args.isEmpty()) fallback else fallback.format(*args)
+            }
+
         private val json =
             Json {
                 ignoreUnknownKeys = true
@@ -74,13 +90,17 @@ class MigrationImporter
                 try {
                     val inputStream =
                         context.contentResolver.openInputStream(uri)
-                            ?: return@withContext Result.failure(Exception("Cannot open file"))
+                            ?: return@withContext Result.failure(
+                                Exception(string(R.string.migration_importer_cannot_open_file, "Cannot open file")),
+                            )
                     inputStream.use { stream ->
                         val header = ByteArray(2)
                         val bytesRead = stream.read(header)
                         if (bytesRead < 1) {
                             return@withContext Result.failure(
-                                InvalidExportFileException("Export file is empty"),
+                                InvalidExportFileException(
+                                    string(R.string.migration_export_file_empty, "Export file is empty"),
+                                ),
                             )
                         }
                         Result.success(MigrationCrypto.isEncrypted(header))
@@ -102,7 +122,12 @@ class MigrationImporter
                     val (bundle, zipBytes) =
                         readMigrationBundle(uri, password)
                             ?: return@withContext Result.failure(
-                                Exception("Failed to read migration file"),
+                                Exception(
+                                    string(
+                                        R.string.migration_importer_failed_read_file,
+                                        "Failed to read migration file",
+                                    ),
+                                ),
                             )
 
                     Result.success(
@@ -159,45 +184,9 @@ class MigrationImporter
                     Log.i(TAG, "Starting migration import...")
                     onProgress(0.05f)
 
-                    val (bundle, zipBytes) =
-                        if (cachedZipBytes != null) {
-                            // Reuse decrypted bytes from preview to avoid redundant PBKDF2 + decryption
-                            val manifestJson =
-                                extractManifestFromZip(java.io.ByteArrayInputStream(cachedZipBytes))
-                            val parsed =
-                                manifestJson?.let { json.decodeFromString<MigrationBundle>(it) }
-                                    ?: return@withContext ImportResult.Error(
-                                        "Failed to read migration file",
-                                    )
-                            parsed to cachedZipBytes
-                        } else {
-                            readMigrationBundle(uri, password)
-                                ?: return@withContext ImportResult.Error(
-                                    "Failed to read migration file",
-                                )
-                        }
-
-                    if (bundle.version > MigrationBundle.CURRENT_VERSION) {
-                        return@withContext ImportResult.Error(
-                            "Migration file is from a newer version (${bundle.version}). " +
-                                "Please update the app first.",
-                        )
-                    }
-
-                    // Check minimum supported version for backwards compatibility
-                    if (bundle.version < MigrationBundle.MINIMUM_VERSION) {
-                        return@withContext ImportResult.Error(
-                            "Migration file is from an old version (${bundle.version}). " +
-                                "Minimum supported version is ${MigrationBundle.MINIMUM_VERSION}.",
-                        )
-                    }
-
-                    // Check if password is required but not provided
-                    if (bundle.keysEncrypted && importPassword == null) {
-                        return@withContext ImportResult.Error(
-                            "This export file is password-protected. Please provide the password.",
-                        )
-                    }
+                    val bundleResult = loadImportBundle(uri, password, cachedZipBytes, importPassword)
+                    if (bundleResult is ImportResult.Error) return@withContext bundleResult
+                    val (bundle, zipBytes) = bundleResult as LoadedImportBundle
                     onProgress(0.1f)
 
                     // Track successfully imported identities to filter dependent data
@@ -239,9 +228,73 @@ class MigrationImporter
                     )
                 } catch (e: Exception) {
                     Log.e(TAG, "Migration import failed", e)
-                    ImportResult.Error("Import failed: ${e.message}", e)
+                    ImportResult.Error(
+                        string(
+                            R.string.migration_importer_import_failed,
+                            "Import failed: %s",
+                            e.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+                        ),
+                        e,
+                    )
                 }
             }
+
+        private suspend fun loadImportBundle(
+            uri: Uri,
+            password: String?,
+            cachedZipBytes: ByteArray?,
+            importPassword: CharArray?,
+        ): Any {
+            val loadedBundle =
+                if (cachedZipBytes != null) {
+                    extractManifestFromZip(java.io.ByteArrayInputStream(cachedZipBytes))
+                        ?.let { manifestJson -> json.decodeFromString<MigrationBundle>(manifestJson) }
+                        ?.let { parsed -> LoadedImportBundle(parsed, cachedZipBytes) }
+                } else {
+                    readMigrationBundle(uri, password)
+                        ?.let { loaded -> LoadedImportBundle(loaded.first, loaded.second) }
+                }
+
+            val validationError = loadedBundle?.let { validateImportBundle(it.bundle, importPassword) }
+            return validationError ?: loadedBundle ?: failedReadImportResult()
+        }
+
+        private fun validateImportBundle(
+            bundle: MigrationBundle,
+            importPassword: CharArray?,
+        ): ImportResult.Error? =
+            when {
+                bundle.version > MigrationBundle.CURRENT_VERSION -> ImportResult.Error(
+                    string(
+                        R.string.migration_importer_newer_version,
+                        "Migration file is from a newer version (%1\$s). Please update the app first.",
+                        bundle.version,
+                    ),
+                )
+                bundle.version < MigrationBundle.MINIMUM_VERSION -> ImportResult.Error(
+                    string(
+                        R.string.migration_importer_older_version,
+                        "Migration file is from an old version (%1\$s). Minimum supported version is %2\$s.",
+                        bundle.version,
+                        MigrationBundle.MINIMUM_VERSION,
+                    ),
+                )
+                bundle.keysEncrypted && importPassword == null -> ImportResult.Error(
+                    string(
+                        R.string.migration_importer_password_required,
+                        "This export file is password-protected. Please provide the password.",
+                    ),
+                )
+                else -> null
+            }
+
+        private fun failedReadImportResult() =
+            ImportResult.Error(
+                string(
+                    R.string.migration_importer_failed_read_file,
+                    "Failed to read migration file",
+                ),
+            )
 
         /**
          * Helper data class to return multiple values from transaction block.
@@ -256,6 +309,11 @@ class MigrationImporter
             val themeIdMap: Map<Long, Long>,
             /** Destination hash of the relay contact restored from backup, if any. */
             val restoredRelayHash: String?,
+        )
+
+        private data class LoadedImportBundle(
+            val bundle: MigrationBundle,
+            val zipBytes: ByteArray,
         )
 
         /**

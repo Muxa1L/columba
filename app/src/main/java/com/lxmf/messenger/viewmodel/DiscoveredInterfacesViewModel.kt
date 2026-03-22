@@ -1,14 +1,17 @@
 package com.lxmf.messenger.viewmodel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lxmf.messenger.R
 import com.lxmf.messenger.repository.InterfaceRepository
 import com.lxmf.messenger.repository.SettingsRepository
 import com.lxmf.messenger.reticulum.protocol.DiscoveredInterface
 import com.lxmf.messenger.reticulum.protocol.ReticulumProtocol
 import com.lxmf.messenger.service.InterfaceConfigManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -71,6 +74,7 @@ class DiscoveredInterfacesViewModel
         private val settingsRepository: SettingsRepository,
         private val interfaceRepository: InterfaceRepository,
         private val interfaceConfigManager: InterfaceConfigManager,
+        @ApplicationContext private val context: Context? = null,
     ) : ViewModel() {
         companion object {
             private const val TAG = "DiscoveredIfacesVM"
@@ -78,6 +82,21 @@ class DiscoveredInterfacesViewModel
             // Made internal var to allow injecting test dispatcher
             internal var ioDispatcher: kotlinx.coroutines.CoroutineDispatcher = Dispatchers.IO
         }
+
+        private fun string(
+            resId: Int,
+            fallback: String,
+            vararg args: Any,
+        ): String =
+            runCatching {
+                if (args.isEmpty()) {
+                    context?.getString(resId)?.takeIf { it.isNotBlank() } ?: fallback
+                } else {
+                    context?.getString(resId, *args)?.takeIf { it.isNotBlank() } ?: fallback.format(*args)
+                }
+            }.getOrElse {
+                if (args.isEmpty()) fallback else fallback.format(*args)
+            }
 
         private val _state = MutableStateFlow(DiscoveredInterfacesState())
         val state: StateFlow<DiscoveredInterfacesState> = _state.asStateFlow()
@@ -138,7 +157,12 @@ class DiscoveredInterfacesViewModel
                     _state.update {
                         it.copy(
                             isLoading = false,
-                            errorMessage = "Failed to load discovered interfaces: ${e.message}",
+                            errorMessage =
+                                string(
+                                    R.string.discovered_interfaces_failed_load,
+                                    "Failed to load discovered interfaces: %s",
+                                    e.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+                                ),
                         )
                     }
                 }
@@ -229,7 +253,12 @@ class DiscoveredInterfacesViewModel
                             _state.update {
                                 it.copy(
                                     isRestarting = false,
-                                    errorMessage = "Failed to restart service: ${error.message}",
+                                    errorMessage =
+                                        string(
+                                            R.string.discovered_interfaces_failed_restart_service,
+                                            "Failed to restart service: %s",
+                                            error.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+                                        ),
                                 )
                             }
                         }
@@ -238,7 +267,12 @@ class DiscoveredInterfacesViewModel
                     _state.update {
                         it.copy(
                             isRestarting = false,
-                            errorMessage = "Failed to update discovery settings: ${e.message}",
+                            errorMessage =
+                                string(
+                                    R.string.discovered_interfaces_failed_update_settings,
+                                    "Failed to update discovery settings: %s",
+                                    e.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+                                ),
                         )
                     }
                 }
@@ -284,7 +318,12 @@ class DiscoveredInterfacesViewModel
                             _state.update {
                                 it.copy(
                                     isRestarting = false,
-                                    errorMessage = "Failed to restart service: ${error.message}",
+                                    errorMessage =
+                                        string(
+                                            R.string.discovered_interfaces_failed_restart_service,
+                                            "Failed to restart service: %s",
+                                            error.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+                                        ),
                                 )
                             }
                         }
@@ -293,7 +332,12 @@ class DiscoveredInterfacesViewModel
                     _state.update {
                         it.copy(
                             isRestarting = false,
-                            errorMessage = "Failed to update autoconnect count: ${e.message}",
+                            errorMessage =
+                                string(
+                                    R.string.discovered_interfaces_failed_update_autoconnect,
+                                    "Failed to update autoconnect count: %s",
+                                    e.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+                                ),
                         )
                     }
                 }

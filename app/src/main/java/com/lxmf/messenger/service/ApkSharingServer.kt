@@ -1,6 +1,8 @@
 package com.lxmf.messenger.service
 
+import android.content.Context
 import android.util.Log
+import com.lxmf.messenger.R
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -27,7 +29,9 @@ import java.util.concurrent.atomic.AtomicBoolean
  * scans a QR code containing the download URL, which opens in their browser
  * and downloads the APK.
  */
-class ApkSharingServer {
+class ApkSharingServer(
+    private val context: Context? = null,
+) {
     companion object {
         private const val TAG = "ApkSharingServer"
         private const val CLIENT_TIMEOUT_MS = 30_000
@@ -89,12 +93,39 @@ class ApkSharingServer {
     /** Base64-encoded PNG app icon for the download page. Set by the ViewModel. */
     var iconBase64: String? = null
 
+    private fun string(
+        resId: Int,
+        fallback: String,
+        vararg args: Any,
+    ): String =
+        runCatching {
+            if (args.isEmpty()) {
+                context?.getString(resId)?.takeIf { it.isNotBlank() } ?: fallback
+            } else {
+                context?.getString(resId, *args)?.takeIf { it.isNotBlank() } ?: fallback.format(*args)
+            }
+        }.getOrElse {
+            if (args.isEmpty()) fallback else fallback.format(*args)
+        }
+
     /** Localized text shown on the download page. Set by the ViewModel. */
-    var downloadPageTitle: String = "Download Columba"
-    var downloadPageDescription: String = "Tap the button below to download the Columba messenger APK."
-    var downloadPageButtonLabel: String = "Download APK"
-    var downloadPageInstallNoteLine1: String = "After downloading, open the file to install."
-    var downloadPageInstallNoteLine2: String = "You may need to enable Install from unknown sources."
+    var downloadPageTitle: String = string(R.string.apk_sharing_download_page_title, "Download Columba")
+    var downloadPageDescription: String =
+        string(
+            R.string.apk_sharing_download_page_description,
+            "Tap the button below to download the Columba messenger APK.",
+        )
+    var downloadPageButtonLabel: String = string(R.string.apk_sharing_download_page_button, "Download APK")
+    var downloadPageInstallNoteLine1: String =
+        string(
+            R.string.apk_sharing_download_page_install_note_line_1,
+            "After downloading, open the file to install.",
+        )
+    var downloadPageInstallNoteLine2: String =
+        string(
+            R.string.apk_sharing_download_page_install_note_line_2,
+            "You may need to enable Install from unknown sources.",
+        )
 
     private var serverSocket: ServerSocket? = null
     private val isRunning = AtomicBoolean(false)

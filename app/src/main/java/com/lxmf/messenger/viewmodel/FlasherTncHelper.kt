@@ -2,6 +2,7 @@ package com.lxmf.messenger.viewmodel
 
 import android.content.Context
 import android.util.Log
+import com.lxmf.messenger.R
 import com.lxmf.messenger.reticulum.flasher.FirmwareDownloader
 import com.lxmf.messenger.reticulum.flasher.FirmwareSource
 import com.lxmf.messenger.reticulum.flasher.FrequencyBand
@@ -110,7 +111,12 @@ internal class FlasherTncHelper(
                             state.update {
                                 it.copy(
                                     flashProgress = percent,
-                                    flashMessage = "Downloading: ${bytesDownloaded / 1024}KB / ${totalBytes / 1024}KB",
+                                    flashMessage =
+                                        context.getString(
+                                            R.string.flasher_tnc_downloading_progress,
+                                            bytesDownloaded / 1024,
+                                            totalBytes / 1024,
+                                        ),
                                 )
                             }
                         }
@@ -134,7 +140,7 @@ internal class FlasherTncHelper(
                 it.copy(
                     currentStep = FlasherStep.COMPLETE,
                     isFlashing = false,
-                    flashResult = FlashResult.Failure("Failed to read custom firmware"),
+                    flashResult = FlashResult.Failure(context.getString(R.string.flasher_tnc_failed_read_custom_firmware)),
                 )
             }
             return false
@@ -154,7 +160,7 @@ internal class FlasherTncHelper(
                 it.copy(
                     currentStep = FlasherStep.COMPLETE,
                     isFlashing = false,
-                    flashResult = FlashResult.Failure("Failed to save custom firmware"),
+                    flashResult = FlashResult.Failure(context.getString(R.string.flasher_tnc_failed_save_custom_firmware)),
                 )
             }
             return false

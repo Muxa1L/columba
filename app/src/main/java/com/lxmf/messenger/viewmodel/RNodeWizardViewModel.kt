@@ -1399,7 +1399,12 @@ class RNodeWizardViewModel
                                 it.copy(
                                     isAssociating = false,
                                     pendingAssociationIntent = null,
-                                    associationError = error?.toString() ?: "Association failed",
+                                    associationError =
+                                        error?.toString()
+                                            ?: string(
+                                                R.string.rnode_wizard_association_failed,
+                                                "Association failed",
+                                            ),
                                 )
                             }
                         }
@@ -1412,7 +1417,12 @@ class RNodeWizardViewModel
                 _state.update {
                     it.copy(
                         isAssociating = false,
-                        associationError = e.message ?: "Failed to start association",
+                        associationError =
+                            e.message
+                                ?: string(
+                                    R.string.rnode_wizard_failed_start_association,
+                                    "Failed to start association",
+                                ),
                     )
                 }
             }
@@ -1898,7 +1908,11 @@ class RNodeWizardViewModel
                         _state.update {
                             it.copy(
                                 isUsbPairingMode = false,
-                                usbScanError = "Failed to connect to USB device",
+                                usbScanError =
+                                    string(
+                                        R.string.rnode_wizard_failed_connect_usb_device,
+                                        "Failed to connect to USB device",
+                                    ),
                             )
                         }
                         return@launch
@@ -3614,7 +3628,12 @@ class RNodeWizardViewModel
                     Log.e(TAG, "Failed to save configuration", e)
                     _state.update {
                         it.copy(
-                            saveError = e.message ?: "Failed to save configuration",
+                            saveError =
+                                e.message
+                                    ?: string(
+                                        R.string.rnode_wizard_failed_save_configuration,
+                                        "Failed to save configuration",
+                                    ),
                             isSaving = false,
                         )
                     }
@@ -3680,7 +3699,11 @@ class RNodeWizardViewModel
                     _state.update {
                         it.copy(
                             transportConfiguring = false,
-                            transportConfigError = "Failed to configure transport mode",
+                            transportConfigError =
+                                string(
+                                    R.string.rnode_wizard_failed_configure_transport_mode,
+                                    "Failed to configure transport mode",
+                                ),
                         )
                     }
                 }

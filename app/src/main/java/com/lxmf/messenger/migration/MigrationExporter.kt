@@ -5,6 +5,7 @@ import android.net.Uri
 import android.util.Base64
 import android.util.Log
 import androidx.core.content.FileProvider
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.crypto.IdentityKeyEncryptor
 import com.lxmf.messenger.data.crypto.IdentityKeyProvider
 import com.lxmf.messenger.data.database.InterfaceDatabase
@@ -55,6 +56,21 @@ class MigrationExporter
             private const val ATTACHMENTS_DIR = "attachments"
             private const val EXPORT_DIR = "migration_export"
         }
+
+        private fun string(
+            resId: Int,
+            fallback: String,
+            vararg args: Any,
+        ): String =
+            runCatching {
+                if (args.isEmpty()) {
+                    context.getString(resId).takeIf { it.isNotBlank() } ?: fallback
+                } else {
+                    context.getString(resId, *args).takeIf { it.isNotBlank() } ?: fallback.format(*args)
+                }
+            }.getOrElse {
+                if (args.isEmpty()) fallback else fallback.format(*args)
+            }
 
         private val json =
             Json {
@@ -524,7 +540,14 @@ class MigrationExporter
                         customThemeCount = customThemeCount,
                     )
                 } catch (e: Exception) {
-                    ExportResult.Error("Failed to get export preview: ${e.message}", e)
+                    ExportResult.Error(
+                        string(
+                            R.string.migration_exporter_preview_failed,
+                            "Failed to get export preview: %s",
+                            e.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+                        ),
+                        e,
+                    )
                 }
             }
 

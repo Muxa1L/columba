@@ -499,7 +499,12 @@ class AnnounceStreamViewModel
                     throw e
                 } catch (e: Exception) {
                     _isAnnouncing.value = false
-                    _announceError.value = e.message ?: "Error triggering announce"
+                    _announceError.value =
+                        e.message
+                            ?: string(
+                                R.string.announce_stream_error_triggering,
+                                "Error triggering announce",
+                            )
                     Log.e(TAG, "Error triggering manual announce", e)
 
                     // Auto-dismiss error message after 5 seconds

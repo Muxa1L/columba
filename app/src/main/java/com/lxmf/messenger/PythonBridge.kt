@@ -11,6 +11,23 @@ import com.chaquo.python.android.AndroidPlatform
 object PythonBridge {
     private const val TAG = "PythonBridge"
     private var isInitialized = false
+    private var applicationContext: android.content.Context? = null
+
+    private fun string(
+        resId: Int,
+        fallback: String,
+        vararg args: Any,
+    ): String =
+        runCatching {
+            val context = applicationContext
+            if (args.isEmpty()) {
+                context?.getString(resId)?.takeIf { it.isNotBlank() } ?: fallback
+            } else {
+                context?.getString(resId, *args)?.takeIf { it.isNotBlank() } ?: fallback.format(*args)
+            }
+        }.getOrElse {
+            if (args.isEmpty()) fallback else fallback.format(*args)
+        }
 
     /**
      * Initialize the Python environment.
@@ -23,6 +40,7 @@ object PythonBridge {
         }
 
         try {
+            applicationContext = application.applicationContext
             if (!Python.isStarted()) {
                 Python.start(AndroidPlatform(application))
                 Log.d(TAG, "Python environment started successfully")
@@ -42,7 +60,7 @@ object PythonBridge {
     fun getHelloFromPython(): String {
         return try {
             if (!isInitialized) {
-                return "Python not initialized"
+                return string(R.string.python_bridge_not_initialized, "Python not initialized")
             }
 
             val py = Python.getInstance()
@@ -52,7 +70,11 @@ object PythonBridge {
             result.toString()
         } catch (e: Exception) {
             Log.e(TAG, "Failed to call Python function", e)
-            "Error calling Python: ${e.message}"
+            string(
+                R.string.python_bridge_error_calling_python,
+                "Error calling Python: %s",
+                e.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+            )
         }
     }
 

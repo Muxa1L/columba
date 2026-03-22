@@ -2,6 +2,7 @@ package com.lxmf.messenger.map
 
 import android.content.Context
 import android.util.Log
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.repository.OfflineMapRegion
 import com.lxmf.messenger.data.repository.OfflineMapRegionRepository
 import com.lxmf.messenger.data.repository.RmspServer
@@ -80,6 +81,21 @@ class MapTileSourceManager
             private const val TAG = "MapTileSourceManager"
             const val DEFAULT_STYLE_URL = "https://tiles.openfreemap.org/styles/liberty"
         }
+
+        private fun string(
+            resId: Int,
+            fallback: String,
+            vararg args: Any,
+        ): String =
+            runCatching {
+                if (args.isEmpty()) {
+                    context.getString(resId).takeIf { it.isNotBlank() } ?: fallback
+                } else {
+                    context.getString(resId, *args).takeIf { it.isNotBlank() } ?: fallback.format(*args)
+                }
+            }.getOrElse {
+                if (args.isEmpty()) fallback else fallback.format(*args)
+            }
 
         /**
          * Flow of HTTP enabled setting from SettingsRepository.
@@ -189,11 +205,20 @@ class MapTileSourceManager
                     } else {
                         Log.w(TAG, "RMSP enabled but no servers available")
                         MapStyleResult.Unavailable(
-                            "No RMSP servers discovered. Enable HTTP in Settings > Map Sources to use online maps.",
+                            string(
+                                R.string.map_tile_source_no_rmsp_servers,
+                                "No RMSP servers discovered. Enable HTTP in Settings > Map Sources to use online maps.",
+                            ),
                         )
                     }
                 }
-                else -> MapStyleResult.Unavailable("HTTP map source is disabled. Enable it in Settings or download offline maps.")
+                else ->
+                    MapStyleResult.Unavailable(
+                        string(
+                            R.string.map_tile_source_http_disabled,
+                            "HTTP map source is disabled. Enable it in Settings or download offline maps.",
+                        ),
+                    )
             }
         }
 

@@ -1,8 +1,10 @@
 package com.lxmf.messenger.viewmodel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.model.EnrichedContact
 import com.lxmf.messenger.data.repository.ContactRepository
 import com.lxmf.messenger.data.repository.ReceivedLocationRepository
@@ -14,6 +16,8 @@ import com.lxmf.messenger.util.validation.IdentityInput
 import com.lxmf.messenger.util.validation.InputValidator
 import com.lxmf.messenger.util.validation.ValidationResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -74,6 +78,32 @@ data class ContactsState(
     val isLoading: Boolean = true,
 )
 
+private fun localizedString(
+    context: Context?,
+    resId: Int,
+    fallback: String,
+    vararg args: Any,
+): String =
+    runCatching {
+        if (args.isEmpty()) {
+            context?.getString(resId)?.takeIf { it.isNotBlank() } ?: fallback
+        } else {
+            context?.getString(resId, *args)?.takeIf { it.isNotBlank() } ?: fallback.format(*args)
+        }
+    }.getOrElse {
+        if (args.isEmpty()) fallback else fallback.format(*args)
+    }
+
+private fun requestContactPath(
+    scope: CoroutineScope,
+    identityResolutionManager: IdentityResolutionManager,
+    destinationHash: String,
+) {
+    scope.launch(Dispatchers.IO) {
+        identityResolutionManager.requestPathForContact(destinationHash)
+    }
+}
+
 @HiltViewModel
 class ContactsViewModel
     @Inject
@@ -82,6 +112,7 @@ class ContactsViewModel
         private val propagationNodeManager: PropagationNodeManager,
         private val receivedLocationRepository: ReceivedLocationRepository,
         private val identityResolutionManager: IdentityResolutionManager,
+        @ApplicationContext private val context: Context? = null,
     ) : ViewModel() {
         companion object {
             private const val TAG = "ContactsViewModel"
@@ -432,7 +463,6 @@ class ContactsViewModel
             nickname: String? = null,
         ): AddContactResult {
             return try {
-                // Step 1: Parse the input
                 val parsed = InputValidator.parseIdentityInput(input)
                 if (parsed is ValidationResult.Error) {
                     Log.w(TAG, "Input validation failed: ${parsed.message}")
@@ -440,25 +470,18 @@ class ContactsViewModel
                 }
 
                 val identityInput = (parsed as ValidationResult.Success).value
-
-                // Step 2: Get destination hash for duplicate check
                 val destinationHash =
                     when (identityInput) {
                         is IdentityInput.FullIdentity -> identityInput.destinationHash
                         is IdentityInput.DestinationHashOnly -> identityInput.destinationHash
                     }
-
-                // Step 3: Check for duplicate
                 val existingContact = checkContactExists(destinationHash)
                 if (existingContact != null) {
                     Log.d(TAG, "Contact already exists: $destinationHash")
                     return AddContactResult.AlreadyExists(existingContact)
                 }
-
-                // Step 4: Handle based on input type
                 when (identityInput) {
                     is IdentityInput.FullIdentity -> {
-                        // Full identity - add immediately as ACTIVE
                         val result =
                             contactRepository.addContactManually(
                                 destinationHash = identityInput.destinationHash,
@@ -467,9 +490,7 @@ class ContactsViewModel
                             )
                         if (result.isSuccess) {
                             Log.d(TAG, "Added contact with full identity: $destinationHash")
-                            viewModelScope.launch(Dispatchers.IO) {
-                                identityResolutionManager.requestPathForContact(identityInput.destinationHash)
-                            }
+                            requestContactPath(viewModelScope, identityResolutionManager, identityInput.destinationHash)
                             AddContactResult.Success
                         } else {
                             val error = result.exceptionOrNull()?.message ?: "Unknown error"
@@ -479,7 +500,6 @@ class ContactsViewModel
                     }
 
                     is IdentityInput.DestinationHashOnly -> {
-                        // Hash only - check announces first, then add as PENDING_IDENTITY if needed
                         val result =
                             contactRepository.addPendingContact(
                                 destinationHash = identityInput.destinationHash,
@@ -489,25 +509,25 @@ class ContactsViewModel
                             when (result.getOrNull()) {
                                 is ContactRepository.AddPendingResult.ResolvedImmediately -> {
                                     Log.d(TAG, "Contact resolved from existing announce: $destinationHash")
-                                    viewModelScope.launch(Dispatchers.IO) {
-                                        identityResolutionManager.requestPathForContact(identityInput.destinationHash)
-                                    }
+                                    requestContactPath(viewModelScope, identityResolutionManager, identityInput.destinationHash)
                                     AddContactResult.Success
                                 }
                                 is ContactRepository.AddPendingResult.AddedAsPending -> {
                                     Log.d(TAG, "Added pending contact: $destinationHash")
-                                    viewModelScope.launch(Dispatchers.IO) {
-                                        identityResolutionManager.requestPathForContact(identityInput.destinationHash)
-                                    }
+                                    requestContactPath(viewModelScope, identityResolutionManager, identityInput.destinationHash)
                                     AddContactResult.PendingIdentity
                                 }
                                 null -> {
                                     Log.e(TAG, "Unexpected null result from addPendingContact")
-                                    AddContactResult.Error("Unexpected error")
+                                    AddContactResult.Error(
+                                        localizedString(context, R.string.contacts_unexpected_error, "Unexpected error"),
+                                    )
                                 }
                             }
                         } else {
-                            val error = result.exceptionOrNull()?.message ?: "Unknown error"
+                            val error =
+                                result.exceptionOrNull()?.message
+                                    ?: localizedString(context, R.string.identity_screen_unknown_error, "Unknown error")
                             Log.e(TAG, "Failed to add pending contact: $error")
                             AddContactResult.Error(error)
                         }
@@ -515,7 +535,9 @@ class ContactsViewModel
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Error adding contact from input", e)
-                AddContactResult.Error(e.message ?: "Unknown error")
+                AddContactResult.Error(
+                    e.message ?: localizedString(context, R.string.identity_screen_unknown_error, "Unknown error"),
+                )
             }
         }
 

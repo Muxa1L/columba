@@ -2,6 +2,7 @@ package com.lxmf.messenger.map
 
 import android.content.Context
 import android.util.Log
+import com.lxmf.messenger.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -74,6 +75,21 @@ class TileDownloadManager(
     private val context: Context,
     private val tileSource: TileSource = TileSource.Http(),
 ) {
+    private fun string(
+        resId: Int,
+        fallback: String,
+        vararg args: Any,
+    ): String =
+        runCatching {
+            if (args.isEmpty()) {
+                context.getString(resId).takeIf { it.isNotBlank() } ?: fallback
+            } else {
+                context.getString(resId, *args).takeIf { it.isNotBlank() } ?: fallback.format(*args)
+            }
+        }.getOrElse {
+            if (args.isEmpty()) fallback else fallback.format(*args)
+        }
+
     /**
      * Download progress state.
      */
@@ -237,7 +253,7 @@ class TileDownloadManager(
             Log.d(TAG, "Calculated ${tiles.size} tiles across zoom levels ${params.minZoom}-${params.maxZoom}")
 
             if (tiles.isEmpty()) {
-                updateErrorStatus("No tiles found for region")
+                updateErrorStatus(string(R.string.tile_download_no_tiles_found, "No tiles found for region"))
                 return null
             }
 
@@ -278,7 +294,7 @@ class TileDownloadManager(
             }
             if (success) params.outputFile else null
         } catch (e: Exception) {
-            updateErrorStatus(e.message ?: "Download failed")
+            updateErrorStatus(e.message ?: string(R.string.tile_download_failed, "Download failed"))
             null
         }
     }
@@ -357,7 +373,15 @@ class TileDownloadManager(
             _progress.value =
                 _progress.value.copy(
                     status = DownloadProgress.Status.CANCELLED,
-                    errorMessage = if (deletionFailed) "Cancelled. Incomplete file may need manual cleanup." else null,
+                    errorMessage =
+                        if (deletionFailed) {
+                            string(
+                                R.string.tile_download_cancelled_cleanup_needed,
+                                "Cancelled. Incomplete file may need manual cleanup.",
+                            )
+                        } else {
+                            null
+                        },
                 )
             return false
         }
@@ -380,14 +404,14 @@ class TileDownloadManager(
             val allTiles = fetchAllRmspTiles(source, params) ?: return null
 
             if (allTiles.isEmpty()) {
-                updateErrorStatus("No tiles received from RMSP server")
+                updateErrorStatus(string(R.string.tile_download_no_rmsp_tiles, "No tiles received from RMSP server"))
                 return null
             }
 
             writeRmspTilesToFile(allTiles, params)
         } catch (e: Exception) {
             Log.e(TAG, "RMSP download failed: ${e.message}", e)
-            updateErrorStatus(e.message ?: "RMSP download failed")
+            updateErrorStatus(e.message ?: string(R.string.tile_download_rmsp_failed, "RMSP download failed"))
             null
         }
     }
@@ -488,7 +512,15 @@ class TileDownloadManager(
                     _progress.value =
                         _progress.value.copy(
                             status = DownloadProgress.Status.CANCELLED,
-                            errorMessage = if (deletionFailed) "Cancelled. Incomplete file may need manual cleanup." else null,
+                            errorMessage =
+                                if (deletionFailed) {
+                                    string(
+                                        R.string.tile_download_cancelled_cleanup_needed,
+                                        "Cancelled. Incomplete file may need manual cleanup.",
+                                    )
+                                } else {
+                                    null
+                                },
                         )
                     return null
                 }
