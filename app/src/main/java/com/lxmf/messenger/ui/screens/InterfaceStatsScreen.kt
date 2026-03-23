@@ -41,6 +41,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -61,6 +62,7 @@ fun InterfaceStatsScreen(
     viewModel: InterfaceStatsViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
 
     SideEffect {
         Log.d("InterfaceStatsScreen", "🖥️ InterfaceStatsScreen COMPOSING - interface: ${state.interfaceEntity?.name}")
@@ -384,6 +386,8 @@ private fun ConnectionCard(
     tcpPort: Int?,
     usbDeviceId: Int?,
 ) {
+    val context = LocalContext.current
+
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(
             modifier =
@@ -399,7 +403,7 @@ private fun ConnectionCard(
             Spacer(modifier = Modifier.height(12.dp))
 
             // Interface type with icon
-            val (icon, typeLabel) = InterfaceFormattingUtils.getConnectionIcon(interfaceType, connectionMode)
+            val (icon, typeLabel) = InterfaceFormattingUtils.getConnectionIcon(context, interfaceType, connectionMode)
             StatsInfoRow(
                 icon = icon,
                 label = stringResource(R.string.interface_stats_type),

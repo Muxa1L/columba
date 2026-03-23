@@ -1376,6 +1376,22 @@
     <string name="codec_selection_title">Выберите качество звонка</string>
     <string name="codec_selection_subtitle">Выберите профиль кодека в зависимости от скорости соединения</string>
     <string name="codec_selection_confirm">Позвонить</string>
+    <string name="codec_profile_bandwidth_ultra_low_name">Сверхнизкая пропускная способность</string>
+    <string name="codec_profile_bandwidth_ultra_low_description">Codec2 700C - лучший вариант для очень медленных соединений</string>
+    <string name="codec_profile_bandwidth_very_low_name">Очень низкая пропускная способность</string>
+    <string name="codec_profile_bandwidth_very_low_description">Codec2 1600 - подходит для медленных соединений</string>
+    <string name="codec_profile_bandwidth_low_name">Низкая пропускная способность</string>
+    <string name="codec_profile_bandwidth_low_description">Codec2 3200 - сбалансировано для ограниченной полосы</string>
+    <string name="codec_profile_quality_medium_name">Среднее качество</string>
+    <string name="codec_profile_quality_medium_description">Opus - хороший баланс качества и пропускной способности</string>
+    <string name="codec_profile_quality_high_name">Высокое качество</string>
+    <string name="codec_profile_quality_high_description">Opus - более высокая четкость звука</string>
+    <string name="codec_profile_quality_max_name">Максимальное качество</string>
+    <string name="codec_profile_quality_max_description">Opus - наилучший звук, требует большей пропускной способности</string>
+    <string name="codec_profile_latency_low_name">Низкая задержка</string>
+    <string name="codec_profile_latency_low_description">Opus - уменьшенная задержка, кадры по 20 мс</string>
+    <string name="codec_profile_latency_ultra_low_name">Сверхнизкая задержка</string>
+    <string name="codec_profile_latency_ultra_low_description">Opus - минимальная задержка, кадры по 10 мс</string>
 
     <!-- Permission bottom sheets -->
     <string name="ble_permission_title">Требуются разрешения Bluetooth</string>
@@ -1398,6 +1414,11 @@
     <string name="location_permission_title">Разрешение на доступ к местоположению</string>
     <string name="location_permission_primary_action">Включить геолокацию</string>
     <string name="location_permission_rationale">Разрешите доступ к местоположению, чтобы Columba мог делиться вашей текущей геопозицией с контактами и показывать ближайшие обновления на карте.</string>
+    <string name="qr_scanner_camera_permission_rationale">Columba нужен доступ к камере, чтобы:
+• Сканировать QR-коды для добавления контактов
+• Считывать данные идентификатора из QR-кодов
+
+Камера используется только для сканирования QR-кодов, фотографии не сохраняются.</string>
 
     <!-- Add contact confirmation -->
     <string name="add_contact_content_description">Добавить контакт</string>
@@ -1970,6 +1991,15 @@
     <string name="interface_stats_transmitted">Отправлено</string>
     <string name="interface_stats_rssi">RSSI</string>
     <string name="interface_stats_snr">SNR</string>
+    <string name="interface_type_rnode_tcp_wifi">RNode (TCP/WiFi)</string>
+    <string name="interface_type_rnode_usb">RNode (USB)</string>
+    <string name="interface_type_rnode_ble">RNode (BLE)</string>
+    <string name="interface_type_rnode_classic">RNode (Classic)</string>
+    <string name="interface_type_tcp_client">TCP клиент</string>
+    <string name="interface_type_tcp_server">TCP сервер</string>
+    <string name="interface_type_bluetooth_le">Bluetooth LE</string>
+    <string name="interface_type_auto_discovery">Автообнаружение</string>
+    <string name="interface_type_udp">UDP</string>
     <string name="common_update">Обновить</string>
     <string name="common_warning">Предупреждение</string>
     <string name="common_default">По умолчанию</string>

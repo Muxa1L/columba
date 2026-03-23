@@ -34,8 +34,8 @@ fun CodecSelectionDialog(
         CodecProfile.entries.map { profile ->
             QualityOption(
                 value = profile,
-                displayName = profile.displayName,
-                description = profile.description,
+                displayName = stringResource(profile.displayNameRes),
+                description = stringResource(profile.descriptionRes),
                 isExperimental = profile.isExperimental,
             )
         }

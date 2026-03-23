@@ -1,5 +1,7 @@
 package com.lxmf.messenger.ui.model
 
+import androidx.annotation.StringRes
+import com.lxmf.messenger.R
 import com.lxmf.messenger.reticulum.model.LinkSpeedProbeResult
 
 /**
@@ -12,49 +14,67 @@ import com.lxmf.messenger.reticulum.model.LinkSpeedProbeResult
  */
 enum class CodecProfile(
     val code: Int,
+    @StringRes val displayNameRes: Int,
     val displayName: String,
+    @StringRes val descriptionRes: Int,
     val description: String,
     val isExperimental: Boolean = false,
 ) {
     BANDWIDTH_ULTRA_LOW(
         code = 0x10,
+        displayNameRes = R.string.codec_profile_bandwidth_ultra_low_name,
         displayName = "Ultra Low Bandwidth",
+        descriptionRes = R.string.codec_profile_bandwidth_ultra_low_description,
         description = "Codec2 700C - Best for very slow connections",
     ),
     BANDWIDTH_VERY_LOW(
         code = 0x20,
+        displayNameRes = R.string.codec_profile_bandwidth_very_low_name,
         displayName = "Very Low Bandwidth",
+        descriptionRes = R.string.codec_profile_bandwidth_very_low_description,
         description = "Codec2 1600 - Good for slow connections",
     ),
     BANDWIDTH_LOW(
         code = 0x30,
+        displayNameRes = R.string.codec_profile_bandwidth_low_name,
         displayName = "Low Bandwidth",
+        descriptionRes = R.string.codec_profile_bandwidth_low_description,
         description = "Codec2 3200 - Balanced for limited bandwidth",
     ),
     QUALITY_MEDIUM(
         code = 0x40,
+        displayNameRes = R.string.codec_profile_quality_medium_name,
         displayName = "Medium Quality",
+        descriptionRes = R.string.codec_profile_quality_medium_description,
         description = "Opus - Good balance of quality and bandwidth",
     ),
     QUALITY_HIGH(
         code = 0x50,
+        displayNameRes = R.string.codec_profile_quality_high_name,
         displayName = "High Quality",
+        descriptionRes = R.string.codec_profile_quality_high_description,
         description = "Opus - Higher fidelity audio",
     ),
     QUALITY_MAX(
         code = 0x60,
+        displayNameRes = R.string.codec_profile_quality_max_name,
         displayName = "Maximum Quality",
+        descriptionRes = R.string.codec_profile_quality_max_description,
         description = "Opus - Best audio, requires more bandwidth",
     ),
     LATENCY_LOW(
         code = 0x80,
+        displayNameRes = R.string.codec_profile_latency_low_name,
         displayName = "Low Latency",
+        descriptionRes = R.string.codec_profile_latency_low_description,
         description = "Opus - Reduced delay, 20ms frames",
         isExperimental = true,
     ),
     LATENCY_ULTRA_LOW(
         code = 0x70,
+        displayNameRes = R.string.codec_profile_latency_ultra_low_name,
         displayName = "Ultra Low Latency",
+        descriptionRes = R.string.codec_profile_latency_ultra_low_description,
         description = "Opus - Minimized delay, 10ms frames",
         isExperimental = true,
     ),

@@ -1,11 +1,13 @@
 package com.lxmf.messenger.util
 
+import android.content.Context
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bluetooth
 import androidx.compose.material.icons.filled.SignalCellularAlt
 import androidx.compose.material.icons.filled.Usb
 import androidx.compose.material.icons.filled.Wifi
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.lxmf.messenger.R
 import java.util.Locale
 
 /**
@@ -79,6 +81,34 @@ object InterfaceFormattingUtils {
             interfaceType == "AndroidBLE" -> Icons.Default.Bluetooth to "Bluetooth LE"
             interfaceType == "AutoInterface" -> Icons.Default.SignalCellularAlt to "Auto Discovery"
             interfaceType == "UDP" -> Icons.Default.Wifi to "UDP"
+            else -> Icons.Default.SignalCellularAlt to interfaceType
+        }
+    }
+
+    fun getConnectionIcon(
+        context: Context,
+        interfaceType: String,
+        connectionMode: String?,
+    ): Pair<ImageVector, String> {
+        return when {
+            interfaceType == "RNode" && connectionMode == "tcp" ->
+                Icons.Default.Wifi to context.getString(R.string.interface_type_rnode_tcp_wifi)
+            interfaceType == "RNode" && connectionMode == "usb" ->
+                Icons.Default.Usb to context.getString(R.string.interface_type_rnode_usb)
+            interfaceType == "RNode" && connectionMode == "ble" ->
+                Icons.Default.Bluetooth to context.getString(R.string.interface_type_rnode_ble)
+            interfaceType == "RNode" ->
+                Icons.Default.Bluetooth to context.getString(R.string.interface_type_rnode_classic)
+            interfaceType == "TCPClient" ->
+                Icons.Default.Wifi to context.getString(R.string.interface_type_tcp_client)
+            interfaceType == "TCPServer" ->
+                Icons.Default.Wifi to context.getString(R.string.interface_type_tcp_server)
+            interfaceType == "AndroidBLE" ->
+                Icons.Default.Bluetooth to context.getString(R.string.interface_type_bluetooth_le)
+            interfaceType == "AutoInterface" ->
+                Icons.Default.SignalCellularAlt to context.getString(R.string.interface_type_auto_discovery)
+            interfaceType == "UDP" ->
+                Icons.Default.Wifi to context.getString(R.string.interface_type_udp)
             else -> Icons.Default.SignalCellularAlt to interfaceType
         }
     }

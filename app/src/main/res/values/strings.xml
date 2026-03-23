@@ -1185,6 +1185,11 @@ It will scan automatically</string>
   <string name="qr_scanner_contact_exists_message_unnamed">This contact is already in your contacts list.</string>
   <string name="qr_scanner_camera_permission_denied">Camera Permission Denied</string>
   <string name="qr_scanner_camera_permission_required">Camera Permission Required</string>
+  <string name="qr_scanner_camera_permission_rationale">Columba needs camera access to:
+• Scan QR codes to add contacts
+• Read identity information from QR codes
+
+Your camera is only used for QR code scanning and no photos are stored.</string>
   <!-- BLE connection status screen -->
   <string name="ble_connections_title">BLE Connections</string>
   <string name="ble_connections_loading">Loading connections...</string>
@@ -1318,6 +1323,22 @@ It will scan automatically</string>
   <string name="codec_selection_title">Select Call Quality</string>
   <string name="codec_selection_subtitle">Choose a codec profile based on your connection speed</string>
   <string name="codec_selection_confirm">Call</string>
+  <string name="codec_profile_bandwidth_ultra_low_name">Ultra Low Bandwidth</string>
+  <string name="codec_profile_bandwidth_ultra_low_description">Codec2 700C - Best for very slow connections</string>
+  <string name="codec_profile_bandwidth_very_low_name">Very Low Bandwidth</string>
+  <string name="codec_profile_bandwidth_very_low_description">Codec2 1600 - Good for slow connections</string>
+  <string name="codec_profile_bandwidth_low_name">Low Bandwidth</string>
+  <string name="codec_profile_bandwidth_low_description">Codec2 3200 - Balanced for limited bandwidth</string>
+  <string name="codec_profile_quality_medium_name">Medium Quality</string>
+  <string name="codec_profile_quality_medium_description">Opus - Good balance of quality and bandwidth</string>
+  <string name="codec_profile_quality_high_name">High Quality</string>
+  <string name="codec_profile_quality_high_description">Opus - Higher fidelity audio</string>
+  <string name="codec_profile_quality_max_name">Maximum Quality</string>
+  <string name="codec_profile_quality_max_description">Opus - Best audio, requires more bandwidth</string>
+  <string name="codec_profile_latency_low_name">Low Latency</string>
+  <string name="codec_profile_latency_low_description">Opus - Reduced delay, 20ms frames</string>
+  <string name="codec_profile_latency_ultra_low_name">Ultra Low Latency</string>
+  <string name="codec_profile_latency_ultra_low_description">Opus - Minimized delay, 10ms frames</string>
   <!-- Permission bottom sheets -->
   <string name="ble_permission_title">Bluetooth Permissions Required</string>
   <string name="ble_permission_rationale">Columba uses Bluetooth Low Energy (BLE) to communicate with nearby devices in a mesh network.
@@ -1883,6 +1904,15 @@ Your location is encrypted and only readable by the group host you configure.</s
   <string name="interface_stats_transmitted">Transmitted</string>
   <string name="interface_stats_rssi">RSSI</string>
   <string name="interface_stats_snr">SNR</string>
+  <string name="interface_type_rnode_tcp_wifi">RNode (TCP/WiFi)</string>
+  <string name="interface_type_rnode_usb">RNode (USB)</string>
+  <string name="interface_type_rnode_ble">RNode (BLE)</string>
+  <string name="interface_type_rnode_classic">RNode (Classic)</string>
+  <string name="interface_type_tcp_client">TCP Client</string>
+  <string name="interface_type_tcp_server">TCP Server</string>
+  <string name="interface_type_bluetooth_le">Bluetooth LE</string>
+  <string name="interface_type_auto_discovery">Auto Discovery</string>
+  <string name="interface_type_udp">UDP</string>
   <string name="common_update">Update</string>
   <string name="common_warning">Warning</string>
   <string name="common_default">Default</string>

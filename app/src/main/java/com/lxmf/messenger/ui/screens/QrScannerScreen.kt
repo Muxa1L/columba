@@ -366,6 +366,8 @@ private fun PermissionRequiredContent(
     onRequestPermission: () -> Unit,
     onOpenSettings: () -> Unit,
 ) {
+    val context = LocalContext.current
+
     Column(
         modifier =
             Modifier
@@ -388,7 +390,7 @@ private fun PermissionRequiredContent(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = CameraPermissionManager.getPermissionRationale(),
+            text = CameraPermissionManager.getPermissionRationale(context),
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
         )

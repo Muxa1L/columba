@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.content.ContextCompat
+import com.lxmf.messenger.R
 
 /**
  * Manages camera permissions for QR code scanning.
@@ -83,6 +84,9 @@ object CameraPermissionManager {
             appendLine("Your camera is only used for QR code scanning and no photos are stored.")
         }
     }
+
+    fun getPermissionRationale(context: Context): String =
+        context.getString(R.string.qr_scanner_camera_permission_rationale)
 
     /**
      * Check if camera hardware is available on this device.

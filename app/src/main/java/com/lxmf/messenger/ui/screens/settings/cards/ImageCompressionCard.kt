@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.lxmf.messenger.R
@@ -219,20 +220,8 @@ private fun formatBytes(bytes: Long): String {
 
 @Composable
 private fun presetDisplayName(preset: ImageCompressionPreset): String =
-    when (preset) {
-        ImageCompressionPreset.LOW -> stringResource(R.string.settings_image_compression_preset_low)
-        ImageCompressionPreset.MEDIUM -> stringResource(R.string.settings_image_compression_preset_medium)
-        ImageCompressionPreset.HIGH -> stringResource(R.string.settings_image_compression_preset_high)
-        ImageCompressionPreset.ORIGINAL -> stringResource(R.string.settings_image_compression_preset_original)
-        ImageCompressionPreset.AUTO -> stringResource(R.string.settings_image_compression_preset_auto)
-    }
+    LocalContext.current.getString(preset.displayNameRes)
 
 @Composable
 private fun presetDescription(preset: ImageCompressionPreset): String =
-    when (preset) {
-        ImageCompressionPreset.LOW -> stringResource(R.string.settings_image_compression_description_low)
-        ImageCompressionPreset.MEDIUM -> stringResource(R.string.settings_image_compression_description_medium)
-        ImageCompressionPreset.HIGH -> stringResource(R.string.settings_image_compression_description_high)
-        ImageCompressionPreset.ORIGINAL -> stringResource(R.string.settings_image_compression_description_original)
-        ImageCompressionPreset.AUTO -> stringResource(R.string.settings_image_compression_description_auto)
-    }
+    LocalContext.current.getString(preset.descriptionRes)
