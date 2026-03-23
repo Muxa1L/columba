@@ -89,7 +89,7 @@ internal fun buildFocusInterfaceDetails(
 ): FocusInterfaceDetails? {
     if (!isValidCoordinate(lat) || !isValidCoordinate(lon)) return null
 
-    val unknownLabel = context.getString(R.string.common_unknown)
+    val unknownLabel = runCatching { context.getString(R.string.common_unknown) }.getOrDefault("Unknown")
 
     return FocusInterfaceDetails(
         name = label ?: unknownLabel,

@@ -42,6 +42,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -62,6 +63,7 @@ import com.lxmf.messenger.viewmodel.RNodeWizardViewModel
 @Composable
 fun FrequencySlotStep(viewModel: RNodeWizardViewModel) {
     val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
     val region = state.selectedFrequencyRegion ?: return
     val bandwidth = state.selectedModemPreset.bandwidth
 
@@ -143,9 +145,7 @@ fun FrequencySlotStep(viewModel: RNodeWizardViewModel) {
             numSlots = numSlots,
             isWarning = isMeshtasticSlot,
             presetName =
-                state.selectedSlotPreset?.let {
-                    it.cityOrRegion ?: it.countryName
-                },
+                state.selectedSlotPreset?.getDisplayTitle(),
         )
 
         Spacer(Modifier.height(24.dp))
@@ -589,6 +589,7 @@ private fun PopularPresetCard(
     isSelected: Boolean,
     onSelect: () -> Unit,
 ) {
+    val context = LocalContext.current
     OutlinedCard(
         onClick = onSelect,
         colors =
@@ -612,13 +613,13 @@ private fun PopularPresetCard(
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = preset.cityOrRegion ?: preset.countryName,
+                    text = preset.getDisplayTitle(),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
                 )
                 Spacer(Modifier.height(2.dp))
                 Text(
-                    text = preset.description,
+                    text = preset.getDescription(context),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

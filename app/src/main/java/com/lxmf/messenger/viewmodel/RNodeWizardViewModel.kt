@@ -400,7 +400,7 @@ class RNodeWizardViewModel
                                 productId = usbProductId,
                                 deviceName = "",
                                 manufacturerName = null,
-                                productName = "Configured USB RNode",
+                                productName = string(R.string.rnode_usb_device_name_configured, "Configured USB RNode"),
                                 serialNumber = null,
                                 driverType = "Unknown",
                                 hasPermission = true, // Assume permission since it was previously configured
@@ -1852,7 +1852,7 @@ class RNodeWizardViewModel
                             productId = productId,
                             deviceName = deviceName,
                             manufacturerName = null,
-                            productName = "USB RNode",
+                            productName = string(R.string.rnode_usb_device_name_placeholder, "USB RNode"),
                             serialNumber = null,
                             driverType = "Unknown",
                             hasPermission = false,
@@ -3740,6 +3740,43 @@ class RNodeWizardViewModel
             }
         }
 
+        fun getEffectiveDeviceName(context: Context): String {
+            val state = _state.value
+            return when (state.connectionType) {
+                RNodeConnectionType.TCP_WIFI -> {
+                    val port = state.tcpPort.toIntOrNull() ?: 7633
+                    if (state.tcpHost.isNotBlank()) {
+                        if (port == 7633) state.tcpHost else "${state.tcpHost}:$port"
+                    } else {
+                        runCatching {
+                            context.getString(R.string.rnode_review_no_host_specified)
+                        }.getOrDefault("No host specified")
+                    }
+                }
+                RNodeConnectionType.USB_SERIAL -> {
+                    state.selectedUsbDevice?.let { device ->
+                        device.productName
+                            ?: device.manufacturerName?.let { manufacturer ->
+                                runCatching {
+                                    context.getString(R.string.rnode_review_manufacturer_device, manufacturer)
+                                }.getOrDefault("$manufacturer Device")
+                            }
+                            ?: device.driverType
+                    } ?: runCatching {
+                        context.getString(R.string.rnode_review_no_usb_device_selected)
+                    }.getOrDefault("No USB device selected")
+                }
+                RNodeConnectionType.BLUETOOTH -> {
+                    state.selectedDevice?.name
+                        ?: state.manualDeviceName.ifBlank {
+                            runCatching {
+                                context.getString(R.string.rnode_review_no_device_selected)
+                            }.getOrDefault("No device selected")
+                        }
+                }
+            }
+        }
+
         /**
          * Get the effective Bluetooth type for display.
          * Returns null for TCP mode or USB mode.
@@ -3766,6 +3803,36 @@ class RNodeWizardViewModel
                         BluetoothType.CLASSIC -> "Bluetooth Classic"
                         BluetoothType.BLE -> "Bluetooth LE"
                         BluetoothType.UNKNOWN -> "Bluetooth"
+                    }
+                }
+            }
+        }
+
+        fun getConnectionTypeString(context: Context): String {
+            val state = _state.value
+            return when (state.connectionType) {
+                RNodeConnectionType.TCP_WIFI ->
+                    runCatching {
+                        context.getString(R.string.rnode_review_connection_type_tcp_wifi)
+                    }.getOrDefault("WiFi / TCP")
+                RNodeConnectionType.USB_SERIAL ->
+                    runCatching {
+                        context.getString(R.string.rnode_review_connection_type_usb_serial)
+                    }.getOrDefault("USB Serial")
+                RNodeConnectionType.BLUETOOTH -> {
+                    when (state.selectedDevice?.type ?: state.manualBluetoothType) {
+                        BluetoothType.CLASSIC ->
+                            runCatching {
+                                context.getString(R.string.rnode_review_connection_type_bluetooth_classic)
+                            }.getOrDefault("Bluetooth Classic")
+                        BluetoothType.BLE ->
+                            runCatching {
+                                context.getString(R.string.rnode_review_connection_type_bluetooth_le)
+                            }.getOrDefault("Bluetooth LE")
+                        BluetoothType.UNKNOWN ->
+                            runCatching {
+                                context.getString(R.string.rnode_review_connection_type_bluetooth)
+                            }.getOrDefault("Bluetooth")
                     }
                 }
             }

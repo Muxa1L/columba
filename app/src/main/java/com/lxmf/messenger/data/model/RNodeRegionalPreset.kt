@@ -88,7 +88,63 @@ data class RNodeRegionalPreset(
     /** Transmission power in dBm */
     val txPower: Int,
     val description: String,
-)
+) {
+    fun getLocationLabel(defaultLabel: String = "Default"): String = cityOrRegion ?: defaultLabel
+
+    fun getDisplayTitle(): String = cityOrRegion ?: countryName
+
+    fun getCountryLocationLabel(defaultLabel: String = "Default"): String =
+        "$countryName - ${getLocationLabel(defaultLabel)}"
+
+    fun getDescription(context: Context): String =
+        runCatching { context.getString(descriptionResId) }.getOrDefault(description)
+
+    @get:StringRes
+    private val descriptionResId: Int
+        get() =
+            when (id) {
+                "au_default" -> R.string.rnode_regional_preset_au_default_description
+                "au_sydney" -> R.string.rnode_regional_preset_au_sydney_description
+                "au_brisbane" -> R.string.rnode_regional_preset_au_brisbane_description
+                "au_western_sydney" -> R.string.rnode_regional_preset_au_western_sydney_description
+                "be_default" -> R.string.rnode_regional_preset_be_default_description
+                "be_duffel" -> R.string.rnode_regional_preset_be_duffel_description
+                "fi_default" -> R.string.rnode_regional_preset_fi_default_description
+                "fi_turku" -> R.string.rnode_regional_preset_fi_turku_description
+                "de_default" -> R.string.rnode_regional_preset_de_default_description
+                "de_darmstadt" -> R.string.rnode_regional_preset_de_darmstadt_description
+                "de_wiesbaden" -> R.string.rnode_regional_preset_de_wiesbaden_description
+                "it_default" -> R.string.rnode_regional_preset_it_default_description
+                "it_salerno" -> R.string.rnode_regional_preset_it_salerno_description
+                "it_brescia" -> R.string.rnode_regional_preset_it_brescia_description
+                "it_treviso" -> R.string.rnode_regional_preset_it_treviso_description
+                "it_genova" -> R.string.rnode_regional_preset_it_genova_description
+                "my_default" -> R.string.rnode_regional_preset_my_default_description
+                "nl_default" -> R.string.rnode_regional_preset_nl_default_description
+                "nl_rotterdam" -> R.string.rnode_regional_preset_nl_rotterdam_description
+                "be_brugge" -> R.string.rnode_regional_preset_be_brugge_description
+                "no_default" -> R.string.rnode_regional_preset_no_default_description
+                "sg_default" -> R.string.rnode_regional_preset_sg_default_description
+                "es_default" -> R.string.rnode_regional_preset_es_default_description
+                "es_madrid" -> R.string.rnode_regional_preset_es_madrid_description
+                "se_default" -> R.string.rnode_regional_preset_se_default_description
+                "se_gothenburg" -> R.string.rnode_regional_preset_se_gothenburg_description
+                "se_433" -> R.string.rnode_regional_preset_se_433_description
+                "se_morbylanga" -> R.string.rnode_regional_preset_se_morbylanga_description
+                "ch_default" -> R.string.rnode_regional_preset_ch_default_description
+                "ch_bern" -> R.string.rnode_regional_preset_ch_bern_description
+                "th_default" -> R.string.rnode_regional_preset_th_default_description
+                "gb_default" -> R.string.rnode_regional_preset_gb_default_description
+                "gb_st_helens" -> R.string.rnode_regional_preset_gb_st_helens_description
+                "gb_edinburgh" -> R.string.rnode_regional_preset_gb_edinburgh_description
+                "gb_edinburgh_2g4" -> R.string.rnode_regional_preset_gb_edinburgh_2g4_description
+                "us_default" -> R.string.rnode_regional_preset_us_default_description
+                "us_portsmouth" -> R.string.rnode_regional_preset_us_portsmouth_description
+                "us_olympia" -> R.string.rnode_regional_preset_us_olympia_description
+                "us_chicago" -> R.string.rnode_regional_preset_us_chicago_description
+                else -> R.string.common_unknown
+            }
+}
 
 /**
  * Meshtastic-compatible modem presets.
@@ -243,6 +299,37 @@ data class FrequencyRegion(
         } else {
             "$dutyCycle%"
         }
+
+    fun getDescription(context: Context): String =
+        runCatching { context.getString(descriptionResId) }.getOrDefault(description)
+
+    @get:StringRes
+    private val descriptionResId: Int
+        get() =
+            when (id) {
+                "us_915" -> R.string.rnode_frequency_region_us_915_description
+                "br_902" -> R.string.rnode_frequency_region_br_902_description
+                "eu_868_l" -> R.string.rnode_frequency_region_eu_868_l_description
+                "eu_868_m" -> R.string.rnode_frequency_region_eu_868_m_description
+                "eu_868_p" -> R.string.rnode_frequency_region_eu_868_p_description
+                "eu_868_q" -> R.string.rnode_frequency_region_eu_868_q_description
+                "eu_433" -> R.string.rnode_frequency_region_eu_433_description
+                "ru_868" -> R.string.rnode_frequency_region_ru_868_description
+                "ua_868" -> R.string.rnode_frequency_region_ua_868_description
+                "au_915" -> R.string.rnode_frequency_region_au_915_description
+                "nz_865" -> R.string.rnode_frequency_region_nz_865_description
+                "jp_920" -> R.string.rnode_frequency_region_jp_920_description
+                "kr_920" -> R.string.rnode_frequency_region_kr_920_description
+                "tw_920" -> R.string.rnode_frequency_region_tw_920_description
+                "cn_470" -> R.string.rnode_frequency_region_cn_470_description
+                "in_865" -> R.string.rnode_frequency_region_in_865_description
+                "th_920" -> R.string.rnode_frequency_region_th_920_description
+                "sg_923" -> R.string.rnode_frequency_region_sg_923_description
+                "my_919" -> R.string.rnode_frequency_region_my_919_description
+                "ph_915" -> R.string.rnode_frequency_region_ph_915_description
+                "lora_24" -> R.string.rnode_frequency_region_lora_24_description
+                else -> R.string.common_unknown
+            }
 }
 
 /**

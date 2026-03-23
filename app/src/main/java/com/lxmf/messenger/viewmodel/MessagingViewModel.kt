@@ -129,7 +129,7 @@ class MessagingViewModel
 
         // Track the currently active conversation - drives reactive message loading
         private val _currentConversation = MutableStateFlow<String?>(null)
-        private var currentPeerName: String = "Unknown"
+        private var currentPeerName: String = string(R.string.settings_unknown_peer, "Unknown Peer")
 
         // Refresh trigger for forcing PagingData refresh when delivery status updates
         // Room's automatic invalidation sometimes doesn't trigger UI refresh with cachedIn()
@@ -1060,7 +1060,7 @@ class MessagingViewModel
 
         fun loadMessages(
             destinationHash: String,
-            peerName: String = "Unknown",
+            peerName: String? = null,
         ) {
             // Flush any pending draft save for the previous conversation
             val previousHash = _currentConversation.value
@@ -1074,7 +1074,7 @@ class MessagingViewModel
             }
 
             // Set current conversation - this triggers the reactive Flow to load messages
-            currentPeerName = peerName
+            currentPeerName = peerName ?: string(R.string.settings_unknown_peer, "Unknown Peer")
             _currentConversation.value = destinationHash
             lastDraftText = ""
 
@@ -1782,7 +1782,7 @@ class MessagingViewModel
                     } else {
                         preset.targetSizeBytes
                     }
-                linkState?.estimateTransferTimeFormatted(sizeBytes)
+                linkState?.estimateTransferTimeFormatted(context, sizeBytes)
             }
         }
 

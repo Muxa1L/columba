@@ -1,6 +1,8 @@
 package com.lxmf.messenger.service
 
+import android.content.Context
 import android.util.Log
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.model.ImageCompressionPreset
 import com.lxmf.messenger.reticulum.protocol.ReticulumProtocol
 import com.lxmf.messenger.util.HexUtils
@@ -75,6 +77,51 @@ class ConversationLinkManager
                         val hours = totalSeconds / 3600
                         val remainingMinutes = (totalSeconds % 3600) / 60
                         if (remainingMinutes > 0) "~${hours}h ${remainingMinutes}m" else "~${hours}h"
+                    }
+                }
+            }
+
+            fun formatTransferTime(
+                context: Context,
+                seconds: Double,
+            ): String {
+                if (seconds < 0) {
+                    return runCatching { context.getString(R.string.link_transfer_time_unknown) }.getOrDefault("Unknown")
+                }
+
+                val totalSeconds = seconds.toInt()
+                return when {
+                    totalSeconds < 1 ->
+                        runCatching { context.getString(R.string.link_transfer_time_under_second) }.getOrDefault("< 1s")
+                    totalSeconds < 60 ->
+                        runCatching {
+                            context.getString(R.string.link_transfer_time_seconds, totalSeconds)
+                        }.getOrDefault("~${totalSeconds}s")
+                    totalSeconds < 3600 -> {
+                        val minutes = totalSeconds / 60
+                        val remainingSeconds = totalSeconds % 60
+                        if (remainingSeconds > 0) {
+                            runCatching {
+                                context.getString(R.string.link_transfer_time_minutes, minutes, remainingSeconds)
+                            }.getOrDefault("~${minutes}m ${remainingSeconds}s")
+                        } else {
+                            runCatching {
+                                context.getString(R.string.link_transfer_time_minutes_only, minutes)
+                            }.getOrDefault("~${minutes}m")
+                        }
+                    }
+                    else -> {
+                        val hours = totalSeconds / 3600
+                        val remainingMinutes = (totalSeconds % 3600) / 60
+                        if (remainingMinutes > 0) {
+                            runCatching {
+                                context.getString(R.string.link_transfer_time_hours, hours, remainingMinutes)
+                            }.getOrDefault("~${hours}h ${remainingMinutes}m")
+                        } else {
+                            runCatching {
+                                context.getString(R.string.link_transfer_time_hours_only, hours)
+                            }.getOrDefault("~${hours}h")
+                        }
                     }
                 }
             }
@@ -162,6 +209,14 @@ class ConversationLinkManager
             fun estimateTransferTimeFormatted(sizeBytes: Long): String? {
                 val seconds = estimateTransferTimeSeconds(sizeBytes) ?: return null
                 return formatTransferTime(seconds)
+            }
+
+            fun estimateTransferTimeFormatted(
+                context: Context,
+                sizeBytes: Long,
+            ): String? {
+                val seconds = estimateTransferTimeSeconds(sizeBytes) ?: return null
+                return formatTransferTime(context, seconds)
             }
 
             /**
