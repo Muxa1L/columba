@@ -381,13 +381,19 @@ class InterfaceManagementViewModel
                 // Bluetooth turned off while it was on
                 previousBluetoothState == BluetoothAdapter.STATE_ON &&
                     newState == BluetoothAdapter.STATE_OFF -> {
-                    showInfo(context?.getString(R.string.interface_management_bluetooth_paused) ?: "Bluetooth turned off - BLE interface paused")
+                    showInfo(
+                        context?.getString(R.string.interface_management_bluetooth_paused)
+                            ?: "Bluetooth turned off - BLE interface paused",
+                    )
                 }
 
                 // Bluetooth turned back on while it was off
                 previousBluetoothState == BluetoothAdapter.STATE_OFF &&
                     newState == BluetoothAdapter.STATE_ON -> {
-                    showInfo(context?.getString(R.string.interface_management_bluetooth_resuming) ?: "Bluetooth enabled - BLE interface resuming")
+                    showInfo(
+                        context?.getString(R.string.interface_management_bluetooth_resuming)
+                            ?: "Bluetooth enabled - BLE interface resuming",
+                    )
                 }
             }
 
@@ -453,11 +459,17 @@ class InterfaceManagementViewModel
                     if (editingId != null) {
                         // Update existing interface
                         interfaceRepository.updateInterface(editingId, config)
-                        showSuccess(context?.getString(R.string.interface_management_interface_updated) ?: "Interface updated successfully")
+                        showSuccess(
+                            context?.getString(R.string.interface_management_interface_updated)
+                                ?: "Interface updated successfully",
+                        )
                     } else {
                         // Insert new interface
                         interfaceRepository.insertInterface(config)
-                        showSuccess(context?.getString(R.string.interface_management_interface_added) ?: "Interface added successfully")
+                        showSuccess(
+                            context?.getString(R.string.interface_management_interface_added)
+                                ?: "Interface added successfully",
+                        )
                     }
 
                     // Mark that there are pending changes
@@ -482,7 +494,10 @@ class InterfaceManagementViewModel
             viewModelScope.launch {
                 try {
                     interfaceRepository.deleteInterface(id)
-                    showSuccess(context?.getString(R.string.interface_management_interface_deleted) ?: "Interface deleted successfully")
+                    showSuccess(
+                        context?.getString(R.string.interface_management_interface_deleted)
+                            ?: "Interface deleted successfully",
+                    )
 
                     // Mark that there are pending changes
                     _state.value = _state.value.copy(hasPendingChanges = true)
@@ -770,7 +785,9 @@ class InterfaceManagementViewModel
                     if (maxConn == null || maxConn !in 1..7) {
                         _configState.value =
                             _configState.value.copy(
-                                maxConnectionsError = context?.getString(R.string.interface_management_max_connections_error) ?: "Max connections must be 1-7",
+                                maxConnectionsError =
+                                    context?.getString(R.string.interface_management_max_connections_error)
+                                        ?: "Max connections must be 1-7",
                             )
                         isValid = false
                     } else {
@@ -994,7 +1011,10 @@ class InterfaceManagementViewModel
                                 hasPendingChanges = false,
                                 isApplyingChanges = false,
                             )
-                        showSuccess(context?.getString(R.string.interface_management_apply_changes_success) ?: "Configuration applied successfully")
+                        showSuccess(
+                            context?.getString(R.string.interface_management_apply_changes_success)
+                                ?: "Configuration applied successfully",
+                        )
                     }.onFailure { error ->
                         _state.value =
                             _state.value.copy(

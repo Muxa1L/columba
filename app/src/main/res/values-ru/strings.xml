@@ -101,6 +101,7 @@
     <string name="service_notification_detail_ready">Фоновая служба работает. Отключите оптимизацию батареи для надежной доставки сообщений.</string>
     <string name="service_notification_detail_initializing">Подключение к mesh-сети...</string>
     <string name="service_notification_detail_connecting">Служба была прервана. Выполняется попытка переподключения...</string>
+    <string name="service_notification_detail_disconnected">Служба не запущена</string>
     <string name="service_notification_rnode_disconnected_suffix">, RNode отключен</string>
     <string name="service_notification_rnode_disconnected_title">RNode отключен</string>
     <string name="service_notification_rnode_disconnected_message">%1$s потерял соединение. Выполняется переподключение...</string>
@@ -2440,6 +2441,7 @@
     <string name="announce_stream_managed_by_app">Reticulum управляется приложением</string>
     <string name="announce_stream_timeout_waiting_service">Истекло время ожидания службы</string>
     <string name="announce_stream_error_with_reason">Ошибка: %1$s</string>
+    <string name="announce_stream_service_error">Ошибка службы: %1$s</string>
     <string name="announce_stream_service_not_available">Служба недоступна</string>
     <string name="announce_stream_error_triggering">Ошибка при отправке объявления</string>
     <string name="ble_connections_failed_refresh">Не удалось обновить данные</string>
@@ -2495,6 +2497,11 @@
     <string name="file_utils_could_not_open_file">Не удалось открыть файл</string>
     <string name="reticulum_service_notification_title">Сетевой узел Columba</string>
     <string name="service_reticulum_connection_lost_restart_app">Соединение с сервисом потеряно, перезапустите приложение</string>
+    <string name="theme_editor_theme_not_found">Тема не найдена</string>
+    <string name="theme_editor_failed_load">Не удалось загрузить тему: %1$s</string>
+    <string name="theme_editor_empty_name">Название темы не может быть пустым</string>
+    <string name="theme_editor_failed_save">Не удалось сохранить тему: %1$s</string>
+    <string name="theme_editor_failed_save_apply">Не удалось сохранить и применить тему: %1$s</string>
     <string name="discovered_interfaces_failed_load">Не удалось загрузить обнаруженные интерфейсы: %1$s</string>
     <string name="discovered_interfaces_failed_restart_service">Не удалось перезапустить службу: %1$s</string>
     <string name="discovered_interfaces_failed_update_settings">Не удалось обновить настройки обнаружения: %1$s</string>

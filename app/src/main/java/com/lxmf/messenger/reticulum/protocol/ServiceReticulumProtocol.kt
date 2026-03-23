@@ -876,12 +876,46 @@ class ServiceReticulumProtocol(
             val (statusText, detailText) =
                 when {
                     status == "READY" ->
-                        "Connected - Mesh network active" to
-                            "Background service running. Keep battery optimization disabled for reliable message delivery."
-                    status == "INITIALIZING" -> "Starting mesh network..." to "Connecting to mesh network..."
-                    status == "CONNECTING" -> "Reconnecting..." to "Service was interrupted. Attempting to reconnect..."
-                    status.startsWith("ERROR:") -> "Error - Tap to view" to status.substringAfter("ERROR:")
-                    else -> "Disconnected" to "Service not running"
+                        string(
+                            R.string.service_notification_status_ready,
+                            "Connected - Mesh network active",
+                        ) to
+                            string(
+                                R.string.service_notification_detail_ready,
+                                "Background service running. Keep battery optimization disabled for reliable message delivery.",
+                            )
+                    status == "INITIALIZING" ->
+                        string(
+                            R.string.service_notification_status_initializing,
+                            "Starting mesh network...",
+                        ) to
+                            string(
+                                R.string.service_notification_detail_initializing,
+                                "Connecting to mesh network...",
+                            )
+                    status == "CONNECTING" ->
+                        string(
+                            R.string.service_notification_status_connecting,
+                            "Reconnecting...",
+                        ) to
+                            string(
+                                R.string.service_notification_detail_connecting,
+                                "Service was interrupted. Attempting to reconnect...",
+                            )
+                    status.startsWith("ERROR:") ->
+                        string(
+                            R.string.service_notification_status_error,
+                            "Error - Tap to view",
+                        ) to status.substringAfter("ERROR:")
+                    else ->
+                        string(
+                            R.string.service_notification_status_disconnected,
+                            "Disconnected",
+                        ) to
+                            string(
+                                R.string.service_notification_detail_disconnected,
+                                "Service not running",
+                            )
                 }
 
             val pendingIntent =

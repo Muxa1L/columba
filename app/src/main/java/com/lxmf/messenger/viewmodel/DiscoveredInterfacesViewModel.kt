@@ -98,6 +98,8 @@ class DiscoveredInterfacesViewModel
                 if (args.isEmpty()) fallback else fallback.format(*args)
             }
 
+        private fun unknownError(): String = string(R.string.identity_screen_unknown_error, "Unknown error")
+
         private val _state = MutableStateFlow(DiscoveredInterfacesState())
         val state: StateFlow<DiscoveredInterfacesState> = _state.asStateFlow()
 
@@ -161,7 +163,7 @@ class DiscoveredInterfacesViewModel
                                 string(
                                     R.string.discovered_interfaces_failed_load,
                                     "Failed to load discovered interfaces: %s",
-                                    e.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+                                    e.message ?: unknownError(),
                                 ),
                         )
                     }
@@ -257,7 +259,7 @@ class DiscoveredInterfacesViewModel
                                         string(
                                             R.string.discovered_interfaces_failed_restart_service,
                                             "Failed to restart service: %s",
-                                            error.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+                                            error.message ?: unknownError(),
                                         ),
                                 )
                             }
@@ -271,7 +273,7 @@ class DiscoveredInterfacesViewModel
                                 string(
                                     R.string.discovered_interfaces_failed_update_settings,
                                     "Failed to update discovery settings: %s",
-                                    e.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+                                    e.message ?: unknownError(),
                                 ),
                         )
                     }
@@ -322,7 +324,7 @@ class DiscoveredInterfacesViewModel
                                         string(
                                             R.string.discovered_interfaces_failed_restart_service,
                                             "Failed to restart service: %s",
-                                            error.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+                                            error.message ?: unknownError(),
                                         ),
                                 )
                             }
@@ -336,7 +338,7 @@ class DiscoveredInterfacesViewModel
                                 string(
                                     R.string.discovered_interfaces_failed_update_autoconnect,
                                     "Failed to update autoconnect count: %s",
-                                    e.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+                                    e.message ?: unknownError(),
                                 ),
                         )
                     }

@@ -206,7 +206,7 @@ class CallViewModel
                         return@launch
                     }
 
-                    val errorMsg = result.exceptionOrNull()?.message ?: string(R.string.identity_screen_unknown_error, "Unknown error")
+                    val errorMsg = result.exceptionOrNull()?.message ?: unknownError()
 
                     // Retry if CallManager not initialized yet
                     if (errorMsg.contains("not initialized", ignoreCase = true)) {
@@ -367,4 +367,6 @@ class CallViewModel
             }.getOrElse {
                 if (args.isEmpty()) fallback else fallback.format(*args)
             }
+
+        private fun unknownError(): String = string(R.string.identity_screen_unknown_error, "Unknown error")
     }

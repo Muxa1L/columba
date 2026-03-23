@@ -98,6 +98,7 @@
   <string name="service_notification_detail_ready">Background service running. Keep battery optimization disabled for reliable message delivery.</string>
   <string name="service_notification_detail_initializing">Connecting to mesh network...</string>
   <string name="service_notification_detail_connecting">Service was interrupted. Attempting to reconnect...</string>
+  <string name="service_notification_detail_disconnected">Service not running</string>
   <string name="service_notification_rnode_disconnected_suffix"> (RNode disconnected)</string>
   <string name="service_notification_rnode_disconnected_title">RNode Disconnected</string>
   <string name="service_notification_rnode_disconnected_message">%1$s lost connection. Attempting to reconnect...</string>
@@ -2341,6 +2342,7 @@ Receipt hash: %2$s...</string>
   <string name="announce_stream_managed_by_app">Reticulum managed by app</string>
   <string name="announce_stream_timeout_waiting_service">Timeout waiting for service</string>
   <string name="announce_stream_error_with_reason">Error: %1$s</string>
+  <string name="announce_stream_service_error">Service error: %1$s</string>
   <string name="announce_stream_service_not_available">Service not available</string>
   <string name="announce_stream_error_triggering">Error triggering announce</string>
   <string name="ble_connections_failed_refresh">Failed to refresh</string>
@@ -2396,6 +2398,11 @@ Receipt hash: %2$s...</string>
   <string name="file_utils_could_not_open_file">Could not open file</string>
   <string name="reticulum_service_notification_title">Columba Mesh Network</string>
   <string name="service_reticulum_connection_lost_restart_app">Service connection lost - please restart the app</string>
+  <string name="theme_editor_theme_not_found">Theme not found</string>
+  <string name="theme_editor_failed_load">Failed to load theme: %1$s</string>
+  <string name="theme_editor_empty_name">Theme name cannot be empty</string>
+  <string name="theme_editor_failed_save">Failed to save theme: %1$s</string>
+  <string name="theme_editor_failed_save_apply">Failed to save and apply theme: %1$s</string>
   <string name="discovered_interfaces_failed_load">Failed to load discovered interfaces: %1$s</string>
   <string name="discovered_interfaces_failed_restart_service">Failed to restart service: %1$s</string>
   <string name="discovered_interfaces_failed_update_settings">Failed to update discovery settings: %1$s</string>

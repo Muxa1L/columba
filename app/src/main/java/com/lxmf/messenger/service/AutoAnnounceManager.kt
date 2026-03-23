@@ -132,7 +132,7 @@ class AutoAnnounceManager
                     // Only perform announce if using ServiceReticulumProtocol
                     if (reticulumProtocol is ServiceReticulumProtocol) {
                         // Perform announce
-                        val effectiveDisplayName = displayName ?: context?.getString(R.string.onboarding_identity_anonymous_peer) ?: "Anonymous Peer"
+                        val effectiveDisplayName = displayName ?: string(R.string.onboarding_identity_anonymous_peer, "Anonymous Peer")
                         Log.d(TAG, "Triggering auto-announce...")
 
                         val result = reticulumProtocol.triggerAutoAnnounce(effectiveDisplayName)
@@ -181,4 +181,19 @@ class AutoAnnounceManager
                 }
             }
         }
+
+        private fun string(
+            resId: Int,
+            fallback: String,
+            vararg args: Any,
+        ): String =
+            runCatching {
+                if (args.isEmpty()) {
+                    context?.getString(resId)?.takeIf { it.isNotBlank() } ?: fallback
+                } else {
+                    context?.getString(resId, *args)?.takeIf { it.isNotBlank() } ?: fallback.format(*args)
+                }
+            }.getOrElse {
+                if (args.isEmpty()) fallback else fallback.format(*args)
+            }
     }

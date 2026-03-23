@@ -103,6 +103,8 @@ class InterfaceStatsViewModel
                 if (args.isEmpty()) fallback else fallback.format(*args)
             }
 
+        private fun unknownValue(): String = string(R.string.common_unknown, "Unknown")
+
         private val usbManager: UsbManager by lazy {
             context.getSystemService(Context.USB_SERVICE) as UsbManager
         }
@@ -216,7 +218,7 @@ class InterfaceStatsViewModel
                                 string(
                                     R.string.interface_stats_load_error,
                                     "Error loading interface: %s",
-                                    e.message ?: string(R.string.common_unknown, "Unknown"),
+                                    e.message ?: unknownValue(),
                                 ),
                         )
                     }

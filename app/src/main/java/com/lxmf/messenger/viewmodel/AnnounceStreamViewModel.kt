@@ -264,7 +264,13 @@ class AnnounceStreamViewModel
                                                 "Error: %s",
                                                 status.message,
                                             )
-                                        throw RuntimeException("Service error: ${status.message}")
+                                        throw IllegalStateException(
+                                            string(
+                                                R.string.announce_stream_service_error,
+                                                "Service error: %s",
+                                                status.message,
+                                            ),
+                                        )
                                     }
                                     is com.lxmf.messenger.reticulum.model.NetworkStatus.CONNECTING -> {
                                         Log.d(TAG, "Service is CONNECTING, waiting...")

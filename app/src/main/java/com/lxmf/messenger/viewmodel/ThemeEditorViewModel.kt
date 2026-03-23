@@ -1,15 +1,18 @@
 package com.lxmf.messenger.viewmodel
 
+import android.content.Context
 import androidx.compose.material3.ColorScheme
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.repository.CustomThemeRepository
 import com.lxmf.messenger.data.repository.ThemeColorSet
 import com.lxmf.messenger.repository.SettingsRepository
 import com.lxmf.messenger.util.ThemeColorGenerator
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -93,7 +96,14 @@ class ThemeEditorViewModel
         private val customThemeRepository: CustomThemeRepository,
         private val settingsRepository: SettingsRepository,
         private val savedStateHandle: SavedStateHandle,
+        @ApplicationContext private val context: Context?,
     ) : ViewModel() {
+        constructor(
+            customThemeRepository: CustomThemeRepository,
+            settingsRepository: SettingsRepository,
+            savedStateHandle: SavedStateHandle,
+        ) : this(customThemeRepository, settingsRepository, savedStateHandle, null)
+
         companion object {
             private const val TAG = "ThemeEditorViewModel"
             private const val THEME_ID_KEY = "themeId"
@@ -143,14 +153,19 @@ class ThemeEditorViewModel
                         _state.value =
                             _state.value.copy(
                                 isLoading = false,
-                                error = "Theme not found",
+                                error = string(R.string.theme_editor_theme_not_found, "Theme not found"),
                             )
                     }
                 } catch (e: Exception) {
                     _state.value =
                         _state.value.copy(
                             isLoading = false,
-                            error = "Failed to load theme: ${e.message}",
+                            error =
+                                string(
+                                    R.string.theme_editor_failed_load,
+                                    "Failed to load theme: %s",
+                                    e.message ?: string(R.string.common_unknown, "Unknown"),
+                                ),
                         )
                 }
             }
@@ -264,8 +279,7 @@ class ThemeEditorViewModel
          */
         fun saveTheme() {
             viewModelScope.launch {
-                if (_state.value.themeName.isBlank()) {
-                    _state.value = _state.value.copy(error = "Theme name cannot be empty")
+                if (!hasThemeName()) {
                     return@launch
                 }
 
@@ -332,7 +346,12 @@ class ThemeEditorViewModel
                     _state.value =
                         _state.value.copy(
                             isSaving = false,
-                            error = "Failed to save theme: ${e.message}",
+                            error =
+                                string(
+                                    R.string.theme_editor_failed_save,
+                                    "Failed to save theme: %s",
+                                    e.message ?: string(R.string.common_unknown, "Unknown"),
+                                ),
                         )
                 }
             }
@@ -343,8 +362,7 @@ class ThemeEditorViewModel
          */
         fun saveAndApplyTheme() {
             viewModelScope.launch {
-                if (_state.value.themeName.isBlank()) {
-                    _state.value = _state.value.copy(error = "Theme name cannot be empty")
+                if (!hasThemeName()) {
                     return@launch
                 }
 
@@ -419,11 +437,43 @@ class ThemeEditorViewModel
                     _state.value =
                         _state.value.copy(
                             isSaving = false,
-                            error = "Failed to save and apply theme: ${e.message}",
+                            error =
+                                string(
+                                    R.string.theme_editor_failed_save_apply,
+                                    "Failed to save and apply theme: %s",
+                                    e.message ?: string(R.string.common_unknown, "Unknown"),
+                                ),
                         )
                 }
             }
         }
+
+        private fun hasThemeName(): Boolean {
+            if (_state.value.themeName.isNotBlank()) {
+                return true
+            }
+
+            _state.value =
+                _state.value.copy(
+                    error = string(R.string.theme_editor_empty_name, "Theme name cannot be empty"),
+                )
+            return false
+        }
+
+        private fun string(
+            resId: Int,
+            fallback: String,
+            vararg args: Any,
+        ): String =
+            runCatching {
+                if (args.isEmpty()) {
+                    context?.getString(resId)?.takeIf { it.isNotBlank() } ?: fallback
+                } else {
+                    context?.getString(resId, *args)?.takeIf { it.isNotBlank() } ?: fallback.format(*args)
+                }
+            }.getOrElse {
+                if (args.isEmpty()) fallback else fallback.format(*args)
+            }
 
         /**
          * Clear any error message
