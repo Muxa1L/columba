@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.model.EnrichedContact
 import com.lxmf.messenger.data.model.ImageCompressionPreset
 import com.lxmf.messenger.data.repository.ReceivedLocationRepository
@@ -106,6 +107,21 @@ class MessagingViewModel
                     .take(255) // Limit length for filesystem compatibility
                     .ifEmpty { "attachment" } // Fallback if empty after sanitization
         }
+
+        private fun string(
+            resId: Int,
+            fallback: String,
+            vararg args: Any,
+        ): String =
+            runCatching {
+                if (args.isEmpty()) {
+                    applicationContext.getString(resId).takeIf { it.isNotBlank() } ?: fallback
+                } else {
+                    applicationContext.getString(resId, *args).takeIf { it.isNotBlank() } ?: fallback.format(*args)
+                }
+            }.getOrElse {
+                if (args.isEmpty()) fallback else fallback.format(*args)
+            }
 
         // Whether Reticulum transport mode is enabled (for blackhole option in block dialog)
         private val _isTransportEnabled = MutableStateFlow(false)
@@ -654,14 +670,25 @@ class MessagingViewModel
                         } else {
                             Log.e(TAG, "Cannot add contact: public key not available for $peerHash")
                             _contactToggleResult.emit(
-                                ContactToggleResult.Error("Identity not available - peer hasn't announced"),
+                                ContactToggleResult.Error(
+                                    string(
+                                        R.string.messaging_contact_identity_not_available,
+                                        "Identity not available - peer hasn't announced",
+                                    ),
+                                ),
                             )
                         }
                     }
                 } catch (e: Exception) {
                     Log.e(TAG, "Error toggling contact status", e)
                     _contactToggleResult.emit(
-                        ContactToggleResult.Error(e.message ?: "Failed to update contact"),
+                        ContactToggleResult.Error(
+                            e.message
+                                ?: string(
+                                    R.string.messaging_contact_update_failed,
+                                    "Failed to update contact",
+                                ),
+                        ),
                     )
                 }
             }

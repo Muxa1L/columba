@@ -1,7 +1,10 @@
 package com.lxmf.messenger.service
 
+import android.content.Context
 import android.util.Log
 import com.lxmf.messenger.BuildConfig
+import com.lxmf.messenger.R
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.IOException
@@ -34,13 +37,32 @@ sealed class AppUpdateResult {
 @Singleton
 class UpdateChecker
     @Inject
-    constructor() {
+    constructor(
+        @ApplicationContext private val context: Context?,
+    ) {
+        constructor() : this(null)
+
         companion object {
             private const val TAG = "UpdateChecker"
             private const val OWNER = "torlando-tech"
             private const val REPO = "columba"
             private const val TIMEOUT_MS = 10_000
         }
+
+        private fun string(
+            resId: Int,
+            fallback: String,
+            vararg args: Any,
+        ): String =
+            runCatching {
+                if (args.isEmpty()) {
+                    context?.getString(resId)?.takeIf { it.isNotBlank() } ?: fallback
+                } else {
+                    context?.getString(resId, *args)?.takeIf { it.isNotBlank() } ?: fallback.format(*args)
+                }
+            }.getOrElse {
+                if (args.isEmpty()) fallback else fallback.format(*args)
+            }
 
         suspend fun check(includePrerelease: Boolean): AppUpdateResult =
             withContext(Dispatchers.IO) {
@@ -57,20 +79,45 @@ class UpdateChecker
                     // When includePrerelease, API returns an array — unwrap first element
                     val releaseJson =
                         if (includePrerelease) {
-                            unwrapFirstArrayElement(json) ?: return@withContext AppUpdateResult.Error("No releases found")
+                            unwrapFirstArrayElement(json)
+                                ?: return@withContext AppUpdateResult.Error(
+                                    string(
+                                        R.string.update_checker_no_releases_found,
+                                        "No releases found",
+                                    ),
+                                )
                         } else {
                             json
                         }
 
-                    val tagName = parseStringField(releaseJson, "tag_name") ?: return@withContext AppUpdateResult.Error("Could not parse release info")
-                    val htmlUrl = parseStringField(releaseJson, "html_url") ?: return@withContext AppUpdateResult.Error("Could not parse release info")
+                    val tagName =
+                        parseStringField(releaseJson, "tag_name")
+                            ?: return@withContext AppUpdateResult.Error(
+                                string(
+                                    R.string.update_checker_parse_release_info_failed,
+                                    "Could not parse release info",
+                                ),
+                            )
+                    val htmlUrl =
+                        parseStringField(releaseJson, "html_url")
+                            ?: return@withContext AppUpdateResult.Error(
+                                string(
+                                    R.string.update_checker_parse_release_info_failed,
+                                    "Could not parse release info",
+                                ),
+                            )
                     val isPrerelease = parseBooleanField(releaseJson, "prerelease") ?: false
 
                     val currentVersion = parseVersionTriple(BuildConfig.VERSION_NAME)
                     val remoteVersion = parseVersionTriple(tagName.removePrefix("v"))
 
                     if (currentVersion == null || remoteVersion == null) {
-                        return@withContext AppUpdateResult.Error("Could not parse version numbers")
+                        return@withContext AppUpdateResult.Error(
+                            string(
+                                R.string.update_checker_parse_version_numbers_failed,
+                                "Could not parse version numbers",
+                            ),
+                        )
                     }
 
                     Log.d(TAG, "Current: $currentVersion, Remote: $remoteVersion (tag=$tagName)")
@@ -87,7 +134,13 @@ class UpdateChecker
                     }
                 } catch (e: Exception) {
                     Log.w(TAG, "Update check failed", e)
-                    AppUpdateResult.Error(e.message ?: "Network error")
+                    AppUpdateResult.Error(
+                        e.message
+                            ?: string(
+                                R.string.update_checker_network_error,
+                                "Network error",
+                            ),
+                    )
                 }
             }
 

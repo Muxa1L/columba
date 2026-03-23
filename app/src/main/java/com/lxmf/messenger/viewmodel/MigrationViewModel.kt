@@ -1,10 +1,12 @@
 package com.lxmf.messenger.viewmodel
 
 import android.content.ContentResolver
+import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lxmf.messenger.R
 import com.lxmf.messenger.migration.ExportResult
 import com.lxmf.messenger.migration.ImportResult
 import com.lxmf.messenger.migration.MigrationExporter
@@ -14,6 +16,7 @@ import com.lxmf.messenger.migration.PasswordRequiredException
 import com.lxmf.messenger.migration.WrongPasswordException
 import com.lxmf.messenger.service.InterfaceConfigManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -35,6 +38,7 @@ class MigrationViewModel
         private val migrationExporter: MigrationExporter,
         private val migrationImporter: MigrationImporter,
         private val interfaceConfigManager: InterfaceConfigManager,
+        @ApplicationContext private val context: Context? = null,
     ) : ViewModel() {
         /**
          * UI state for the Migration screen.
@@ -90,6 +94,32 @@ class MigrationViewModel
          */
         private var cachedImportZipBytes: ByteArray? = null
 
+        private fun string(
+            resId: Int,
+            fallback: String,
+            vararg args: Any,
+        ): String =
+            runCatching {
+                if (args.isEmpty()) {
+                    context?.getString(resId)?.takeIf { it.isNotBlank() } ?: fallback
+                } else {
+                    context?.getString(resId, *args)?.takeIf { it.isNotBlank() } ?: fallback.format(*args)
+                }
+            }.getOrElse {
+                if (args.isEmpty()) fallback else fallback.format(*args)
+            }
+
+        private fun readFailedMessage(message: String?): String =
+            string(
+                R.string.migration_viewmodel_read_failed,
+                "Could not read migration file: %s",
+                message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+            )
+
+        private fun setReadFailedState(message: String?) {
+            _uiState.value = MigrationUiState.Error(readFailedMessage(message))
+        }
+
         init {
             loadExportPreview()
         }
@@ -138,13 +168,24 @@ class MigrationViewModel
                             Log.e(TAG, "Export failed", error)
                             _uiState.value =
                                 MigrationUiState.Error(
-                                    "Export failed: ${error.message}",
+                                    string(
+                                        R.string.migration_viewmodel_export_failed,
+                                        "Export failed: %s",
+                                        error.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+                                    ),
                                 )
                         },
                     )
                 } catch (e: Exception) {
                     Log.e(TAG, "Export failed with exception", e)
-                    _uiState.value = MigrationUiState.Error("Export failed: ${e.message}")
+                    _uiState.value =
+                        MigrationUiState.Error(
+                            string(
+                                R.string.migration_viewmodel_export_failed,
+                                "Export failed: %s",
+                                e.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+                            ),
+                        )
                 }
             }
         }
@@ -159,7 +200,10 @@ class MigrationViewModel
             viewModelScope.launch {
                 try {
                     Log.i(TAG, "Previewing import: $uri")
-                    _uiState.value = MigrationUiState.Loading("Reading migration file...")
+                    _uiState.value =
+                        MigrationUiState.Loading(
+                            string(R.string.migration_viewmodel_reading_file, "Reading migration file..."),
+                        )
 
                     // Check if file is encrypted and we don't have a password yet
                     if (password == null) {
@@ -174,10 +218,7 @@ class MigrationViewModel
                                 }
                             },
                             onFailure = { error ->
-                                _uiState.value =
-                                    MigrationUiState.Error(
-                                        "Could not read migration file: ${error.message}",
-                                    )
+                                setReadFailedState(error.message)
                                 return@launch
                             },
                         )
@@ -205,10 +246,7 @@ class MigrationViewModel
                                     _uiState.value = MigrationUiState.PasswordRequired(uri)
                                 }
                                 else -> {
-                                    _uiState.value =
-                                        MigrationUiState.Error(
-                                            "Could not read migration file: ${error.message}",
-                                        )
+                                    setReadFailedState(error.message)
                                 }
                             }
                         },
@@ -222,10 +260,7 @@ class MigrationViewModel
                     _uiState.value = MigrationUiState.PasswordRequired(uri)
                 } catch (e: Exception) {
                     Log.e(TAG, "Preview failed with exception", e)
-                    _uiState.value =
-                        MigrationUiState.Error(
-                            "Could not read migration file: ${e.message}",
-                        )
+                    setReadFailedState(e.message)
                 }
             }
         }
@@ -283,7 +318,14 @@ class MigrationViewModel
                     }
                 } catch (e: Exception) {
                     Log.e(TAG, "Import failed with exception", e)
-                    _uiState.value = MigrationUiState.Error("Import failed: ${e.message}")
+                    _uiState.value =
+                        MigrationUiState.Error(
+                            string(
+                                R.string.migration_viewmodel_import_failed,
+                                "Import failed: %s",
+                                e.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+                            ),
+                        )
                 }
             }
         }
@@ -311,14 +353,25 @@ class MigrationViewModel
                             contentResolver.openOutputStream(destinationUri)?.use { output ->
                                 input.copyTo(output)
                             }
-                        } ?: error("Could not open export file")
+                        } ?: error(
+                            string(
+                                R.string.migration_viewmodel_could_not_open_export,
+                                "Could not open export file",
+                            ),
+                        )
                     }
                     _uiState.value = MigrationUiState.ExportSaved
                     cleanupExportFiles()
                 } catch (e: Exception) {
                     Log.e(TAG, "Failed to save export file", e)
                     _uiState.value =
-                        MigrationUiState.Error("Failed to save export: ${e.message}")
+                        MigrationUiState.Error(
+                            string(
+                                R.string.migration_viewmodel_save_export_failed,
+                                "Failed to save export: %s",
+                                e.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"),
+                            ),
+                        )
                 }
             }
         }

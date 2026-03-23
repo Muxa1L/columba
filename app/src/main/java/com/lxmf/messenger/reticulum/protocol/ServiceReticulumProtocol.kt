@@ -103,6 +103,21 @@ class ServiceReticulumProtocol(
     private val _networkStatus = MutableStateFlow<NetworkStatus>(NetworkStatus.CONNECTING)
     override val networkStatus: StateFlow<NetworkStatus> = _networkStatus.asStateFlow()
 
+    private fun string(
+        resId: Int,
+        fallback: String,
+        vararg args: Any,
+    ): String =
+        runCatching {
+            if (args.isEmpty()) {
+                context.getString(resId).takeIf { it.isNotBlank() } ?: fallback
+            } else {
+                context.getString(resId, *args).takeIf { it.isNotBlank() } ?: fallback.format(*args)
+            }
+        }.getOrElse {
+            if (args.isEmpty()) fallback else fallback.format(*args)
+        }
+
     // SharedFlow for interface status change events (triggers UI refresh)
     // replay=0 means events are not replayed to late subscribers
     private val _interfaceStatusChanged = MutableSharedFlow<Unit>(replay = 0, extraBufferCapacity = 1)
@@ -880,7 +895,12 @@ class ServiceReticulumProtocol(
             val notification =
                 NotificationCompat
                     .Builder(context, CHANNEL_ID)
-                    .setContentTitle("Columba Mesh Network")
+                    .setContentTitle(
+                        string(
+                            R.string.reticulum_service_notification_title,
+                            "Columba Mesh Network",
+                        ),
+                    )
                     .setContentText(statusText)
                     .setStyle(NotificationCompat.BigTextStyle().bigText(detailText))
                     .setSmallIcon(R.mipmap.ic_launcher)
@@ -911,8 +931,13 @@ class ServiceReticulumProtocol(
         // Don't exceed max attempts
         if (rebindAttempts >= REBIND_MAX_ATTEMPTS) {
             Log.e(TAG, "Max rebind attempts ($REBIND_MAX_ATTEMPTS) reached, giving up")
-            _networkStatus.value = NetworkStatus.ERROR("Service connection lost - please restart the app")
-            updateNotificationFromAppProcess("ERROR:Connection lost - please restart the app")
+            val connectionLostMessage =
+                string(
+                    R.string.service_reticulum_connection_lost_restart_app,
+                    "Service connection lost - please restart the app",
+                )
+            _networkStatus.value = NetworkStatus.ERROR(connectionLostMessage)
+            updateNotificationFromAppProcess("ERROR:$connectionLostMessage")
             return
         }
 

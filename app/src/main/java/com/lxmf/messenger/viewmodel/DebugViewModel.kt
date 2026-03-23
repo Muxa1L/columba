@@ -3,6 +3,7 @@ package com.lxmf.messenger.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lxmf.messenger.R
 import com.lxmf.messenger.repository.SettingsRepository
 import com.lxmf.messenger.reticulum.protocol.ReticulumProtocol
 import com.lxmf.messenger.reticulum.protocol.ServiceReticulumProtocol
@@ -105,6 +106,21 @@ class DebugViewModel
             private const val DEFAULT_IDENTITY_FILE = "default_identity"
         }
 
+        private fun string(
+            resId: Int,
+            fallback: String,
+            vararg args: Any,
+        ): String =
+            runCatching {
+                if (args.isEmpty()) {
+                    context.getString(resId).takeIf { it.isNotBlank() } ?: fallback
+                } else {
+                    context.getString(resId, *args).takeIf { it.isNotBlank() } ?: fallback.format(*args)
+                }
+            }.getOrElse {
+                if (args.isEmpty()) fallback else fallback.format(*args)
+            }
+
         // Cached identity and destination for test announces - reused across all announces
         private var cachedIdentity: com.lxmf.messenger.reticulum.model.Identity? = null
         private var cachedDestination: com.lxmf.messenger.reticulum.model.Destination? = null
@@ -115,7 +131,7 @@ class DebugViewModel
         private val _testAnnounceResult = MutableStateFlow<TestAnnounceResult?>(null)
         val testAnnounceResult: StateFlow<TestAnnounceResult?> = _testAnnounceResult.asStateFlow()
 
-        private val _networkStatus = MutableStateFlow<String>("Unknown")
+        private val _networkStatus = MutableStateFlow<String>(string(R.string.common_unknown, "Unknown"))
         val networkStatus: StateFlow<String> = _networkStatus.asStateFlow()
 
         // Identity data for QR code sharing
@@ -334,7 +350,11 @@ class DebugViewModel
                         _debugInfo.value = DebugInfo(isLoading = false)
                     } else {
                         Log.e(TAG, "Error fetching debug info", e)
-                        _debugInfo.value = _debugInfo.value.copy(isLoading = false, error = e.message ?: "Service unavailable")
+                        _debugInfo.value =
+                            _debugInfo.value.copy(
+                                isLoading = false,
+                                error = e.message ?: string(R.string.debug_service_unavailable, "Service unavailable"),
+                            )
                     }
                 }
             }
@@ -449,8 +469,13 @@ class DebugViewModel
             }
 
             // Fallback: shouldn't happen with service protocol
-            Log.e(TAG, "Failed to get LXMF destination - throwing RuntimeException")
-            throw RuntimeException("Could not get LXMF destination")
+            Log.e(TAG, "Failed to get LXMF destination - throwing IllegalStateException")
+            throw IllegalStateException(
+                string(
+                    R.string.debug_failed_get_destination,
+                    "Could not get LXMF destination",
+                ),
+            )
         }
 
         /**

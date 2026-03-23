@@ -259,12 +259,22 @@ class OfflineMapsViewModel
                             destFile.outputStream().use { output ->
                                 input.copyTo(output)
                             }
-                        } ?: error("Could not open input stream for URI")
+                        } ?: error(
+                            string(
+                                R.string.offline_maps_could_not_open_input_stream,
+                                "Could not open input stream for URI",
+                            ),
+                        )
 
                         // Validate the copied file
                         if (!OfflineMapStyleBuilder.isValidMBTiles(destFile.absolutePath)) {
                             destFile.delete()
-                            error("File does not appear to be a valid MBTiles file")
+                            error(
+                                string(
+                                    R.string.offline_maps_invalid_mbtiles,
+                                    "File does not appear to be a valid MBTiles file",
+                                ),
+                            )
                         }
                     }
 

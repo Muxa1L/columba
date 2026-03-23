@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.InsertDriveFile
 import androidx.compose.material.icons.filled.PictureAsPdf
 import androidx.compose.material.icons.filled.VideoFile
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.lxmf.messenger.R
 import java.io.File
 import java.util.Locale
 
@@ -112,10 +113,23 @@ object FileUtils {
                         sizeBytes = data.size,
                     ),
                 )
-            } ?: FileReadResult.Error("Could not open file")
+            } ?: FileReadResult.Error(
+                runCatching {
+                    context.getString(R.string.file_utils_could_not_open_file)
+                        .takeIf { it.isNotBlank() }
+                        ?: "Could not open file"
+                }.getOrElse { "Could not open file" },
+            )
         } catch (e: Exception) {
             Log.e(TAG, "Failed to read file from URI: $uri", e)
-            FileReadResult.Error(e.message ?: "Unknown error")
+            FileReadResult.Error(
+                e.message
+                    ?: runCatching {
+                        context.getString(R.string.identity_screen_unknown_error)
+                            .takeIf { it.isNotBlank() }
+                            ?: "Unknown error"
+                    }.getOrElse { "Unknown error" },
+            )
         }
     }
 

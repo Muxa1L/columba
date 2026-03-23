@@ -11,6 +11,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
+import com.lxmf.messenger.R
 import com.lxmf.messenger.util.LocationCompat
 import com.lxmf.messenger.data.db.dao.ReceivedLocationDao
 import com.lxmf.messenger.data.db.entity.ReceivedLocationEntity
@@ -83,6 +84,21 @@ class LocationSharingManager
             private const val SESSION_CHECK_INTERVAL_MS = 30_000L // 30 seconds
             private const val CLEANUP_INTERVAL_MS = 5 * 60 * 1000L // 5 minutes
         }
+
+        private fun string(
+            resId: Int,
+            fallback: String,
+            vararg args: Any,
+        ): String =
+            runCatching {
+                if (args.isEmpty()) {
+                    context.getString(resId).takeIf { it.isNotBlank() } ?: fallback
+                } else {
+                    context.getString(resId, *args).takeIf { it.isNotBlank() } ?: fallback.format(*args)
+                }
+            }.getOrElse {
+                if (args.isEmpty()) fallback else fallback.format(*args)
+            }
 
         // Only initialize FusedLocationProviderClient when Google Play Services is available
         // to avoid flooding the log with warnings on devices without GMS (issue #456)
@@ -363,7 +379,14 @@ class LocationSharingManager
                         Log.d(TAG, "Location updates started")
                     } catch (e: SecurityException) {
                         Log.e(TAG, "Location permission not granted", e)
-                        _sharingEvents.emit(SharingEvent.Error("Location permission required"))
+                        _sharingEvents.emit(
+                            SharingEvent.Error(
+                                string(
+                                    R.string.map_screen_location_permission_required,
+                                    "Location permission required",
+                                ),
+                            ),
+                        )
                     }
                 }
         }
