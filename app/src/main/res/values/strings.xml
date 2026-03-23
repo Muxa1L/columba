@@ -1913,6 +1913,9 @@ Your location is encrypted and only readable by the group host you configure.</s
   <string name="interface_type_bluetooth_le">Bluetooth LE</string>
   <string name="interface_type_auto_discovery">Auto Discovery</string>
   <string name="interface_type_udp">UDP</string>
+  <string name="rnode_usb_serial_device_fallback">USB Serial Device (%1$s)</string>
+  <string name="rnode_frequency_region_duty_cycle_unlimited">Unlimited</string>
+  <string name="settings_unknown_peer">Unknown Peer</string>
   <string name="common_update">Update</string>
   <string name="common_warning">Warning</string>
   <string name="common_default">Default</string>
@@ -2347,6 +2350,7 @@ Your location is encrypted and only readable by the group host you configure.</s
   <string name="offline_maps_failed_set_default_region">Failed to set default region: %1$s</string>
   <string name="offline_maps_could_not_reach_update_server">Could not reach update server</string>
   <string name="offline_maps_update_check_failed">Check failed: %1$s</string>
+  <string name="offline_maps_imported_filename_fallback">imported_%1$d.mbtiles</string>
   <string name="nomadnet_requesting_page">Requesting page...</string>
   <string name="nomadnet_service_not_available">Service not available</string>
   <string name="nomadnet_connecting_to_node">Connecting to node...</string>
@@ -2399,6 +2403,8 @@ Receipt hash: %2$s...</string>
   <string name="tile_download_cancelled_cleanup_needed">Cancelled. Incomplete file may need manual cleanup.</string>
   <string name="tile_download_no_rmsp_tiles">No tiles received from RMSP server</string>
   <string name="tile_download_rmsp_failed">RMSP download failed</string>
+  <string name="tile_download_offline_map_for_description">Offline map for %1$s</string>
+  <string name="tile_download_offline_map_rmsp_description">Offline map from RMSP: %1$s</string>
   <string name="maplibre_offline_download_error">%1$s: %2$s</string>
   <string name="maplibre_offline_tile_limit_exceeded">Tile count limit exceeded (%1$s tiles). Try a smaller region or fewer zoom levels.</string>
   <string name="python_bridge_not_initialized">Python not initialized</string>

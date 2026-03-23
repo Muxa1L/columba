@@ -46,6 +46,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -57,6 +58,7 @@ import com.lxmf.messenger.viewmodel.RNodeWizardViewModel
 @Composable
 fun ReviewConfigStep(viewModel: RNodeWizardViewModel) {
     val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
 
     Column(
         modifier =
@@ -160,7 +162,7 @@ fun ReviewConfigStep(viewModel: RNodeWizardViewModel) {
                                 style = MaterialTheme.typography.titleMedium,
                             )
                             Text(
-                                "${region.frequency / 1_000_000.0} MHz • ${region.maxTxPower} dBm max • ${region.dutyCycleDisplay}",
+                                "${region.frequency / 1_000_000.0} MHz • ${region.maxTxPower} dBm max • ${region.getDutyCycleDisplay(context)}",
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )

@@ -235,7 +235,13 @@ class OfflineMapsViewModel
                             val offlineMapsDir = getOfflineMapsDir()
 
                             // Derive a filename from the URI
-                            val displayName = resolveFileName(uri) ?: "imported_${System.currentTimeMillis()}.mbtiles"
+                            val displayName =
+                                resolveFileName(uri)
+                                    ?: string(
+                                        R.string.offline_maps_imported_filename_fallback,
+                                        "imported_%d.mbtiles",
+                                        System.currentTimeMillis(),
+                                    )
                             val safeName =
                                 displayName.let {
                                     if (!it.endsWith(".mbtiles")) "$it.mbtiles" else it

@@ -2000,6 +2000,9 @@
     <string name="interface_type_bluetooth_le">Bluetooth LE</string>
     <string name="interface_type_auto_discovery">Автообнаружение</string>
     <string name="interface_type_udp">UDP</string>
+    <string name="rnode_usb_serial_device_fallback">USB Serial Device (%1$s)</string>
+    <string name="rnode_frequency_region_duty_cycle_unlimited">Без ограничений</string>
+    <string name="settings_unknown_peer">Неизвестный узел</string>
     <string name="common_update">Обновить</string>
     <string name="common_warning">Предупреждение</string>
     <string name="common_default">По умолчанию</string>
@@ -2446,6 +2449,7 @@
     <string name="offline_maps_failed_set_default_region">Не удалось задать регион по умолчанию: %1$s</string>
     <string name="offline_maps_could_not_reach_update_server">Не удалось подключиться к серверу обновлений</string>
     <string name="offline_maps_update_check_failed">Проверка не удалась: %1$s</string>
+    <string name="offline_maps_imported_filename_fallback">imported_%1$d.mbtiles</string>
     <string name="nomadnet_requesting_page">Запрос страницы...</string>
     <string name="nomadnet_service_not_available">Служба недоступна</string>
     <string name="nomadnet_connecting_to_node">Подключение к узлу...</string>
@@ -2498,6 +2502,8 @@
     <string name="tile_download_cancelled_cleanup_needed">Загрузка отменена. Возможно, незавершенный файл придется удалить вручную.</string>
     <string name="tile_download_no_rmsp_tiles">Сервер RMSP не вернул плитки</string>
     <string name="tile_download_rmsp_failed">Ошибка загрузки RMSP</string>
+    <string name="tile_download_offline_map_for_description">Офлайн-карта для %1$s</string>
+    <string name="tile_download_offline_map_rmsp_description">Офлайн-карта из RMSP: %1$s</string>
     <string name="maplibre_offline_download_error">%1$s: %2$s</string>
     <string name="maplibre_offline_tile_limit_exceeded">Превышен лимит плиток (%1$s плиток). Попробуйте выбрать меньший регион или меньше уровней масштабирования.</string>
     <string name="python_bridge_not_initialized">Python не инициализирован</string>

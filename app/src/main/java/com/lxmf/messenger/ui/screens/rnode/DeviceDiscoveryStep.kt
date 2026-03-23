@@ -1146,6 +1146,8 @@ private fun UsbDeviceCard(
     onSelect: () -> Unit,
     isRequestingPermission: Boolean,
 ) {
+    val context = LocalContext.current
+
     Card(
         onClick = onSelect,
         colors =
@@ -1184,7 +1186,7 @@ private fun UsbDeviceCard(
                 Spacer(Modifier.width(12.dp))
                 Column {
                     Text(
-                        device.displayName,
+                        device.getDisplayName(context),
                         style = MaterialTheme.typography.titleMedium,
                         color =
                             if (isSelected) {

@@ -3,6 +3,7 @@ package com.lxmf.messenger.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.model.EnrichedContact
 import com.lxmf.messenger.data.model.ImageCompressionPreset
 import com.lxmf.messenger.data.repository.ContactRepository
@@ -258,7 +259,9 @@ class SettingsViewModel
 
                 // Get active identity from database for display name
                 val activeIdentity = identityRepository.getActiveIdentitySync()
-                val defaultName = activeIdentity?.displayName ?: "Unknown Peer"
+                val defaultName =
+                    activeIdentity?.displayName
+                        ?: runCatching { context.getString(R.string.settings_unknown_peer) }.getOrDefault("Unknown Peer")
 
                 // Seed identity fields immediately from DB to keep host picker stable
                 // on cold starts before Reticulum identity APIs are ready.

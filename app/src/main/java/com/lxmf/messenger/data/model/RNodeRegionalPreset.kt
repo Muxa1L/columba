@@ -1,6 +1,7 @@
 package com.lxmf.messenger.data.model
 
 import android.bluetooth.BluetoothDevice
+import android.content.Context
 import androidx.annotation.StringRes
 import com.lxmf.messenger.R
 import java.util.Locale
@@ -56,6 +57,9 @@ data class DiscoveredUsbDevice(
     /** User-friendly display name */
     val displayName: String
         get() = productName ?: manufacturerName ?: "USB Serial Device ($driverType)"
+
+    fun getDisplayName(context: Context): String =
+        productName ?: manufacturerName ?: context.getString(R.string.rnode_usb_serial_device_fallback, driverType)
 
     /** Formatted VID:PID for display */
     val vidPid: String
@@ -232,6 +236,13 @@ data class FrequencyRegion(
 
     /** Format duty cycle for display */
     val dutyCycleDisplay: String get() = if (dutyCycle >= 100) "Unlimited" else "$dutyCycle%"
+
+    fun getDutyCycleDisplay(context: Context): String =
+        if (dutyCycle >= 100) {
+            context.getString(R.string.rnode_frequency_region_duty_cycle_unlimited)
+        } else {
+            "$dutyCycle%"
+        }
 }
 
 /**

@@ -13,6 +13,7 @@ import android.os.IBinder
 import android.os.Looper
 import android.util.Log
 import androidx.annotation.RequiresApi
+import com.lxmf.messenger.R
 import com.lxmf.messenger.IReticulumService
 
 /**
@@ -94,7 +95,7 @@ class RNodeCompanionService : CompanionDeviceService() {
      */
     @SuppressLint("MissingPermission")
     override fun onDeviceAppeared(associationInfo: AssociationInfo) {
-        val deviceName = associationInfo.displayName ?: "Unknown"
+        val deviceName = associationInfo.displayName ?: getString(R.string.common_unknown)
         Log.d(TAG, "████ RNODE APPEARED ████ name=$deviceName")
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {

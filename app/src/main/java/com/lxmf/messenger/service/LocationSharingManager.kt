@@ -166,7 +166,7 @@ class LocationSharingManager
                 contactHashes.map { hash ->
                     SharingSession(
                         destinationHash = hash,
-                        displayName = displayNames[hash] ?: "Unknown",
+                        displayName = displayNames[hash] ?: string(R.string.common_unknown, "Unknown"),
                         startTime = startTime,
                         endTime = endTime,
                     )
