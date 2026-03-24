@@ -292,7 +292,7 @@ private fun BoardSelectionCard(
                 onExpandedChange = { expanded = it },
             ) {
                 OutlinedTextField(
-                    value = selectedBoard?.displayName ?: selectBoardLabel,
+                    value = selectedBoard?.let { stringResource(it.displayNameRes) } ?: selectBoardLabel,
                     onValueChange = {},
                     readOnly = true,
                     trailingIcon = {
@@ -312,7 +312,7 @@ private fun BoardSelectionCard(
                         DropdownMenuItem(
                             text = {
                                 Column {
-                                    Text(board.displayName)
+                                    Text(stringResource(board.displayNameRes))
                                     Text(
                                         text = board.platform.name,
                                         style = MaterialTheme.typography.bodySmall,
@@ -605,12 +605,12 @@ private fun FirmwareVersionCard(
                 selectedFirmware != null -> {
                     val selectedSummaryLabel = stringResource(
                         R.string.firmware_selection_selected_summary,
-                        selectedFirmware.board.displayName,
+                        stringResource(selectedFirmware.board.displayNameRes),
                         selectedFirmware.version,
                     )
                     val selectedBandPlatformLabel = stringResource(
                         R.string.firmware_selection_selected_band_platform,
-                        selectedFirmware.frequencyBand.displayName,
+                        stringResource(selectedFirmware.frequencyBand.displayNameRes),
                         selectedFirmware.platform.name,
                     )
 
@@ -717,7 +717,7 @@ private fun FirmwareSourceCard(
                     FilterChip(
                         selected = selectedSource == source,
                         onClick = { onSourceSelected(source) },
-                        label = { Text(source.displayName) },
+                        label = { Text(stringResource(source.displayNameRes)) },
                         colors =
                             FilterChipDefaults.filterChipColors(
                                 selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,

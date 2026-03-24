@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.withContext
+import tech.torlando.columba.reticulum.R
 import java.io.File
 import java.io.InputStream
 
@@ -43,7 +44,7 @@ import java.io.InputStream
  * }
  * ```
  */
-@Suppress("TooManyFunctions")
+@Suppress("TooManyFunctions", "LargeClass")
 class RNodeFlasher(
     private val context: Context,
 ) {
@@ -68,6 +69,11 @@ class RNodeFlasher(
     val flashState: StateFlow<FlashState> = _flashState.asStateFlow()
 
     val tncModeController = TncModeController(usbBridge, detector, _flashState)
+
+    private fun string(
+        resId: Int,
+        vararg args: Any,
+    ): String = context.getString(resId, *args)
 
     /**
      * Flash state for UI observation.
@@ -153,17 +159,17 @@ class RNodeFlasher(
      */
     suspend fun detectDevice(deviceId: Int): RNodeDeviceInfo? =
         withContext(Dispatchers.IO) {
-            _flashState.value = FlashState.Detecting("Connecting to device...")
+            _flashState.value = FlashState.Detecting(string(R.string.rnode_flasher_connecting_to_device))
 
             try {
                 // Connect to device
                 if (!usbBridge.connect(deviceId, RNodeConstants.BAUD_RATE_DEFAULT)) {
                     Log.e(TAG, "Failed to connect to device $deviceId")
-                    _flashState.value = FlashState.Error("Failed to connect to device")
+                    _flashState.value = FlashState.Error(string(R.string.rnode_flasher_failed_connect_device))
                     return@withContext null
                 }
 
-                _flashState.value = FlashState.Detecting("Detecting RNode...")
+                _flashState.value = FlashState.Detecting(string(R.string.rnode_flasher_detecting_rnode))
 
                 // Detect device
                 val deviceInfo = detector.getDeviceInfo()
@@ -173,7 +179,7 @@ class RNodeFlasher(
                     _flashState.value = FlashState.Idle
                 } else {
                     Log.w(TAG, "Device is not an RNode or could not be detected")
-                    _flashState.value = FlashState.Error("Device is not an RNode")
+                    _flashState.value = FlashState.Error(string(R.string.rnode_flasher_device_not_rnode))
                 }
 
                 // Disconnect after detection
@@ -182,7 +188,10 @@ class RNodeFlasher(
                 deviceInfo
             } catch (e: Exception) {
                 Log.e(TAG, "Device detection failed", e)
-                _flashState.value = FlashState.Error("Detection failed: ${e.message}")
+                _flashState.value =
+                    FlashState.Error(
+                        string(R.string.rnode_flasher_detection_failed, e.message ?: e.javaClass.simpleName),
+                    )
                 usbBridge.disconnect()
                 null
             }
@@ -202,12 +211,12 @@ class RNodeFlasher(
         consoleImage: InputStream? = null,
     ): Boolean =
         withContext(Dispatchers.IO) {
-            _flashState.value = FlashState.Progress(0, "Starting flash...")
+            _flashState.value = FlashState.Progress(0, string(R.string.rnode_flasher_starting_flash))
 
             try {
                 // Verify firmware integrity
                 if (!firmwarePackage.verifyIntegrity()) {
-                    _flashState.value = FlashState.Error("Firmware file is corrupted")
+                    _flashState.value = FlashState.Error(string(R.string.rnode_flasher_firmware_corrupted))
                     return@withContext false
                 }
 
@@ -230,7 +239,7 @@ class RNodeFlasher(
                         else -> {
                             _flashState.value =
                                 FlashState.Error(
-                                    "Unsupported platform: ${firmwarePackage.platform}",
+                                    string(R.string.rnode_flasher_unsupported_platform, firmwarePackage.platform),
                                 )
                             false
                         }
@@ -245,13 +254,13 @@ class RNodeFlasher(
                             // nRF52 DFU already reboots the device after DFU Stop, and
                             // NordicDFUFlasher waits POST_DFU_SETTLE_MS for finalization.
                             // Just wait for USB re-enumeration to complete.
-                            _flashState.value = FlashState.Progress(96, "Verifying firmware...")
+                            _flashState.value = FlashState.Progress(96, string(R.string.rnode_flasher_verifying_firmware))
                             kotlinx.coroutines.delay(3000L)
                         }
                         else -> {
                             // ESP32 needs a hard reset after flashing — wait for reboot.
                             // Native USB devices need more time for USB re-enumeration.
-                            _flashState.value = FlashState.Progress(96, "Waiting for device reboot...")
+                            _flashState.value = FlashState.Progress(96, string(R.string.rnode_flasher_waiting_reboot))
                             val rebootDelay = if (isNativeUsb) 6000L else 5000L
                             kotlinx.coroutines.delay(rebootDelay)
                         }
@@ -280,7 +289,10 @@ class RNodeFlasher(
                 success
             } catch (e: Exception) {
                 Log.e(TAG, "Flash failed", e)
-                _flashState.value = FlashState.Error("Flash failed: ${e.message}")
+                _flashState.value =
+                    FlashState.Error(
+                        string(R.string.rnode_flasher_flash_failed, e.message ?: e.javaClass.simpleName),
+                    )
                 false
             }
         }
@@ -301,14 +313,14 @@ class RNodeFlasher(
         consoleImage: InputStream? = null,
     ): Boolean =
         withContext(Dispatchers.IO) {
-            _flashState.value = FlashState.Progress(0, "Preparing...")
+            _flashState.value = FlashState.Progress(0, string(R.string.rnode_flasher_preparing))
 
             try {
                 // Detect device if not provided
                 val info = deviceInfo ?: detectDevice(deviceId)
 
                 if (info == null) {
-                    _flashState.value = FlashState.Error("Could not detect device type")
+                    _flashState.value = FlashState.Error(string(R.string.rnode_flasher_could_not_detect_device_type))
                     return@withContext false
                 }
 
@@ -319,7 +331,7 @@ class RNodeFlasher(
                         ESPToolFlasher.isNativeUsbDevice(it.vendorId, it.productId)
                     } ?: false
 
-                _flashState.value = FlashState.Progress(5, "Starting flash...")
+                _flashState.value = FlashState.Progress(5, string(R.string.rnode_flasher_starting_flash))
 
                 // Select flasher based on platform
                 val success =
@@ -333,7 +345,7 @@ class RNodeFlasher(
                         else -> {
                             _flashState.value =
                                 FlashState.Error(
-                                    "Unsupported platform: ${info.platform}",
+                                    string(R.string.rnode_flasher_unsupported_platform, info.platform),
                                 )
                             false
                         }
@@ -341,7 +353,7 @@ class RNodeFlasher(
 
                 if (success) {
                     // Wait for device reboot, then provision
-                    _flashState.value = FlashState.Progress(96, "Waiting for device reboot...")
+                    _flashState.value = FlashState.Progress(96, string(R.string.rnode_flasher_waiting_reboot))
 
                     // Give device time to boot after hard reset
                     // Native USB devices need more time for USB re-enumeration
@@ -371,7 +383,10 @@ class RNodeFlasher(
                 success
             } catch (e: Exception) {
                 Log.e(TAG, "Flash failed", e)
-                _flashState.value = FlashState.Error("Flash failed: ${e.message}")
+                _flashState.value =
+                    FlashState.Error(
+                        string(R.string.rnode_flasher_flash_failed, e.message ?: e.javaClass.simpleName),
+                    )
                 false
             }
         }
@@ -413,7 +428,7 @@ class RNodeFlasher(
         // For devices with USB-UART bridges (CP2102, CH343, etc.), try the indication.
         val isNativeUsb = ESPToolFlasher.isNativeUsbDevice(vendorId, productId)
         if (!isNativeUsb) {
-            _flashState.value = FlashState.Progress(2, "Preparing device for update...")
+            _flashState.value = FlashState.Progress(2, string(R.string.rnode_flasher_preparing_device_for_update))
             if (!prepareFirmwareUpdate(deviceId)) {
                 Log.w(TAG, "Could not send firmware update indication, proceeding anyway")
             }
@@ -432,7 +447,11 @@ class RNodeFlasher(
                 createEspProgressCallback(),
             )
         } catch (e: ESPToolFlasher.ManualBootModeRequired) {
-            _flashState.value = FlashState.Error(e.message ?: "Manual boot mode required", recoverable = true)
+            _flashState.value =
+                FlashState.Error(
+                    e.message ?: string(R.string.rnode_flasher_manual_boot_mode_required),
+                    recoverable = true,
+                )
             false
         }
     }
@@ -455,7 +474,7 @@ class RNodeFlasher(
         // For devices with USB-UART bridges (CP2102, CH343, etc.), try the indication.
         val isNativeUsb = ESPToolFlasher.isNativeUsbDevice(vendorId, productId)
         if (!isNativeUsb) {
-            _flashState.value = FlashState.Progress(2, "Preparing device for update...")
+            _flashState.value = FlashState.Progress(2, string(R.string.rnode_flasher_preparing_device_for_update))
             if (!prepareFirmwareUpdate(deviceId)) {
                 Log.w(TAG, "Could not send firmware update indication, proceeding anyway")
             }
@@ -474,7 +493,11 @@ class RNodeFlasher(
                 createEspProgressCallback(),
             )
         } catch (e: ESPToolFlasher.ManualBootModeRequired) {
-            _flashState.value = FlashState.Error(e.message ?: "Manual boot mode required", recoverable = true)
+            _flashState.value =
+                FlashState.Error(
+                    e.message ?: string(R.string.rnode_flasher_manual_boot_mode_required),
+                    recoverable = true,
+                )
             false
         }
     }
@@ -572,7 +595,7 @@ class RNodeFlasher(
         source: FirmwareSource = FirmwareSource.Official,
     ): Boolean =
         withContext(Dispatchers.IO) {
-            _flashState.value = FlashState.Progress(0, "Checking for firmware...")
+            _flashState.value = FlashState.Progress(0, string(R.string.rnode_flasher_checking_for_firmware))
 
             try {
                 // Get release info
@@ -585,7 +608,7 @@ class RNodeFlasher(
                     }
 
                 if (release == null) {
-                    _flashState.value = FlashState.Error("Could not find firmware release")
+                    _flashState.value = FlashState.Error(string(R.string.rnode_flasher_could_not_find_firmware_release))
                     return@withContext false
                 }
 
@@ -594,12 +617,16 @@ class RNodeFlasher(
                 if (asset == null) {
                     _flashState.value =
                         FlashState.Error(
-                            "No firmware found for ${board.displayName} (${frequencyBand.displayName})",
+                            string(
+                                R.string.rnode_flasher_no_firmware_found,
+                                board.localizedDisplayName(context),
+                                frequencyBand.localizedDisplayName(context),
+                            ),
                         )
                     return@withContext false
                 }
 
-                _flashState.value = FlashState.Progress(5, "Downloading firmware...")
+                _flashState.value = FlashState.Progress(5, string(R.string.rnode_flasher_downloading_firmware))
 
                 // Download firmware
                 var downloadedData: ByteArray? = null
@@ -620,7 +647,11 @@ class RNodeFlasher(
                             _flashState.value =
                                 FlashState.Progress(
                                     percent,
-                                    "Downloading: ${bytesDownloaded / 1024}KB / ${totalBytes / 1024}KB",
+                                    string(
+                                        R.string.rnode_flasher_downloading_progress,
+                                        bytesDownloaded / 1024,
+                                        totalBytes / 1024,
+                                    ),
                                 )
                         }
 
@@ -639,7 +670,7 @@ class RNodeFlasher(
                 }
 
                 // Save firmware
-                _flashState.value = FlashState.Progress(20, "Saving firmware...")
+                _flashState.value = FlashState.Progress(20, string(R.string.rnode_flasher_saving_firmware))
 
                 val firmwarePackage =
                     firmwareRepository.saveFirmware(
@@ -651,7 +682,7 @@ class RNodeFlasher(
                     )
 
                 if (firmwarePackage == null) {
-                    _flashState.value = FlashState.Error("Failed to save firmware")
+                    _flashState.value = FlashState.Error(string(R.string.rnode_flasher_failed_save_firmware))
                     return@withContext false
                 }
 
@@ -659,7 +690,10 @@ class RNodeFlasher(
                 flashFirmware(deviceId, firmwarePackage)
             } catch (e: Exception) {
                 Log.e(TAG, "Download and flash failed", e)
-                _flashState.value = FlashState.Error("Failed: ${e.message}")
+                _flashState.value =
+                    FlashState.Error(
+                        string(R.string.rnode_flasher_failed_generic, e.message ?: e.javaClass.simpleName),
+                    )
                 false
             }
         }
@@ -714,7 +748,7 @@ class RNodeFlasher(
         expectedFirmwareVersion: String? = null,
     ): Boolean =
         withContext(Dispatchers.IO) {
-            _flashState.value = FlashState.Provisioning("Waiting for device...")
+            _flashState.value = FlashState.Provisioning(string(R.string.rnode_flasher_waiting_for_device))
 
             try {
                 // After reset, device may take time to re-enumerate and may have new device ID
@@ -726,7 +760,10 @@ class RNodeFlasher(
 
                 for (attempt in 1..maxRetries) {
                     Log.d(TAG, "Provisioning connect attempt $attempt/$maxRetries")
-                    _flashState.value = FlashState.Provisioning("Connecting to device (attempt $attempt)...")
+                    _flashState.value =
+                        FlashState.Provisioning(
+                            string(R.string.rnode_flasher_connecting_attempt, attempt),
+                        )
 
                     // First try the original device ID
                     if (usbBridge.connect(deviceId, RNodeConstants.BAUD_RATE_DEFAULT)) {
@@ -774,7 +811,7 @@ class RNodeFlasher(
 
                 if (!connected) {
                     Log.e(TAG, "Failed to connect for provisioning after $maxRetries attempts")
-                    _flashState.value = FlashState.Error("Failed to connect for provisioning. Make sure the device is connected and has been reset.")
+                    _flashState.value = FlashState.Error(string(R.string.rnode_flasher_failed_connect_provisioning))
                     return@withContext false
                 }
 
@@ -784,7 +821,7 @@ class RNodeFlasher(
                 kotlinx.coroutines.delay(1000)
 
                 // Check if already provisioned
-                _flashState.value = FlashState.Provisioning("Checking provisioning status...")
+                _flashState.value = FlashState.Provisioning(string(R.string.rnode_flasher_checking_provisioning_status))
                 val deviceInfo = detector.getDeviceInfo()
 
                 if (deviceInfo?.isProvisioned == true) {
@@ -805,11 +842,11 @@ class RNodeFlasher(
                             )
                             _flashState.value =
                                 FlashState.Error(
-                                    "Flash verification failed: device reports firmware " +
-                                        "${deviceInfo.firmwareVersion} but expected " +
-                                        "$expectedFirmwareVersion. The device may not have rebooted " +
-                                        "after flashing. Try manually resetting the device and " +
-                                        "re-flashing.",
+                                    string(
+                                        R.string.rnode_flasher_flash_verification_version_failed,
+                                        deviceInfo.firmwareVersion,
+                                        expectedFirmwareVersion,
+                                    ),
                                     recoverable = true,
                                 )
                             usbBridge.disconnect()
@@ -819,7 +856,7 @@ class RNodeFlasher(
                     }
 
                     // Set firmware hash
-                    _flashState.value = FlashState.Provisioning("Setting firmware hash...")
+                    _flashState.value = FlashState.Provisioning(string(R.string.rnode_flasher_setting_firmware_hash))
                     val hashToSet = firmwareHash ?: detector.getFirmwareHash()
                     if (hashToSet != null) {
                         detector.setFirmwareHash(hashToSet)
@@ -832,10 +869,7 @@ class RNodeFlasher(
                             Log.e(TAG, "Firmware hash mismatch after flash")
                             _flashState.value =
                                 FlashState.Error(
-                                    "Flash verification failed: firmware hash does not match " +
-                                        "expected value. The device may not have rebooted after " +
-                                        "flashing. Try manually resetting the device and " +
-                                        "re-flashing.",
+                                    string(R.string.rnode_flasher_flash_verification_hash_failed),
                                     recoverable = true,
                                 )
                             usbBridge.disconnect()
@@ -857,24 +891,27 @@ class RNodeFlasher(
                 // crash the device. The wipe formats LittleFS and triggers a hard reset.
                 // rnodeconf always does this wipe before provisioning nRF52 devices.
                 if (board.platform == RNodePlatform.NRF52) {
-                    _flashState.value = FlashState.Provisioning("Preparing EEPROM...")
+                    _flashState.value = FlashState.Provisioning(string(R.string.rnode_flasher_preparing_eeprom))
                     if (!detector.wipeEeprom()) {
                         Log.e(TAG, "Failed to send EEPROM wipe command")
-                        _flashState.value = FlashState.Error("Failed to wipe EEPROM")
+                        _flashState.value = FlashState.Error(string(R.string.rnode_flasher_failed_wipe_eeprom))
                         usbBridge.disconnect()
                         return@withContext false
                     }
 
                     // Device will hard-reset after wipe — disconnect and wait
                     usbBridge.disconnect()
-                    _flashState.value = FlashState.Provisioning("Waiting for device reset...")
+                    _flashState.value = FlashState.Provisioning(string(R.string.rnode_flasher_waiting_for_device_reset))
                     // nRF52 LittleFS format + reboot is slow (rnodeconf uses 18s)
                     kotlinx.coroutines.delay(NRF52_EEPROM_WIPE_WAIT_MS)
 
                     // Reconnect — device may have new ID after reboot
                     var reconnected = false
                     for (attempt in 1..NRF52_RECONNECT_RETRIES) {
-                        _flashState.value = FlashState.Provisioning("Reconnecting (attempt $attempt)...")
+                        _flashState.value =
+                            FlashState.Provisioning(
+                                string(R.string.rnode_flasher_reconnecting_attempt, attempt),
+                            )
 
                         if (usbBridge.connect(actualDeviceId, RNodeConstants.BAUD_RATE_DEFAULT)) {
                             reconnected = true
@@ -899,7 +936,7 @@ class RNodeFlasher(
 
                     if (!reconnected) {
                         Log.e(TAG, "Failed to reconnect after EEPROM wipe")
-                        _flashState.value = FlashState.Error("Failed to reconnect after EEPROM wipe. Try unplugging and re-plugging the device.")
+                        _flashState.value = FlashState.Error(string(R.string.rnode_flasher_failed_reconnect_after_wipe))
                         return@withContext false
                     }
 
@@ -908,20 +945,20 @@ class RNodeFlasher(
                 }
 
                 // Provision EEPROM
-                _flashState.value = FlashState.Provisioning("Writing device information...")
+                _flashState.value = FlashState.Provisioning(string(R.string.rnode_flasher_writing_device_information))
                 if (!detector.provisionAndSetFirmwareHash(board, band, firmwareHash)) {
                     Log.e(TAG, "Provisioning failed")
-                    _flashState.value = FlashState.Error("Failed to provision device EEPROM")
+                    _flashState.value = FlashState.Error(string(R.string.rnode_flasher_failed_provision_eeprom))
                     usbBridge.disconnect()
                     return@withContext false
                 }
 
                 // Wait for writes to complete
-                _flashState.value = FlashState.Provisioning("Finalizing...")
+                _flashState.value = FlashState.Provisioning(string(R.string.rnode_flasher_finalizing))
                 kotlinx.coroutines.delay(2000)
 
                 // Reset device to apply changes
-                _flashState.value = FlashState.Provisioning("Resetting device...")
+                _flashState.value = FlashState.Provisioning(string(R.string.rnode_flasher_resetting_device))
                 detector.resetDevice()
                 usbBridge.disconnect()
 
@@ -929,7 +966,7 @@ class RNodeFlasher(
                 kotlinx.coroutines.delay(3000)
 
                 // Verify provisioning — device may have re-enumerated with a new ID
-                _flashState.value = FlashState.Provisioning("Verifying provisioning...")
+                _flashState.value = FlashState.Provisioning(string(R.string.rnode_flasher_verifying_provisioning))
                 var verifyConnected = false
                 for (attempt in 1..3) {
                     if (usbBridge.connect(actualDeviceId, RNodeConstants.BAUD_RATE_DEFAULT)) {
@@ -969,11 +1006,11 @@ class RNodeFlasher(
                         )
                         _flashState.value =
                             FlashState.Error(
-                                "Flash verification failed: device reports firmware " +
-                                    "${verifiedInfo.firmwareVersion} but expected " +
-                                    "$expectedFirmwareVersion. The device may not have rebooted " +
-                                    "after flashing. Try manually resetting the device and " +
-                                    "re-flashing.",
+                                string(
+                                    R.string.rnode_flasher_flash_verification_version_failed,
+                                    verifiedInfo.firmwareVersion,
+                                    expectedFirmwareVersion,
+                                ),
                                 recoverable = true,
                             )
                         usbBridge.disconnect()
@@ -995,7 +1032,10 @@ class RNodeFlasher(
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Provisioning failed", e)
-                _flashState.value = FlashState.Error("Provisioning failed: ${e.message}")
+                _flashState.value =
+                    FlashState.Error(
+                        string(R.string.rnode_flasher_provisioning_failed, e.message ?: e.javaClass.simpleName),
+                    )
                 usbBridge.disconnect()
                 false
             }
@@ -1028,7 +1068,10 @@ class RNodeFlasher(
         _flashState.value =
             FlashState.NeedsManualReset(
                 board,
-                "Flashing complete! Please press the RESET button on your ${board.displayName} to continue.",
+                string(
+                    R.string.rnode_flasher_manual_reset_message,
+                    board.localizedDisplayName(context),
+                ),
             )
     }
 }

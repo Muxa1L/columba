@@ -164,13 +164,13 @@ private fun SuccessContent(
 
                     HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
 
-                    DeviceInfoRow(boardLabel, deviceInfo.board.displayName)
+                    DeviceInfoRow(boardLabel, stringResource(deviceInfo.board.displayNameRes))
                     deviceInfo.firmwareVersion?.let { version ->
                         DeviceInfoRow(firmwareLabel, stringResource(R.string.firmware_selection_version_value, version))
                     }
                     val band = FrequencyBand.fromModelCode(deviceInfo.model)
                     if (band != FrequencyBand.UNKNOWN) {
-                        DeviceInfoRow(bandLabel, band.displayName)
+                        DeviceInfoRow(bandLabel, stringResource(band.displayNameRes))
                     }
                 }
             }

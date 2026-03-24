@@ -1,5 +1,9 @@
 package com.lxmf.messenger.reticulum.flasher
 
+import android.content.Context
+import androidx.annotation.StringRes
+import tech.torlando.columba.reticulum.R
+
 /**
  * Constants for RNode device identification and communication.
  * Based on the RNode protocol and RNode Flasher web application.
@@ -171,90 +175,105 @@ enum class RNodeBoard(
     val productCode: Byte,
     val platform: RNodePlatform,
     val displayName: String,
+    @StringRes val displayNameRes: Int,
     val firmwarePrefix: String,
 ) {
     RAK4631(
         RNodeConstants.PRODUCT_RAK4631,
         RNodePlatform.NRF52,
         "RAK4631",
+        R.string.rnode_board_rak4631,
         "rnode_firmware_rak4631",
     ),
     HELTEC_T114(
         RNodeConstants.PRODUCT_HELTEC_T114,
         RNodePlatform.NRF52,
         "Heltec T114",
+        R.string.rnode_board_heltec_t114,
         "rnode_firmware_heltec_t114",
     ),
     TECHO(
         RNodeConstants.PRODUCT_TECHO,
         RNodePlatform.NRF52,
         "LilyGO T-Echo",
+        R.string.rnode_board_techo,
         "rnode_firmware_techo",
     ),
     HELTEC_V2(
         RNodeConstants.PRODUCT_H32_V2,
         RNodePlatform.ESP32,
         "Heltec LoRa32 v2",
+        R.string.rnode_board_heltec_v2,
         "rnode_firmware_heltec32v2",
     ),
     HELTEC_V3(
         RNodeConstants.PRODUCT_H32_V3,
         RNodePlatform.ESP32,
         "Heltec LoRa32 v3",
+        R.string.rnode_board_heltec_v3,
         "rnode_firmware_heltec32v3",
     ),
     HELTEC_V4(
         RNodeConstants.PRODUCT_H32_V4,
         RNodePlatform.ESP32,
         "Heltec LoRa32 v4",
+        R.string.rnode_board_heltec_v4,
         "rnode_firmware_heltec32v4pa",
     ),
     TBEAM(
         RNodeConstants.PRODUCT_TBEAM,
         RNodePlatform.ESP32,
         "LilyGO T-Beam",
+        R.string.rnode_board_tbeam,
         "rnode_firmware_tbeam",
     ),
     TBEAM_S(
         RNodeConstants.PRODUCT_TBEAM_S_V1,
         RNodePlatform.ESP32,
         "LilyGO T-Beam Supreme",
+        R.string.rnode_board_tbeam_supreme,
         "rnode_firmware_tbeam_supreme",
     ),
     TDECK(
         RNodeConstants.PRODUCT_TDECK,
         RNodePlatform.ESP32,
         "LilyGO T-Deck",
+        R.string.rnode_board_tdeck,
         "rnode_firmware_tdeck",
     ),
     LORA32_V2_0(
         RNodeConstants.PRODUCT_T32_20,
         RNodePlatform.ESP32,
         "TTGO LoRa32 v2.0",
+        R.string.rnode_board_lora32_v2_0,
         "rnode_firmware_lora32v20",
     ),
     LORA32_V2_1(
         RNodeConstants.PRODUCT_T32_21,
         RNodePlatform.ESP32,
         "TTGO LoRa32 v2.1",
+        R.string.rnode_board_lora32_v2_1,
         "rnode_firmware_lora32v21",
     ),
     RNODE(
         RNodeConstants.PRODUCT_RNODE,
         RNodePlatform.AVR,
         "RNode (Original)",
+        R.string.rnode_board_rnode_original,
         "rnode_firmware",
     ),
     HOMEBREW(
         RNodeConstants.PRODUCT_HMBRW,
         RNodePlatform.ESP32,
         "Homebrew ESP32",
+        R.string.rnode_board_homebrew_esp32,
         "rnode_firmware_esp32_generic",
     ),
     UNKNOWN(
         0x00,
         RNodePlatform.UNKNOWN,
         "Unknown",
+        R.string.rnode_board_unknown,
         "unknown",
     ),
     ;
@@ -262,6 +281,8 @@ enum class RNodeBoard(
     companion object {
         fun fromProductCode(code: Byte): RNodeBoard = entries.find { it.productCode == code } ?: UNKNOWN
     }
+
+    fun localizedDisplayName(context: Context): String = context.getString(displayNameRes)
 }
 
 /**

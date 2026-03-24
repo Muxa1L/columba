@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="firmware_source_official">RNode Official</string>
+    <string name="firmware_source_microreticulum">microReticulum</string>
+    <string name="firmware_source_community_edition">RNode Community Edition</string>
+    <string name="firmware_source_custom">Custom</string>
+
+    <string name="rnode_board_rak4631">RAK4631</string>
+    <string name="rnode_board_heltec_t114">Heltec T114</string>
+    <string name="rnode_board_techo">LilyGO T-Echo</string>
+    <string name="rnode_board_heltec_v2">Heltec LoRa32 v2</string>
+    <string name="rnode_board_heltec_v3">Heltec LoRa32 v3</string>
+    <string name="rnode_board_heltec_v4">Heltec LoRa32 v4</string>
+    <string name="rnode_board_tbeam">LilyGO T-Beam</string>
+    <string name="rnode_board_tbeam_supreme">LilyGO T-Beam Supreme</string>
+    <string name="rnode_board_tdeck">LilyGO T-Deck</string>
+    <string name="rnode_board_lora32_v2_0">TTGO LoRa32 v2.0</string>
+    <string name="rnode_board_lora32_v2_1">TTGO LoRa32 v2.1</string>
+    <string name="rnode_board_rnode_original">RNode (Original)</string>
+    <string name="rnode_board_homebrew_esp32">Homebrew ESP32</string>
+    <string name="rnode_board_unknown">Unknown</string>
+
+    <string name="frequency_band_868_915">868/915 MHz</string>
+    <string name="frequency_band_433">433 MHz</string>
+    <string name="frequency_band_unknown">Unknown</string>
+
+    <string name="rnode_flasher_connecting_to_device">Connecting to device...</string>
+    <string name="rnode_flasher_failed_connect_device">Failed to connect to device</string>
+    <string name="rnode_flasher_detecting_rnode">Detecting RNode...</string>
+    <string name="rnode_flasher_device_not_rnode">Device is not an RNode</string>
+    <string name="rnode_flasher_detection_failed">Detection failed: %1$s</string>
+    <string name="rnode_flasher_starting_flash">Starting flash...</string>
+    <string name="rnode_flasher_firmware_corrupted">Firmware file is corrupted</string>
+    <string name="rnode_flasher_unsupported_platform">Unsupported platform: %1$s</string>
+    <string name="rnode_flasher_verifying_firmware">Verifying firmware...</string>
+    <string name="rnode_flasher_waiting_reboot">Waiting for device reboot...</string>
+    <string name="rnode_flasher_flash_failed">Flash failed: %1$s</string>
+    <string name="rnode_flasher_preparing">Preparing...</string>
+    <string name="rnode_flasher_could_not_detect_device_type">Could not detect device type</string>
+    <string name="rnode_flasher_preparing_device_for_update">Preparing device for update...</string>
+    <string name="rnode_flasher_manual_boot_mode_required">Manual boot mode required</string>
+    <string name="rnode_flasher_checking_for_firmware">Checking for firmware...</string>
+    <string name="rnode_flasher_could_not_find_firmware_release">Could not find firmware release</string>
+    <string name="rnode_flasher_no_firmware_found">No firmware found for %1$s (%2$s)</string>
+    <string name="rnode_flasher_downloading_firmware">Downloading firmware...</string>
+    <string name="rnode_flasher_downloading_progress">Downloading: %1$dKB / %2$dKB</string>
+    <string name="rnode_flasher_saving_firmware">Saving firmware...</string>
+    <string name="rnode_flasher_failed_save_firmware">Failed to save firmware</string>
+    <string name="rnode_flasher_failed_generic">Failed: %1$s</string>
+    <string name="rnode_flasher_waiting_for_device">Waiting for device...</string>
+    <string name="rnode_flasher_connecting_attempt">Connecting to device (attempt %1$d)...</string>
+    <string name="rnode_flasher_failed_connect_provisioning">Failed to connect for provisioning. Make sure the device is connected and has been reset.</string>
+    <string name="rnode_flasher_checking_provisioning_status">Checking provisioning status...</string>
+    <string name="rnode_flasher_flash_verification_version_failed">Flash verification failed: device reports firmware %1$s but expected %2$s. The device may not have rebooted after flashing. Try manually resetting the device and re-flashing.</string>
+    <string name="rnode_flasher_setting_firmware_hash">Setting firmware hash...</string>
+    <string name="rnode_flasher_flash_verification_hash_failed">Flash verification failed: firmware hash does not match expected value. The device may not have rebooted after flashing. Try manually resetting the device and re-flashing.</string>
+    <string name="rnode_flasher_preparing_eeprom">Preparing EEPROM...</string>
+    <string name="rnode_flasher_failed_wipe_eeprom">Failed to wipe EEPROM</string>
+    <string name="rnode_flasher_waiting_for_device_reset">Waiting for device reset...</string>
+    <string name="rnode_flasher_reconnecting_attempt">Reconnecting (attempt %1$d)...</string>
+    <string name="rnode_flasher_failed_reconnect_after_wipe">Failed to reconnect after EEPROM wipe. Try unplugging and re-plugging the device.</string>
+    <string name="rnode_flasher_writing_device_information">Writing device information...</string>
+    <string name="rnode_flasher_failed_provision_eeprom">Failed to provision device EEPROM</string>
+    <string name="rnode_flasher_finalizing">Finalizing...</string>
+    <string name="rnode_flasher_resetting_device">Resetting device...</string>
+    <string name="rnode_flasher_verifying_provisioning">Verifying provisioning...</string>
+    <string name="rnode_flasher_provisioning_failed">Provisioning failed: %1$s</string>
+    <string name="rnode_flasher_manual_reset_message">Flashing complete! Please press the RESET button on your %1$s to continue.</string>
+</resources>

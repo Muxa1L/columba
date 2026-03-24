@@ -2,8 +2,10 @@ package com.lxmf.messenger.reticulum.flasher
 
 import android.content.Context
 import android.util.Log
+import androidx.annotation.StringRes
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import tech.torlando.columba.reticulum.R
 import java.io.File
 import java.io.InputStream
 import java.security.MessageDigest
@@ -212,12 +214,15 @@ data class FirmwarePackage(
  */
 enum class FrequencyBand(
     val displayName: String,
+    @StringRes val displayNameRes: Int,
     val modelSuffix: String,
 ) {
-    BAND_868_915("868/915 MHz", "_868"),
-    BAND_433("433 MHz", "_433"),
-    UNKNOWN("Unknown", ""),
+    BAND_868_915("868/915 MHz", R.string.frequency_band_868_915, "_868"),
+    BAND_433("433 MHz", R.string.frequency_band_433, "_433"),
+    UNKNOWN("Unknown", R.string.frequency_band_unknown, ""),
     ;
+
+    fun localizedDisplayName(context: Context): String = context.getString(displayNameRes)
 
     companion object {
         /**

@@ -743,8 +743,8 @@ class FlasherViewModel
                 it.copy(
                     currentStep = FlasherStep.FLASH_PROGRESS,
                     needsManualReset = true,
-                    resetMessage = context.getString(R.string.flasher_reset_message, board.displayName),
-                    flashMessage = context.getString(R.string.flasher_ready_to_provision, board.displayName),
+                    resetMessage = context.getString(R.string.flasher_reset_message, board.localizedDisplayName(context)),
+                    flashMessage = context.getString(R.string.flasher_ready_to_provision, board.localizedDisplayName(context)),
                 )
             }
         }

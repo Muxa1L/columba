@@ -166,7 +166,7 @@ private fun DetectedState(
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
                     Text(
-                        text = deviceInfo.board.displayName,
+                        text = stringResource(deviceInfo.board.displayNameRes),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
@@ -201,7 +201,7 @@ private fun DetectedState(
 
                 HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
 
-                DeviceInfoRow(boardLabel, deviceInfo.board.displayName)
+                DeviceInfoRow(boardLabel, stringResource(deviceInfo.board.displayNameRes))
                 DeviceInfoRow(platformLabel, deviceInfo.platform.name)
                 DeviceInfoRow(mcuLabel, deviceInfo.mcu.name)
 
@@ -211,7 +211,7 @@ private fun DetectedState(
 
                 val band = FrequencyBand.fromModelCode(deviceInfo.model)
                 if (band != FrequencyBand.UNKNOWN) {
-                    DeviceInfoRow(bandLabel, band.displayName)
+                    DeviceInfoRow(bandLabel, stringResource(band.displayNameRes))
                 }
 
                 deviceInfo.serialNumber?.let { serial ->

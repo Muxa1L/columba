@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="firmware_source_official">Официальный RNode</string>
+    <string name="firmware_source_microreticulum">microReticulum</string>
+    <string name="firmware_source_community_edition">RNode Community Edition</string>
+    <string name="firmware_source_custom">Пользовательский</string>
+
+    <string name="rnode_board_rak4631">RAK4631</string>
+    <string name="rnode_board_heltec_t114">Heltec T114</string>
+    <string name="rnode_board_techo">LilyGO T-Echo</string>
+    <string name="rnode_board_heltec_v2">Heltec LoRa32 v2</string>
+    <string name="rnode_board_heltec_v3">Heltec LoRa32 v3</string>
+    <string name="rnode_board_heltec_v4">Heltec LoRa32 v4</string>
+    <string name="rnode_board_tbeam">LilyGO T-Beam</string>
+    <string name="rnode_board_tbeam_supreme">LilyGO T-Beam Supreme</string>
+    <string name="rnode_board_tdeck">LilyGO T-Deck</string>
+    <string name="rnode_board_lora32_v2_0">TTGO LoRa32 v2.0</string>
+    <string name="rnode_board_lora32_v2_1">TTGO LoRa32 v2.1</string>
+    <string name="rnode_board_rnode_original">RNode (оригинальный)</string>
+    <string name="rnode_board_homebrew_esp32">Самодельный ESP32</string>
+    <string name="rnode_board_unknown">Неизвестно</string>
+
+    <string name="frequency_band_868_915">868/915 МГц</string>
+    <string name="frequency_band_433">433 МГц</string>
+    <string name="frequency_band_unknown">Неизвестно</string>
+
+    <string name="rnode_flasher_connecting_to_device">Подключение к устройству...</string>
+    <string name="rnode_flasher_failed_connect_device">Не удалось подключиться к устройству</string>
+    <string name="rnode_flasher_detecting_rnode">Определение RNode...</string>
+    <string name="rnode_flasher_device_not_rnode">Устройство не является RNode</string>
+    <string name="rnode_flasher_detection_failed">Ошибка определения: %1$s</string>
+    <string name="rnode_flasher_starting_flash">Запуск прошивки...</string>
+    <string name="rnode_flasher_firmware_corrupted">Файл прошивки поврежден</string>
+    <string name="rnode_flasher_unsupported_platform">Неподдерживаемая платформа: %1$s</string>
+    <string name="rnode_flasher_verifying_firmware">Проверка прошивки...</string>
+    <string name="rnode_flasher_waiting_reboot">Ожидание перезагрузки устройства...</string>
+    <string name="rnode_flasher_flash_failed">Ошибка прошивки: %1$s</string>
+    <string name="rnode_flasher_preparing">Подготовка...</string>
+    <string name="rnode_flasher_could_not_detect_device_type">Не удалось определить тип устройства</string>
+    <string name="rnode_flasher_preparing_device_for_update">Подготовка устройства к обновлению...</string>
+    <string name="rnode_flasher_manual_boot_mode_required">Требуется ручной переход в режим загрузчика</string>
+    <string name="rnode_flasher_checking_for_firmware">Поиск прошивки...</string>
+    <string name="rnode_flasher_could_not_find_firmware_release">Не удалось найти выпуск прошивки</string>
+    <string name="rnode_flasher_no_firmware_found">Прошивка для %1$s (%2$s) не найдена</string>
+    <string name="rnode_flasher_downloading_firmware">Загрузка прошивки...</string>
+    <string name="rnode_flasher_downloading_progress">Загрузка: %1$d КБ / %2$d КБ</string>
+    <string name="rnode_flasher_saving_firmware">Сохранение прошивки...</string>
+    <string name="rnode_flasher_failed_save_firmware">Не удалось сохранить прошивку</string>
+    <string name="rnode_flasher_failed_generic">Ошибка: %1$s</string>
+    <string name="rnode_flasher_waiting_for_device">Ожидание устройства...</string>
+    <string name="rnode_flasher_connecting_attempt">Подключение к устройству, попытка %1$d...</string>
+    <string name="rnode_flasher_failed_connect_provisioning">Не удалось подключиться для инициализации. Убедитесь, что устройство подключено и было перезагружено.</string>
+    <string name="rnode_flasher_checking_provisioning_status">Проверка состояния инициализации...</string>
+    <string name="rnode_flasher_flash_verification_version_failed">Проверка прошивки не удалась: устройство сообщает версию %1$s, ожидалась %2$s. Возможно, устройство не перезагрузилось после прошивки. Попробуйте вручную перезагрузить его и прошить снова.</string>
+    <string name="rnode_flasher_setting_firmware_hash">Установка хеша прошивки...</string>
+    <string name="rnode_flasher_flash_verification_hash_failed">Проверка прошивки не удалась: хеш прошивки не совпадает с ожидаемым. Возможно, устройство не перезагрузилось после прошивки. Попробуйте вручную перезагрузить его и прошить снова.</string>
+    <string name="rnode_flasher_preparing_eeprom">Подготовка EEPROM...</string>
+    <string name="rnode_flasher_failed_wipe_eeprom">Не удалось очистить EEPROM</string>
+    <string name="rnode_flasher_waiting_for_device_reset">Ожидание перезагрузки устройства...</string>
+    <string name="rnode_flasher_reconnecting_attempt">Повторное подключение, попытка %1$d...</string>
+    <string name="rnode_flasher_failed_reconnect_after_wipe">Не удалось повторно подключиться после очистки EEPROM. Попробуйте отключить и снова подключить устройство.</string>
+    <string name="rnode_flasher_writing_device_information">Запись информации об устройстве...</string>
+    <string name="rnode_flasher_failed_provision_eeprom">Не удалось инициализировать EEPROM устройства</string>
+    <string name="rnode_flasher_finalizing">Завершение...</string>
+    <string name="rnode_flasher_resetting_device">Перезагрузка устройства...</string>
+    <string name="rnode_flasher_verifying_provisioning">Проверка инициализации...</string>
+    <string name="rnode_flasher_provisioning_failed">Ошибка инициализации: %1$s</string>
+    <string name="rnode_flasher_manual_reset_message">Прошивка завершена. Нажмите кнопку RESET на устройстве %1$s, чтобы продолжить.</string>
+</resources>
