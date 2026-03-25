@@ -1,5 +1,7 @@
 package com.lxmf.messenger.data.model
 
+import android.content.Context
+
 import androidx.annotation.StringRes
 import com.lxmf.messenger.R
 
@@ -85,6 +87,12 @@ enum class ImageCompressionPreset(
         description = "Automatically select based on enabled interfaces",
     ),
     ;
+
+    fun localizedDisplayName(context: Context): String =
+        runCatching { context.getString(displayNameRes) }.getOrDefault(displayName)
+
+    fun localizedDescription(context: Context): String =
+        runCatching { context.getString(descriptionRes) }.getOrDefault(description)
 
     companion object {
         val DEFAULT = AUTO

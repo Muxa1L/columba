@@ -1693,6 +1693,27 @@ Your location is encrypted and only readable by the group host you configure.</s
   <string name="battery_optimization_enabled_message">Battery optimization is enabled. Android may kill the background service during Deep Doze mode, causing gaps in message delivery.</string>
   <string name="battery_optimization_request_exemption">Request Exemption</string>
   <string name="battery_optimization_open_settings_manually">Open Battery Settings Manually</string>
+  <string name="tcp_client_server_beleth_rns_hub">Beleth RNS Hub</string>
+  <string name="tcp_client_server_quad4_tcp_node_1">Quad4 TCP Node 1</string>
+  <string name="tcp_client_server_firezen">FireZen</string>
+  <string name="tcp_client_server_g00n_cloud_hub">g00n.cloud Hub</string>
+  <string name="tcp_client_server_interloper_node">interloper node</string>
+  <string name="tcp_client_server_interloper_node_tor">interloper node (Tor)</string>
+  <string name="tcp_client_server_jons_node">Jon\'s Node</string>
+  <string name="tcp_client_server_nodns1">noDNS1</string>
+  <string name="tcp_client_server_nodns2">noDNS2</string>
+  <string name="tcp_client_server_nomadnode_seasia_tcp">NomadNode SEAsia TCP</string>
+  <string name="tcp_client_server_0rbit_net">0rbit-Net</string>
+  <string name="tcp_client_server_quad4_tcp_node_2">Quad4 TCP Node 2</string>
+  <string name="tcp_client_server_quortal_tcp_node">Quortal TCP Node</string>
+  <string name="tcp_client_server_r_net_tcp">R-Net TCP</string>
+  <string name="tcp_client_server_rns_bnz_node01">RNS bnZ-NODE01</string>
+  <string name="tcp_client_server_rns_comsec_rd">RNS COMSEC-RD</string>
+  <string name="tcp_client_server_rns_ham_radio">RNS HAM RADIO</string>
+  <string name="tcp_client_server_rns_testnet_stoppedcold">RNS Testnet StoppedCold</string>
+  <string name="tcp_client_server_rns_transport_us_east">RNS_Transport_US-East</string>
+  <string name="tcp_client_server_sparkn0de">SparkN0de</string>
+  <string name="tcp_client_server_tidudanka">Tidudanka.com</string>
   <!-- Crash report -->
   <string name="crash_report_title">App Crashed</string>
   <string name="crash_report_message">The app crashed unexpectedly. Would you like to report this issue?</string>

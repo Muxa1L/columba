@@ -1,5 +1,7 @@
 package com.lxmf.messenger.ui.model
 
+import android.content.Context
+
 import androidx.annotation.StringRes
 import com.lxmf.messenger.R
 import com.lxmf.messenger.reticulum.model.LinkSpeedProbeResult
@@ -79,6 +81,12 @@ enum class CodecProfile(
         isExperimental = true,
     ),
     ;
+
+    fun localizedDisplayName(context: Context): String =
+        runCatching { context.getString(displayNameRes) }.getOrDefault(displayName)
+
+    fun localizedDescription(context: Context): String =
+        runCatching { context.getString(descriptionRes) }.getOrDefault(description)
 
     companion object {
         val DEFAULT = QUALITY_MEDIUM

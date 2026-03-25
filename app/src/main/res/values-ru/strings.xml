@@ -1771,6 +1771,27 @@
     <string name="battery_optimization_enabled_message">Оптимизация батареи включена. Android может завершать фоновую службу в режиме Deep Doze, из-за чего возможны пропуски в доставке сообщений.</string>
     <string name="battery_optimization_request_exemption">Запросить исключение</string>
     <string name="battery_optimization_open_settings_manually">Открыть настройки батареи вручную</string>
+    <string name="tcp_client_server_beleth_rns_hub">Узел Beleth RNS</string>
+    <string name="tcp_client_server_quad4_tcp_node_1">Quad4 TCP узел 1</string>
+    <string name="tcp_client_server_firezen">FireZen</string>
+    <string name="tcp_client_server_g00n_cloud_hub">Узел g00n.cloud</string>
+    <string name="tcp_client_server_interloper_node">Узел interloper</string>
+    <string name="tcp_client_server_interloper_node_tor">Узел interloper (Tor)</string>
+    <string name="tcp_client_server_jons_node">Узел Jon\'s</string>
+    <string name="tcp_client_server_nodns1">noDNS1</string>
+    <string name="tcp_client_server_nodns2">noDNS2</string>
+    <string name="tcp_client_server_nomadnode_seasia_tcp">NomadNode TCP Юго-Восточная Азия</string>
+    <string name="tcp_client_server_0rbit_net">0rbit-Net</string>
+    <string name="tcp_client_server_quad4_tcp_node_2">Quad4 TCP узел 2</string>
+    <string name="tcp_client_server_quortal_tcp_node">Quortal TCP узел</string>
+    <string name="tcp_client_server_r_net_tcp">R-Net TCP</string>
+    <string name="tcp_client_server_rns_bnz_node01">RNS bnZ-УЗЕЛ01</string>
+    <string name="tcp_client_server_rns_comsec_rd">RNS COMSEC-RD</string>
+    <string name="tcp_client_server_rns_ham_radio">RNS HAM RADIO</string>
+    <string name="tcp_client_server_rns_testnet_stoppedcold">RNS тестовая сеть StoppedCold</string>
+    <string name="tcp_client_server_rns_transport_us_east">RNS_Transport_US-East</string>
+    <string name="tcp_client_server_sparkn0de">SparkN0de</string>
+    <string name="tcp_client_server_tidudanka">Tidudanka.com</string>
     <!-- Crash report -->
     <string name="crash_report_title">Приложение аварийно завершилось</string>
     <string name="crash_report_message">Приложение неожиданно завершило работу. Хотите сообщить об этой проблеме?</string>

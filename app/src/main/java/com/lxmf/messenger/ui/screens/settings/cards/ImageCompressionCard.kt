@@ -220,8 +220,8 @@ private fun formatBytes(bytes: Long): String {
 
 @Composable
 private fun presetDisplayName(preset: ImageCompressionPreset): String =
-    LocalContext.current.getString(preset.displayNameRes)
+    preset.localizedDisplayName(LocalContext.current)
 
 @Composable
 private fun presetDescription(preset: ImageCompressionPreset): String =
-    LocalContext.current.getString(preset.descriptionRes)
+    preset.localizedDescription(LocalContext.current)

@@ -24,6 +24,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -103,6 +104,7 @@ private fun ServerCard(
     isSelected: Boolean,
     onClick: () -> Unit,
 ) {
+    val context = LocalContext.current
     val containerColor =
         if (isSelected) {
             MaterialTheme.colorScheme.primaryContainer
@@ -137,7 +139,7 @@ private fun ServerCard(
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = server.name,
+                    text = server.localizedDisplayName(context),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
                 )

@@ -27,6 +27,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -42,6 +43,7 @@ import com.lxmf.messenger.viewmodel.TcpClientWizardViewModel
 @Composable
 fun ReviewConfigureStep(viewModel: TcpClientWizardViewModel) {
     val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
 
     Column(
         modifier =
@@ -76,7 +78,7 @@ fun ReviewConfigureStep(viewModel: TcpClientWizardViewModel) {
                         color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f),
                     )
                     Text(
-                        if (state.isCustomMode) stringResource(R.string.tcp_client_custom_server) else state.selectedServer?.name.orEmpty(),
+                        if (state.isCustomMode) stringResource(R.string.tcp_client_custom_server) else state.selectedServer?.localizedDisplayName(context).orEmpty(),
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                     )

@@ -1,6 +1,7 @@
 package com.lxmf.messenger.ui.components
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.lxmf.messenger.R
 import com.lxmf.messenger.service.ConversationLinkManager
@@ -26,6 +27,7 @@ fun CodecSelectionDialog(
     onDismiss: () -> Unit,
     onProfileSelected: (CodecProfile) -> Unit,
 ) {
+    val context = LocalContext.current
     val title = stringResource(R.string.codec_selection_title)
     val subtitle = stringResource(R.string.codec_selection_subtitle)
     val confirmButtonText = stringResource(R.string.codec_selection_confirm)
@@ -34,8 +36,8 @@ fun CodecSelectionDialog(
         CodecProfile.entries.map { profile ->
             QualityOption(
                 value = profile,
-                displayName = stringResource(profile.displayNameRes),
-                description = stringResource(profile.descriptionRes),
+                displayName = profile.localizedDisplayName(context),
+                description = profile.localizedDescription(context),
                 isExperimental = profile.isExperimental,
             )
         }
