@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.chaquo.python.PyObject
 import com.chaquo.python.Python
+import com.lxmf.messenger.R
 import com.lxmf.messenger.crypto.StampGenerator
 import com.lxmf.messenger.reticulum.ble.bridge.KotlinBLEBridge
 import com.lxmf.messenger.reticulum.bridge.KotlinReticulumBridge
@@ -77,6 +78,50 @@ class PythonWrapperManager(
         fun PyObject.getDictValue(key: String): PyObject? = this.callAttr("get", key)
     }
 
+    fun string(
+        resId: Int,
+        fallback: String,
+        vararg args: Any,
+    ): String =
+        runCatching {
+            if (args.isEmpty()) {
+                context.getString(resId).takeIf { it.isNotBlank() } ?: fallback
+            } else {
+                context.getString(resId, *args).takeIf { it.isNotBlank() } ?: fallback.format(*args)
+            }
+        }.getOrElse {
+            if (args.isEmpty()) fallback else fallback.format(*args)
+        }
+
+    fun unknownErrorMessage(): String = string(R.string.identity_screen_unknown_error, "Unknown error")
+
+    fun commonUnknownMessage(): String = string(R.string.common_unknown, "Unknown")
+
+    fun serviceNotInitializedMessage(): String =
+        string(R.string.service_manager_service_not_initialized, "Service not initialized")
+
+    fun wrapperNotAvailableMessage(): String =
+        string(R.string.service_manager_wrapper_not_available, "Wrapper not available")
+
+    fun wrapperNotInitializedMessage(): String =
+        string(R.string.service_manager_wrapper_not_initialized, "Wrapper not initialized")
+
+    fun noResultFromPythonMessage(): String =
+        string(R.string.service_manager_no_result_from_python, "No result from Python")
+
+    fun messageOrUnknown(message: String?): String = message ?: unknownErrorMessage()
+
+    fun errorJson(
+        message: String?,
+        includeSuccess: Boolean = false,
+        active: Boolean? = null,
+    ): String =
+        org.json.JSONObject().apply {
+            if (includeSuccess) put("success", false)
+            if (active != null) put("active", active)
+            put("error", messageOrUnknown(message))
+        }.toString()
+
     /**
      * Initialize the Python Reticulum wrapper.
      *
@@ -149,7 +194,12 @@ class PythonWrapperManager(
                         val duration = System.currentTimeMillis() - startTime
                         Log.e(TAG, "Python initialization timed out after ${duration}ms")
                         state.wrapper = null // Clean up on failure
-                        onError("Initialization timeout - potential ANR risk")
+                        onError(
+                            string(
+                                R.string.python_wrapper_init_timeout,
+                                "Initialization timeout - potential ANR risk",
+                            ),
+                        )
                         return@withLock
                     } finally {
                         val duration = System.currentTimeMillis() - startTime
@@ -174,7 +224,7 @@ class PythonWrapperManager(
 
                     onSuccess(isSharedInstance)
                 } else {
-                    val error = result.getDictValue("error")?.toString() ?: "Unknown error"
+                    val error = result.getDictValue("error")?.toString() ?: unknownErrorMessage()
                     Log.e(TAG, "Reticulum initialization failed: $error")
                     state.wrapper = null // Clean up on failure
                     onError(sanitizeErrorMessage(error))
@@ -182,7 +232,7 @@ class PythonWrapperManager(
             } catch (e: Exception) {
                 Log.e(TAG, "Initialization failed", e)
                 state.wrapper = null // Clean up on failure
-                onError(sanitizeErrorMessage(e.message ?: "Unknown error"))
+                onError(sanitizeErrorMessage(messageOrUnknown(e.message)))
             }
         }
     }
@@ -522,7 +572,7 @@ class PythonWrapperManager(
                             ?.entries
                             ?.find { it.key.toString() == "error" }
                             ?.value
-                            ?.toString() ?: "Unknown error"
+                            ?.toString() ?: unknownErrorMessage()
                     result?.close()
                     Log.e(TAG, "Failed to initialize CallManager: $error")
                     false
@@ -828,7 +878,7 @@ class PythonWrapperManager(
             api.callAttr("identify_nomadnet_link", destHash).toString()
         } catch (e: Exception) {
             Log.e(TAG, "Error identifying on NomadNet link", e)
-            """{"success": false, "error": ${org.json.JSONObject.quote(e.message ?: "Unknown error")}}"""
+            errorJson(e.message, includeSuccess = true)
         }
     }
 
@@ -861,10 +911,10 @@ class PythonWrapperManager(
                     formDataJson,
                     timeoutSeconds,
                 )
-            result?.toString() ?: """{"success": false, "error": "No result from Python"}"""
+            result?.toString() ?: errorJson(noResultFromPythonMessage(), includeSuccess = true)
         } catch (e: Exception) {
             Log.e(TAG, "Error requesting NomadNet page", e)
-            """{"success": false, "error": ${org.json.JSONObject.quote(e.message ?: "Unknown error")}}"""
+            errorJson(e.message, includeSuccess = true)
         }
     }
 

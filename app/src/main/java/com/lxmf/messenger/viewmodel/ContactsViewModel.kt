@@ -493,7 +493,9 @@ class ContactsViewModel
                             requestContactPath(viewModelScope, identityResolutionManager, identityInput.destinationHash)
                             AddContactResult.Success
                         } else {
-                            val error = result.exceptionOrNull()?.message ?: "Unknown error"
+                            val error =
+                                result.exceptionOrNull()?.message
+                                    ?: localizedString(context, R.string.identity_screen_unknown_error, "Unknown error")
                             Log.e(TAG, "Failed to add contact: $error")
                             AddContactResult.Error(error)
                         }

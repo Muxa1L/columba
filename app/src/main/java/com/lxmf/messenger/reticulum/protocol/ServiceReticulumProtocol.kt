@@ -1308,7 +1308,12 @@ class ServiceReticulumProtocol(
                 val result = JSONObject(resultJson)
 
                 if (result.has("error")) {
-                    throw RuntimeException(result.optString("error", "Unknown error"))
+                    throw IllegalStateException(
+                        result.optString(
+                            "error",
+                            string(R.string.identity_screen_unknown_error, "Unknown error"),
+                        ),
+                    )
                 }
 
                 val hashStr = result.optString("hash", null)
@@ -1352,13 +1357,17 @@ class ServiceReticulumProtocol(
         path: String,
     ): Result<Unit> =
         runCatching {
-            val service = this.service ?: throw IllegalStateException("Service not bound")
+            val service =
+                this.service
+                    ?: throw IllegalStateException(
+                        string(R.string.service_notification_error_not_bound, "Service not bound"),
+                    )
 
             val resultJson = service.saveIdentity(identity.privateKey ?: byteArrayOf(), path)
             val result = JSONObject(resultJson)
 
             if (!result.optBoolean("success", false)) {
-                val error = result.optString("error", "Unknown error")
+                val error = result.optString("error", string(R.string.identity_screen_unknown_error, "Unknown error"))
                 throw RuntimeException(error)
             }
         }
@@ -1401,7 +1410,7 @@ class ServiceReticulumProtocol(
             parseIdentityResultJson(resultJson)
         }.getOrElse { e ->
             Log.e(TAG, "Failed to create identity with name", e)
-            mapOf("error" to (e.message ?: "Unknown error"))
+            mapOf("error" to (e.message ?: string(R.string.identity_screen_unknown_error, "Unknown error")))
         }
 
     override suspend fun deleteIdentityFile(identityHash: String): Map<String, Any> =
@@ -1422,7 +1431,10 @@ class ServiceReticulumProtocol(
             map
         }.getOrElse { e ->
             Log.e(TAG, "Failed to delete identity file", e)
-            mapOf("success" to false, "error" to (e.message ?: "Unknown error"))
+            mapOf(
+                "success" to false,
+                "error" to (e.message ?: string(R.string.identity_screen_unknown_error, "Unknown error")),
+            )
         }
 
     override suspend fun importIdentityFile(
@@ -1435,7 +1447,7 @@ class ServiceReticulumProtocol(
             parseIdentityResultJson(resultJson)
         }.getOrElse { e ->
             Log.e(TAG, "Failed to import identity file", e)
-            mapOf("error" to (e.message ?: "Unknown error"))
+            mapOf("error" to (e.message ?: string(R.string.identity_screen_unknown_error, "Unknown error")))
         }
 
     override suspend fun exportIdentityFile(

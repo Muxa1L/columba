@@ -88,7 +88,7 @@ class MessagingManager(private val wrapperManager: PythonWrapperManager) {
                         put("destination_hash", destHashUsed.toBase64())
                     }.toString()
                 } else {
-                    val error = result.getDictValue("error")?.toString() ?: "Unknown error"
+                    val error = result.getDictValue("error")?.toString() ?: wrapperManager.unknownErrorMessage()
                     JSONObject().apply {
                         put("success", false)
                         put("error", error)
@@ -98,14 +98,14 @@ class MessagingManager(private val wrapperManager: PythonWrapperManager) {
                 Log.e(TAG, "Error sending LXMF message", e)
                 JSONObject().apply {
                     put("success", false)
-                    put("error", e.message)
+                    put("error", wrapperManager.messageOrUnknown(e.message))
                 }.toString()
             }
         } ?: run {
             Log.w(TAG, "sendLxmfMessage called but wrapper is null (service not initialized)")
             JSONObject().apply {
                 put("success", false)
-                put("error", "Service not initialized")
+                put("error", wrapperManager.serviceNotInitializedMessage())
             }.toString()
         }
     }

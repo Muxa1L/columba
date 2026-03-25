@@ -6,6 +6,7 @@ import com.lxmf.messenger.IInitializationCallback
 import com.lxmf.messenger.IReadinessCallback
 import com.lxmf.messenger.IReticulumService
 import com.lxmf.messenger.IReticulumServiceCallback
+import com.lxmf.messenger.R
 import com.lxmf.messenger.crypto.StampGenerator
 import com.lxmf.messenger.notifications.CallNotificationHelper
 import com.lxmf.messenger.reticulum.rnode.KotlinRNodeBridge
@@ -71,6 +72,40 @@ class ReticulumServiceBinder(
     companion object {
         private const val TAG = "ReticulumServiceBinder"
     }
+
+    private fun string(
+        resId: Int,
+        fallback: String,
+        vararg args: Any,
+    ): String =
+        runCatching {
+            if (args.isEmpty()) {
+                context.getString(resId).takeIf { it.isNotBlank() } ?: fallback
+            } else {
+                context.getString(resId, *args).takeIf { it.isNotBlank() } ?: fallback.format(*args)
+            }
+        }.getOrElse {
+            if (args.isEmpty()) fallback else fallback.format(*args)
+        }
+
+    private fun binderErrorJson(
+        message: String?,
+        includeSuccess: Boolean = true,
+        active: Boolean? = null,
+    ): String =
+        JSONObject().apply {
+            if (includeSuccess) put("success", false)
+            if (active != null) put("active", active)
+            put("error", message ?: string(R.string.identity_screen_unknown_error, "Unknown error"))
+        }.toString()
+
+    private fun wrapperNotAvailableJson(
+        includeSuccess: Boolean = true,
+        active: Boolean? = null,
+    ): String = binderErrorJson(string(R.string.service_manager_wrapper_not_available, "Wrapper not available"), includeSuccess, active)
+
+    private fun noResultFromPythonJson(includeSuccess: Boolean = true): String =
+        binderErrorJson(string(R.string.service_manager_no_result_from_python, "No result from Python"), includeSuccess)
 
     // RNode bridge - created lazily when needed
     private var rnodeBridge: KotlinRNodeBridge? = null
@@ -195,7 +230,7 @@ class ReticulumServiceBinder(
             } catch (e: Exception) {
                 Log.e(TAG, "Initialization failed", e)
                 try {
-                    callback.onInitializationError(e.message ?: "Unknown error")
+                    callback.onInitializationError(e.message ?: string(R.string.identity_screen_unknown_error, "Unknown error"))
                 } catch (re: android.os.RemoteException) {
                     Log.w(TAG, "Client died before initialization error callback", re)
                 }
@@ -690,7 +725,7 @@ class ReticulumServiceBinder(
                                 ?.entries
                                 ?.find { it.key.toString() == "error" }
                                 ?.value
-                                ?.toString() ?: "Unknown error"
+                                ?.toString() ?: string(R.string.identity_screen_unknown_error, "Unknown error")
                         Log.w(TAG, "████ RECONNECT RNODE FAILED ████ $error")
                     }
                 }
@@ -930,11 +965,11 @@ class ReticulumServiceBinder(
                         iconFgColor,
                         iconBgColor,
                     )
-                result?.toString() ?: """{"success": false, "error": "No result from Python"}"""
-            } ?: """{"success": false, "error": "Wrapper not available"}"""
+                result?.toString() ?: noResultFromPythonJson()
+            } ?: wrapperNotAvailableJson()
         } catch (e: Exception) {
             Log.e(TAG, "Error sending location telemetry", e)
-            """{"success": false, "error": "${e.message}"}"""
+            binderErrorJson(e.message)
         }
 
     override fun sendTelemetryRequest(
@@ -956,11 +991,11 @@ class ReticulumServiceBinder(
                         timebaseSec,
                         isCollectorRequest,
                     )
-                result?.toString() ?: """{"success": false, "error": "No result from Python"}"""
-            } ?: """{"success": false, "error": "Wrapper not available"}"""
+                result?.toString() ?: noResultFromPythonJson()
+            } ?: wrapperNotAvailableJson()
         } catch (e: Exception) {
             Log.e(TAG, "Error sending telemetry request", e)
-            """{"success": false, "error": "${e.message}"}"""
+            binderErrorJson(e.message)
         }
 
     override fun setTelemetryCollectorMode(enabled: Boolean): String =
@@ -968,11 +1003,11 @@ class ReticulumServiceBinder(
             Log.d(TAG, "📡 Setting telemetry collector mode: $enabled")
             wrapperManager.withWrapper { wrapper ->
                 val result = wrapper.callAttr("set_telemetry_collector_enabled", enabled)
-                result?.toString() ?: """{"success": false, "error": "No result from Python"}"""
-            } ?: """{"success": false, "error": "Wrapper not available"}"""
+                result?.toString() ?: noResultFromPythonJson()
+            } ?: wrapperNotAvailableJson()
         } catch (e: Exception) {
             Log.e(TAG, "Error setting telemetry collector mode", e)
-            """{"success": false, "error": "${e.message}"}"""
+            binderErrorJson(e.message)
         }
 
     override fun setTelemetryAllowedRequesters(allowedHashesJson: String): String =
@@ -991,11 +1026,11 @@ class ReticulumServiceBinder(
                         .builtins
                         .callAttr("list", allowedList.toTypedArray())
                 val result = wrapper.callAttr("set_telemetry_allowed_requesters", pyList)
-                result?.toString() ?: """{"success": false, "error": "No result from Python"}"""
-            } ?: """{"success": false, "error": "Wrapper not available"}"""
+                result?.toString() ?: noResultFromPythonJson()
+            } ?: wrapperNotAvailableJson()
         } catch (e: Exception) {
             Log.e(TAG, "Error setting telemetry allowed requesters", e)
-            """{"success": false, "error": "${e.message}"}"""
+            binderErrorJson(e.message)
         }
 
     override fun storeOwnTelemetry(
@@ -1014,11 +1049,11 @@ class ReticulumServiceBinder(
                         iconFgColor,
                         iconBgColor,
                     )
-                result?.toString() ?: """{"success": false, "error": "No result from Python"}"""
-            } ?: """{"success": false, "error": "Wrapper not available"}"""
+                result?.toString() ?: noResultFromPythonJson()
+            } ?: wrapperNotAvailableJson()
         } catch (e: Exception) {
             Log.e(TAG, "Error storing own telemetry", e)
-            """{"success": false, "error": "${e.message}"}"""
+            binderErrorJson(e.message)
         }
 
     // ===========================================
@@ -1042,11 +1077,11 @@ class ReticulumServiceBinder(
                         emoji,
                         sourceIdentityPrivateKey,
                     )
-                result?.toString() ?: """{"success": false, "error": "No result from Python"}"""
-            } ?: """{"success": false, "error": "Wrapper not available"}"""
+                result?.toString() ?: noResultFromPythonJson()
+            } ?: wrapperNotAvailableJson()
         } catch (e: Exception) {
             Log.e(TAG, "Error sending reaction", e)
-            """{"success": false, "error": "${e.message}"}"""
+            binderErrorJson(e.message)
         }
 
     // ===========================================
@@ -1057,30 +1092,22 @@ class ReticulumServiceBinder(
         try {
             wrapperManager.withWrapper { wrapper ->
                 wrapper.callAttr("block_destination", destinationHashHex)?.toString()
-                    ?: """{"success": false, "error": "No result"}"""
-            } ?: """{"success": false, "error": "Wrapper not initialized"}"""
+                    ?: noResultFromPythonJson()
+            } ?: binderErrorJson(string(R.string.service_manager_wrapper_not_initialized, "Wrapper not initialized"))
         } catch (e: Exception) {
             Log.e(TAG, "Error blocking destination", e)
-            org.json
-                .JSONObject()
-                .put("success", false)
-                .put("error", e.message ?: "Unknown error")
-                .toString()
+            binderErrorJson(e.message)
         }
 
     override fun unblockDestination(destinationHashHex: String): String =
         try {
             wrapperManager.withWrapper { wrapper ->
                 wrapper.callAttr("unblock_destination", destinationHashHex)?.toString()
-                    ?: """{"success": false, "error": "No result"}"""
-            } ?: """{"success": false, "error": "Wrapper not initialized"}"""
+                    ?: noResultFromPythonJson()
+            } ?: binderErrorJson(string(R.string.service_manager_wrapper_not_initialized, "Wrapper not initialized"))
         } catch (e: Exception) {
             Log.e(TAG, "Error unblocking destination", e)
-            org.json
-                .JSONObject()
-                .put("success", false)
-                .put("error", e.message ?: "Unknown error")
-                .toString()
+            binderErrorJson(e.message)
         }
 
     override fun restoreBlockedDestinations(hashesJson: String): String =
@@ -1097,60 +1124,44 @@ class ReticulumServiceBinder(
                             },
                         )
                 wrapper.callAttr("restore_blocked_destinations", pyList)?.toString()
-                    ?: """{"success": false, "error": "No result"}"""
-            } ?: """{"success": false, "error": "Wrapper not initialized"}"""
+                    ?: noResultFromPythonJson()
+            } ?: binderErrorJson(string(R.string.service_manager_wrapper_not_initialized, "Wrapper not initialized"))
         } catch (e: Exception) {
             Log.e(TAG, "Error restoring blocked destinations", e)
-            org.json
-                .JSONObject()
-                .put("success", false)
-                .put("error", e.message ?: "Unknown error")
-                .toString()
+            binderErrorJson(e.message)
         }
 
     override fun blackholeIdentity(identityHashHex: String): String =
         try {
             wrapperManager.withWrapper { wrapper ->
                 wrapper.callAttr("blackhole_identity", identityHashHex)?.toString()
-                    ?: """{"success": false, "error": "No result"}"""
-            } ?: """{"success": false, "error": "Wrapper not initialized"}"""
+                    ?: noResultFromPythonJson()
+            } ?: binderErrorJson(string(R.string.service_manager_wrapper_not_initialized, "Wrapper not initialized"))
         } catch (e: Exception) {
             Log.e(TAG, "Error blackholing identity", e)
-            org.json
-                .JSONObject()
-                .put("success", false)
-                .put("error", e.message ?: "Unknown error")
-                .toString()
+            binderErrorJson(e.message)
         }
 
     override fun unblackholeIdentity(identityHashHex: String): String =
         try {
             wrapperManager.withWrapper { wrapper ->
                 wrapper.callAttr("unblackhole_identity", identityHashHex)?.toString()
-                    ?: """{"success": false, "error": "No result"}"""
-            } ?: """{"success": false, "error": "Wrapper not initialized"}"""
+                    ?: noResultFromPythonJson()
+            } ?: binderErrorJson(string(R.string.service_manager_wrapper_not_initialized, "Wrapper not initialized"))
         } catch (e: Exception) {
             Log.e(TAG, "Error unblackholing identity", e)
-            org.json
-                .JSONObject()
-                .put("success", false)
-                .put("error", e.message ?: "Unknown error")
-                .toString()
+            binderErrorJson(e.message)
         }
 
     override fun isTransportEnabled(): String =
         try {
             wrapperManager.withWrapper { wrapper ->
                 wrapper.callAttr("is_transport_enabled")?.toString()
-                    ?: """{"success": false, "error": "No result"}"""
-            } ?: """{"success": false, "error": "Wrapper not initialized"}"""
+                    ?: noResultFromPythonJson()
+            } ?: binderErrorJson(string(R.string.service_manager_wrapper_not_initialized, "Wrapper not initialized"))
         } catch (e: Exception) {
             Log.e(TAG, "Error checking transport enabled", e)
-            org.json
-                .JSONObject()
-                .put("success", false)
-                .put("error", e.message ?: "Unknown error")
-                .toString()
+            binderErrorJson(e.message)
         }
 
     // ===========================================
@@ -1165,11 +1176,11 @@ class ReticulumServiceBinder(
             Log.d(TAG, "🔗 Establishing link to ${destHash.joinToString("") { "%02x".format(it) }.take(16)}...")
             wrapperManager.withWrapper { wrapper ->
                 val result = wrapper.callAttr("establish_link", destHash, timeoutSeconds)
-                result?.toString() ?: """{"success": false, "error": "No result from Python"}"""
-            } ?: """{"success": false, "error": "Wrapper not available"}"""
+                result?.toString() ?: noResultFromPythonJson()
+            } ?: wrapperNotAvailableJson()
         } catch (e: Exception) {
             Log.e(TAG, "Error establishing link", e)
-            """{"success": false, "error": "${e.message}"}"""
+            binderErrorJson(e.message)
         }
 
     override fun closeLink(destHash: ByteArray): String =
@@ -1177,22 +1188,22 @@ class ReticulumServiceBinder(
             Log.d(TAG, "🔗 Closing link to ${destHash.joinToString("") { "%02x".format(it) }.take(16)}...")
             wrapperManager.withWrapper { wrapper ->
                 val result = wrapper.callAttr("close_link", destHash)
-                result?.toString() ?: """{"success": false, "error": "No result from Python"}"""
-            } ?: """{"success": false, "error": "Wrapper not available"}"""
+                result?.toString() ?: noResultFromPythonJson()
+            } ?: wrapperNotAvailableJson()
         } catch (e: Exception) {
             Log.e(TAG, "Error closing link", e)
-            """{"success": false, "error": "${e.message}"}"""
+            binderErrorJson(e.message)
         }
 
     override fun getLinkStatus(destHash: ByteArray): String =
         try {
             wrapperManager.withWrapper { wrapper ->
                 val result = wrapper.callAttr("get_link_status", destHash)
-                result?.toString() ?: """{"active": false, "error": "No result from Python"}"""
-            } ?: """{"active": false, "error": "Wrapper not available"}"""
+                result?.toString() ?: noResultFromPythonJson(includeSuccess = false)
+            } ?: wrapperNotAvailableJson(includeSuccess = false, active = false)
         } catch (e: Exception) {
             Log.e(TAG, "Error getting link status", e)
-            """{"active": false, "error": "${e.message}"}"""
+            binderErrorJson(e.message, includeSuccess = false, active = false)
         }
 
     // ===========================================

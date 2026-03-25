@@ -2493,6 +2493,17 @@ Receipt hash: %2$s...</string>
   <string name="update_checker_parse_release_info_failed">Could not parse release info</string>
   <string name="update_checker_parse_version_numbers_failed">Could not parse version numbers</string>
   <string name="update_checker_network_error">Network error</string>
+  <string name="telemetry_host_mode_sync_unknown">Unknown host mode sync error</string>
+  <string name="telemetry_host_mode_enable_failed">Failed to enable host mode: %1$s</string>
+  <string name="telemetry_already_sending">Already sending</string>
+  <string name="telemetry_already_requesting">Already requesting</string>
+  <string name="telemetry_protocol_not_available">Protocol not available</string>
+  <string name="telemetry_no_lxmf_identity">No LXMF identity</string>
+  <string name="python_wrapper_init_timeout">Initialization timeout - potential ANR risk</string>
+  <string name="service_manager_service_not_initialized">Service not initialized</string>
+  <string name="service_manager_wrapper_not_available">Wrapper not available</string>
+  <string name="service_manager_wrapper_not_initialized">Wrapper not initialized</string>
+  <string name="service_manager_no_result_from_python">No result from Python</string>
   <string name="file_utils_could_not_open_file">Could not open file</string>
   <string name="reticulum_service_notification_title">Columba Mesh Network</string>
   <string name="service_reticulum_connection_lost_restart_app">Service connection lost - please restart the app</string>

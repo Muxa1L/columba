@@ -262,12 +262,12 @@ class IdentityManager(private val wrapperManager: PythonWrapperManager) {
                 Log.e(TAG, "Error recovering identity file", e)
                 JSONObject().apply {
                     put("success", false)
-                    put("error", e.message ?: "Unknown error")
+                    put("error", wrapperManager.messageOrUnknown(e.message))
                 }.toString()
             }
         } ?: JSONObject().apply {
             put("success", false)
-            put("error", "Wrapper not available")
+            put("error", wrapperManager.wrapperNotAvailableMessage())
         }.toString()
     }
 
@@ -335,12 +335,12 @@ class IdentityManager(private val wrapperManager: PythonWrapperManager) {
 
     private fun errorJson(message: String?): String {
         return JSONObject().apply {
-            put("error", message)
+            put("error", wrapperManager.messageOrUnknown(message))
         }.toString()
     }
 
     private fun notInitializedError(method: String): String {
         Log.w(TAG, "$method called but wrapper is null (service not initialized)")
-        return errorJson("Service not initialized")
+        return errorJson(wrapperManager.serviceNotInitializedMessage())
     }
 }

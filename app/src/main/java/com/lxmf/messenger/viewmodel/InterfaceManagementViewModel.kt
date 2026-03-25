@@ -461,14 +461,14 @@ class InterfaceManagementViewModel
                         interfaceRepository.updateInterface(editingId, config)
                         showSuccess(
                             context?.getString(R.string.interface_management_interface_updated)
-                                ?: "Interface updated successfully",
+                                ?: context?.getString(R.string.interface_management_interface_updated).orEmpty(),
                         )
                     } else {
                         // Insert new interface
                         interfaceRepository.insertInterface(config)
                         showSuccess(
                             context?.getString(R.string.interface_management_interface_added)
-                                ?: "Interface added successfully",
+                                ?: context?.getString(R.string.interface_management_interface_added).orEmpty(),
                         )
                     }
 
@@ -477,11 +477,12 @@ class InterfaceManagementViewModel
 
                     hideDialog()
                 } catch (e: Exception) {
+                    val unknown = context?.getString(R.string.common_unknown) ?: "Unknown"
                     showError(
                         context?.getString(
                             R.string.interface_management_save_failed,
-                            e.message ?: context.getString(R.string.common_unknown),
-                        ) ?: "Failed to save interface: ${e.message ?: "Unknown"}",
+                            e.message ?: unknown,
+                        ) ?: "",
                     )
                 }
             }
@@ -502,11 +503,12 @@ class InterfaceManagementViewModel
                     // Mark that there are pending changes
                     _state.value = _state.value.copy(hasPendingChanges = true)
                 } catch (e: Exception) {
+                    val unknown = context?.getString(R.string.common_unknown) ?: "Unknown"
                     showError(
                         context?.getString(
                             R.string.interface_management_delete_failed,
-                            e.message ?: context.getString(R.string.common_unknown),
-                        ) ?: "Failed to delete interface: ${e.message ?: "Unknown"}",
+                            e.message ?: unknown,
+                        ) ?: "",
                     )
                 }
             }
@@ -544,11 +546,12 @@ class InterfaceManagementViewModel
                     // Mark that there are pending changes
                     _state.value = _state.value.copy(hasPendingChanges = true)
                 } catch (e: Exception) {
+                    val unknown = context?.getString(R.string.common_unknown) ?: "Unknown"
                     showError(
                         context?.getString(
                             R.string.interface_management_toggle_failed,
-                            e.message ?: context.getString(R.string.common_unknown),
-                        ) ?: "Failed to toggle interface: ${e.message ?: "Unknown"}",
+                            e.message ?: unknown,
+                        ) ?: "",
                     )
                 }
             }
@@ -1013,20 +1016,22 @@ class InterfaceManagementViewModel
                             )
                         showSuccess(
                             context?.getString(R.string.interface_management_apply_changes_success)
-                                ?: "Configuration applied successfully",
+                                ?: context?.getString(R.string.interface_management_apply_changes_success).orEmpty(),
                         )
                     }.onFailure { error ->
+                        val unknown = context?.getString(R.string.common_unknown) ?: "Unknown"
                         _state.value =
                             _state.value.copy(
                                 isApplyingChanges = false,
                                 applyChangesError =
                                     context?.getString(
                                         R.string.interface_management_apply_changes_failed,
-                                        error.message ?: context.getString(R.string.common_unknown),
-                                    ) ?: "Failed to apply changes: ${error.message ?: "Unknown"}",
+                                        error.message ?: unknown,
+                                    ) ?: "",
                             )
                     }
                 } catch (e: Exception) {
+                    val unknown = context?.getString(R.string.common_unknown) ?: "Unknown"
                     // Catch any unexpected exceptions to ensure UI state is reset
                     _state.value =
                         _state.value.copy(
@@ -1034,8 +1039,8 @@ class InterfaceManagementViewModel
                             applyChangesError =
                                 context?.getString(
                                     R.string.interface_management_unexpected_error,
-                                    e.message ?: context.getString(R.string.common_unknown),
-                                ) ?: "Unexpected error occurred: ${e.message ?: "Unknown"}",
+                                    e.message ?: unknown,
+                                ) ?: "",
                         )
                 }
             }

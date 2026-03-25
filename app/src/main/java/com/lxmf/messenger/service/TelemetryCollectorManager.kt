@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.lxmf.messenger.R
 import com.lxmf.messenger.di.ApplicationScope
 import com.lxmf.messenger.repository.SettingsRepository
 import com.lxmf.messenger.reticulum.model.NetworkStatus
@@ -160,6 +161,21 @@ class TelemetryCollectorManager
         // Initialize from persisted values to avoid immediate retry after process death.
         private var lastSendAttemptAt: Long? = _lastSendTime.value
         private var lastRequestAttemptAt: Long? = _lastRequestTime.value
+
+        private fun string(
+            resId: Int,
+            fallback: String,
+            vararg args: Any,
+        ): String =
+            runCatching {
+                if (args.isEmpty()) {
+                    context.getString(resId).takeIf { it.isNotBlank() } ?: fallback
+                } else {
+                    context.getString(resId, *args).takeIf { it.isNotBlank() } ?: fallback.format(*args)
+                }
+            }.getOrElse {
+                if (args.isEmpty()) fallback else fallback.format(*args)
+            }
 
         /**
          * Start the manager - begin observing settings and schedule periodic sends.
@@ -654,9 +670,46 @@ class TelemetryCollectorManager
             val hostModeSyncResult = reticulumProtocol.setTelemetryCollectorMode(true)
             if (hostModeSyncResult.isSuccess) return null
 
-            val syncError = hostModeSyncResult.exceptionOrNull()?.message ?: "Unknown host mode sync error"
+            val syncError =
+                hostModeSyncResult.exceptionOrNull()?.message
+                    ?: string(
+                        R.string.telemetry_host_mode_sync_unknown,
+                        "Unknown host mode sync error",
+                    )
             Log.e(TAG, "❌ Failed to re-sync host mode before self telemetry store: $syncError")
-            return TelemetrySendResult.Error("Failed to enable host mode: $syncError")
+            return TelemetrySendResult.Error(
+                string(
+                    R.string.telemetry_host_mode_enable_failed,
+                    "Failed to enable host mode: %1\$s",
+                    syncError,
+                ),
+            )
+        }
+
+        private suspend fun getActiveIdentityIconAppearance(): com.lxmf.messenger.reticulum.protocol.IconAppearance? =
+            identityRepository.getActiveIdentitySync()?.let { activeId ->
+                val name = activeId.iconName
+                val fg = activeId.iconForegroundColor
+                val bg = activeId.iconBackgroundColor
+                if (name != null && fg != null && bg != null) {
+                    com.lxmf.messenger.reticulum.protocol.IconAppearance(
+                        iconName = name,
+                        foregroundColor = fg,
+                        backgroundColor = bg,
+                    )
+                } else {
+                    null
+                }
+            }
+
+        private suspend fun getServiceProtocolIdentity(): com.lxmf.messenger.reticulum.model.Identity? {
+            val serviceProtocol = reticulumProtocol as? ServiceReticulumProtocol ?: return null
+            return try {
+                serviceProtocol.getLxmfIdentity().getOrNull()
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to get LXMF identity", e)
+                null
+            }
         }
 
         /**
@@ -666,7 +719,9 @@ class TelemetryCollectorManager
         private suspend fun sendTelemetryToCollector(collectorHash: String): TelemetrySendResult {
             if (_isSending.value) {
                 Log.d(TAG, "Already sending, skipping")
-                return TelemetrySendResult.Error("Already sending")
+                return TelemetrySendResult.Error(
+                    string(R.string.telemetry_already_sending, "Already sending"),
+                )
             }
 
             _isSending.value = true
@@ -694,21 +749,7 @@ class TelemetryCollectorManager
                 val locationJson = Json.encodeToString(telemetryData)
 
                 // Get user's icon appearance for Sideband/MeshChat interoperability
-                val iconAppearance =
-                    identityRepository.getActiveIdentitySync()?.let { activeId ->
-                        val name = activeId.iconName
-                        val fg = activeId.iconForegroundColor
-                        val bg = activeId.iconBackgroundColor
-                        if (name != null && fg != null && bg != null) {
-                            com.lxmf.messenger.reticulum.protocol.IconAppearance(
-                                iconName = name,
-                                foregroundColor = fg,
-                                backgroundColor = bg,
-                            )
-                        } else {
-                            null
-                        }
-                    }
+                val iconAppearance = getActiveIdentityIconAppearance()
 
                 // If the collector is ourselves, store locally instead of sending via network
                 val result =
@@ -718,17 +759,15 @@ class TelemetryCollectorManager
                         reticulumProtocol.storeOwnTelemetry(locationJson, iconAppearance)
                     } else {
                         // Get LXMF identity for network send
-                        val serviceProtocol =
-                            reticulumProtocol as? ServiceReticulumProtocol
-                                ?: return TelemetrySendResult.Error("Protocol not available")
-
                         val sourceIdentity =
-                            try {
-                                serviceProtocol.getLxmfIdentity().getOrNull()
-                            } catch (e: Exception) {
-                                Log.e(TAG, "Failed to get LXMF identity", e)
-                                null
-                            } ?: return TelemetrySendResult.Error("No LXMF identity")
+                            getServiceProtocolIdentity()
+                                ?: return TelemetrySendResult.Error(
+                                    if (reticulumProtocol is ServiceReticulumProtocol) {
+                                        string(R.string.telemetry_no_lxmf_identity, "No LXMF identity")
+                                    } else {
+                                        string(R.string.telemetry_protocol_not_available, "Protocol not available")
+                                    },
+                                )
 
                         val collectorBytes = collectorHash.hexToByteArray()
                         reticulumProtocol.sendLocationTelemetry(
@@ -746,7 +785,9 @@ class TelemetryCollectorManager
                     Log.i(TAG, "✅ Telemetry sent to collector ${collectorHash.take(16)}")
                     TelemetrySendResult.Success
                 } else {
-                    val error = result.exceptionOrNull()?.message ?: "Unknown error"
+                    val error =
+                        result.exceptionOrNull()?.message
+                            ?: string(R.string.identity_screen_unknown_error, "Unknown error")
                     Log.e(TAG, "❌ Failed to send telemetry: $error")
                     TelemetrySendResult.Error(error)
                 }
@@ -763,24 +804,24 @@ class TelemetryCollectorManager
         private suspend fun requestTelemetryFromCollector(collectorHash: String): TelemetryRequestResult {
             if (_isRequesting.value) {
                 Log.d(TAG, "Already requesting, skipping")
-                return TelemetryRequestResult.Error("Already requesting")
+                return TelemetryRequestResult.Error(
+                    string(R.string.telemetry_already_requesting, "Already requesting"),
+                )
             }
 
             _isRequesting.value = true
 
             try {
                 // Get LXMF identity
-                val serviceProtocol =
-                    reticulumProtocol as? ServiceReticulumProtocol
-                        ?: return TelemetryRequestResult.Error("Protocol not available")
-
                 val sourceIdentity =
-                    try {
-                        serviceProtocol.getLxmfIdentity().getOrNull()
-                    } catch (e: Exception) {
-                        Log.e(TAG, "Failed to get LXMF identity", e)
-                        null
-                    } ?: return TelemetryRequestResult.Error("No LXMF identity")
+                    getServiceProtocolIdentity()
+                        ?: return TelemetryRequestResult.Error(
+                            if (reticulumProtocol is ServiceReticulumProtocol) {
+                                string(R.string.telemetry_no_lxmf_identity, "No LXMF identity")
+                            } else {
+                                string(R.string.telemetry_protocol_not_available, "Protocol not available")
+                            },
+                        )
 
                 // Convert collector hash to bytes
                 val collectorBytes = collectorHash.hexToByteArray()
@@ -805,7 +846,9 @@ class TelemetryCollectorManager
                     Log.i(TAG, "✅ Telemetry request sent to collector ${collectorHash.take(16)}")
                     TelemetryRequestResult.Success
                 } else {
-                    val error = result.exceptionOrNull()?.message ?: "Unknown error"
+                    val error =
+                        result.exceptionOrNull()?.message
+                            ?: string(R.string.identity_screen_unknown_error, "Unknown error")
                     Log.e(TAG, "❌ Failed to send telemetry request: $error")
                     TelemetryRequestResult.Error(error)
                 }

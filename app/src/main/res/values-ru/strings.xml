@@ -2596,6 +2596,17 @@
     <string name="update_checker_parse_release_info_failed">Не удалось разобрать сведения о релизе</string>
     <string name="update_checker_parse_version_numbers_failed">Не удалось разобрать номера версий</string>
     <string name="update_checker_network_error">Ошибка сети</string>
+    <string name="telemetry_host_mode_sync_unknown">Неизвестная ошибка синхронизации режима хоста</string>
+    <string name="telemetry_host_mode_enable_failed">Не удалось включить режим хоста: %1$s</string>
+    <string name="telemetry_already_sending">Отправка уже выполняется</string>
+    <string name="telemetry_already_requesting">Запрос уже выполняется</string>
+    <string name="telemetry_protocol_not_available">Протокол недоступен</string>
+    <string name="telemetry_no_lxmf_identity">Идентификатор LXMF недоступен</string>
+    <string name="python_wrapper_init_timeout">Таймаут инициализации — возможен риск ANR</string>
+    <string name="service_manager_service_not_initialized">Сервис не инициализирован</string>
+    <string name="service_manager_wrapper_not_available">Обертка недоступна</string>
+    <string name="service_manager_wrapper_not_initialized">Обертка не инициализирована</string>
+    <string name="service_manager_no_result_from_python">Python не вернул результат</string>
     <string name="file_utils_could_not_open_file">Не удалось открыть файл</string>
     <string name="reticulum_service_notification_title">Сетевой узел Columba</string>
     <string name="service_reticulum_connection_lost_restart_app">Соединение с сервисом потеряно, перезапустите приложение</string>
