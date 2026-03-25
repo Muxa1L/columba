@@ -1,5 +1,8 @@
+@file:Suppress("TooManyFunctions")
+
 package com.lxmf.messenger.ui.screens
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -723,6 +726,7 @@ internal fun DiscoveredInterfaceCard(
     onCopyLoraParams: () -> Unit,
     onUseForNewRNode: () -> Unit,
 ) {
+    val context = LocalContext.current
     val yggdrasilTitle = stringResource(R.string.discovered_interfaces_yggdrasil_title)
     val yggdrasilMessage = stringResource(R.string.discovered_interfaces_yggdrasil_message)
     val i2pTitle = stringResource(R.string.discovered_interfaces_i2p_title)
@@ -821,7 +825,7 @@ internal fun DiscoveredInterfaceCard(
                             horizontalArrangement = Arrangement.spacedBy(4.dp),
                         ) {
                             Text(
-                                text = if (isYggdrasil) "Yggdrasil" else formatInterfaceType(iface.type),
+                                text = if (isYggdrasil) stringResource(R.string.discovered_interfaces_yggdrasil_network) else formatInterfaceType(context, iface.type),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
@@ -943,7 +947,7 @@ internal fun DiscoveredInterfaceCard(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 Text(
-                    text = stringResource(R.string.discovered_interfaces_last_heard, formatLastHeard(iface.lastHeard)),
+                    text = stringResource(R.string.discovered_interfaces_last_heard, formatLastHeard(context, iface.lastHeard)),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -1254,6 +1258,21 @@ internal fun formatInterfaceType(type: String): String =
         else -> type
     }
 
+internal fun formatInterfaceType(
+    context: Context,
+    type: String,
+): String =
+    when (type) {
+        "TCPServerInterface" -> context.getString(R.string.interface_type_tcp_server)
+        "TCPClientInterface" -> context.getString(R.string.interface_type_tcp_client)
+        "BackboneInterface" -> context.getString(R.string.discovered_interfaces_type_backbone)
+        "I2PInterface" -> context.getString(R.string.discovered_interfaces_type_i2p)
+        "RNodeInterface" -> context.getString(R.string.discovered_interfaces_type_rnode_lora)
+        "WeaveInterface" -> context.getString(R.string.discovered_interfaces_type_weave_lora)
+        "KISSInterface" -> context.getString(R.string.discovered_interfaces_type_kiss)
+        else -> type
+    }
+
 /**
  * Format last heard timestamp as relative time.
  */
@@ -1268,6 +1287,27 @@ internal fun formatLastHeard(timestamp: Long): String {
         diff < 3600 -> "${diff / 60} min ago"
         diff < 86400 -> "${diff / 3600} hours ago"
         diff < 604800 -> "${diff / 86400} days ago"
+        else -> {
+            val sdf = SimpleDateFormat("MMM d", Locale.getDefault())
+            sdf.format(Date(timestamp * 1000))
+        }
+    }
+}
+
+internal fun formatLastHeard(
+    context: Context,
+    timestamp: Long,
+): String {
+    if (timestamp == 0L) return context.getString(R.string.discovered_interfaces_never)
+
+    val now = System.currentTimeMillis() / 1000
+    val diff = now - timestamp
+
+    return when {
+        diff < 60 -> context.getString(R.string.common_relative_time_just_now).lowercase(Locale.getDefault())
+        diff < 3600 -> context.resources.getQuantityString(R.plurals.common_relative_time_minutes_short_ago, (diff / 60).toInt(), (diff / 60).toInt())
+        diff < 86400 -> context.resources.getQuantityString(R.plurals.common_relative_time_hours_ago, (diff / 3600).toInt(), (diff / 3600).toInt())
+        diff < 604800 -> context.resources.getQuantityString(R.plurals.common_relative_time_days_ago, (diff / 86400).toInt(), (diff / 86400).toInt())
         else -> {
             val sdf = SimpleDateFormat("MMM d", Locale.getDefault())
             sdf.format(Date(timestamp * 1000))

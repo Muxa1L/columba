@@ -497,7 +497,7 @@ fun AnnounceDetailScreen(
                 InfoCard(
                     icon = Icons.Default.AccessTime,
                     title = stringResource(R.string.announce_detail_last_seen),
-                    content = formatTimeSince(announceNonNull.lastSeenTimestamp),
+                    content = formatTimeSince(context, announceNonNull.lastSeenTimestamp),
                     subtitle = formatFullTimestamp(announceNonNull.lastSeenTimestamp),
                 )
 

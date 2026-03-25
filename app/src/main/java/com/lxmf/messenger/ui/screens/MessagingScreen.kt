@@ -926,7 +926,7 @@ fun MessagingScreen(
                                         isEstablishing -> stringResource(R.string.messaging_connecting)
                                         hasActiveLink -> stringResource(R.string.messaging_online)
                                         hasRecentActivity -> stringResource(R.string.messaging_online)
-                                        lastActivity > 0 -> formatRelativeTime(lastActivity)
+                                        lastActivity > 0 -> formatRelativeTime(LocalContext.current, lastActivity)
                                         else -> ""
                                     }
                                 Text(

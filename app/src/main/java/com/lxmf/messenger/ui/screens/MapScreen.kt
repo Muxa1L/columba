@@ -1523,6 +1523,7 @@ internal fun FocusInterfaceContent(
     onCopyLoraParams: () -> Unit = {},
     onUseForNewRNode: () -> Unit = {},
 ) {
+    val context = LocalContext.current
     Column(
         modifier =
             Modifier
@@ -1655,7 +1656,7 @@ internal fun FocusInterfaceContent(
                 fontWeight = FontWeight.SemiBold,
             )
             details.lastHeard?.let { timestamp ->
-                val timeAgo = formatTimeAgo(timestamp)
+                val timeAgo = formatTimeAgo(context, timestamp)
                 InterfaceDetailRow(
                     label = stringResource(R.string.map_screen_last_heard),
                     value = timeAgo,
@@ -1766,6 +1767,20 @@ internal fun formatTimeAgo(timestamp: Long): String {
         diff < 3600 -> "${diff / 60} min ago"
         diff < 86400 -> "${diff / 3600} hours ago"
         else -> "${diff / 86400} days ago"
+    }
+}
+
+internal fun formatTimeAgo(
+    context: Context,
+    timestamp: Long,
+): String {
+    val now = System.currentTimeMillis() / 1000
+    val diff = now - timestamp
+    return when {
+        diff < 60 -> context.getString(R.string.common_relative_time_just_now)
+        diff < 3600 -> context.resources.getQuantityString(R.plurals.common_relative_time_minutes_short_ago, (diff / 60).toInt(), (diff / 60).toInt())
+        diff < 86400 -> context.resources.getQuantityString(R.plurals.common_relative_time_hours_ago, (diff / 3600).toInt(), (diff / 3600).toInt())
+        else -> context.resources.getQuantityString(R.plurals.common_relative_time_days_ago, (diff / 86400).toInt(), (diff / 86400).toInt())
     }
 }
 

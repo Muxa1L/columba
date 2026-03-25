@@ -2,6 +2,7 @@
 
 package com.lxmf.messenger.ui.screens
 
+import android.content.Context
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -960,6 +961,21 @@ internal fun getInterfaceTypeLabel(type: String): String {
     }
 }
 
+internal fun getInterfaceTypeLabel(
+    context: Context,
+    type: String,
+): String {
+    return when (type) {
+        "AutoInterface" -> context.getString(R.string.interface_config_type_auto_discovery)
+        "TCPClient" -> context.getString(R.string.interface_config_type_tcp_client)
+        "TCPServer" -> context.getString(R.string.interface_config_type_tcp_server)
+        "RNode" -> context.getString(R.string.interface_management_type_rnode_title)
+        "UDP" -> context.getString(R.string.interface_management_type_udp_title)
+        "AndroidBLE" -> context.getString(R.string.interface_config_type_bluetooth_le)
+        else -> type
+    }
+}
+
 // TODO: Nice-to-have: Show connected peer count for TCP Server interfaces.
 //       TCPServerInterface.clients returns len(spawned_interfaces).
 //       Implementation requires: Python → IPC → ViewModel → UI layers.
@@ -974,6 +990,19 @@ internal fun formatAddressWithPort(
 ): String {
     return when {
         ip == null -> "no network:$port"
+        isIpv6 || ip.contains(":") -> "[$ip]:$port"
+        else -> "$ip:$port"
+    }
+}
+
+internal fun formatAddressWithPort(
+    context: Context,
+    ip: String?,
+    port: Int,
+    isIpv6: Boolean,
+): String {
+    return when {
+        ip == null -> "${context.getString(R.string.interface_management_no_network)}:$port"
         isIpv6 || ip.contains(":") -> "[$ip]:$port"
         else -> "$ip:$port"
     }
@@ -1026,15 +1055,17 @@ private fun getLocalIpAddress(): Pair<String?, Boolean> {
  */
 @Composable
 private fun getInterfaceDescription(interfaceEntity: InterfaceEntity): String {
-    val typeLabel = getInterfaceTypeLabel(interfaceEntity.type)
+    val context = LocalContext.current
+    val typeLabel = getInterfaceTypeLabel(context, interfaceEntity.type)
+    val yggdrasilLabel = stringResource(R.string.interface_management_yggdrasil_label)
     return when (interfaceEntity.type) {
         "TCPServer" -> {
             try {
                 val json = org.json.JSONObject(interfaceEntity.configJson)
                 val listenPort = json.optInt("listen_port", 4242)
                 val (localIp, isYggdrasil) = getLocalIpAddress()
-                val networkType = if (isYggdrasil) " (Yggdrasil)" else ""
-                val addressDisplay = formatAddressWithPort(localIp, listenPort, isYggdrasil)
+                val networkType = if (isYggdrasil) " ($yggdrasilLabel)" else ""
+                val addressDisplay = formatAddressWithPort(context, localIp, listenPort, isYggdrasil)
                 "$typeLabel$networkType · $addressDisplay"
             } catch (e: Exception) {
                 typeLabel

@@ -972,6 +972,12 @@
     <string name="discovered_interfaces_use_for_rnode">Использовать для RNode</string>
     <string name="discovered_interfaces_open_in_maps">Открыть на карте</string>
     <string name="discovered_interfaces_last_heard">Последний сигнал: %1$s</string>
+    <string name="discovered_interfaces_type_backbone">Backbone (TCP)</string>
+    <string name="discovered_interfaces_type_i2p">I2P</string>
+    <string name="discovered_interfaces_type_rnode_lora">RNode (LoRa)</string>
+    <string name="discovered_interfaces_type_weave_lora">Weave (LoRa)</string>
+    <string name="discovered_interfaces_type_kiss">KISS</string>
+    <string name="discovered_interfaces_never">Никогда</string>
     <plurals name="discovered_interfaces_hops">
         <item quantity="one">%1$d переход</item>
         <item quantity="few">%1$d перехода</item>
@@ -1008,8 +1014,11 @@
     <string name="interface_management_type_ble_description">Прямое подключение к пользователям Columba и Linux устройствам ble-reticulum</string>
     <string name="interface_management_type_rnode_title">RNode LoRa</string>
     <string name="interface_management_type_rnode_description">Подключение к отдельному оборудованию RNode через BLE или классический Bluetooth</string>
+    <string name="interface_management_type_udp_title">Интерфейс UDP</string>
     <string name="interface_management_advanced">Дополнительно</string>
     <string name="interface_management_type_tcp_server_description">Принимать входящие подключения от других узлов Reticulum</string>
+    <string name="interface_management_yggdrasil_label">Yggdrasil</string>
+    <string name="interface_management_no_network">нет сети</string>
     <string name="interface_management_issue_title">Проблема с интерфейсом</string>
     <string name="interface_management_discovery_found">Через RNS Discovery найдено интерфейсов: %1$d</string>
     <string name="interface_management_available_badge">доступно</string>
@@ -2057,6 +2066,18 @@
         <item quantity="few">%d дня назад</item>
         <item quantity="many">%d дней назад</item>
         <item quantity="other">%d дня назад</item>
+    </plurals>
+    <plurals name="common_relative_time_weeks_ago">
+        <item quantity="one">%d неделю назад</item>
+        <item quantity="few">%d недели назад</item>
+        <item quantity="many">%d недель назад</item>
+        <item quantity="other">%d недели назад</item>
+    </plurals>
+    <plurals name="common_relative_time_minutes_short_ago">
+        <item quantity="one">%d мин назад</item>
+        <item quantity="few">%d мин назад</item>
+        <item quantity="many">%d мин назад</item>
+        <item quantity="other">%d мин назад</item>
     </plurals>
     <string name="settings_interval_seconds_short">%1$d с</string>
     <string name="settings_interval_minutes_short">%1$d мин</string>

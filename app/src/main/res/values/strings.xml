@@ -941,6 +941,12 @@ After flashing, you will be prompted to configure the radio parameters for trans
   <string name="discovered_interfaces_use_for_rnode">Use for RNode</string>
   <string name="discovered_interfaces_open_in_maps">Open in maps</string>
   <string name="discovered_interfaces_last_heard">Last heard: %1$s</string>
+  <string name="discovered_interfaces_type_backbone">Backbone (TCP)</string>
+  <string name="discovered_interfaces_type_i2p">I2P</string>
+  <string name="discovered_interfaces_type_rnode_lora">RNode (LoRa)</string>
+  <string name="discovered_interfaces_type_weave_lora">Weave (LoRa)</string>
+  <string name="discovered_interfaces_type_kiss">KISS</string>
+  <string name="discovered_interfaces_never">Never</string>
   <plurals name="discovered_interfaces_hops">
     <item quantity="one">%1$d hop</item>
     <item quantity="other">%1$d hops</item>
@@ -975,8 +981,11 @@ After flashing, you will be prompted to configure the radio parameters for trans
   <string name="interface_management_type_ble_description">Direct connection to Columba users and Linux ble-reticulum devices</string>
   <string name="interface_management_type_rnode_title">RNode LoRa</string>
   <string name="interface_management_type_rnode_description">Connects to separate RNode hardware via BLE or Bluetooth Classic</string>
+  <string name="interface_management_type_udp_title">UDP Interface</string>
   <string name="interface_management_advanced">Advanced</string>
   <string name="interface_management_type_tcp_server_description">Accept incoming connections from other Reticulum nodes</string>
+  <string name="interface_management_yggdrasil_label">Yggdrasil</string>
+  <string name="interface_management_no_network">no network</string>
   <string name="interface_management_issue_title">Interface Issue</string>
   <string name="interface_management_discovery_found">%1$d interfaces found via RNS Discovery</string>
   <string name="interface_management_available_badge">available</string>
@@ -1962,6 +1971,14 @@ Your location is encrypted and only readable by the group host you configure.</s
   <plurals name="common_relative_time_days_ago">
     <item quantity="one">%d day ago</item>
     <item quantity="other">%d days ago</item>
+  </plurals>
+  <plurals name="common_relative_time_weeks_ago">
+    <item quantity="one">%d week ago</item>
+    <item quantity="other">%d weeks ago</item>
+  </plurals>
+  <plurals name="common_relative_time_minutes_short_ago">
+    <item quantity="one">%d min ago</item>
+    <item quantity="other">%d min ago</item>
   </plurals>
   <string name="settings_interval_seconds_short">%1$ds</string>
   <string name="settings_interval_minutes_short">%1$dmin</string>

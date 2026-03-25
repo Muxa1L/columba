@@ -1157,7 +1157,7 @@ fun ContactListItem(
                             val lastSeen = contact.lastSeenTimestamp
                             if (lastSeen != null) {
                                 Text(
-                                    text = if (contact.isOnline) stringResource(R.string.contacts_online) else formatRelativeTime(lastSeen),
+                                    text = if (contact.isOnline) stringResource(R.string.contacts_online) else formatRelativeTime(LocalContext.current, lastSeen),
                                     style = MaterialTheme.typography.bodySmall,
                                     color =
                                         if (contact.isOnline) {
