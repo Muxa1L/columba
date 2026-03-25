@@ -139,7 +139,7 @@ class IdentityManager(private val wrapperManager: PythonWrapperManager) {
             }
         } ?: JSONObject().apply {
             put("success", false)
-            put("error", "Service not initialized")
+            put("error", wrapperManager.serviceNotInitializedMessage())
         }.toString()
     }
 
@@ -163,7 +163,7 @@ class IdentityManager(private val wrapperManager: PythonWrapperManager) {
             }
         } ?: JSONObject().apply {
             put("success", false)
-            put("error", "Service not initialized")
+            put("error", wrapperManager.serviceNotInitializedMessage())
         }.toString()
     }
 

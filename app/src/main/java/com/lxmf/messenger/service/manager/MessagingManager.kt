@@ -147,7 +147,7 @@ class MessagingManager(private val wrapperManager: PythonWrapperManager) {
         } ?: run {
             Log.w(TAG, "sendPacket called but wrapper is null (service not initialized)")
             JSONObject().apply {
-                put("error", "Service not initialized")
+                put("error", wrapperManager.serviceNotInitializedMessage())
             }.toString()
         }
     }
@@ -229,7 +229,7 @@ class MessagingManager(private val wrapperManager: PythonWrapperManager) {
         } ?: run {
             Log.w(TAG, "createDestination called but wrapper is null (service not initialized)")
             JSONObject().apply {
-                put("error", "Service not initialized")
+                put("error", wrapperManager.serviceNotInitializedMessage())
             }.toString()
         }
     }
@@ -260,7 +260,7 @@ class MessagingManager(private val wrapperManager: PythonWrapperManager) {
             Log.w(TAG, "announceDestination called but wrapper is null (service not initialized)")
             JSONObject().apply {
                 put("success", false)
-                put("error", "Service not initialized")
+                put("error", wrapperManager.serviceNotInitializedMessage())
             }.toString()
         }
     }
@@ -293,7 +293,7 @@ class MessagingManager(private val wrapperManager: PythonWrapperManager) {
                     put("success", success)
                     put("restored_count", successCount)
                     if (!success) {
-                        put("error", if (errors != "[]") errors else "No identities restored")
+                        put("error", if (errors != "[]") errors else wrapperManager.noIdentitiesRestoredMessage())
                     }
                 }.toString()
             } catch (e: Exception) {
@@ -306,7 +306,7 @@ class MessagingManager(private val wrapperManager: PythonWrapperManager) {
         } ?: run {
             JSONObject().apply {
                 put("success", false)
-                put("error", "Wrapper not initialized")
+                put("error", wrapperManager.wrapperNotInitializedMessage())
             }.toString()
         }
     }
@@ -339,7 +339,7 @@ class MessagingManager(private val wrapperManager: PythonWrapperManager) {
                     put("success", success)
                     put("restored_count", successCount)
                     if (!success) {
-                        put("error", if (errors != "[]") errors else "No identities restored")
+                        put("error", if (errors != "[]") errors else wrapperManager.noIdentitiesRestoredMessage())
                     }
                 }.toString()
             } catch (e: Exception) {
@@ -352,7 +352,7 @@ class MessagingManager(private val wrapperManager: PythonWrapperManager) {
         } ?: run {
             JSONObject().apply {
                 put("success", false)
-                put("error", "Wrapper not initialized")
+                put("error", wrapperManager.wrapperNotInitializedMessage())
             }.toString()
         }
     }

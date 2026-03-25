@@ -83,7 +83,7 @@ class RoutingManager(
             JSONObject()
                 .apply {
                     put("success", false)
-                    put("error", "Service not initialized")
+                    put("error", wrapperManager.serviceNotInitializedMessage())
                 }.toString()
         }
 
@@ -193,7 +193,7 @@ class RoutingManager(
             JSONObject()
                 .apply {
                     put("status", "not_initialized")
-                    put("error", "Service not initialized")
+                    put("error", wrapperManager.serviceNotInitializedMessage())
                 }.toString()
         }
 

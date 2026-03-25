@@ -807,8 +807,8 @@ class ReticulumServiceBinder(
         try {
             wrapperManager.withWrapper { wrapper ->
                 val result = wrapper.callAttr("set_outbound_propagation_node", destHash)
-                result?.toString() ?: """{"success": false, "error": "No result"}"""
-            } ?: """{"success": false, "error": "Wrapper not initialized"}"""
+                result?.toString() ?: noResultFromPythonJson()
+            } ?: binderErrorJson(string(R.string.service_manager_wrapper_not_initialized, "Wrapper not initialized"))
         } catch (e: Exception) {
             Log.e(TAG, "Error setting propagation node", e)
             """{"success": false, "error": "${e.message}"}"""
@@ -818,8 +818,8 @@ class ReticulumServiceBinder(
         try {
             wrapperManager.withWrapper { wrapper ->
                 val result = wrapper.callAttr("get_outbound_propagation_node")
-                result?.toString() ?: """{"success": false, "error": "No result"}"""
-            } ?: """{"success": false, "error": "Wrapper not initialized"}"""
+                result?.toString() ?: noResultFromPythonJson()
+            } ?: binderErrorJson(string(R.string.service_manager_wrapper_not_initialized, "Wrapper not initialized"))
         } catch (e: Exception) {
             Log.e(TAG, "Error getting propagation node", e)
             """{"success": false, "error": "${e.message}"}"""
@@ -837,8 +837,8 @@ class ReticulumServiceBinder(
                         identityPrivateKey,
                         maxMessages,
                     )
-                result?.toString() ?: """{"success": false, "error": "No result"}"""
-            } ?: """{"success": false, "error": "Wrapper not initialized"}"""
+                result?.toString() ?: noResultFromPythonJson()
+            } ?: binderErrorJson(string(R.string.service_manager_wrapper_not_initialized, "Wrapper not initialized"))
         } catch (e: Exception) {
             Log.e(TAG, "Error requesting messages from propagation node", e)
             """{"success": false, "error": "${e.message}"}"""
@@ -848,8 +848,8 @@ class ReticulumServiceBinder(
         try {
             wrapperManager.withWrapper { wrapper ->
                 val result = wrapper.callAttr("get_propagation_state")
-                result?.toString() ?: """{"success": false, "error": "No result"}"""
-            } ?: """{"success": false, "error": "Wrapper not initialized"}"""
+                result?.toString() ?: noResultFromPythonJson()
+            } ?: binderErrorJson(string(R.string.service_manager_wrapper_not_initialized, "Wrapper not initialized"))
         } catch (e: Exception) {
             Log.e(TAG, "Error getting propagation state", e)
             """{"success": false, "error": "${e.message}"}"""
@@ -1392,7 +1392,7 @@ class ReticulumServiceBinder(
                             ?.entries
                             ?.find { it.key.toString() == "error" }
                             ?.value
-                            ?.toString() ?: "Unknown error"
+                            ?.toString() ?: string(R.string.identity_screen_unknown_error, "Unknown error")
                     Log.e(TAG, "Failed to initialize RNode interface: $error")
                 }
             }

@@ -109,6 +109,9 @@ class PythonWrapperManager(
     fun noResultFromPythonMessage(): String =
         string(R.string.service_manager_no_result_from_python, "No result from Python")
 
+    fun noIdentitiesRestoredMessage(): String =
+        string(R.string.service_manager_no_identities_restored, "No identities restored")
+
     fun messageOrUnknown(message: String?): String = message ?: unknownErrorMessage()
 
     fun errorJson(

@@ -115,9 +115,7 @@ object FileUtils {
                 )
             } ?: FileReadResult.Error(
                 runCatching {
-                    context.getString(R.string.file_utils_could_not_open_file)
-                        .takeIf { it.isNotBlank() }
-                        ?: "Could not open file"
+                    context.getString(R.string.file_utils_could_not_open_file).takeIf { it.isNotBlank() } ?: "Could not open file"
                 }.getOrElse { "Could not open file" },
             )
         } catch (e: Exception) {
@@ -125,9 +123,7 @@ object FileUtils {
             FileReadResult.Error(
                 e.message
                     ?: runCatching {
-                        context.getString(R.string.identity_screen_unknown_error)
-                            .takeIf { it.isNotBlank() }
-                            ?: "Unknown error"
+                        context.getString(R.string.identity_screen_unknown_error).takeIf { it.isNotBlank() } ?: "Unknown error"
                     }.getOrElse { "Unknown error" },
             )
         }

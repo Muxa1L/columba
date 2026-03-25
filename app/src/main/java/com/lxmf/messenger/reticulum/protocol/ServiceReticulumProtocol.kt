@@ -118,6 +118,10 @@ class ServiceReticulumProtocol(
             if (args.isEmpty()) fallback else fallback.format(*args)
         }
 
+    private fun unknownErrorMessage(): String = string(R.string.identity_screen_unknown_error, "Unknown error")
+
+    private fun serviceNotBoundMessage(): String = string(R.string.service_notification_error_not_bound, "Service not bound")
+
     // SharedFlow for interface status change events (triggers UI refresh)
     // replay=0 means events are not replayed to late subscribers
     private val _interfaceStatusChanged = MutableSharedFlow<Unit>(replay = 0, extraBufferCapacity = 1)
@@ -1931,7 +1935,7 @@ class ServiceReticulumProtocol(
                     Log.d(TAG, "Restored $restoredCount peer identities")
                     restoredCount
                 } else {
-                    val error = result.optString("error", "Unknown error")
+                    val error = result.optString("error", unknownErrorMessage())
                     Log.e(TAG, "Failed to restore peer identities: $error")
                     error("Failed to restore peer identities: $error")
                 }
@@ -1987,7 +1991,7 @@ class ServiceReticulumProtocol(
                 Log.d(TAG, "Restored $restoredCount announce identities")
                 restoredCount
             } else {
-                val error = result.optString("error", "Unknown error")
+                val error = result.optString("error", unknownErrorMessage())
                 Log.e(TAG, "Failed to restore announce identities: $error")
                 error("Failed to restore announce identities: $error")
             }
@@ -2002,7 +2006,7 @@ class ServiceReticulumProtocol(
                 val resultJson = service.lxmfDestination
                 val result = JSONObject(resultJson)
 
-                require(!result.has("error")) { result.optString("error", "Unknown error") }
+                require(!result.has("error")) { result.optString("error", unknownErrorMessage()) }
 
                 val hashStr = result.optString("hash", null)
                 val hexHash = result.optString("hex_hash", null)
@@ -2033,7 +2037,7 @@ class ServiceReticulumProtocol(
                 val resultJson = service.lxmfIdentity
                 val result = JSONObject(resultJson)
 
-                require(!result.has("error")) { result.optString("error", "Unknown error") }
+                require(!result.has("error")) { result.optString("error", unknownErrorMessage()) }
 
                 val hashStr = result.optString("hash", null)
                 val publicKeyStr = result.optString("public_key", null)
@@ -2053,7 +2057,7 @@ class ServiceReticulumProtocol(
 
     override suspend fun getDebugInfo(): Map<String, Any> {
         return try {
-            val service = this.service ?: return mapOf("error" to "Service not bound")
+            val service = this.service ?: return mapOf("error" to serviceNotBoundMessage())
 
             val resultJson = service.debugInfo
             val result = JSONObject(resultJson)
@@ -2221,8 +2225,8 @@ class ServiceReticulumProtocol(
             val result = JSONObject(resultJson)
 
             if (!result.optBoolean("success", false)) {
-                val error = result.optString("error", "Unknown error")
-                throw RuntimeException(error)
+                val error = result.optString("error", unknownErrorMessage())
+                throw IllegalStateException(error)
             }
 
             Log.d(TAG, "Propagation node ${if (destHash != null) "set to ${destHash.toHexString()}" else "cleared"}")
@@ -2236,8 +2240,8 @@ class ServiceReticulumProtocol(
             val result = JSONObject(resultJson)
 
             if (!result.optBoolean("success", false)) {
-                val error = result.optString("error", "Unknown error")
-                throw RuntimeException(error)
+                val error = result.optString("error", unknownErrorMessage())
+                throw IllegalStateException(error)
             }
 
             result.optString("propagation_node").takeIf { it.isNotEmpty() }
@@ -2255,8 +2259,8 @@ class ServiceReticulumProtocol(
                 val result = JSONObject(resultJson)
 
                 if (!result.optBoolean("success", false)) {
-                    val error = result.optString("error", "Unknown error")
-                    throw RuntimeException(error)
+                    val error = result.optString("error", unknownErrorMessage())
+                    throw IllegalStateException(error)
                 }
 
                 val state = result.optInt("state", 0)
@@ -2277,8 +2281,8 @@ class ServiceReticulumProtocol(
             val result = JSONObject(resultJson)
 
             if (!result.optBoolean("success", false)) {
-                val error = result.optString("error", "Unknown error")
-                throw RuntimeException(error)
+                val error = result.optString("error", unknownErrorMessage())
+                throw IllegalStateException(error)
             }
 
             PropagationState(
@@ -2371,8 +2375,8 @@ class ServiceReticulumProtocol(
                 val result = JSONObject(resultJson)
 
                 if (!result.optBoolean("success", false)) {
-                    val error = result.optString("error", "Unknown error")
-                    throw RuntimeException(error)
+                    val error = result.optString("error", unknownErrorMessage())
+                    throw IllegalStateException(error)
                 }
 
                 val msgHash = result.optString("message_hash").toByteArrayFromBase64() ?: byteArrayOf()
@@ -2413,8 +2417,8 @@ class ServiceReticulumProtocol(
             val result = JSONObject(resultJson)
 
             if (!result.optBoolean("success", false)) {
-                val error = result.optString("error", "Unknown error")
-                throw RuntimeException(error)
+                val error = result.optString("error", unknownErrorMessage())
+                throw IllegalStateException(error)
             }
 
             val msgHash = result.optString("message_hash").toByteArrayFromBase64() ?: byteArrayOf()
@@ -2451,8 +2455,8 @@ class ServiceReticulumProtocol(
             val result = JSONObject(resultJson)
 
             if (!result.optBoolean("success", false)) {
-                val error = result.optString("error", "Unknown error")
-                throw RuntimeException(error)
+                val error = result.optString("error", unknownErrorMessage())
+                throw IllegalStateException(error)
             }
 
             val msgHash = result.optString("message_hash").toByteArrayFromBase64() ?: byteArrayOf()
@@ -2476,8 +2480,8 @@ class ServiceReticulumProtocol(
             val result = JSONObject(resultJson)
 
             if (!result.optBoolean("success", false)) {
-                val error = result.optString("error", "Unknown error")
-                throw RuntimeException(error)
+                val error = result.optString("error", unknownErrorMessage())
+                throw IllegalStateException(error)
             }
 
             Log.d(TAG, "📡 Telemetry collector mode ${if (enabled) "enabled" else "disabled"}")
@@ -2500,8 +2504,8 @@ class ServiceReticulumProtocol(
             val result = JSONObject(resultJson)
 
             if (!result.optBoolean("success", false)) {
-                val error = result.optString("error", "Unknown error")
-                throw RuntimeException(error)
+                val error = result.optString("error", unknownErrorMessage())
+                throw IllegalStateException(error)
             }
         }
 
@@ -2925,7 +2929,7 @@ class ServiceReticulumProtocol(
                         path = result.getString("path"),
                     )
                 } else {
-                    throw RuntimeException(result.optString("error", "Unknown error"))
+                    throw IllegalStateException(result.optString("error", unknownErrorMessage()))
                 }
             }
         }
@@ -2955,7 +2959,7 @@ class ServiceReticulumProtocol(
                 if (result.optBoolean("success", false)) {
                     result.optBoolean("already_identified", false)
                 } else {
-                    throw RuntimeException(result.optString("error", "Unknown error"))
+                    throw IllegalStateException(result.optString("error", unknownErrorMessage()))
                 }
             }
         }
@@ -3035,7 +3039,7 @@ class ServiceReticulumProtocol(
                 val resultJson = svc.blockDestination(destinationHashHex)
                 val result = JSONObject(resultJson)
                 if (!result.optBoolean("success", false)) {
-                    throw RuntimeException(result.optString("error", "Unknown error"))
+                    throw IllegalStateException(result.optString("error", unknownErrorMessage()))
                 }
             }
         }
@@ -3047,7 +3051,7 @@ class ServiceReticulumProtocol(
                 val resultJson = svc.unblockDestination(destinationHashHex)
                 val result = JSONObject(resultJson)
                 if (!result.optBoolean("success", false)) {
-                    throw RuntimeException(result.optString("error", "Unknown error"))
+                    throw IllegalStateException(result.optString("error", unknownErrorMessage()))
                 }
             }
         }
@@ -3059,7 +3063,7 @@ class ServiceReticulumProtocol(
                 val resultJson = svc.blackholeIdentity(identityHashHex)
                 val result = JSONObject(resultJson)
                 if (!result.optBoolean("success", false)) {
-                    throw RuntimeException(result.optString("error", "Unknown error"))
+                    throw IllegalStateException(result.optString("error", unknownErrorMessage()))
                 }
             }
         }
@@ -3071,7 +3075,7 @@ class ServiceReticulumProtocol(
                 val resultJson = svc.unblackholeIdentity(identityHashHex)
                 val result = JSONObject(resultJson)
                 if (!result.optBoolean("success", false)) {
-                    throw RuntimeException(result.optString("error", "Unknown error"))
+                    throw IllegalStateException(result.optString("error", unknownErrorMessage()))
                 }
             }
         }
@@ -3108,8 +3112,8 @@ class ServiceReticulumProtocol(
                 val resultJson = svc.initiateCall(destinationHash, profileCode ?: -1)
                 val result = JSONObject(resultJson)
                 if (!result.optBoolean("success", false)) {
-                    val error = result.optString("error", "Unknown error")
-                    throw RuntimeException(error)
+                    val error = result.optString("error", unknownErrorMessage())
+                    throw IllegalStateException(error)
                 }
             }
         }
@@ -3126,8 +3130,8 @@ class ServiceReticulumProtocol(
                 val resultJson = svc.answerCall()
                 val result = JSONObject(resultJson)
                 if (!result.optBoolean("success", false)) {
-                    val error = result.optString("error", "Unknown error")
-                    throw RuntimeException(error)
+                    val error = result.optString("error", unknownErrorMessage())
+                    throw IllegalStateException(error)
                 }
             }
         }

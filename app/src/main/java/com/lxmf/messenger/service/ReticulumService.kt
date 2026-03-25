@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.IBinder
 import android.util.Log
 import androidx.core.content.ContextCompat
+import com.lxmf.messenger.R
 import com.lxmf.messenger.service.binder.ReticulumServiceBinder
 import com.lxmf.messenger.service.di.ServiceModule
 import kotlinx.coroutines.CoroutineScope
@@ -223,7 +224,11 @@ class ReticulumService : Service() {
         // Guard against calls before onCreate completes
         if (!::managers.isInitialized || !::binder.isInitialized) {
             Log.e(TAG, "onBind called before onCreate completed")
-            throw IllegalStateException("Service not initialized")
+            throw IllegalStateException(
+                getString(R.string.service_manager_service_not_initialized)
+                    .takeIf { it.isNotBlank() }
+                    ?: "Service not initialized",
+            )
         }
 
         // Start as foreground when first client binds

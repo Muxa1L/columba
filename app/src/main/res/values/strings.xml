@@ -2504,6 +2504,7 @@ Receipt hash: %2$s...</string>
   <string name="service_manager_wrapper_not_available">Wrapper not available</string>
   <string name="service_manager_wrapper_not_initialized">Wrapper not initialized</string>
   <string name="service_manager_no_result_from_python">No result from Python</string>
+  <string name="service_manager_no_identities_restored">No identities restored</string>
   <string name="file_utils_could_not_open_file">Could not open file</string>
   <string name="reticulum_service_notification_title">Columba Mesh Network</string>
   <string name="service_reticulum_connection_lost_restart_app">Service connection lost - please restart the app</string>

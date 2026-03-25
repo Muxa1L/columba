@@ -2607,6 +2607,7 @@
     <string name="service_manager_wrapper_not_available">Обертка недоступна</string>
     <string name="service_manager_wrapper_not_initialized">Обертка не инициализирована</string>
     <string name="service_manager_no_result_from_python">Python не вернул результат</string>
+    <string name="service_manager_no_identities_restored">Не удалось восстановить ни одну идентичность</string>
     <string name="file_utils_could_not_open_file">Не удалось открыть файл</string>
     <string name="reticulum_service_notification_title">Сетевой узел Columba</string>
     <string name="service_reticulum_connection_lost_restart_app">Соединение с сервисом потеряно, перезапустите приложение</string>
