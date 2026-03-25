@@ -1672,7 +1672,7 @@ class ServiceReticulumProtocol(
                 rttSeconds = null,
                 hops = null,
                 linkReused = false,
-                error = "Service not bound",
+                error = string(R.string.service_notification_error_not_bound, "Service not bound"),
             )
 
         return try {
@@ -1775,7 +1775,7 @@ class ServiceReticulumProtocol(
             val service =
                 this.service ?: return ConversationLinkResult(
                     isActive = false,
-                    error = "Service not bound",
+                    error = string(R.string.service_notification_error_not_bound, "Service not bound"),
                 )
 
             val resultJson = service.getLinkStatus(destinationHash)

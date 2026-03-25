@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.SignalCellularConnectedNoInternet0
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.lxmf.messenger.R
+import java.text.NumberFormat
 import java.util.Locale
 
 // Color constants for signal quality indicators
@@ -180,7 +181,7 @@ fun getSnrInfo(
     context: Context,
     snr: Float,
 ): SignalQualityInfo {
-    val snrStr = String.format(Locale.US, "%.1f", snr)
+    val snrStr = formatLocalizedSnr(context, snr)
     return when {
         snr > 10f ->
             SignalQualityInfo(
@@ -218,4 +219,17 @@ fun getSnrInfo(
                 subtitle = context.getString(R.string.signal_quality_snr_very_poor_subtitle),
             )
     }
+}
+
+private fun formatLocalizedSnr(
+    context: Context,
+    snr: Float,
+): String {
+    val locales = context.resources.configuration.locales
+    val locale = if (locales.isEmpty) Locale.getDefault() else locales[0]
+    return NumberFormat.getNumberInstance(locale).apply {
+        minimumFractionDigits = 1
+        maximumFractionDigits = 1
+        isGroupingUsed = false
+    }.format(snr)
 }

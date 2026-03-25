@@ -32,12 +32,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.lxmf.messenger.R
 import com.lxmf.messenger.ui.screens.onboarding.OnboardingInterfaceType
+import com.lxmf.messenger.ui.screens.onboarding.localizedDescription
+import com.lxmf.messenger.ui.screens.onboarding.localizedDisplayName
+import com.lxmf.messenger.ui.screens.onboarding.localizedSecondaryDescription
 
 /**
  * Connectivity page - allows user to select which network interfaces to enable.
@@ -190,6 +194,8 @@ private fun InterfaceCard(
     statusText: String? = null,
     statusIsError: Boolean = false,
 ) {
+    val context = LocalContext.current
+
     val borderColor by animateColorAsState(
         targetValue =
             when {
@@ -253,7 +259,7 @@ private fun InterfaceCard(
                 modifier = Modifier.weight(1f),
             ) {
                 Text(
-                    text = interfaceType.displayName,
+                    text = interfaceType.localizedDisplayName(context),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Medium,
                     color =
@@ -264,7 +270,7 @@ private fun InterfaceCard(
                         },
                 )
                 Text(
-                    text = interfaceType.description,
+                    text = interfaceType.localizedDescription(context),
                     style = MaterialTheme.typography.bodyMedium,
                     color =
                         if (enabled) {
@@ -273,7 +279,7 @@ private fun InterfaceCard(
                             MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
                         },
                 )
-                interfaceType.secondaryDescription?.let { secondary ->
+                interfaceType.localizedSecondaryDescription(context)?.let { secondary ->
                     Text(
                         text = secondary,
                         style = MaterialTheme.typography.bodySmall,

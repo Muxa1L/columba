@@ -1,5 +1,6 @@
 package com.lxmf.messenger.ui.theme
 
+import android.content.Context
 import androidx.annotation.StringRes
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.darkColorScheme
@@ -33,6 +34,20 @@ sealed interface AppTheme {
      */
     fun getIdentifier(): String
 }
+
+fun AppTheme.localizedDisplayName(context: Context): String =
+    if (this is PresetTheme) {
+        context.getString(displayNameRes)
+    } else {
+        displayName
+    }
+
+fun AppTheme.localizedDescription(context: Context): String =
+    if (this is PresetTheme) {
+        context.getString(descriptionRes)
+    } else {
+        description
+    }
 
 /**
  * Preset built-in themes.

@@ -41,6 +41,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.lxmf.messenger.R
 import com.lxmf.messenger.ui.screens.onboarding.OnboardingInterfaceType
+import com.lxmf.messenger.ui.screens.onboarding.localizedDisplayName
 import com.lxmf.messenger.ui.screens.settings.dialogs.IdentityQrCodeDialog
 
 /**
@@ -133,7 +134,7 @@ fun CompletePage(
                         if (selectedInterfaces.isEmpty()) {
                             stringResource(R.string.onboarding_complete_none_selected)
                         } else {
-                            selectedInterfaces.joinToString(", ") { it.displayName }
+                            selectedInterfaces.joinToString(", ") { it.localizedDisplayName(context) }
                         },
                 )
 

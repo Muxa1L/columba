@@ -1029,11 +1029,12 @@ internal fun DiscoveredInterfaceCard(
  */
 @Composable
 internal fun TcpInterfaceDetails(iface: DiscoveredInterface) {
+    val portOnlyLabel = iface.port?.let { stringResource(R.string.discovered_interfaces_port_only, it) }
     val hostPort =
         buildString {
             iface.reachableOn?.let { append(it) }
             iface.port?.let { port ->
-                if (isNotEmpty()) append(":$port") else append("port $port")
+                if (isNotEmpty()) append(":$port") else append(portOnlyLabel)
             }
         }
     if (hostPort.isNotEmpty()) {
@@ -1107,6 +1108,18 @@ internal fun LocationDetails(
     onClick: () -> Unit,
 ) {
     val openInMapsLabel = stringResource(R.string.discovered_interfaces_open_in_maps)
+    val locationText =
+        buildList {
+            add(stringResource(R.string.discovered_interfaces_location_coordinates, latitude, longitude))
+            height?.let { add(stringResource(R.string.discovered_interfaces_location_height_meters, it.toInt())) }
+            distanceKm?.let { dist ->
+                if (dist < 1.0) {
+                    add(stringResource(R.string.discovered_interfaces_distance_meters_away, (dist * 1000).toInt()))
+                } else {
+                    add(stringResource(R.string.discovered_interfaces_distance_km_away, dist))
+                }
+            }
+        }.joinToString(" - ")
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -1119,19 +1132,6 @@ internal fun LocationDetails(
             modifier = Modifier.size(16.dp),
             tint = MaterialTheme.colorScheme.primary,
         )
-        val locationText =
-            buildString {
-                append("%.4f, %.4f".format(latitude, longitude))
-                height?.let { append(" (${it.toInt()}m)") }
-                distanceKm?.let { dist ->
-                    append(" - ")
-                    if (dist < 1.0) {
-                        append("${(dist * 1000).toInt()}m away")
-                    } else {
-                        append("%.1f km away".format(dist))
-                    }
-                }
-            }
         Text(
             text = locationText,
             style =

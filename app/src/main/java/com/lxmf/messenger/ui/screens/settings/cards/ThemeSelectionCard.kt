@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -33,22 +34,8 @@ import com.lxmf.messenger.R
 import com.lxmf.messenger.ui.components.CollapsibleSettingsCard
 import com.lxmf.messenger.ui.theme.AppTheme
 import com.lxmf.messenger.ui.theme.PresetTheme
-
-@Composable
-private fun localizedThemeDisplayName(theme: AppTheme): String =
-    if (theme is PresetTheme) {
-        stringResource(theme.displayNameRes)
-    } else {
-        theme.displayName
-    }
-
-@Composable
-private fun localizedThemeDescription(theme: AppTheme): String =
-    if (theme is PresetTheme) {
-        stringResource(theme.descriptionRes)
-    } else {
-        theme.description
-    }
+import com.lxmf.messenger.ui.theme.localizedDescription
+import com.lxmf.messenger.ui.theme.localizedDisplayName
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -60,6 +47,8 @@ fun ThemeSelectionCard(
     onThemeChange: (AppTheme) -> Unit,
     onNavigateToCustomThemes: () -> Unit = {},
 ) {
+    val context = LocalContext.current
+
     CollapsibleSettingsCard(
         title = stringResource(R.string.settings_theme_title),
         icon = Icons.Default.Palette,
@@ -101,7 +90,7 @@ fun ThemeSelectionCard(
                 FilterChip(
                     selected = selectedTheme == theme,
                     onClick = { onThemeChange(theme) },
-                    label = { Text(localizedThemeDisplayName(theme)) },
+                    label = { Text(theme.localizedDisplayName(context)) },
                     leadingIcon =
                         if (selectedTheme == theme) {
                             {
@@ -136,7 +125,7 @@ fun ThemeSelectionCard(
                     FilterChip(
                         selected = selectedTheme == theme,
                         onClick = { onThemeChange(theme) },
-                        label = { Text(localizedThemeDisplayName(theme)) },
+                        label = { Text(theme.localizedDisplayName(context)) },
                         leadingIcon =
                             if (selectedTheme == theme) {
                                 {
@@ -156,7 +145,7 @@ fun ThemeSelectionCard(
 
         // Description of selected theme
         Text(
-            text = localizedThemeDescription(selectedTheme),
+            text = selectedTheme.localizedDescription(context),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.primary,
             fontWeight = FontWeight.Medium,
