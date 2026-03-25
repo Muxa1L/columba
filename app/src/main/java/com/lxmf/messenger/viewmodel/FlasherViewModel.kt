@@ -663,7 +663,9 @@ class FlasherViewModel
                         it.copy(
                             currentStep = FlasherStep.COMPLETE,
                             isFlashing = false,
-                            flashResult = FlashResult.Failure(e.message ?: "Unknown error"),
+                            flashResult = FlashResult.Failure(
+                                e.message ?: context.getString(R.string.identity_screen_unknown_error),
+                            ),
                         )
                     }
                 }

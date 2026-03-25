@@ -108,7 +108,7 @@ class IdentityManagerViewModel
                     Log.d(TAG, "createNewIdentity: Python service returned: ${result.keys}")
 
                     if (result.containsKey("error")) {
-                        val error = result["error"] as? String ?: "Unknown error"
+                        val error = result["error"] as? String ?: string(R.string.identity_screen_unknown_error, "Unknown error")
                         Log.e(TAG, "createNewIdentity: Python service error: $error")
                         _uiState.value = IdentityManagerUiState.Error(error)
                         return@launch

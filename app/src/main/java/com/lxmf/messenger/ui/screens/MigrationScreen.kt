@@ -150,12 +150,7 @@ fun MigrationScreen(
     LaunchedEffect(uiState) {
         when (val state = uiState) {
             is MigrationUiState.ExportComplete -> {
-                val timestamp =
-                    SimpleDateFormat(
-                        "yyyy-MM-dd_HHmmss",
-                        Locale.US,
-                    ).format(Date())
-                exportSaveLauncher.launch("columba_export_$timestamp.columba")
+                exportSaveLauncher.launch(viewModel.suggestedExportFileName)
                 viewModel.onExportSaveDialogLaunched()
             }
             is MigrationUiState.ExportSaved -> {

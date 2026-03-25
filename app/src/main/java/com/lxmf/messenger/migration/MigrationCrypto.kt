@@ -3,6 +3,8 @@ package com.lxmf.messenger.migration
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.File
+import android.content.Context
+import com.lxmf.messenger.R
 import java.io.InputStream
 import java.security.SecureRandom
 import javax.crypto.Cipher
@@ -43,6 +45,22 @@ object MigrationCrypto {
 
     /** Minimum password length enforced at the UI layer. */
     const val MIN_PASSWORD_LENGTH = 8
+
+    private fun string(
+        context: Context?,
+        resId: Int,
+        fallback: String,
+        vararg args: Any,
+    ): String =
+        runCatching {
+            if (args.isEmpty()) {
+                context?.getString(resId)?.takeIf { it.isNotBlank() } ?: fallback
+            } else {
+                context?.getString(resId, *args)?.takeIf { it.isNotBlank() } ?: fallback.format(*args)
+            }
+        }.getOrElse {
+            if (args.isEmpty()) fallback else fallback.format(*args)
+        }
 
     /**
      * Encrypt a plaintext ZIP file in-place, replacing it with the encrypted format.
@@ -106,22 +124,34 @@ object MigrationCrypto {
     fun decrypt(
         encrypted: ByteArray,
         password: String,
+        context: Context? = null,
     ): ByteArray {
         if (encrypted.isEmpty()) {
-            throw InvalidExportFileException("Export file is empty")
+            throw InvalidExportFileException(
+                string(context, R.string.migration_export_file_empty, "Export file is empty"),
+            )
         }
 
         if (encrypted[0] != ENCRYPTED_VERSION) {
             throw InvalidExportFileException(
-                "Unrecognized export format (version byte: 0x${
-                    String.format(java.util.Locale.ROOT, "%02X", encrypted[0])
-                })",
+                string(
+                    context,
+                    R.string.migration_crypto_unrecognized_export_format,
+                    "Unrecognized export format (version byte: 0x%1\$s)",
+                    String.format(java.util.Locale.ROOT, "%02X", encrypted[0]),
+                ),
             )
         }
 
         val headerSize = 1 + SALT_LENGTH + IV_LENGTH
         if (encrypted.size < headerSize + GCM_TAG_BITS / 8) {
-            throw InvalidExportFileException("Export file is too small to be valid")
+            throw InvalidExportFileException(
+                string(
+                    context,
+                    R.string.migration_crypto_export_too_small,
+                    "Export file is too small to be valid",
+                ),
+            )
         }
 
         var offset = 1
@@ -138,7 +168,10 @@ object MigrationCrypto {
         return try {
             cipher.doFinal(ciphertext)
         } catch (e: javax.crypto.AEADBadTagException) {
-            throw WrongPasswordException("Incorrect password", e)
+            throw WrongPasswordException(
+                string(context, R.string.migration_screen_incorrect_password, "Incorrect password"),
+                e,
+            )
         }
     }
 
@@ -152,9 +185,10 @@ object MigrationCrypto {
     fun decryptStream(
         encryptedStream: InputStream,
         password: String,
+        context: Context? = null,
     ): InputStream {
         val encrypted = encryptedStream.readBytes()
-        val decrypted = decrypt(encrypted, password)
+        val decrypted = decrypt(encrypted, password, context)
         return ByteArrayInputStream(decrypted)
     }
 
@@ -165,18 +199,26 @@ object MigrationCrypto {
      *         `false` if it starts with ZIP magic bytes (legacy format)
      * @throws InvalidExportFileException if the format is not recognized at all
      */
-    fun isEncrypted(header: ByteArray): Boolean {
+    fun isEncrypted(
+        header: ByteArray,
+        context: Context? = null,
+    ): Boolean {
         if (header.isEmpty()) {
-            throw InvalidExportFileException("Export file is empty")
+            throw InvalidExportFileException(
+                string(context, R.string.migration_export_file_empty, "Export file is empty"),
+            )
         }
         if (header[0] == ENCRYPTED_VERSION) return true
         if (header.size >= 2 && header[0] == ZIP_MAGIC_BYTE_1 && header[1] == ZIP_MAGIC_BYTE_2) {
             return false
         }
         throw InvalidExportFileException(
-            "Unrecognized export file format (starts with 0x${
-                String.format(java.util.Locale.ROOT, "%02X", header[0])
-            })",
+            string(
+                context,
+                R.string.migration_crypto_unrecognized_export_file_format,
+                "Unrecognized export file format (starts with 0x%1\$s)",
+                String.format(java.util.Locale.ROOT, "%02X", header[0]),
+            ),
         )
     }
 

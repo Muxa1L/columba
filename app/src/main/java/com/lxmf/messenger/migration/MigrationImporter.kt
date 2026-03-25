@@ -103,7 +103,7 @@ class MigrationImporter
                                 ),
                             )
                         }
-                        Result.success(MigrationCrypto.isEncrypted(header))
+                        Result.success(MigrationCrypto.isEncrypted(header, context))
                     }
                 } catch (e: InvalidExportFileException) {
                     Result.failure(e)
@@ -692,11 +692,16 @@ class MigrationImporter
                 inputStream.use { stream ->
                     val rawBytes = stream.readBytes()
                     val zipBytes =
-                        if (MigrationCrypto.isEncrypted(rawBytes)) {
+                        if (MigrationCrypto.isEncrypted(rawBytes, context)) {
                             if (password == null) {
-                                throw PasswordRequiredException("This export file is encrypted")
+                                throw PasswordRequiredException(
+                                    string(
+                                        R.string.migration_importer_file_encrypted,
+                                        "This export file is encrypted",
+                                    ),
+                                )
                             }
-                            MigrationCrypto.decrypt(rawBytes, password)
+                            MigrationCrypto.decrypt(rawBytes, password, context)
                         } else {
                             rawBytes
                         }

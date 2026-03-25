@@ -551,6 +551,15 @@ class MigrationExporter
                 }
             }
 
+        fun buildSuggestedExportFileName(): String {
+            val timestamp = SimpleDateFormat("yyyy-MM-dd_HHmmss", Locale.US).format(Date())
+            return string(
+                R.string.migration_exporter_suggested_filename,
+                "columba_export_%1\$s.columba",
+                timestamp,
+            )
+        }
+
         /**
          * Clean up old export files from cache.
          */

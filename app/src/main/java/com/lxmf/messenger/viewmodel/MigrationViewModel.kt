@@ -76,6 +76,9 @@ class MigrationViewModel
         private val _exportedFileUri = MutableStateFlow<Uri?>(null)
         val exportedFileUri: StateFlow<Uri?> = _exportedFileUri.asStateFlow()
 
+        val suggestedExportFileName: String
+            get() = migrationExporter.buildSuggestedExportFileName()
+
         /**
          * Whether to include file/image attachments in export.
          */

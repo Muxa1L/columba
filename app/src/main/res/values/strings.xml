@@ -2422,6 +2422,12 @@ Receipt hash: %2$s...</string>
   <string name="migration_importer_older_version">Migration file is from an old version (%1$s). Minimum supported version is %2$s.</string>
   <string name="migration_importer_password_required">This export file is password-protected. Please provide the password.</string>
   <string name="migration_importer_import_failed">Import failed: %1$s</string>
+    <string name="migration_importer_file_encrypted">This export file is encrypted</string>
+    <string name="migration_crypto_unrecognized_export_format">Unrecognized export format (version byte: 0x%1$s)</string>
+    <string name="migration_crypto_export_too_small">Export file is too small to be valid</string>
+    <string name="migration_crypto_unrecognized_export_file_format">Unrecognized export file format (starts with 0x%1$s)</string>
+    <string name="migration_exporter_suggested_filename">columba_export_%1$s.columba</string>
+    <string name="settings_service_not_available">Service not available</string>
   <string name="migration_exporter_preview_failed">Failed to get export preview: %1$s</string>
   <string name="debug_service_unavailable">Service unavailable</string>
   <string name="debug_failed_get_destination">Could not get LXMF destination</string>

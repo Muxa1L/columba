@@ -2521,6 +2521,12 @@
     <string name="migration_importer_older_version">Файл миграции создан в старой версии (%1$s). Минимально поддерживаемая версия: %2$s.</string>
     <string name="migration_importer_password_required">Этот файл экспорта защищен паролем. Пожалуйста, введите пароль.</string>
     <string name="migration_importer_import_failed">Импорт не выполнен: %1$s</string>
+        <string name="migration_importer_file_encrypted">Этот файл экспорта зашифрован</string>
+        <string name="migration_crypto_unrecognized_export_format">Нераспознанный формат экспорта (байт версии: 0x%1$s)</string>
+        <string name="migration_crypto_export_too_small">Файл экспорта слишком мал, чтобы быть корректным</string>
+        <string name="migration_crypto_unrecognized_export_file_format">Нераспознанный формат файла экспорта (начинается с 0x%1$s)</string>
+        <string name="migration_exporter_suggested_filename">columba_export_%1$s.columba</string>
+        <string name="settings_service_not_available">Служба недоступна</string>
     <string name="migration_exporter_preview_failed">Не удалось получить предпросмотр экспорта: %1$s</string>
     <string name="debug_service_unavailable">Сервис недоступен</string>
     <string name="debug_failed_get_destination">Не удалось получить LXMF-назначение</string>
