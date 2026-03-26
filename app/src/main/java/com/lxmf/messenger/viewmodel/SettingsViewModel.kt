@@ -799,7 +799,11 @@ class SettingsViewModel
                                 result.exceptionOrNull()?.message
                                     ?: runCatching {
                                         context.getString(R.string.identity_screen_unknown_error)
-                                    }.getOrDefault("Unknown error")
+                                    }.getOrDefault(
+                                        runCatching {
+                                            context.getString(R.string.identity_screen_unknown_error)
+                                        }.getOrDefault("Unknown error"),
+                                    )
                             _state.value =
                                 _state.value.copy(
                                     isManualAnnouncing = false,
@@ -818,7 +822,11 @@ class SettingsViewModel
                                 manualAnnounceError =
                                     runCatching {
                                         context.getString(R.string.settings_service_not_available)
-                                    }.getOrDefault("Service not available"),
+                                    }.getOrDefault(
+                                        runCatching {
+                                            context.getString(R.string.settings_service_not_available)
+                                        }.getOrDefault("Service not available"),
+                                    ),
                             )
                         Log.w(TAG, "Manual announce skipped: ReticulumProtocol is not ServiceReticulumProtocol")
 
