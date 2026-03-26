@@ -1507,6 +1507,7 @@ fun ManualEntryDialog(
     onDismiss: () -> Unit,
     onConfirm: (identityString: String, nickname: String?) -> Unit,
 ) {
+    val context = LocalContext.current
     var identityString by remember { mutableStateOf("") }
     var nickname by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf<String?>(null) }
@@ -1570,7 +1571,7 @@ fun ManualEntryDialog(
             TextButton(
                 onClick = {
                     // VALIDATION: Use InputValidator to parse both full lxma:// and hash-only input
-                    when (val result = InputValidator.parseIdentityInput(identityString)) {
+                    when (val result = InputValidator.parseIdentityInput(context, identityString)) {
                         is ValidationResult.Error -> {
                             errorMessage = result.message
                             return@TextButton

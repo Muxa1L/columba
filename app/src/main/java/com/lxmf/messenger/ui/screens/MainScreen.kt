@@ -56,6 +56,7 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
     val successLabel = stringResource(R.string.main_screen_success)
     val initialHint = stringResource(R.string.main_screen_initial_hint)
     val footer = stringResource(R.string.main_screen_footer)
+    val networkStatusLabel = viewModel.getNetworkStatusLabel()
 
     Scaffold(
         topBar = {
@@ -113,7 +114,7 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = networkStatus.toString(),
+                        text = networkStatusLabel,
                         style = MaterialTheme.typography.bodyLarge,
                     )
                 }

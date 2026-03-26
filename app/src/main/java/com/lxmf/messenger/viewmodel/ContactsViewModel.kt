@@ -458,12 +458,13 @@ class ContactsViewModel
          * @param nickname Optional display name for the contact
          * @return AddContactResult indicating the outcome
          */
+        @Suppress("CyclomaticComplexMethod")
         suspend fun addContactFromInput(
             input: String,
             nickname: String? = null,
         ): AddContactResult {
             return try {
-                val parsed = InputValidator.parseIdentityInput(input)
+                val parsed = context?.let { InputValidator.parseIdentityInput(it, input) } ?: InputValidator.parseIdentityInput(input)
                 if (parsed is ValidationResult.Error) {
                     Log.w(TAG, "Input validation failed: ${parsed.message}")
                     return AddContactResult.Error(parsed.message)

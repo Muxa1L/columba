@@ -592,7 +592,7 @@ class MessagingViewModel
                     }
 
                     // Validate destination hash
-                    val destHashBytes = validateDestinationHash(message.conversationHash)
+                    val destHashBytes = validateDestinationHash(applicationContext, message.conversationHash)
                     if (destHashBytes == null) {
                         Log.e(TAG, "Cannot send reaction: invalid destination hash")
                         clearReactionTarget()
@@ -1183,8 +1183,8 @@ class MessagingViewModel
                     val imageFormat = _selectedImageFormat.value
                     val fileAttachments = _selectedFileAttachments.value
 
-                    val sanitized = validateAndSanitizeContent(content, imageData, fileAttachments) ?: return@launch
-                    val destHashBytes = validateDestinationHash(destinationHash) ?: return@launch
+                    val sanitized = validateAndSanitizeContent(applicationContext, content, imageData, fileAttachments) ?: return@launch
+                    val destHashBytes = validateDestinationHash(applicationContext, destinationHash) ?: return@launch
                     val identity =
                         loadIdentityIfNeeded() ?: run {
                             Log.e(TAG, "Failed to load source identity")
@@ -1946,8 +1946,8 @@ class MessagingViewModel
             imageFormat: String,
         ) {
             try {
-                val sanitized = validateAndSanitizeContent("", imageData, emptyList()) ?: return
-                val destHashBytes = validateDestinationHash(destinationHash) ?: return
+                val sanitized = validateAndSanitizeContent(applicationContext, "", imageData, emptyList()) ?: return
+                val destHashBytes = validateDestinationHash(applicationContext, destinationHash) ?: return
                 val identity =
                     loadIdentityIfNeeded() ?: run {
                         Log.e(TAG, "Failed to load source identity")
@@ -2193,7 +2193,7 @@ class MessagingViewModel
                     }
 
                     // Get destination hash bytes (MessageEntity uses conversationHash)
-                    val destHashBytes = validateDestinationHash(failedMessage.conversationHash)
+                    val destHashBytes = validateDestinationHash(applicationContext, failedMessage.conversationHash)
                     if (destHashBytes == null) {
                         Log.e(TAG, "Invalid destination hash in failed message")
                         return@launch
@@ -2316,7 +2316,7 @@ class MessagingViewModel
          */
         suspend fun getRecommendedCodecProfile(): CodecProfile {
             val destHash = _currentConversation.value
-            val destHashBytes = destHash?.let { validateDestinationHash(it) }
+            val destHashBytes = destHash?.let { validateDestinationHash(applicationContext, it) }
             val protocol = reticulumProtocol as? ServiceReticulumProtocol
 
             return if (destHashBytes != null && protocol != null) {
@@ -2382,6 +2382,7 @@ private const val HELPER_TAG = "MessagingViewModel"
  * @return Sanitized content string, or null if validation fails
  */
 internal fun validateAndSanitizeContent(
+    context: Context,
     content: String,
     imageData: ByteArray?,
     fileAttachments: List<FileAttachment> = emptyList(),
@@ -2391,7 +2392,7 @@ internal fun validateAndSanitizeContent(
     if (content.trim().isEmpty() && (imageData != null || fileAttachments.isNotEmpty())) {
         return " "
     }
-    val validationResult = InputValidator.validateMessageContent(content)
+    val validationResult = InputValidator.validateMessageContent(context, content)
     if (validationResult is ValidationResult.Error) {
         Log.w(HELPER_TAG, "Invalid message content: ${validationResult.message}")
         return null
@@ -2399,8 +2400,11 @@ internal fun validateAndSanitizeContent(
     return validationResult.getOrThrow()
 }
 
-private fun validateDestinationHash(destinationHash: String): ByteArray? =
-    when (val result = InputValidator.validateDestinationHash(destinationHash)) {
+private fun validateDestinationHash(
+    context: Context,
+    destinationHash: String,
+): ByteArray? =
+    when (val result = InputValidator.validateDestinationHash(context, destinationHash)) {
         is ValidationResult.Success -> result.value
         is ValidationResult.Error -> {
             Log.e(HELPER_TAG, "Invalid destination hash: ${result.message}")

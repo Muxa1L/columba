@@ -1,5 +1,8 @@
 package com.lxmf.messenger.util
 
+import android.content.Context
+import com.lxmf.messenger.R
+
 /**
  * Validates destination hash strings for Reticulum network addresses.
  *
@@ -10,6 +13,22 @@ package com.lxmf.messenger.util
 object DestinationHashValidator {
     private const val REQUIRED_LENGTH = 32
     private val HEX_PATTERN = Regex("^[a-fA-F0-9]{$REQUIRED_LENGTH}$")
+
+    private fun string(
+        context: Context,
+        resId: Int,
+        fallback: String,
+        vararg args: Any,
+    ): String =
+        runCatching {
+            if (args.isEmpty()) {
+                context.getString(resId).takeIf { it.isNotBlank() } ?: fallback
+            } else {
+                context.getString(resId, *args).takeIf { it.isNotBlank() } ?: fallback.format(*args)
+            }
+        }.getOrElse {
+            if (args.isEmpty()) fallback else fallback.format(*args)
+        }
 
     /**
      * Result of destination hash validation.
@@ -44,6 +63,32 @@ object DestinationHashValidator {
             !HEX_PATTERN.matches(trimmed) ->
                 ValidationResult.Error(
                     "Hash must contain only hex characters (0-9, a-f)",
+                )
+            else -> ValidationResult.Valid(trimmed.lowercase())
+        }
+    }
+
+    fun validate(
+        context: Context,
+        hash: String,
+    ): ValidationResult {
+        val trimmed = hash.trim()
+
+        return when {
+            trimmed.isEmpty() -> ValidationResult.Error(string(context, R.string.destination_hash_empty, "Hash cannot be empty"))
+            trimmed.length != REQUIRED_LENGTH ->
+                ValidationResult.Error(
+                    string(
+                        context,
+                        R.string.destination_hash_length_invalid,
+                        "Hash must be %d characters (got %d)",
+                        REQUIRED_LENGTH,
+                        trimmed.length,
+                    ),
+                )
+            !HEX_PATTERN.matches(trimmed) ->
+                ValidationResult.Error(
+                    string(context, R.string.destination_hash_hex_only, "Hash must contain only hex characters (0-9, a-f)"),
                 )
             else -> ValidationResult.Valid(trimmed.lowercase())
         }

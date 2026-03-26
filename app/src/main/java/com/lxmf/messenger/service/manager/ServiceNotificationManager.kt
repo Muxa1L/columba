@@ -385,7 +385,9 @@ class ServiceNotificationManager(
             ) {
                 Log.e(TAG, "Foreground service time limit exhausted. Service will run in background with limited capabilities.")
                 // Update state to reflect the issue - service is now vulnerable to being killed
-                state.networkStatus.set("ERROR:Foreground service not allowed - battery optimization may kill the service")
+                state.networkStatus.set(
+                    "ERROR:${context.getString(R.string.service_notification_foreground_not_allowed)}",
+                )
             }
 
             // Service continues to run but not as foreground - it's now killable

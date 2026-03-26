@@ -1,5 +1,8 @@
 package com.lxmf.messenger.util.validation
 
+import android.content.Context
+import com.lxmf.messenger.R
+
 import com.lxmf.messenger.util.validation.ValidationConstants.ALLOWED_INTERFACE_PARAMS
 import com.lxmf.messenger.util.validation.ValidationConstants.DESTINATION_HASH_LENGTH
 import com.lxmf.messenger.util.validation.ValidationConstants.HEX_REGEX
@@ -73,7 +76,24 @@ sealed class IdentityInput {
  *
  * All validation functions return ValidationResult for type-safe error handling.
  */
+@Suppress("TooManyFunctions")
 object InputValidator {
+    private fun string(
+        context: Context,
+        resId: Int,
+        fallback: String,
+        vararg args: Any,
+    ): String =
+        runCatching {
+            if (args.isEmpty()) {
+                context.getString(resId).takeIf { it.isNotBlank() } ?: fallback
+            } else {
+                context.getString(resId, *args).takeIf { it.isNotBlank() } ?: fallback.format(*args)
+            }
+        }.getOrElse {
+            if (args.isEmpty()) fallback else fallback.format(*args)
+        }
+
     // ========== MESSAGE VALIDATION ==========
 
     /**
@@ -96,6 +116,27 @@ object InputValidator {
                 ValidationResult.Error("Message too long (max $MAX_MESSAGE_LENGTH characters)")
             else ->
                 ValidationResult.Success(trimmed)
+        }
+    }
+
+    fun validateMessageContent(
+        context: Context,
+        content: String,
+    ): ValidationResult<String> {
+        val trimmed = content.trim()
+
+        return when {
+            trimmed.isEmpty() -> ValidationResult.Error(string(context, R.string.input_validator_message_empty, "Message cannot be empty"))
+            trimmed.length > MAX_MESSAGE_LENGTH ->
+                ValidationResult.Error(
+                    string(
+                        context,
+                        R.string.input_validator_message_too_long,
+                        "Message too long (max %d characters)",
+                        MAX_MESSAGE_LENGTH,
+                    ),
+                )
+            else -> ValidationResult.Success(trimmed)
         }
     }
 
@@ -140,6 +181,46 @@ object InputValidator {
         }
     }
 
+    fun validateDestinationHash(
+        context: Context,
+        hash: String,
+    ): ValidationResult<ByteArray> {
+        val cleaned = hash.trim()
+
+        if (cleaned.length != DESTINATION_HASH_LENGTH * 2) {
+            return ValidationResult.Error(
+                string(
+                    context,
+                    R.string.input_validator_hash_length_invalid,
+                    "Invalid hash length (expected %d characters, got %d)",
+                    DESTINATION_HASH_LENGTH * 2,
+                    cleaned.length,
+                ),
+            )
+        }
+
+        if (!HEX_REGEX.matches(cleaned)) {
+            return ValidationResult.Error(
+                string(
+                    context,
+                    R.string.input_validator_hash_hex_only,
+                    "Hash must contain only hexadecimal characters (0-9, a-f)",
+                ),
+            )
+        }
+
+        return try {
+            val bytes =
+                cleaned
+                    .chunked(2)
+                    .map { it.toInt(16).toByte() }
+                    .toByteArray()
+            ValidationResult.Success(bytes)
+        } catch (e: NumberFormatException) {
+            ValidationResult.Error(string(context, R.string.input_validator_hex_invalid, "Invalid hexadecimal format"))
+        }
+    }
+
     /**
      * Validates and converts a public key from hex string to byte array.
      *
@@ -179,6 +260,46 @@ object InputValidator {
         }
     }
 
+    fun validatePublicKey(
+        context: Context,
+        key: String,
+    ): ValidationResult<ByteArray> {
+        val cleaned = key.trim()
+
+        if (cleaned.length != PUBLIC_KEY_LENGTH * 2) {
+            return ValidationResult.Error(
+                string(
+                    context,
+                    R.string.input_validator_public_key_length_invalid,
+                    "Invalid public key length (expected %d characters, got %d)",
+                    PUBLIC_KEY_LENGTH * 2,
+                    cleaned.length,
+                ),
+            )
+        }
+
+        if (!HEX_REGEX.matches(cleaned)) {
+            return ValidationResult.Error(
+                string(
+                    context,
+                    R.string.input_validator_public_key_hex_only,
+                    "Public key must contain only hexadecimal characters (0-9, a-f)",
+                ),
+            )
+        }
+
+        return try {
+            val bytes =
+                cleaned
+                    .chunked(2)
+                    .map { it.toInt(16).toByte() }
+                    .toByteArray()
+            ValidationResult.Success(bytes)
+        } catch (e: NumberFormatException) {
+            ValidationResult.Error(string(context, R.string.input_validator_hex_invalid, "Invalid hexadecimal format"))
+        }
+    }
+
     /**
      * Validates a complete LXMF identity string (lxma://hash:pubkey).
      *
@@ -214,6 +335,53 @@ object InputValidator {
         return ValidationResult.Success(
             Pair(hashResult.getOrThrow(), keyResult.getOrThrow()),
         )
+    }
+
+    @Suppress("ReturnCount")
+    fun validateIdentityString(
+        context: Context,
+        identityString: String,
+    ): ValidationResult<Pair<ByteArray, ByteArray>> {
+        val trimmed = identityString.trim()
+
+        if (!trimmed.startsWith(LXMF_IDENTITY_PREFIX)) {
+            return ValidationResult.Error(
+                string(
+                    context,
+                    R.string.input_validator_identity_prefix_required,
+                    "Identity must start with %s",
+                    LXMF_IDENTITY_PREFIX,
+                ),
+            )
+        }
+
+        val data = trimmed.removePrefix(LXMF_IDENTITY_PREFIX)
+        val parts = data.split(":")
+
+        if (parts.size != IDENTITY_PARTS_COUNT) {
+            return ValidationResult.Error(
+                string(
+                    context,
+                    R.string.input_validator_identity_format_invalid,
+                    "Invalid format. Expected: %shash:pubkey",
+                    LXMF_IDENTITY_PREFIX,
+                ),
+            )
+        }
+
+        val hashResult = validateDestinationHash(context, parts[0])
+        if (hashResult is ValidationResult.Error) {
+            return ValidationResult.Error(string(context, R.string.input_validator_invalid_hash, "Invalid hash: %s", hashResult.message))
+        }
+
+        val keyResult = validatePublicKey(context, parts[1])
+        if (keyResult is ValidationResult.Error) {
+            return ValidationResult.Error(
+                string(context, R.string.input_validator_invalid_public_key, "Invalid public key: %s", keyResult.message),
+            )
+        }
+
+        return ValidationResult.Success(Pair(hashResult.getOrThrow(), keyResult.getOrThrow()))
     }
 
     /**
@@ -264,6 +432,56 @@ object InputValidator {
             "Invalid format. Enter either:\n" +
                 "• Full identity: lxma://hash:pubkey\n" +
                 "• Destination hash: 32 hexadecimal characters",
+        )
+    }
+
+    @Suppress("ReturnCount")
+    fun parseIdentityInput(
+        context: Context,
+        input: String,
+    ): ValidationResult<IdentityInput> {
+        val trimmed = input.trim().lowercase()
+
+        if (trimmed.isEmpty()) {
+            return ValidationResult.Error(
+                string(
+                    context,
+                    R.string.input_validator_identity_or_hash_required,
+                    "Please enter an identity string or destination hash",
+                ),
+            )
+        }
+
+        if (trimmed.startsWith(LXMF_IDENTITY_PREFIX)) {
+            return when (val result = validateIdentityString(context, trimmed)) {
+                is ValidationResult.Success -> {
+                    val (hashBytes, pubKeyBytes) = result.value
+                    val destHash = hashBytes.joinToString("") { "%02x".format(it) }
+                    ValidationResult.Success(IdentityInput.FullIdentity(destHash, pubKeyBytes))
+                }
+                is ValidationResult.Error -> ValidationResult.Error(result.message)
+            }
+        }
+
+        if (trimmed.length == DESTINATION_HASH_LENGTH * 2) {
+            if (!HEX_REGEX.matches(trimmed)) {
+                return ValidationResult.Error(
+                    string(
+                        context,
+                        R.string.input_validator_destination_hash_hex_only,
+                        "Invalid destination hash: must contain only hexadecimal characters (0-9, a-f)",
+                    ),
+                )
+            }
+            return ValidationResult.Success(IdentityInput.DestinationHashOnly(trimmed))
+        }
+
+        return ValidationResult.Error(
+            string(
+                context,
+                R.string.input_validator_identity_input_format_invalid,
+                "Invalid format. Enter either:\n• Full identity: lxma://hash:pubkey\n• Destination hash: 32 hexadecimal characters",
+            ),
         )
     }
 
@@ -318,6 +536,34 @@ object InputValidator {
         }
     }
 
+    fun validateHostname(
+        context: Context,
+        host: String,
+    ): ValidationResult<String> {
+        var cleaned =
+            host
+                .trim()
+                .removePrefix("http://")
+                .removePrefix("https://")
+                .removeSuffix("/")
+                .split("/")
+                .first()
+
+        val colonCount = cleaned.count { it == ':' }
+        if (colonCount == 1 && cleaned.matches(Regex("^.+:\\d+$"))) {
+            cleaned = cleaned.substringBeforeLast(":")
+        }
+
+        return when {
+            cleaned.isEmpty() -> ValidationResult.Error(string(context, R.string.input_validator_hostname_empty, "Hostname cannot be empty"))
+            IPV4_REGEX.matches(cleaned) -> ValidationResult.Success(cleaned)
+            IPV6_REGEX.matches(cleaned) -> ValidationResult.Success(cleaned)
+            Regex("^[0-9.]+$").matches(cleaned) -> ValidationResult.Error(string(context, R.string.input_validator_ip_invalid, "Invalid IP address"))
+            HOSTNAME_REGEX.matches(cleaned) -> ValidationResult.Success(cleaned)
+            else -> ValidationResult.Error(string(context, R.string.input_validator_hostname_invalid, "Invalid hostname or IP address"))
+        }
+    }
+
     /**
      * Validates a port number.
      *
@@ -338,6 +584,20 @@ object InputValidator {
                 ValidationResult.Error("Port must be between $MIN_PORT and $MAX_PORT")
             else ->
                 ValidationResult.Success(parsed)
+        }
+    }
+
+    fun validatePort(
+        context: Context,
+        port: String,
+    ): ValidationResult<Int> {
+        val parsed = port.trim().toIntOrNull()
+
+        return when {
+            parsed == null -> ValidationResult.Error(string(context, R.string.input_validator_port_number, "Port must be a number"))
+            parsed !in MIN_PORT..MAX_PORT ->
+                ValidationResult.Error(string(context, R.string.input_validator_port_range, "Port must be between %d and %d", MIN_PORT, MAX_PORT))
+            else -> ValidationResult.Success(parsed)
         }
     }
 
@@ -389,6 +649,27 @@ object InputValidator {
         }
     }
 
+    fun validateInterfaceName(
+        context: Context,
+        name: String,
+    ): ValidationResult<String> {
+        val trimmed = name.trim()
+
+        return when {
+            trimmed.isBlank() -> ValidationResult.Error(string(context, R.string.input_validator_interface_name_empty, "Interface name cannot be empty"))
+            trimmed.length > MAX_INTERFACE_NAME_LENGTH ->
+                ValidationResult.Error(
+                    string(
+                        context,
+                        R.string.input_validator_interface_name_too_long,
+                        "Interface name too long (max %d characters)",
+                        MAX_INTERFACE_NAME_LENGTH,
+                    ),
+                )
+            else -> ValidationResult.Success(trimmed)
+        }
+    }
+
     /**
      * Validates that an interface name is unique among existing interfaces.
      *
@@ -420,6 +701,27 @@ object InputValidator {
         }
     }
 
+    fun validateInterfaceNameUniqueness(
+        context: Context,
+        name: String,
+        existingNames: List<String>,
+        excludeName: String? = null,
+    ): ValidationResult<String> {
+        val trimmed = name.trim()
+        val namesToCheck =
+            if (excludeName != null) {
+                existingNames.filter { it != excludeName }
+            } else {
+                existingNames
+            }
+
+        return if (namesToCheck.any { it.equals(trimmed, ignoreCase = true) }) {
+            ValidationResult.Error(string(context, R.string.input_validator_interface_name_duplicate, "An interface with this name already exists"))
+        } else {
+            ValidationResult.Success(trimmed)
+        }
+    }
+
     /**
      * Validates a BLE device name.
      *
@@ -440,6 +742,27 @@ object InputValidator {
                 ValidationResult.Error("Device name too long (max $MAX_DEVICE_NAME_LENGTH characters)")
             else ->
                 ValidationResult.Success(trimmed)
+        }
+    }
+
+    fun validateDeviceName(
+        context: Context,
+        name: String,
+    ): ValidationResult<String> {
+        val trimmed = name.trim()
+
+        return when {
+            trimmed.isBlank() -> ValidationResult.Error(string(context, R.string.input_validator_device_name_empty, "Device name cannot be empty"))
+            trimmed.length > MAX_DEVICE_NAME_LENGTH ->
+                ValidationResult.Error(
+                    string(
+                        context,
+                        R.string.input_validator_device_name_too_long,
+                        "Device name too long (max %d characters)",
+                        MAX_DEVICE_NAME_LENGTH,
+                    ),
+                )
+            else -> ValidationResult.Success(trimmed)
         }
     }
 

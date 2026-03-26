@@ -1,5 +1,8 @@
 package com.lxmf.messenger.viewmodel
 
+import android.content.Context
+import com.lxmf.messenger.R
+
 import com.lxmf.messenger.data.model.FrequencyRegion
 
 /**
@@ -45,6 +48,7 @@ data class RNodeConfigInput(
  *
  * Extracted from RNodeWizardViewModel to reduce class complexity and improve testability.
  */
+@Suppress("TooManyFunctions")
 object RNodeConfigValidator {
     // Hardware limits
     private const val MIN_BANDWIDTH = 7800
@@ -60,16 +64,54 @@ object RNodeConfigValidator {
     private const val DEFAULT_MIN_FREQ = 137_000_000L
     private const val DEFAULT_MAX_FREQ = 3_000_000_000L
 
+    private fun string(
+        context: Context?,
+        resId: Int,
+        fallback: String,
+        vararg args: Any,
+    ): String =
+        runCatching {
+            if (context == null) {
+                if (args.isEmpty()) fallback else fallback.format(*args)
+            } else if (args.isEmpty()) {
+                context.getString(resId).takeIf { it.isNotBlank() } ?: fallback
+            } else {
+                context.getString(resId, *args).takeIf { it.isNotBlank() } ?: fallback.format(*args)
+            }
+        }.getOrElse {
+            if (args.isEmpty()) fallback else fallback.format(*args)
+        }
+
+    private fun invalidNumber(context: Context?): String =
+        string(context, R.string.offline_map_download_invalid_number, "Invalid number")
+
+    private fun minValue(context: Context?, value: Any): String =
+        string(context, R.string.rnode_validation_min_value, "Must be >= %s", value.toString())
+
+    private fun maxValue(context: Context?, value: Any): String =
+        string(context, R.string.rnode_validation_max_value, "Must be <= %s", value.toString())
+
+    private fun validateName(
+        name: String,
+        context: Context?,
+    ): FieldValidation =
+        if (name.isBlank()) {
+            FieldValidation(false, string(context, R.string.rnode_validation_interface_name_required, "Interface name is required"))
+        } else {
+            FieldValidation(true)
+        }
+
     /**
      * Validate the interface name.
      */
     fun validateName(name: String): FieldValidation {
-        return if (name.isBlank()) {
-            FieldValidation(false, "Interface name is required")
-        } else {
-            FieldValidation(true)
-        }
+        return validateName(name, null)
     }
+
+    fun validateName(
+        context: Context,
+        name: String,
+    ): FieldValidation = validateName(name, context)
 
     /**
      * Validate frequency against region limits.
@@ -78,17 +120,34 @@ object RNodeConfigValidator {
         value: String,
         region: FrequencyRegion?,
     ): FieldValidation {
+        return validateFrequency(value, region, null)
+    }
+
+    fun validateFrequency(
+        context: Context,
+        value: String,
+        region: FrequencyRegion?,
+    ): FieldValidation = validateFrequency(value, region, context)
+
+    private fun validateFrequency(
+        value: String,
+        region: FrequencyRegion?,
+        context: Context?,
+    ): FieldValidation {
         val freq = value.toLongOrNull()
         val minFreq = region?.frequencyStart ?: DEFAULT_MIN_FREQ
         val maxFreq = region?.frequencyEnd ?: DEFAULT_MAX_FREQ
 
         return when {
             value.isBlank() -> FieldValidation(true) // Allow empty while typing
-            freq == null -> FieldValidation(false, "Invalid number")
+            freq == null -> FieldValidation(false, invalidNumber(context))
             freq < minFreq || freq > maxFreq -> {
                 val minMhz = minFreq / 1_000_000.0
                 val maxMhz = maxFreq / 1_000_000.0
-                FieldValidation(false, "Must be %.1f-%.1f MHz".format(minMhz, maxMhz))
+                FieldValidation(
+                    false,
+                    string(context, R.string.rnode_validation_frequency_range, "Must be %.1f-%.1f MHz", minMhz, maxMhz),
+                )
             }
             else -> FieldValidation(true)
         }
@@ -98,12 +157,24 @@ object RNodeConfigValidator {
      * Validate bandwidth.
      */
     fun validateBandwidth(value: String): FieldValidation {
+        return validateBandwidth(value, null)
+    }
+
+    fun validateBandwidth(
+        context: Context,
+        value: String,
+    ): FieldValidation = validateBandwidth(value, context)
+
+    private fun validateBandwidth(
+        value: String,
+        context: Context?,
+    ): FieldValidation {
         val bw = value.toIntOrNull()
         return when {
             value.isBlank() -> FieldValidation(true) // Allow empty while typing
-            bw == null -> FieldValidation(false, "Invalid number")
-            bw < MIN_BANDWIDTH -> FieldValidation(false, "Must be >= 7.8 kHz")
-            bw > MAX_BANDWIDTH -> FieldValidation(false, "Must be <= 1625 kHz")
+            bw == null -> FieldValidation(false, invalidNumber(context))
+            bw < MIN_BANDWIDTH -> FieldValidation(false, string(context, R.string.rnode_validation_bandwidth_min, "Must be >= 7.8 kHz"))
+            bw > MAX_BANDWIDTH -> FieldValidation(false, string(context, R.string.rnode_validation_bandwidth_max, "Must be <= 1625 kHz"))
             else -> FieldValidation(true)
         }
     }
@@ -112,12 +183,24 @@ object RNodeConfigValidator {
      * Validate spreading factor.
      */
     fun validateSpreadingFactor(value: String): FieldValidation {
+        return validateSpreadingFactor(value, null)
+    }
+
+    fun validateSpreadingFactor(
+        context: Context,
+        value: String,
+    ): FieldValidation = validateSpreadingFactor(value, context)
+
+    private fun validateSpreadingFactor(
+        value: String,
+        context: Context?,
+    ): FieldValidation {
         val sf = value.toIntOrNull()
         return when {
             value.isBlank() -> FieldValidation(true) // Allow empty while typing
-            sf == null -> FieldValidation(false, "Invalid number")
-            sf < MIN_SF -> FieldValidation(false, "Must be >= $MIN_SF")
-            sf > MAX_SF -> FieldValidation(false, "Must be <= $MAX_SF")
+            sf == null -> FieldValidation(false, invalidNumber(context))
+            sf < MIN_SF -> FieldValidation(false, minValue(context, MIN_SF))
+            sf > MAX_SF -> FieldValidation(false, maxValue(context, MAX_SF))
             else -> FieldValidation(true)
         }
     }
@@ -126,12 +209,24 @@ object RNodeConfigValidator {
      * Validate coding rate.
      */
     fun validateCodingRate(value: String): FieldValidation {
+        return validateCodingRate(value, null)
+    }
+
+    fun validateCodingRate(
+        context: Context,
+        value: String,
+    ): FieldValidation = validateCodingRate(value, context)
+
+    private fun validateCodingRate(
+        value: String,
+        context: Context?,
+    ): FieldValidation {
         val cr = value.toIntOrNull()
         return when {
             value.isBlank() -> FieldValidation(true) // Allow empty while typing
-            cr == null -> FieldValidation(false, "Invalid number")
-            cr < MIN_CR -> FieldValidation(false, "Must be >= $MIN_CR")
-            cr > MAX_CR -> FieldValidation(false, "Must be <= $MAX_CR")
+            cr == null -> FieldValidation(false, invalidNumber(context))
+            cr < MIN_CR -> FieldValidation(false, minValue(context, MIN_CR))
+            cr > MAX_CR -> FieldValidation(false, maxValue(context, MAX_CR))
             else -> FieldValidation(true)
         }
     }
@@ -143,13 +238,31 @@ object RNodeConfigValidator {
         value: String,
         region: FrequencyRegion?,
     ): FieldValidation {
+        return validateTxPower(value, region, null)
+    }
+
+    fun validateTxPower(
+        context: Context,
+        value: String,
+        region: FrequencyRegion?,
+    ): FieldValidation = validateTxPower(value, region, context)
+
+    private fun validateTxPower(
+        value: String,
+        region: FrequencyRegion?,
+        context: Context?,
+    ): FieldValidation {
         val maxPower = region?.maxTxPower ?: DEFAULT_MAX_TX_POWER
         val txp = value.toIntOrNull()
         return when {
             value.isBlank() -> FieldValidation(true) // Allow empty while typing
-            txp == null -> FieldValidation(false, "Invalid number")
-            txp < MIN_TX_POWER -> FieldValidation(false, "Must be >= $MIN_TX_POWER")
-            txp > maxPower -> FieldValidation(false, "Max: $maxPower dBm")
+            txp == null -> FieldValidation(false, invalidNumber(context))
+            txp < MIN_TX_POWER -> FieldValidation(false, minValue(context, MIN_TX_POWER))
+            txp > maxPower ->
+                FieldValidation(
+                    false,
+                    string(context, R.string.rnode_validation_tx_power_max, "Max: %d dBm", maxPower),
+                )
             else -> FieldValidation(true)
         }
     }
@@ -161,6 +274,20 @@ object RNodeConfigValidator {
         value: String,
         region: FrequencyRegion?,
     ): FieldValidation {
+        return validateAirtimeLimit(value, region, null)
+    }
+
+    fun validateAirtimeLimit(
+        context: Context,
+        value: String,
+        region: FrequencyRegion?,
+    ): FieldValidation = validateAirtimeLimit(value, region, context)
+
+    private fun validateAirtimeLimit(
+        value: String,
+        region: FrequencyRegion?,
+        context: Context?,
+    ): FieldValidation {
         val maxAirtime =
             region?.let {
                 if (it.dutyCycle < 100) it.dutyCycle.toDouble() else null
@@ -168,11 +295,14 @@ object RNodeConfigValidator {
         val parsed = value.toDoubleOrNull()
         return when {
             value.isBlank() -> FieldValidation(true) // Empty is allowed (no limit)
-            parsed == null -> FieldValidation(false, "Invalid number")
-            parsed < 0 -> FieldValidation(false, "Must be >= 0")
-            parsed > 100 -> FieldValidation(false, "Must be <= 100%")
+            parsed == null -> FieldValidation(false, invalidNumber(context))
+            parsed < 0 -> FieldValidation(false, minValue(context, 0))
+            parsed > 100 -> FieldValidation(false, maxValue(context, "100%"))
             maxAirtime != null && parsed > maxAirtime ->
-                FieldValidation(false, "Max: $maxAirtime% (regional limit)")
+                FieldValidation(
+                    false,
+                    string(context, R.string.rnode_validation_airtime_limit_max, "Max: %s%% (regional limit)", maxAirtime.toString()),
+                )
             else -> FieldValidation(true)
         }
     }
@@ -224,21 +354,36 @@ object RNodeConfigValidator {
      */
     @Suppress("CyclomaticComplexMethod")
     fun validateConfig(config: RNodeConfigInput): ConfigValidationResult {
-        val nameResult = validateName(config.name)
-        val freqResult = validateFrequency(config.frequency, config.region)
-        val bwResult = validateBandwidth(config.bandwidth)
-        val sfResult = validateSpreadingFactor(config.spreadingFactor)
-        val crResult = validateCodingRate(config.codingRate)
-        val txpResult = validateTxPower(config.txPower, config.region)
-        val stAlockResult = validateAirtimeLimit(config.stAlock, config.region)
-        val ltAlockResult = validateAirtimeLimit(config.ltAlock, config.region)
+        return validateConfig(config, null)
+    }
 
-        // For full validation, also check that required fields are not empty
+    fun validateConfig(
+        context: Context,
+        config: RNodeConfigInput,
+    ): ConfigValidationResult = validateConfig(config, context)
+
+    @Suppress("CyclomaticComplexMethod")
+    private fun validateConfig(
+        config: RNodeConfigInput,
+        context: Context?,
+    ): ConfigValidationResult {
+        val nameResult = validateName(config.name, context)
+        val freqResult = validateFrequency(config.frequency, config.region, context)
+        val bwResult = validateBandwidth(config.bandwidth, context)
+        val sfResult = validateSpreadingFactor(config.spreadingFactor, context)
+        val crResult = validateCodingRate(config.codingRate, context)
+        val txpResult = validateTxPower(config.txPower, config.region, context)
+        val stAlockResult = validateAirtimeLimit(config.stAlock, config.region, context)
+        val ltAlockResult = validateAirtimeLimit(config.ltAlock, config.region, context)
+
         val frequencyError =
             if (config.frequency.isBlank()) {
                 val minFreq = config.region?.frequencyStart ?: DEFAULT_MIN_FREQ
                 val maxFreq = config.region?.frequencyEnd ?: DEFAULT_MAX_FREQ
-                "Frequency must be %.1f-%.1f MHz".format(
+                string(
+                    context,
+                    R.string.rnode_validation_frequency_required_range,
+                    "Frequency must be %.1f-%.1f MHz",
                     minFreq / 1_000_000.0,
                     maxFreq / 1_000_000.0,
                 )
@@ -248,21 +393,21 @@ object RNodeConfigValidator {
 
         val bandwidthError =
             if (config.bandwidth.isBlank()) {
-                "Bandwidth must be 7.8-1625 kHz"
+                string(context, R.string.rnode_validation_bandwidth_required_range, "Bandwidth must be 7.8-1625 kHz")
             } else {
                 bwResult.errorMessage
             }
 
         val sfError =
             if (config.spreadingFactor.isBlank()) {
-                "SF must be $MIN_SF-$MAX_SF"
+                string(context, R.string.rnode_validation_spreading_factor_required_range, "SF must be %d-%d", MIN_SF, MAX_SF)
             } else {
                 sfResult.errorMessage
             }
 
         val crError =
             if (config.codingRate.isBlank()) {
-                "CR must be $MIN_CR-$MAX_CR"
+                string(context, R.string.rnode_validation_coding_rate_required_range, "CR must be %d-%d", MIN_CR, MAX_CR)
             } else {
                 crResult.errorMessage
             }
@@ -271,7 +416,14 @@ object RNodeConfigValidator {
             if (config.txPower.isBlank()) {
                 val maxPower = config.region?.maxTxPower ?: DEFAULT_MAX_TX_POWER
                 val regionName = config.region?.name ?: "this region"
-                "TX power must be $MIN_TX_POWER-$maxPower dBm for $regionName"
+                string(
+                    context,
+                    R.string.rnode_validation_tx_power_required_range_for_region,
+                    "TX power must be %d-%d dBm for %s",
+                    MIN_TX_POWER,
+                    maxPower,
+                    regionName,
+                )
             } else {
                 txpResult.errorMessage
             }
@@ -316,6 +468,24 @@ object RNodeConfigValidator {
         region: FrequencyRegion?,
     ): ConfigValidationResult =
         validateConfig(
+            RNodeConfigInput(name, frequency, bandwidth, spreadingFactor, codingRate, txPower, stAlock, ltAlock, region),
+        )
+
+    @Suppress("LongParameterList")
+    fun validateConfig(
+        context: Context,
+        name: String,
+        frequency: String,
+        bandwidth: String,
+        spreadingFactor: String,
+        codingRate: String,
+        txPower: String,
+        stAlock: String,
+        ltAlock: String,
+        region: FrequencyRegion?,
+    ): ConfigValidationResult =
+        validateConfig(
+            context,
             RNodeConfigInput(name, frequency, bandwidth, spreadingFactor, codingRate, txPower, stAlock, ltAlock, region),
         )
 

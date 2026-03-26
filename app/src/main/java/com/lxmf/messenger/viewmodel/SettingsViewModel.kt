@@ -838,7 +838,11 @@ class SettingsViewModel
                     _state.value =
                         _state.value.copy(
                             isManualAnnouncing = false,
-                            manualAnnounceError = e.message ?: "Error triggering announce",
+                            manualAnnounceError =
+                                e.message
+                                    ?: runCatching {
+                                        context.getString(R.string.settings_error_triggering_announce)
+                                    }.getOrDefault("Error triggering announce"),
                         )
                     Log.e(TAG, "Error triggering manual announce", e)
 

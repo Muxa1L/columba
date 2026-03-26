@@ -646,7 +646,7 @@ class InterfaceManagementViewModel
             var isValid = true
 
             // VALIDATION: Validate interface name with InputValidator
-            when (val nameResult = InputValidator.validateInterfaceName(config.name)) {
+            when (val nameResult = context?.let { InputValidator.validateInterfaceName(it, config.name) } ?: InputValidator.validateInterfaceName(config.name)) {
                 is ValidationResult.Error -> {
                     _configState.value = config.copy(nameError = nameResult.message)
                     isValid = false
@@ -663,7 +663,14 @@ class InterfaceManagementViewModel
                 val excludeName = _state.value.editingInterface?.name
                 when (
                     val uniqueResult =
-                        InputValidator.validateInterfaceNameUniqueness(
+                        context?.let {
+                            InputValidator.validateInterfaceNameUniqueness(
+                                it,
+                                config.name,
+                                existingNames,
+                                excludeName,
+                            )
+                        } ?: InputValidator.validateInterfaceNameUniqueness(
                             config.name,
                             existingNames,
                             excludeName,
@@ -683,7 +690,7 @@ class InterfaceManagementViewModel
             when (config.type) {
                 "TCPClient" -> {
                     // VALIDATION: Validate target host with proper hostname/IP validation
-                    when (val hostResult = InputValidator.validateHostname(config.targetHost)) {
+                    when (val hostResult = context?.let { InputValidator.validateHostname(it, config.targetHost) } ?: InputValidator.validateHostname(config.targetHost)) {
                         is ValidationResult.Error -> {
                             _configState.value = _configState.value.copy(targetHostError = hostResult.message)
                             isValid = false
@@ -699,7 +706,7 @@ class InterfaceManagementViewModel
                     }
 
                     // VALIDATION: Validate target port with proper range checking
-                    when (val portResult = InputValidator.validatePort(config.targetPort)) {
+                    when (val portResult = context?.let { InputValidator.validatePort(it, config.targetPort) } ?: InputValidator.validatePort(config.targetPort)) {
                         is ValidationResult.Error -> {
                             _configState.value = _configState.value.copy(targetPortError = portResult.message)
                             isValid = false
@@ -711,7 +718,7 @@ class InterfaceManagementViewModel
 
                     // VALIDATION: Validate SOCKS proxy fields when enabled
                     if (config.socksProxyEnabled) {
-                        when (val proxyHostResult = InputValidator.validateHostname(config.socksProxyHost)) {
+                        when (val proxyHostResult = context?.let { InputValidator.validateHostname(it, config.socksProxyHost) } ?: InputValidator.validateHostname(config.socksProxyHost)) {
                             is ValidationResult.Error -> {
                                 _configState.value = _configState.value.copy(socksProxyHostError = proxyHostResult.message)
                                 isValid = false
@@ -721,7 +728,7 @@ class InterfaceManagementViewModel
                             }
                         }
 
-                        when (val proxyPortResult = InputValidator.validatePort(config.socksProxyPort)) {
+                        when (val proxyPortResult = context?.let { InputValidator.validatePort(it, config.socksProxyPort) } ?: InputValidator.validatePort(config.socksProxyPort)) {
                             is ValidationResult.Error -> {
                                 _configState.value = _configState.value.copy(socksProxyPortError = proxyPortResult.message)
                                 isValid = false
@@ -738,7 +745,7 @@ class InterfaceManagementViewModel
                 "AutoInterface" -> {
                     // VALIDATION: Validate discovery port (empty = use RNS default)
                     if (config.discoveryPort.isNotBlank()) {
-                        when (val portResult = InputValidator.validatePort(config.discoveryPort)) {
+                        when (val portResult = context?.let { InputValidator.validatePort(it, config.discoveryPort) } ?: InputValidator.validatePort(config.discoveryPort)) {
                             is ValidationResult.Error -> {
                                 _configState.value = _configState.value.copy(discoveryPortError = portResult.message)
                                 isValid = false
@@ -753,7 +760,7 @@ class InterfaceManagementViewModel
 
                     // VALIDATION: Validate data port (empty = use RNS default)
                     if (config.dataPort.isNotBlank()) {
-                        when (val portResult = InputValidator.validatePort(config.dataPort)) {
+                        when (val portResult = context?.let { InputValidator.validatePort(it, config.dataPort) } ?: InputValidator.validatePort(config.dataPort)) {
                             is ValidationResult.Error -> {
                                 _configState.value = _configState.value.copy(dataPortError = portResult.message)
                                 isValid = false
@@ -770,7 +777,7 @@ class InterfaceManagementViewModel
                 "AndroidBLE" -> {
                     // VALIDATION: Validate device name (optional, but if provided must be valid)
                     if (config.deviceName.isNotBlank()) {
-                        when (val deviceNameResult = InputValidator.validateDeviceName(config.deviceName)) {
+                        when (val deviceNameResult = context?.let { InputValidator.validateDeviceName(it, config.deviceName) } ?: InputValidator.validateDeviceName(config.deviceName)) {
                             is ValidationResult.Error -> {
                                 _configState.value = _configState.value.copy(deviceNameError = deviceNameResult.message)
                                 isValid = false
@@ -800,7 +807,7 @@ class InterfaceManagementViewModel
 
                 "TCPServer" -> {
                     // VALIDATION: Validate listen IP (0.0.0.0 or valid IP/hostname)
-                    when (val ipResult = InputValidator.validateHostname(config.listenIp)) {
+                    when (val ipResult = context?.let { InputValidator.validateHostname(it, config.listenIp) } ?: InputValidator.validateHostname(config.listenIp)) {
                         is ValidationResult.Error -> {
                             _configState.value = _configState.value.copy(listenIpError = ipResult.message)
                             isValid = false
@@ -815,7 +822,7 @@ class InterfaceManagementViewModel
                     }
 
                     // VALIDATION: Validate listen port
-                    when (val portResult = InputValidator.validatePort(config.listenPort)) {
+                    when (val portResult = context?.let { InputValidator.validatePort(it, config.listenPort) } ?: InputValidator.validatePort(config.listenPort)) {
                         is ValidationResult.Error -> {
                             _configState.value = _configState.value.copy(listenPortError = portResult.message)
                             isValid = false

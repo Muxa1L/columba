@@ -1,5 +1,6 @@
 package com.lxmf.messenger.viewmodel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,6 +12,7 @@ import com.lxmf.messenger.service.InterfaceConfigManager
 import com.lxmf.messenger.util.validation.InputValidator
 import com.lxmf.messenger.util.validation.ValidationResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -65,6 +67,7 @@ class TcpClientWizardViewModel
     constructor(
         private val interfaceRepository: InterfaceRepository,
         private val configManager: InterfaceConfigManager,
+        @ApplicationContext private val context: Context? = null,
     ) : ViewModel() {
         companion object {
             private const val TAG = "TcpClientWizard"
@@ -313,7 +316,13 @@ class TcpClientWizardViewModel
                             .map { it.name }
                     when (
                         val uniqueResult =
-                            InputValidator.validateInterfaceNameUniqueness(
+                            context?.let {
+                                InputValidator.validateInterfaceNameUniqueness(
+                                    it,
+                                    interfaceName,
+                                    existingNames,
+                                )
+                            } ?: InputValidator.validateInterfaceNameUniqueness(
                                 interfaceName,
                                 existingNames,
                             )

@@ -232,7 +232,8 @@ fun StatusCard(
     networkStatus: String,
     error: String?,
 ) {
-    val isConnecting = networkStatus == "CONNECTING"
+    val connectingStatus = stringResource(R.string.service_notification_status_connecting)
+    val isConnecting = networkStatus == connectingStatus || networkStatus == "CONNECTING"
 
     Card(
         modifier = Modifier.fillMaxWidth(),

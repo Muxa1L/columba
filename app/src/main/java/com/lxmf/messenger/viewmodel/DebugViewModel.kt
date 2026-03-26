@@ -61,7 +61,14 @@ internal fun InterfaceInfo.isClickable(): Boolean = !online || error != null
 /**
  * Determines the dialog title for an interface based on its state.
  */
-internal fun InterfaceInfo.getDialogTitle(): String = if (error != null) "Interface Failed" else "Interface Offline"
+internal fun InterfaceInfo.getDialogTitle(context: android.content.Context): String =
+    runCatching {
+        if (error != null) {
+            context.getString(R.string.identity_screen_interface_failed_title)
+        } else {
+            context.getString(R.string.identity_screen_interface_offline_title)
+        }
+    }.getOrDefault(if (error != null) "Interface Failed" else "Interface Offline")
 
 /**
  * Represents the icon type for interface status display.
@@ -262,11 +269,16 @@ class DebugViewModel
                     // Convert NetworkStatus to readable string
                     _networkStatus.value =
                         when (status) {
-                            is com.lxmf.messenger.reticulum.model.NetworkStatus.READY -> "READY"
-                            is com.lxmf.messenger.reticulum.model.NetworkStatus.INITIALIZING -> "INITIALIZING"
-                            is com.lxmf.messenger.reticulum.model.NetworkStatus.CONNECTING -> "CONNECTING"
-                            is com.lxmf.messenger.reticulum.model.NetworkStatus.SHUTDOWN -> "SHUTDOWN"
-                            is com.lxmf.messenger.reticulum.model.NetworkStatus.ERROR -> "ERROR: ${status.message}"
+                            is com.lxmf.messenger.reticulum.model.NetworkStatus.READY ->
+                                string(R.string.service_notification_status_ready, "READY")
+                            is com.lxmf.messenger.reticulum.model.NetworkStatus.INITIALIZING ->
+                                string(R.string.service_notification_status_initializing, "INITIALIZING")
+                            is com.lxmf.messenger.reticulum.model.NetworkStatus.CONNECTING ->
+                                string(R.string.service_notification_status_connecting, "CONNECTING")
+                            is com.lxmf.messenger.reticulum.model.NetworkStatus.SHUTDOWN ->
+                                string(R.string.service_notification_status_disconnected, "SHUTDOWN")
+                            is com.lxmf.messenger.reticulum.model.NetworkStatus.ERROR ->
+                                string(R.string.announce_stream_error_prefix, "ERROR: %s", status.message)
                             else -> status.toString()
                         }
 
@@ -570,7 +582,7 @@ class DebugViewModel
                     // Clear UI immediately so status card shows clean shutdown state
                     // (don't wait for onServiceDisconnected which has a race window)
                     _debugInfo.value = DebugInfo(isLoading = false)
-                    _networkStatus.value = "SHUTDOWN"
+                    _networkStatus.value = string(R.string.service_notification_status_disconnected, "SHUTDOWN")
 
                     // Unbind FIRST to prevent auto-rebind if service process crashes
                     if (reticulumProtocol is com.lxmf.messenger.reticulum.protocol.ServiceReticulumProtocol) {

@@ -176,6 +176,15 @@ class MainViewModel
                 NetworkStatus.SHUTDOWN -> 0xFF9E9E9E // Gray
             }
         }
+
+        fun getNetworkStatusLabel(): String =
+            when (val status = networkStatus.value) {
+                is NetworkStatus.READY -> string(R.string.service_notification_status_ready, "READY")
+                is NetworkStatus.INITIALIZING -> string(R.string.service_notification_status_initializing, "INITIALIZING")
+                is NetworkStatus.CONNECTING -> string(R.string.service_notification_status_connecting, "CONNECTING")
+                is NetworkStatus.ERROR -> string(R.string.announce_stream_error_prefix, "ERROR: %s", status.message)
+                NetworkStatus.SHUTDOWN -> string(R.string.service_notification_status_disconnected, "SHUTDOWN")
+            }
     }
 
 sealed class UiState {

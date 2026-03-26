@@ -1525,7 +1525,7 @@ class RNodeWizardViewModel
          * @return Pair of (error, warning) - error prevents proceeding, warning is informational
          */
         private fun validateManualDeviceName(name: String): Pair<String?, String?> =
-            when (val result = DeviceNameValidator.validate(name)) {
+            when (val result = DeviceNameValidator.validate(context, name)) {
                 is DeviceNameValidator.ValidationResult.Valid -> null to null
                 is DeviceNameValidator.ValidationResult.Error -> result.message to null
                 is DeviceNameValidator.ValidationResult.Warning -> null to result.message
@@ -3375,36 +3375,36 @@ class RNodeWizardViewModel
         fun updateFrequency(value: String) {
             userModifiedFields.add("frequency")
             val region = _state.value.selectedFrequencyRegion
-            val result = RNodeConfigValidator.validateFrequency(value, region)
+            val result = RNodeConfigValidator.validateFrequency(context, value, region)
             _state.update { it.copy(frequency = value, frequencyError = result.errorMessage) }
         }
 
         fun updateBandwidth(value: String) {
-            val result = RNodeConfigValidator.validateBandwidth(value)
+            val result = RNodeConfigValidator.validateBandwidth(context, value)
             _state.update { it.copy(bandwidth = value, bandwidthError = result.errorMessage) }
         }
 
         fun updateSpreadingFactor(value: String) {
-            val result = RNodeConfigValidator.validateSpreadingFactor(value)
+            val result = RNodeConfigValidator.validateSpreadingFactor(context, value)
             _state.update { it.copy(spreadingFactor = value, spreadingFactorError = result.errorMessage) }
         }
 
         fun updateCodingRate(value: String) {
-            val result = RNodeConfigValidator.validateCodingRate(value)
+            val result = RNodeConfigValidator.validateCodingRate(context, value)
             _state.update { it.copy(codingRate = value, codingRateError = result.errorMessage) }
         }
 
         fun updateTxPower(value: String) {
             userModifiedFields.add("txPower")
             val region = _state.value.selectedFrequencyRegion
-            val result = RNodeConfigValidator.validateTxPower(value, region)
+            val result = RNodeConfigValidator.validateTxPower(context, value, region)
             _state.update { it.copy(txPower = value, txPowerError = result.errorMessage) }
         }
 
         fun updateStAlock(value: String) {
             userModifiedFields.add("stAlock")
             val region = _state.value.selectedFrequencyRegion
-            val result = RNodeConfigValidator.validateAirtimeLimit(value, region)
+            val result = RNodeConfigValidator.validateAirtimeLimit(context, value, region)
             _state.update { it.copy(stAlock = value, stAlockError = result.errorMessage) }
             updateRegulatoryWarning()
         }
@@ -3412,7 +3412,7 @@ class RNodeWizardViewModel
         fun updateLtAlock(value: String) {
             userModifiedFields.add("ltAlock")
             val region = _state.value.selectedFrequencyRegion
-            val result = RNodeConfigValidator.validateAirtimeLimit(value, region)
+            val result = RNodeConfigValidator.validateAirtimeLimit(context, value, region)
             _state.update { it.copy(ltAlock = value, ltAlockError = result.errorMessage) }
             updateRegulatoryWarning()
         }
@@ -3464,6 +3464,7 @@ class RNodeWizardViewModel
             val state = _state.value
             val result =
                 RNodeConfigValidator.validateConfig(
+                    context,
                     name = state.interfaceName,
                     frequency = state.frequency,
                     bandwidth = state.bandwidth,

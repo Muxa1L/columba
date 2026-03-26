@@ -1,6 +1,8 @@
 package com.lxmf.messenger.service
 
+import android.content.Context
 import android.util.Log
+import com.lxmf.messenger.R
 import com.lxmf.messenger.data.db.entity.ContactEntity
 import com.lxmf.messenger.data.repository.AnnounceRepository
 import com.lxmf.messenger.data.repository.ContactRepository
@@ -84,6 +86,7 @@ data class RelayInfo(
 
 /**
  * Represents the loading state of the relay configuration.
+        @dagger.hilt.android.qualifiers.ApplicationContext private val context: Context? = null,
  * Used to distinguish between "not yet loaded from DB" and "loaded, no relay configured".
  */
 sealed class RelayLoadState {
@@ -131,10 +134,39 @@ class PropagationNodeManager
         private val reticulumProtocol: ReticulumProtocol,
         @ApplicationScope private val scope: CoroutineScope,
         @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
+        @dagger.hilt.android.qualifiers.ApplicationContext private val context: Context? = null,
     ) {
         companion object {
             private const val TAG = "PropagationNodeManager"
         }
+
+        private fun string(
+            resId: Int,
+            fallback: String,
+            vararg args: Any,
+        ): String =
+            runCatching {
+                if (args.isEmpty()) {
+                    context?.getString(resId)?.takeIf { it.isNotBlank() } ?: fallback
+                } else {
+                    context?.getString(resId, *args)?.takeIf { it.isNotBlank() } ?: fallback.format(*args)
+                }
+            }.getOrElse {
+                if (args.isEmpty()) fallback else fallback.format(*args)
+            }
+
+        private fun unknownError(message: String?): String =
+            message ?: string(R.string.identity_screen_unknown_error, "Unknown error")
+
+        private fun syncErrorMessage(errorCode: Int): String =
+            when (errorCode) {
+                0xf0 -> string(R.string.propagation_sync_no_path_to_relay, "No path to relay")
+                0xf1 -> string(R.string.propagation_sync_connection_failed, "Connection failed")
+                0xf2 -> string(R.string.propagation_sync_transfer_failed, "Transfer failed")
+                0xf3 -> string(R.string.propagation_sync_identity_not_received, "Identity not received")
+                0xf4 -> string(R.string.propagation_sync_access_denied, "Access denied")
+                else -> string(R.string.propagation_sync_unknown_error_with_code, "Unknown error (%d)", errorCode)
+            }
 
         /**
          * Build RelayInfo from a contact entity and auto-select setting.
@@ -346,7 +378,7 @@ class PropagationNodeManager
                     return
                 }
 
-                val error = result.exceptionOrNull()?.message ?: "Unknown error"
+                val error = unknownError(result.exceptionOrNull()?.message)
                 if (attempt < maxRetries) {
                     val delayMs = baseDelayMs * attempt
                     Log.w(TAG, "Failed to sync relay to Python (attempt $attempt/$maxRetries): $error. Retrying in ${delayMs}ms...")
@@ -445,14 +477,7 @@ class PropagationNodeManager
         private suspend fun handleSyncError(state: PropagationState) {
             if (_isSyncing.value) {
                 val errorMsg =
-                    when (state.state) {
-                        0xf0 -> "No path to relay"
-                        0xf1 -> "Connection failed"
-                        0xf2 -> "Transfer failed"
-                        0xf3 -> "Identity not received"
-                        0xf4 -> "Access denied"
-                        else -> "Unknown error (${state.state})"
-                    }
+                    syncErrorMessage(state.state)
                 Log.w(TAG, "Sync error: $errorMsg (manual=$_isManualSync)")
                 _isSyncing.value = false
                 _syncProgress.value = SyncProgress.Idle
@@ -799,7 +824,13 @@ class PropagationNodeManager
                 }
             if (state == null) {
                 Log.w(TAG, "Timed out waiting for relay state to load from database")
-                if (!silent) _manualSyncResult.emit(SyncResult.Error("Relay configuration not available yet"))
+                if (!silent) {
+                    _manualSyncResult.emit(
+                        SyncResult.Error(
+                            string(R.string.propagation_sync_relay_config_unavailable, "Relay configuration not available yet"),
+                        ),
+                    )
+                }
                 return
             }
             val relay = (state as RelayLoadState.Loaded).relay
@@ -852,7 +883,7 @@ class PropagationNodeManager
                             _syncProgress.value = SyncProgress.Idle
                         }
                         if (_isManualSync) {
-                            _manualSyncResult.emit(SyncResult.Error(error.message ?: "Unknown error"))
+                            _manualSyncResult.emit(SyncResult.Error(unknownError(error.message)))
                             _isManualSync = false
                         }
                     }
@@ -864,7 +895,7 @@ class PropagationNodeManager
                     _syncProgress.value = SyncProgress.Idle
                 }
                 if (_isManualSync) {
-                    _manualSyncResult.emit(SyncResult.Error(e.message ?: "Unknown error"))
+                    _manualSyncResult.emit(SyncResult.Error(unknownError(e.message)))
                     _isManualSync = false
                 }
             }

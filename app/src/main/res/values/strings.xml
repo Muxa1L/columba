@@ -2595,4 +2595,55 @@ Receipt hash: %2$s...</string>
   <string name="rnode_regional_preset_us_portsmouth_description">Portsmouth, NH configuration</string>
   <string name="rnode_regional_preset_us_olympia_description">Olympia, WA configuration</string>
   <string name="rnode_regional_preset_us_chicago_description">Chicago, IL configuration</string>
+  <string name="input_validator_message_empty">Message cannot be empty</string>
+  <string name="input_validator_message_too_long">Message too long (max %1$d characters)</string>
+  <string name="input_validator_hash_length_invalid">Invalid hash length (expected %1$d characters, got %2$d)</string>
+  <string name="input_validator_hash_hex_only">Hash must contain only hexadecimal characters (0-9, a-f)</string>
+  <string name="input_validator_hex_invalid">Invalid hexadecimal format</string>
+  <string name="input_validator_public_key_length_invalid">Invalid public key length (expected %1$d characters, got %2$d)</string>
+  <string name="input_validator_public_key_hex_only">Public key must contain only hexadecimal characters (0-9, a-f)</string>
+  <string name="input_validator_identity_prefix_required">Identity must start with %1$s</string>
+  <string name="input_validator_identity_format_invalid">Invalid format. Expected: %1$shash:pubkey</string>
+  <string name="input_validator_invalid_hash">Invalid hash: %1$s</string>
+  <string name="input_validator_invalid_public_key">Invalid public key: %1$s</string>
+  <string name="input_validator_identity_or_hash_required">Please enter an identity string or destination hash</string>
+  <string name="input_validator_destination_hash_hex_only">Invalid destination hash: must contain only hexadecimal characters (0-9, a-f)</string>
+  <string name="input_validator_identity_input_format_invalid">Invalid format. Enter either:\n• Full identity: lxma://hash:pubkey\n• Destination hash: 32 hexadecimal characters</string>
+  <string name="input_validator_hostname_empty">Hostname cannot be empty</string>
+  <string name="input_validator_ip_invalid">Invalid IP address</string>
+  <string name="input_validator_hostname_invalid">Invalid hostname or IP address</string>
+  <string name="input_validator_port_number">Port must be a number</string>
+  <string name="input_validator_port_range">Port must be between %1$d and %2$d</string>
+  <string name="input_validator_interface_name_empty">Interface name cannot be empty</string>
+  <string name="input_validator_interface_name_too_long">Interface name too long (max %1$d characters)</string>
+  <string name="input_validator_interface_name_duplicate">An interface with this name already exists</string>
+  <string name="input_validator_device_name_empty">Device name cannot be empty</string>
+  <string name="input_validator_device_name_too_long">Device name too long (max %1$d characters)</string>
+  <string name="destination_hash_empty">Hash cannot be empty</string>
+  <string name="destination_hash_length_invalid">Hash must be %1$d characters (got %2$d)</string>
+  <string name="destination_hash_hex_only">Hash must contain only hex characters (0-9, a-f)</string>
+  <string name="rnode_validation_interface_name_required">Interface name is required</string>
+  <string name="rnode_validation_frequency_range">Must be %1$.1f-%2$.1f MHz</string>
+  <string name="rnode_validation_bandwidth_min">Must be &gt;= 7.8 kHz</string>
+  <string name="rnode_validation_bandwidth_max">Must be &lt;= 1625 kHz</string>
+  <string name="rnode_validation_min_value">Must be &gt;= %1$s</string>
+  <string name="rnode_validation_max_value">Must be &lt;= %1$s</string>
+  <string name="rnode_validation_tx_power_max">Max: %1$d dBm</string>
+  <string name="rnode_validation_airtime_limit_max">Max: %1$s%% (regional limit)</string>
+  <string name="rnode_validation_frequency_required_range">Frequency must be %1$.1f-%2$.1f MHz</string>
+  <string name="rnode_validation_bandwidth_required_range">Bandwidth must be 7.8-1625 kHz</string>
+  <string name="rnode_validation_spreading_factor_required_range">SF must be %1$d-%2$d</string>
+  <string name="rnode_validation_coding_rate_required_range">CR must be %1$d-%2$d</string>
+  <string name="rnode_validation_tx_power_required_range_for_region">TX power must be %1$d-%2$d dBm for %3$s</string>
+  <string name="rnode_device_name_validation_too_long">Device name must be %1$d characters or less</string>
+  <string name="rnode_device_name_validation_warning_not_rnode">Device may not be an RNode. Proceed with caution.</string>
+  <string name="propagation_sync_no_path_to_relay">No path to relay</string>
+  <string name="propagation_sync_connection_failed">Connection failed</string>
+  <string name="propagation_sync_transfer_failed">Transfer failed</string>
+  <string name="propagation_sync_identity_not_received">Identity not received</string>
+  <string name="propagation_sync_access_denied">Access denied</string>
+  <string name="propagation_sync_unknown_error_with_code">Unknown error (%1$d)</string>
+  <string name="propagation_sync_relay_config_unavailable">Relay configuration not available yet</string>
+  <string name="service_notification_foreground_not_allowed">Foreground service not allowed - battery optimization may kill the service</string>
+  <string name="settings_error_triggering_announce">Error triggering announce</string>
 </resources>

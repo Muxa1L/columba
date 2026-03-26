@@ -51,6 +51,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -867,7 +868,8 @@ private fun ManualRelayInput(
     onNicknameChange: (String) -> Unit,
     onConfirm: (hash: String, nickname: String?) -> Unit,
 ) {
-    val validationResult = DestinationHashValidator.validate(hashInput)
+    val context = LocalContext.current
+    val validationResult = DestinationHashValidator.validate(context, hashInput)
     val isValid = validationResult is DestinationHashValidator.ValidationResult.Valid
     val errorMessage = (validationResult as? DestinationHashValidator.ValidationResult.Error)?.message
 
